@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>3cac4851-6e69-44a9-9dc9-3d0f3ac19681</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
+    <ProjectReference Include="..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+    <ProjectReference Include="..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+  </ItemGroup>
+
+</Project>

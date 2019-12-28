@@ -1,0 +1,47 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: profilepicturestatefulservice
+  labels:
+    app: profilepicturestatefulservice
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: profilepicturestatefulset
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: profilepicturestatefulset
+  labels:
+    app: profilepicturestatefulset
+spec:
+  selector:
+    matchLabels:
+      app: profilepicturepod # Label selector that determines which Pods belong to the StatefulSet
+                              # Must match spec: template: metadata: labels
+  serviceName: "profilepictureservice"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: profilepicturepod # Pod template's label selector
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: profilepicturepod
+        image: moomedstatefulprofilepictureservice
+        ports:
+        - containerPort: 80
+          name: default
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

@@ -1,0 +1,17 @@
+﻿@using MooMed.Web.Views
+@model MooMed.Web.Models.ControllerMetaData
+
+@{
+    Layout = "~/Views/Shared/Landing/_LandingLayout.cshtml";
+}
+
+<script>
+    @if (ViewBag.reactRoute != null)
+    {
+        @:window.location.href = @Html.Raw(ViewBag.reactRoute);
+    }
+</script>
+
+<div id="logonPageHolder" class="logonPageHolder"></div>
+
+@MooMedHtmlHelper.TranslationFile(Model.UiLanguage);

@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="lib/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="dist/logonCssBundle.css?ver=@{DateTime.Now.Ticks.ToString();}" />
+    </head>
+	<body>
+		<script type="text/javascript" src="dist/logonBundle.js"></script>
+		@using (Html.BeginForm(null, null, FormMethod.Post, new {id = "__AjaxAntiForgeryToken"}))
+		{
+			@Html.AntiForgeryToken()
+		}
+		<div class="contentContainer">
+			@RenderBody()
+		</div>
+	</body>
+</html>

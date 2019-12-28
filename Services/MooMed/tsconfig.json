@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "Scripts",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "allowJs": false,
+    "paths": {
+      "components": ["Views/Components/*"],
+      "data": ["Data/*"],
+      "definitions": ["Definitions/*"],
+      "helper": ["Helper/*"],
+      "views": [ "Views/*"],
+	  "enums":  ["Enums/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ServiceModel.Primitives">
+      <HintPath>C:\Users\Stefan\.nuget\packages\system.servicemodel.primitives\4.6.0\ref\netcoreapp2.1\System.ServiceModel.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

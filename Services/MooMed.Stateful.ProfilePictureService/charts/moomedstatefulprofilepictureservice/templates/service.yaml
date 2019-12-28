@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "moomedstatefulprofilepictureservice.fullname" . }}
+  labels:
+    app: {{ template "moomedstatefulprofilepictureservice.name" . }}
+    chart: {{ template "moomedstatefulprofilepictureservice.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "moomedstatefulprofilepictureservice.name" . }}
+    release: {{ .Release.Name }}

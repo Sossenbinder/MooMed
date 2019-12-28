@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.3" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MooMed.Caching\MooMed.Caching.csproj" />
+    <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
+    <ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.ServiceFabric.Services">
+      <HintPath>C:\Users\Stefan\.nuget\packages\microsoft.servicefabric.services\3.4.641\lib\netstandard2.0\Microsoft.ServiceFabric.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceFabric.Services.Remoting">
+      <HintPath>C:\Users\Stefan\.nuget\packages\microsoft.servicefabric.services.remoting\3.3.658\lib\netstandard2.0\Microsoft.ServiceFabric.Services.Remoting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Fabric">
+      <HintPath>C:\Users\Stefan\.nuget\packages\microsoft.servicefabric\6.5.641\lib\netstandard2.0\System.Fabric.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

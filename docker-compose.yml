@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  moomed.stateful.profilepictureservice:
+    image: ${DOCKER_REGISTRY-}moomedstatefulprofilepictureservice
+    build:
+      context: .
+      dockerfile: Services/MooMed.Stateful.ProfilePictureService/Dockerfile
+
+  moomed.web:
+    image: ${DOCKER_REGISTRY-}moomedweb
+    build:
+      context: .
+      dockerfile: Services/MooMed/Dockerfile
+

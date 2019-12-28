@@ -1,0 +1,18 @@
+﻿@using MooMed.Web.Views
+@model MooMed.Web.Models.ControllerMetaData
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<script>
+    @if (ViewBag.reactRoute != null)
+    {
+        @:window.location.href = @Html.Raw(ViewBag.reactRoute)
+    }
+</script>
+
+<div id="content" style="height: 100%">
+</div>
+
+@MooMedHtmlHelper.TranslationFile(Model.UiLanguage)
