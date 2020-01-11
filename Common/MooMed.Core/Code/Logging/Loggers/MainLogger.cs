@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage;
-using MooMed.Common.Definitions.Models.Session;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Core.Code.Configuration.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;

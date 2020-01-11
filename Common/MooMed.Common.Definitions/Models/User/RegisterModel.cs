@@ -1,22 +1,23 @@
 ﻿using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Database.Entities;
+using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.User
 {
-    [DataContract]
+    [ProtoContract]
     public class RegisterModel
     {
-        [DataMember]
+        [ProtoMember(1)]
         public string Email { get; set; }
 
-        [DataMember]
+        [ProtoMember(2)]
         public string UserName { get; set; }
 
-        [DataMember]
+        [ProtoMember(3)]
         public string Password { get; set; }
 
-        [DataMember]
+        [ProtoMember(4)]
         public string ConfirmPassword { get; set; }
 
         [NotNull]

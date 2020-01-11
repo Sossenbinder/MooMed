@@ -1,6 +1,4 @@
-﻿using System;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+﻿using Autofac;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;

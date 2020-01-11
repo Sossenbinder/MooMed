@@ -23,7 +23,7 @@ namespace MooMed.Web.Controllers.Base
         private void InitUserContext([NotNull] ActionContext actionExecutingContext)
         {
             var uiLang = Language.en;
-
+            
             if (actionExecutingContext.HttpContext.Request.Cookies["lang"] != null)
             {
                 uiLang = (Language)Enum.Parse(typeof(Language), actionExecutingContext.HttpContext.Request.Cookies["lang"]);

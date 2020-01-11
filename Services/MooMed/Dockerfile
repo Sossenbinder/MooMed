@@ -1,24 +1,39 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-ENV MooMed_IV "mN/xDqijx3EVb69j98OdNueyrkuqjIHuVWCikALjLi5umlg4iS713N6ZKoXcsL+xkmIlEr3DXoDWGXO/LuvS0zs11f9yNbOpN7et0OU3xIH/T3suy4vPN3YXO86UkFCISEU/ntQ9CO+xkPgTGlY/iTGnEDcApVwOpFGFe33PpXWyPVW3VBU4yg3fH4ZRlAe93EPa6tLrXs73pBmpXsFCxHy03+rWTqIX/Uz6MGhoe+UIgun0LoHYaanG8LRswoZgCWPNGtGxwwrG0bcSREJThuDRWYWc6Rb7hn/MbFnfekFHdUWrIetYHTDt7iRXt/pj0bluclEGUNoGvLxGy7Sspg=="
-ENV MooMed_Key "izyTzc49vAfJ4x5wZSq+EZBhGBtLlAQiCcFnRQlMhV6+3fJT1z35m4ITJ3/XE2YX+oNu9Z+UtVCGXN64+Izm+EAzZZiPk+cZ4OQ0wXQ2RoTnHsQODmpdl3oGltYOA6AzGvlVwQ6N4c6zZ4ikHKWqcn0gu72Adg259YpiJdcTwAaO2tO1C7Z6ykwYk2p2PPvG8GNmnevXu2YYiiNhswP35R2/CrK2YcWpxNhkAydsvLG8YTFDCQjsO+D527nCVu33TDKpbE1xymeZadz4jmPqAnpowUyjzLotjwPGncfmv1bHKEpjCckb7RjEvc6Y4gr0K51WW6mRV7Ms0ks4abcJFQ=="
-ENV MooMed_Cache_BaseTtlInSeconds 3600
+ENV MooMed_Cache_BaseTtlInSeconds=3600
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MooMed/MooMed.csproj", "MooMed/"]
-
-RUN dotnet restore "MooMed/MooMed.csproj"
+COPY ["Services/MooMed/MooMed.Web.csproj", "Services/MooMed/"]
+COPY ["Services/MooMed.Stateful.AccountValidationService/MooMed.Stateful.AccountValidationService.csproj", "Services/MooMed.Stateful.AccountValidationService/"]
+COPY ["Common/MooMed.Common.ServiceBase/MooMed.Common.ServiceBase.csproj", "Common/MooMed.Common.ServiceBase/"]
+COPY ["Common/MooMed.Grpc/MooMed.Grpc.csproj", "Common/MooMed.Grpc/"]
+COPY ["Common/MooMed.Core/MooMed.Core.csproj", "Common/MooMed.Core/"]
+COPY ["Common/MooMed.Common.Definitions/MooMed.Common.Definitions.csproj", "Common/MooMed.Common.Definitions/"]
+COPY ["Common/MooMed.Azure/MooMed.Azure.csproj", "Common/MooMed.Azure/"]
+COPY ["Modules/MooMed.Module.Account/MooMed.Module.Accounts.csproj", "Modules/MooMed.Module.Account/"]
+COPY ["Common/MooMed.IPC/MooMed.IPC.csproj", "Common/MooMed.IPC/"]
+COPY ["Common/MooMed.Caching/MooMed.Caching.csproj", "Common/MooMed.Caching/"]
+COPY ["Common/MooMed.AspNetCore/MooMed.AspNetCore.csproj", "Common/MooMed.AspNetCore/"]
+COPY ["Modules/MooMed.Module.Search/MooMed.Module.Search.csproj", "Modules/MooMed.Module.Search/"]
+COPY ["Services/MooMed.Stateful.SearchService/MooMed.Stateful.SearchService.csproj", "Services/MooMed.Stateful.SearchService/"]
+COPY ["Services/MooMed.Stateful.ProfilePictureService/MooMed.Stateful.ProfilePictureService.csproj", "Services/MooMed.Stateful.ProfilePictureService/"]
+COPY ["Services/MooMed.Stateful.AccountService/MooMed.Stateful.AccountService.csproj", "Services/MooMed.Stateful.AccountService/"]
+COPY ["Services/MooMed.Stateful.SessionService/MooMed.Stateful.SessionService.csproj", "Services/MooMed.Stateful.SessionService/"]
+COPY ["Modules/MooMed.Module.Session/MooMed.Module.Session.csproj", "Modules/MooMed.Module.Session/"]
+RUN dotnet restore "Services/MooMed/MooMed.Web.csproj"
 COPY . .
-WORKDIR "/src/MooMed"
-RUN dotnet build "MooMed.csproj" -c Release -o /app/build
+WORKDIR "/src/Services/MooMed"
+RUN dotnet build "MooMed.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MooMed.csproj" -c Release -o /app/publish
+RUN dotnet publish "MooMed.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MooMed.dll"]
+ENTRYPOINT ["dotnet", "MooMed.Web.dll"]

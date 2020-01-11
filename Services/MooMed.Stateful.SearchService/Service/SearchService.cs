@@ -7,24 +7,21 @@ using MooMed.Core.Code.Logging.Loggers.Interface;
 
 namespace MooMed.Stateful.SearchService.Service
 {
-    /// <summary>
-    /// The FabricRuntime creates an instance of this class for each service type instance. 
-    /// </summary>
     public class SearchService : MooMedServiceBase, ISearchService
     {
-	    [NotNull]
+	    [System.Diagnostics.CodeAnalysis.NotNull]
 	    private readonly IAccountService m_accountService;
 
 	    public SearchService(
-            [NotNull] IMainLogger logger,
-            [NotNull] IAccountService accountService)
+            [System.Diagnostics.CodeAnalysis.NotNull] IMainLogger logger,
+            [System.Diagnostics.CodeAnalysis.NotNull] IAccountService accountService)
             : base(logger)
         {
 	        m_accountService = accountService;
         }
 
         [ItemNotNull]
-        public async Task<SearchResult> Search([NotNull] string query)
+        public async Task<SearchResult> Search([System.Diagnostics.CodeAnalysis.NotNull] string query)
         {
             var searchResult = new SearchResult
             {

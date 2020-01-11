@@ -1,17 +1,22 @@
-﻿using System.Runtime.Serialization;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
+using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.User
 {
-    [DataContract]
+    [ProtoContract]
     public class LoginResult
     {
-        [DataMember]
-        public LoginResponseCode LoginResponseCode { get; private set; }
+	    [ProtoMember(1)]
+        public LoginResponseCode LoginResponseCode { get; set; }
 
-        [DataMember]
-        public Account Account { get; private set; }
+        [ProtoMember(2)]
+        public Account Account { get; set; }
+
+        public LoginResult()
+        {
+
+        }
 
         public LoginResult(LoginResponseCode loginResponseCode, [CanBeNull] Account account)
         {

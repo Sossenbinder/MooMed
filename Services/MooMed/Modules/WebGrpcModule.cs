@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.Code.Modules;
+using MooMed.Core.Code.Utils;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;
@@ -8,11 +10,15 @@ using MooMed.Stateful.SessionService.Remoting;
 
 namespace MooMed.Web.Modules
 {
-	public class WebGrpcModule : Autofac.Module
+	public class WebGrpcModule : GrpcModule
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
 			base.Load(builder);
+
+			builder.RegisterType<SerializationModelBinderService>()
+				.As<IStartable>()
+				.SingleInstance();
 
 			builder.RegisterType<AccountServiceProxy>()
 				.As<IAccountService>()

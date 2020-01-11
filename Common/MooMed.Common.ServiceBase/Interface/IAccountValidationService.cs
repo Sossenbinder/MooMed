@@ -11,6 +11,6 @@ namespace MooMed.Common.ServiceBase.Interface
         Task<AccountValidationTokenData> DeserializeRawToken([NotNull] string token);
 
         [NotNull]
-		Task<WorkerResponse<bool>> ValidateRegistration([NotNull] AccountValidationTokenData tokenData);
+		Task<ServiceResponse<bool>> ValidateRegistration([NotNull] AccountValidationTokenData tokenData);
     }
 }

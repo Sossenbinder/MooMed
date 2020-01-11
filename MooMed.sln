@@ -53,11 +53,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.AspNetCore", "Common
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.AccountService", "Services\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj", "{501FC235-0C9E-4635-8A7A-9583213608CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MooMed.Stateful.SessionService", "Services\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj", "{B1B10767-2335-4887-A9D2-01A9C2DCA7BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.SessionService", "Services\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj", "{B1B10767-2335-4887-A9D2-01A9C2DCA7BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MooMed.Stateful.AccountValidationService", "Services\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj", "{DBC2AD9B-0B47-46A9-BDCB-7D849EF21271}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.AccountValidationService", "Services\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj", "{DBC2AD9B-0B47-46A9-BDCB-7D849EF21271}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MooMed.Stateful.SearchService", "Services\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj", "{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.SearchService", "Services\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj", "{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -235,6 +237,14 @@ Global
 		{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}.Release|x64.ActiveCfg = Release|Any CPU
 		{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}.Release|x64.Build.0 = Release|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

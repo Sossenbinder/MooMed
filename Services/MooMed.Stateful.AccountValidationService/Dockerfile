@@ -7,10 +7,19 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MooMed.Stateful.AccountValidationService/MooMed.Stateful.AccountValidationService.csproj", "MooMed.Stateful.AccountValidationService/"]
-RUN dotnet restore "MooMed.Stateful.AccountValidationService/MooMed.Stateful.AccountValidationService.csproj"
+COPY ["Services/MooMed.Stateful.AccountValidationService/MooMed.Stateful.AccountValidationService.csproj", "Services/MooMed.Stateful.AccountValidationService/"]
+COPY ["Common/MooMed.Common.ServiceBase/MooMed.Common.ServiceBase.csproj", "Common/MooMed.Common.ServiceBase/"]
+COPY ["Common/MooMed.Grpc/MooMed.Grpc.csproj", "Common/MooMed.Grpc/"]
+COPY ["Common/MooMed.Core/MooMed.Core.csproj", "Common/MooMed.Core/"]
+COPY ["Common/MooMed.Common.Definitions/MooMed.Common.Definitions.csproj", "Common/MooMed.Common.Definitions/"]
+COPY ["Common/MooMed.Azure/MooMed.Azure.csproj", "Common/MooMed.Azure/"]
+COPY ["Modules/MooMed.Module.Account/MooMed.Module.Accounts.csproj", "Modules/MooMed.Module.Account/"]
+COPY ["Common/MooMed.IPC/MooMed.IPC.csproj", "Common/MooMed.IPC/"]
+COPY ["Common/MooMed.Caching/MooMed.Caching.csproj", "Common/MooMed.Caching/"]
+COPY ["Common/MooMed.AspNetCore/MooMed.AspNetCore.csproj", "Common/MooMed.AspNetCore/"]
+RUN dotnet restore "Services/MooMed.Stateful.AccountValidationService/MooMed.Stateful.AccountValidationService.csproj"
 COPY . .
-WORKDIR "/src/MooMed.Stateful.AccountValidationService"
+WORKDIR "/src/Services/MooMed.Stateful.AccountValidationService"
 RUN dotnet build "MooMed.Stateful.AccountValidationService.csproj" -c Release -o /app/build
 
 FROM build AS publish

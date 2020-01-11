@@ -4,6 +4,7 @@ using Grpc.Net.Client;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.IPC.EndpointResolution.Interface;
+using ProtoBuf.Grpc.Client;
 
 namespace MooMed.IPC.EndpointResolution
 {
@@ -20,6 +21,8 @@ namespace MooMed.IPC.EndpointResolution
 
 		public GrpcChannelProvider([NotNull] IStatefulCollectionInfoProvider statefulCollectionInfoProvider)
 		{
+			GrpcClientFactory.AllowUnencryptedHttp2 = true;
+
 			m_statefulCollectionInfoProvider = statefulCollectionInfoProvider;
 
 			m_grpcChannels = new Dictionary<DeployedService, Dictionary<int, GrpcChannel>>();
@@ -48,7 +51,7 @@ namespace MooMed.IPC.EndpointResolution
 
 			foreach (var pod in statefulCollection.StatefulEndpoints)
 			{
-				channelDict.Add(pod.InstanceNumber, GrpcChannel.ForAddress($"{pod.IpAddress}:80"));
+				channelDict.Add(pod.InstanceNumber, GrpcChannel.ForAddress($"http://{pod.IpAddress}:10042"));
 			}
 
 			m_grpcChannels[deployedService] = channelDict;

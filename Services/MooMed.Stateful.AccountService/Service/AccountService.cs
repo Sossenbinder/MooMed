@@ -1,26 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Fabric;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Common.Definitions.IPC;
-using MooMed.Common.Definitions.Models.Session;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.Core.Translations;
-using MooMed.IPC.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
+using ProtoBuf.Meta;
 
 namespace MooMed.Stateful.AccountService.Service
 {
-    /// <summary>
-    /// The FabricRuntime creates an instance of this class for each service type instance. 
-    /// </summary>
     public class AccountService : Common.ServiceBase.MooMedServiceBase, IAccountService
     {
 	    [NotNull]
@@ -59,11 +55,12 @@ namespace MooMed.Stateful.AccountService.Service
         /// <param name="loginModel">Login model of that account</param>
         /// <returns></returns>
         [ItemNotNull]
-        public async Task<WorkerResponse<LoginResult>> Login(LoginModel loginModel)
+        public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
         {
+	        var test = RuntimeTypeModel.Default.GetTypes();
             // Do the actual login in the AccountManager
             var loginResult = await m_accountSignInService.Login(loginModel);
-
+            
             if (!loginResult.IsSuccess)
             {
                 return loginResult;
@@ -81,22 +78,53 @@ namespace MooMed.Stateful.AccountService.Service
 
             return loginResult;
         }
+        private void PopulateTypes(Type t)
+        {
+	        foreach (object mt in RuntimeTypeModel.Default.GetTypes())
+	        {
+		        MetaType theType = mt as MetaType;
+		        if (null != theType)
+		        {
+			        if (theType.Type == t)
+				        return;
+		        }
+	        }
+
+	        Type objType = typeof(object);
+	        List<Type> inheritanceTree = new List<Type>();
+	        do
+	        {
+		        inheritanceTree.Insert(0, t);
+		        t = t.BaseType;
+	        } while (null != t && t != objType);
+
+	        if (!inheritanceTree.Any(gt => gt.IsGenericType))
+		        return;
+
+	        int n = 100;
+	        for (int i = 0; i < inheritanceTree.Count - 1; i++)
+	        {
+		        Type type = inheritanceTree[i];
+		        MetaType mt = RuntimeTypeModel.Default.Add(type, true);
+		        mt.AddSubType(n++, inheritanceTree[i + 1]);
+	        }
+        }
 
         /// <summary>
         /// Refresh login for an account which is already authenticated but lost its session
         /// </summary>
-        /// <param name="accountId">Account id of account to relogin</param>
+        /// <param name="accountIdQuery">Account id of account to relogin</param>
         /// <returns></returns>
-        public async Task RefreshLoginForAccount(int accountId)
+        public async Task RefreshLoginForAccount(AccountIdQuery accountIdQuery)
         {
-            var account = await FindById(accountId);
+            var account = await FindById(accountIdQuery);
 
             if (account == null)
             {
                 throw new AuthenticationException("Account logged in but could not be found");
 			}
 
-			account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(accountId);
+			account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(accountIdQuery.AccountId);
 
 
 			var sessionContext = await m_sessionService.LoginAccount(account);
@@ -130,9 +158,9 @@ namespace MooMed.Stateful.AccountService.Service
         }
 
         [ItemCanBeNull]
-        public async Task<Account> FindById(int accountId)
+        public async Task<Account> FindById(AccountIdQuery accountIdQuery)
         {
-            var account = (await m_accountDataRepository.FindAccount(acc => acc.Id == accountId))?.ToModel();
+            var account = (await m_accountDataRepository.FindAccount(acc => acc.Id == accountIdQuery.AccountId))?.ToModel();
 
             if (account != null)
             {

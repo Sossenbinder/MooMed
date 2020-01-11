@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Definitions.Database.Entities;
-using MooMed.Common.Definitions.Models.Session;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.Code.Database.Repository;

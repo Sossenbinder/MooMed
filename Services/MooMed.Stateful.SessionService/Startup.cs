@@ -2,7 +2,6 @@ using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using MooMed.AspNetCore.Grpc;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Stateful.SessionService.Module;
 
 namespace MooMed.Stateful.SessionService

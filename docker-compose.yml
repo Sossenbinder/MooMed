@@ -1,15 +1,43 @@
 version: '3.4'
 
 services:
+  moomed.web:
+    image: ${DOCKER_REGISTRY-}moomedweb
+    build:
+      context: .
+      dockerfile: Services/MooMed/Dockerfile
+
+  moomed.stateful.sessionservice:
+    image: ${DOCKER_REGISTRY-}moomedstatefulsessionservice
+    build:
+      context: .
+      dockerfile: Services/MooMed.Stateful.SessionService/Dockerfile
+
+
+  moomed.stateful.searchservice:
+    image: ${DOCKER_REGISTRY-}moomedstatefulsearchservice
+    build:
+      context: .
+      dockerfile: Services/MooMed.Stateful.SearchService/Dockerfile
+
+
   moomed.stateful.profilepictureservice:
     image: ${DOCKER_REGISTRY-}moomedstatefulprofilepictureservice
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.ProfilePictureService/Dockerfile
 
-  moomed.web:
-    image: ${DOCKER_REGISTRY-}moomedweb
+
+  moomed.stateful.accountvalidationservice:
+    image: ${DOCKER_REGISTRY-}moomedstatefulaccountvalidationservice
     build:
       context: .
-      dockerfile: Services/MooMed/Dockerfile
+      dockerfile: Services/MooMed.Stateful.AccountValidationService/Dockerfile
+
+
+  moomed.stateful.accountservice:
+    image: ${DOCKER_REGISTRY-}moomedstatefulaccountservice
+    build:
+      context: .
+      dockerfile: Services/MooMed.Stateful.AccountService/Dockerfile
 

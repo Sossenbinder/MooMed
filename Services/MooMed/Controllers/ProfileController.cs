@@ -43,8 +43,7 @@ namespace MooMed.Web.Controllers
 	            profilePictureData.RawData = imgStream.ReadToEnd();
 				profilePictureData.FileExtension = formFile.GetFileExtension();
 
-				uploadResult = false;
-				//uploadResult = await m_profilePictureService.ProcessUploadedProfilePicture(CurrentSessionOrFail, profilePictureData);
+				uploadResult = (await m_profilePictureService.ProcessUploadedProfilePicture(CurrentSessionOrFail, profilePictureData)).PayloadOrNull;
             }
 
             if (uploadResult)

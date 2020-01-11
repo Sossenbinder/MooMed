@@ -3,7 +3,9 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
+using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
@@ -23,11 +25,11 @@ namespace MooMed.Stateful.ProfilePictureService.Remoting
 		{
 		}
 
-		public Task<bool> ProcessUploadedProfilePicture(ISessionContext sessionContext, IFormFile formFile)
-			=> Invoke(sessionContext, service => service.ProcessUploadedProfilePicture(sessionContext, formFile));
+		public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(ISessionContext sessionContext, ProfilePictureData profilePictureData)
+			=> Invoke(sessionContext, service => service.ProcessUploadedProfilePicture(sessionContext, profilePictureData));
 
-		public Task<string> GetProfilePictureForAccountById(int accountId)
-			=> Invoke(service => service.GetProfilePictureForAccountById(accountId));
+		public Task<string> GetProfilePictureForAccountById(AccountIdQuery accountIdQuery)
+			=> Invoke(service => service.GetProfilePictureForAccountById(accountIdQuery));
 
 		public Task<string> GetProfilePictureForAccount(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.GetProfilePictureForAccount(sessionContext));

@@ -1,5 +1,4 @@
-﻿using MooMed.Common.Definitions.Models.Session;
-using MooMed.Common.Definitions.Models.Session.Interface;
+﻿using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 
 namespace MooMed.Core.Code.Logging.Loggers

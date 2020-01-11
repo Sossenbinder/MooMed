@@ -1,15 +1,17 @@
 ﻿using System.Runtime.Serialization;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
+using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.Session
 {
-    [DataContract]
+    [ProtoContract]
     public class SessionContext : ISessionContext
     {
-        [DataMember]
+        [ProtoMember(1)]
         public Account Account { get; set; }
 
+        [ProtoMember(2)]
         public int HashableIdentifier => Account.Id;
     }
 }

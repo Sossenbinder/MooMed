@@ -29,7 +29,7 @@ namespace MooMed.Core
                 .As<ISettingsCrypto>()
                 .SingleInstance();
 
-            builder.RegisterType<MainTableStorageLogger>()
+            builder.RegisterType<NullMooMedLogger>()
                 .As<IMainLogger>()
                 .SingleInstance();
 
@@ -44,14 +44,6 @@ namespace MooMed.Core
             builder.RegisterType<EmailManager>()
                 .As<IEmailManager>()
                 .SingleInstance();
-
-            //builder.RegisterType<ServiceFabricEndpointResolver>()
-            //    .As<IServiceEndpointResolver>()
-            //    .SingleInstance();
-
-            //builder.RegisterType<ObjectCacheFactory>()
-            //    .As<IDefaultCacheFactory>()
-            //    .SingleInstance();
         }
     }
 }

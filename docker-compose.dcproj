@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>dd9292c4-a682-4575-abed-a4136aa76a12</ProjectGuid>
+    <ProjectGuid>aaa8c1ad-c0a4-4f14-a34e-5beb81974e2d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>moomed.stateful.profilepictureservice</DockerServiceName>
+    <DockerServiceName>moomed.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Fabric;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Models.User;
@@ -17,9 +15,6 @@ using MooMed.Module.Accounts.Repository;
 
 namespace MooMed.Stateful.AccountValidationService.Service
 {
-    /// <summary>
-    /// The FabricRuntime creates an instance of this class for each service type instance. 
-    /// </summary>
     public class AccountValidationService : MooMedServiceBase, IAccountValidationService
     {
         [NotNull]
@@ -73,7 +68,7 @@ namespace MooMed.Stateful.AccountValidationService.Service
         /// <param name="tokenData">Object containing accountId and token</param>
         /// <returns></returns>
         [ItemNotNull]
-        public async Task<WorkerResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
+        public async Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
         {
             var resultCode = await m_accountValidationDataHelper.CheckAndUpdateValidation(tokenData);
 
@@ -85,7 +80,7 @@ namespace MooMed.Stateful.AccountValidationService.Service
 
             if (resultCode == AccountValidationResult.Success)
             {
-                return WorkerResponse<bool>.Success(true);
+                return ServiceResponse<bool>.Success(true);
             }
 
             string errorMessage = null;
@@ -100,7 +95,7 @@ namespace MooMed.Stateful.AccountValidationService.Service
                     break;
             }
 
-            return WorkerResponse<bool>.Failure(errorMessage: errorMessage);
+            return ServiceResponse<bool>.Failure(errorMessage: errorMessage);
         }
     }
 }

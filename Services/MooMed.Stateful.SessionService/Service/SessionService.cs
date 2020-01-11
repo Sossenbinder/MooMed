@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
@@ -27,9 +26,9 @@ namespace MooMed.Stateful.SessionService.Service
 
 	    [ItemCanBeNull]
         [CanBeNull]
-        public async Task<ISessionContext> GetSessionContext(int accountId)
+        public async Task<ISessionContext> GetSessionContext(AccountIdQuery accountIdQuery)
         {
-            var accountIdKey = GetKeyFromAccountId(accountId);
+            var accountIdKey = GetKeyFromAccountId(accountIdQuery.AccountId);
             var sessionContext = m_sessionContextCache.GetItem(accountIdKey);
 
             if (sessionContext == null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -16,6 +17,7 @@ using MooMed.Core.Code.Configuration.Interface;
 using MooMed.Core.Code.Extensions;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.Code.Utils;
+using MooMed.Core.DataTypes;
 
 namespace MooMed.Stateful.ProfilePictureService.Service
 {
@@ -46,14 +48,14 @@ namespace MooMed.Stateful.ProfilePictureService.Service
             => GetProfilePictureForAccountById(sessionContext.Account.Id);
 		
         [ItemNotNull]
-        public async Task<string> GetProfilePictureForAccountById(int accountId)
+        public async Task<string> GetProfilePictureForAccountById(AccountIdQuery accountIdQuery)
         {
-            if (accountId <= 0)
+            if (accountIdQuery.AccountId <= 0)
             {
                 return m_defaultProfilePicture;
             }
 
-            var containerName = $"a-{accountId}";
+            var containerName = $"a-{accountIdQuery.AccountId}";
             var blobName = "80x80picture.png";
 
 
@@ -66,7 +68,7 @@ namespace MooMed.Stateful.ProfilePictureService.Service
 
             return $"{storageAccountBasePath}/{containerName}/80x80picture.png?refreshTimer={DateTime.Now.ToString(CultureInfo.InvariantCulture)}";
         }
-		
+
         /// <summary>
         /// Processes uploaded profile picture
         /// </summary>
@@ -75,26 +77,24 @@ namespace MooMed.Stateful.ProfilePictureService.Service
         /// <param name="files"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<bool> ProcessUploadedProfilePicture(ISessionContext sessionContext, IFormFile file)
+        public async Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(ISessionContext sessionContext, ProfilePictureData profilePictureData)
         {
-            if (file.Length == 0)
-            {
-                return false;
-            }
+	        if (profilePictureData.RawData.Length != 0)
+	        {
+                var fileExtension = profilePictureData.FileExtension;
 
-            await using var ms = new MemoryStream();
+		        var image = !m_possibleImageExtensions.Contains(fileExtension)
+			        ? null
+			        : ImageUtils.ConvertAndScaleRequestImage(profilePictureData.RawData);
 
-            await file.CopyToAsync(ms);
-            var fileBytes = ms.ToArray();
+		        if (image != null)
+		        {
+			        var result = await SaveProfilePicture(sessionContext, image, fileExtension);
+                    return ServiceResponse<bool>.Success(result);
+		        }
+	        }
 
-            var image = !m_possibleImageExtensions.Contains(file.GetFileExtension()) ? null : ImageUtils.ConvertAndScaleRequestImage(fileBytes);
-
-            if (image != null)
-            {
-	            return await SaveProfilePicture(sessionContext, image, file.GetFileExtension());
-            }
-
-            return false;
+	        return ServiceResponse<bool>.Failure();
         }
 
         /// <summary>

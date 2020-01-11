@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace MooMed.Common.Definitions.IPC
+﻿namespace MooMed.Common.Definitions.IPC
 {
 	public enum DeployedService
 	{

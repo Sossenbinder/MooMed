@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Common.Definitions.Models.Session;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
@@ -63,14 +62,14 @@ namespace MooMed.Module.Accounts.Helper
         }
 
         [ItemNotNull]
-        public async Task<WorkerResponse<LoginResult>> Login(LoginModel loginModel)
+        public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
         {
 			// Validate the login data we got
             var loginValidationResult = m_accountSignInValidator.ValidateLoginModel(loginModel);
 
             if (loginValidationResult != LoginResponseCode.Success)
             {
-                return WorkerResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
+                return ServiceResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
             }
 
             string hashedPassword;
@@ -80,7 +79,7 @@ namespace MooMed.Module.Accounts.Helper
             }
             catch (ArgumentException)
             {
-                return WorkerResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
+                return ServiceResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
             }
 
             var account = (await m_accountDataRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email) 
@@ -88,15 +87,15 @@ namespace MooMed.Module.Accounts.Helper
 
             if (account == null)
 			{
-				return WorkerResponse<LoginResult>.Failure(new LoginResult(LoginResponseCode.AccountNotFound, null));
+				return ServiceResponse<LoginResult>.Failure(new LoginResult(LoginResponseCode.AccountNotFound, null));
 			}
 
             if (!account.EmailValidated)
             {
-	            return WorkerResponse<LoginResult>.Failure(new LoginResult(LoginResponseCode.EmailNotValidated, null));
+	            return ServiceResponse<LoginResult>.Failure(new LoginResult(LoginResponseCode.EmailNotValidated, null));
             }
 
-            return WorkerResponse<LoginResult>.Success(new LoginResult(LoginResponseCode.Success, account));
+            return ServiceResponse<LoginResult>.Success(new LoginResult(LoginResponseCode.Success, account));
         }
 
         public async Task<bool> RefreshLastAccessed(ISessionContext sessionContext)

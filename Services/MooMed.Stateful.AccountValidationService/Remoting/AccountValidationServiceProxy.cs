@@ -25,7 +25,7 @@ namespace MooMed.Stateful.AccountValidationService.Remoting
 		public Task<AccountValidationTokenData> DeserializeRawToken(string token)
 			=> Invoke(service => service.DeserializeRawToken(token));
 
-		public Task<WorkerResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
+		public Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
 			=> Invoke(service => service.ValidateRegistration(tokenData));
 	}
 }

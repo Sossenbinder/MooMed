@@ -12,7 +12,7 @@ namespace MooMed.Module.Accounts.Helper.Interface
         Task<RegistrationResult> Register([NotNull] RegisterModel registerModel);
 
         [NotNull]
-        Task<WorkerResponse<LoginResult>> Login([NotNull] LoginModel loginModel);
+        Task<ServiceResponse<LoginResult>> Login([NotNull] LoginModel loginModel);
 
         [NotNull]
         Task<bool> RefreshLastAccessed([NotNull] ISessionContext sessionContext);

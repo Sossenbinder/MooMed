@@ -24,7 +24,7 @@ namespace MooMed.Core.Code.Helper.Crypto
 
         private void InitCryptoData()
         {
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
 
             try
             {

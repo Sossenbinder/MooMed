@@ -21,7 +21,9 @@ namespace MooMed.IPC.EndpointResolution
 
         public GrpcClientProvider([NotNull] IGrpcChannelProvider grpcChannelProvider)
         {
-	        m_grpcChannelProvider = grpcChannelProvider;
+	        GrpcClientFactory.AllowUnencryptedHttp2 = true;
+
+            m_grpcChannelProvider = grpcChannelProvider;
 
 	        m_grpcClientDictionary = new ConcurrentDictionary<DeployedService, ConcurrentDictionary<int, Task<IGrpcService>>>();
         }

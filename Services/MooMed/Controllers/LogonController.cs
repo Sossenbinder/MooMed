@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.DataTypes;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
+using ProtoBuf.Meta;
 
 namespace MooMed.Web.Controllers
 {
@@ -35,9 +37,9 @@ namespace MooMed.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login([NotNull] LoginModel loginModel)
         {
-            var workerResponse = await m_accountService.Login(loginModel);
+            var serviceResponse = await m_accountService.Login(loginModel);
 			
-            if (workerResponse.IsSuccess)
+            if (serviceResponse.IsSuccess)
             {
 	            await HttpContext.SignInAsync(
 		            CookieAuthenticationDefaults.AuthenticationScheme,
@@ -45,7 +47,7 @@ namespace MooMed.Web.Controllers
 			            new ClaimsIdentity(
 				            new List<Claim>
 				            {
-					            new Claim(type: ClaimTypes.Name, value: workerResponse.PayloadOrFail.Account.Id.ToString())
+					            new Claim(type: ClaimTypes.Name, value: serviceResponse.PayloadOrFail.Account.Id.ToString())
 				            }
 				            , "login"
 			            )
@@ -57,7 +59,7 @@ namespace MooMed.Web.Controllers
 	            );
             }
 
-            return workerResponse.ToJsonResponse();
+            return serviceResponse.ToJsonResponse();
         }
 
         [ItemNotNull]

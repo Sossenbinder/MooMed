@@ -11,7 +11,7 @@ namespace MooMed.Common.ServiceBase.Interface
 	public interface ISessionService : IGrpcService
 	{
         [OperationContract]
-        Task<ISessionContext> GetSessionContext([NotNull] int accountId);
+        Task<ISessionContext> GetSessionContext([NotNull] AccountIdQuery accountIdQuery);
 
         [OperationContract]
         Task<ISessionContext> LoginAccount([NotNull] Account account);

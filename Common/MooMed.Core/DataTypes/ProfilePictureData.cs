@@ -1,14 +1,15 @@
 ﻿using System.Runtime.Serialization;
+using ProtoBuf;
 
 namespace MooMed.Core.DataTypes
 {
-	[DataContract]
+	[ProtoContract]
 	public class ProfilePictureData
 	{
-		[DataMember]
+		[ProtoMember(1)]
 		public byte[] RawData { get; set; }
 
-		[DataMember]
+		[ProtoMember(2)]
 		public string FileExtension { get; set; }
 	}
 }

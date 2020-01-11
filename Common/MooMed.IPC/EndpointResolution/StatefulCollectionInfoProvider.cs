@@ -4,7 +4,6 @@ using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
 using MooMed.Common.Definitions.IPC;
 using MooMed.IPC.DataType;
-using MooMed.IPC.DataType.Kubernetes;
 using MooMed.IPC.EndpointResolution.Interface;
 
 namespace MooMed.IPC.EndpointResolution
@@ -15,16 +14,16 @@ namespace MooMed.IPC.EndpointResolution
 	public class StatefulCollectionInfoProvider : IStatefulCollectionInfoProvider
 	{
 		[NotNull]
-		private readonly IKubernetesDiscovery m_kubernetesDiscovery;
+		private readonly IStatefulCollectionDiscovery m_statefulCollectionDiscovery;
 
 		[NotNull]
 		private readonly ICache<DeployedService, IStatefulCollection> m_statefulCollectionCache;
 
 		public StatefulCollectionInfoProvider(
-			[NotNull] IKubernetesDiscovery kubernetesDiscovery,
+			[NotNull] IStatefulCollectionDiscovery statefulCollectionDiscovery,
 			[NotNull] IDefaultCacheFactory cacheFactory)
 		{
-			m_kubernetesDiscovery = kubernetesDiscovery;
+			m_statefulCollectionDiscovery = statefulCollectionDiscovery;
 
 			m_statefulCollectionCache = cacheFactory.CreateCache<DeployedService, IStatefulCollection>();
 		}
@@ -38,7 +37,7 @@ namespace MooMed.IPC.EndpointResolution
 				return existingStatefulSetInfo;
 			}
 
-			var statefulSetInfo = await m_kubernetesDiscovery.GetStatefulSetInfo(deployedService);
+			var statefulSetInfo = await m_statefulCollectionDiscovery.GetStatefulSetInfo(deployedService);
 			
 			m_statefulCollectionCache.PutItem(deployedService, statefulSetInfo);
 

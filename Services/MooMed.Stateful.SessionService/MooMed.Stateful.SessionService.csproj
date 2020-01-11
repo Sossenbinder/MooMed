@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>a7954210-8491-4c13-b06e-36ceb8f80101</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
-    <ProjectReference Include="..\Common\MooMed.Caching\MooMed.Caching.csproj" />
-    <ProjectReference Include="..\Common\MooMed.IPC\MooMed.IPC.csproj" />
-    <ProjectReference Include="..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Grpc\MooMed.Grpc.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
   </ItemGroup>
 
 </Project>

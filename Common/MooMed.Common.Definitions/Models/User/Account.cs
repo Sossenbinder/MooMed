@@ -3,28 +3,29 @@ using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Interface;
+using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.User
 {
-    [DataContract]
+    [ProtoContract]
     public class Account : IEntityConvertibleModel<AccountEntity>
     {
-        [DataMember]
+        [ProtoMember(1)]
         public int Id { get; set; }
 
-        [DataMember]
+        [ProtoMember(2)]
         public string UserName { get; set; }
 
-        [DataMember]
+        [ProtoMember(3)]
         public string Email { get; set; }
 
-        [DataMember]
+        [ProtoMember(4)]
         public bool EmailValidated { get; set; }
 
-        [DataMember]
+        [ProtoMember(5)]
         public DateTime LastAccessedAt { get; set; }
 
-        [DataMember]
+        [ProtoMember(6)]
         public string ProfilePicturePath { get; set; }
 
         public AccountEntity ToEntity()

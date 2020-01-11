@@ -24,9 +24,9 @@ namespace MooMed.Module.Session.Service
 
         [ItemCanBeNull]
         [CanBeNull]
-        public async Task<ISessionContext> GetSessionContext(int accountId)
+        public async Task<ISessionContext> GetSessionContext(AccountIdQuery accountIdQuery)
         {
-            var accountIdKey = GetKeyFromAccountId(accountId);
+            var accountIdKey = GetKeyFromAccountId(accountIdQuery.AccountId);
             var sessionContext = m_sessionContextCache.GetItem(accountIdKey);
 
             if (sessionContext == null)

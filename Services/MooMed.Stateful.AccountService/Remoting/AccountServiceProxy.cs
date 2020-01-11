@@ -26,11 +26,11 @@ namespace MooMed.Stateful.AccountService.Remoting
 		{
 		}
 
-		public Task<WorkerResponse<LoginResult>> Login(LoginModel loginModel)
+		public Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
 			=> Invoke(service => service.Login(loginModel));
 
-		public Task RefreshLoginForAccount(int accountId)
-			=> Invoke(service => service.RefreshLoginForAccount(accountId));
+		public Task RefreshLoginForAccount(AccountIdQuery accountIdQuery)
+			=> Invoke(service => service.RefreshLoginForAccount(accountIdQuery));
 
 		public Task<RegistrationResult> Register(RegisterModel registerModel, Language lang)
 			=> Invoke(service => service.Register(registerModel, lang));
@@ -38,8 +38,8 @@ namespace MooMed.Stateful.AccountService.Remoting
 		public Task LogOff(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.LogOff(sessionContext));
 
-		public Task<Account> FindById(int accountId)
-			=> Invoke(service => service.FindById(accountId));
+		public Task<Account> FindById(AccountIdQuery accountIdQuery)
+			=> Invoke(service => service.FindById(accountIdQuery));
 
 		public Task<List<Account>> FindAccountsStartingWithName(string name)
 			=> Invoke(service => service.FindAccountsStartingWithName(name));

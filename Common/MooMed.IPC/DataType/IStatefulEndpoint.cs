@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MooMed.IPC.DataType
+﻿namespace MooMed.IPC.DataType
 {
 	public interface IStatefulEndpoint
 	{

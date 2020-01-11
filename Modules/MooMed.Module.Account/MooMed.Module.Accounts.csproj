@@ -31,12 +31,6 @@
     <Reference Include="Microsoft.WindowsAzure.Storage">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\windowsazure.storage\8.1.4\lib\netstandard1.3\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>C:\Users\Stefan\.nuget\packages\protobuf-net\2.4.0\lib\netstandard2.0\protobuf-net.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SqlClient">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\system.data.sqlclient\4.4.0\ref\netstandard2.0\System.Data.SqlClient.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

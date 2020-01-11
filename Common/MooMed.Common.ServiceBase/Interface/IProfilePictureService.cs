@@ -1,20 +1,26 @@
-﻿using System.Threading.Tasks;
+﻿using System.ServiceModel;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Http;
 using MooMed.Common.Definitions.Models.Session.Interface;
+using MooMed.Common.Definitions.Models.User;
+using MooMed.Core.DataTypes;
 using MooMed.Grpc.Definitions.Interface;
 
 namespace MooMed.Common.ServiceBase.Interface
 {
-    public interface IProfilePictureService : IGrpcService
+	[ServiceContract]
+	public interface IProfilePictureService : IGrpcService
 	{
+		[OperationContract]
 		[NotNull]
-		Task<bool> ProcessUploadedProfilePicture([NotNull] ISessionContext sessionContext, [NotNull] IFormFile file);
+		Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] ISessionContext sessionContext, [NotNull] ProfilePictureData profilePictureData);
 
-        [NotNull]
-		Task<string> GetProfilePictureForAccountById(int accountId);
+		[OperationContract]
+		[NotNull]
+		Task<string> GetProfilePictureForAccountById([NotNull] AccountIdQuery accountIdQuery);
 
-        [NotNull]
+		[OperationContract]
+		[NotNull]
         Task<string> GetProfilePictureForAccount(ISessionContext sessionContext);
     }
 }

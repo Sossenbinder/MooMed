@@ -20,9 +20,9 @@
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Search\MooMed.Module.Search.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Session\MooMed.Module.Session.csproj" />
-    <ProjectReference Include="..\..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
-    <ProjectReference Include="..\..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
+    <ProjectReference Include="..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.ProfilePictureService\MooMed.Stateful.ProfilePictureService.csproj" />
   </ItemGroup>
@@ -30,9 +30,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.EntityFrameworkCore">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="MooMed.ServiceBase">
-      <HintPath>..\..\Common\MooMed.ServiceBase\bin\Debug\netcoreapp2.0\MooMed.ServiceBase.dll</HintPath>
     </Reference>
   </ItemGroup>
 
