@@ -11,7 +11,10 @@ namespace MooMed.Common.Definitions.Models.Session
         [ProtoMember(1)]
         public Account Account { get; set; }
 
-        [ProtoMember(2)]
         public int HashableIdentifier => Account.Id;
+
+        public SessionContext()
+        {
+        }
     }
 }

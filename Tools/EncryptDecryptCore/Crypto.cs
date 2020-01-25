@@ -11,8 +11,8 @@ namespace EncryptDecryptCore
 
         public Crypto()
         {
-            var encryptedIv = "mN/xDqijx3EVb69j98OdNueyrkuqjIHuVWCikALjLi5umlg4iS713N6ZKoXcsL+xkmIlEr3DXoDWGXO/LuvS0zs11f9yNbOpN7et0OU3xIH/T3suy4vPN3YXO86UkFCISEU/ntQ9CO+xkPgTGlY/iTGnEDcApVwOpFGFe33PpXWyPVW3VBU4yg3fH4ZRlAe93EPa6tLrXs73pBmpXsFCxHy03+rWTqIX/Uz6MGhoe+UIgun0LoHYaanG8LRswoZgCWPNGtGxwwrG0bcSREJThuDRWYWc6Rb7hn/MbFnfekFHdUWrIetYHTDt7iRXt/pj0bluclEGUNoGvLxGy7Sspg==";
-            var encryptedKey = "izyTzc49vAfJ4x5wZSq+EZBhGBtLlAQiCcFnRQlMhV6+3fJT1z35m4ITJ3/XE2YX+oNu9Z+UtVCGXN64+Izm+EAzZZiPk+cZ4OQ0wXQ2RoTnHsQODmpdl3oGltYOA6AzGvlVwQ6N4c6zZ4ikHKWqcn0gu72Adg259YpiJdcTwAaO2tO1C7Z6ykwYk2p2PPvG8GNmnevXu2YYiiNhswP35R2/CrK2YcWpxNhkAydsvLG8YTFDCQjsO+D527nCVu33TDKpbE1xymeZadz4jmPqAnpowUyjzLotjwPGncfmv1bHKEpjCckb7RjEvc6Y4gr0K51WW6mRV7Ms0ks4abcJFQ==";
+            var encryptedIv = "IfY8XLg/SiXOXR0vWMBaZb6SPaaFDD3FdPnlgZ6AX4FOE9mqwQfprwYReJ2nEEvJokuPI+sC0mmGDeqpR+HOFQRzycY2wOLpAtSnVqLxrCizxqS7hnJ2naHUDeiXOwwR0A+R0jJbBu4eEDaRMaImj2r1n+HBWZz25/3klNYVsFfFxUcjloHGX1P3snELPjyGrqfGYvpdKqOoAfI3nqCkN2VnbAVYW2pXCvqL1KcvS8L6dbaGbxlE39JjdPIyLQ5ZRilQs4CZQRyhjxWl2BL+AKc3ziaVMFzdBQPAwTSiPwN9VSIWGKBPKi6guHwn2KgnFVwaIxWArXTk/bjLCmobFm4lOHU0qP+aNJR6GzQwBGK62/Q8WLBFYQ+9PYqiMzPhZmDrzHjeXZD+ECNdk5LK+8y3c0KmTUG1gGLjEXkuQ9r9D8am/qCsqhc50H+2owCnJVmZs5QTailkKyrtQjSEh34y5fHGV3RaAYmMC8F8vR5l7gexGs0aChQJMxyYdFZ8Kwhf/zuyOzD/vQ84dAmFf0Xya36mAIoHOiaJlpg2avqe+u3L+P98MBeQzXX/LAL10QxnMaIBas3iJOuebb1opADkeCxGAmPuj/oWIGbbJfv320UEmniKez6HNSklZBGYUDRaCowFH1tXZ01idE863gZ0f/mhhFhB9+WWtZ5s8uw=";
+            var encryptedKey = "M5ouyc/+l1kTcpowC2APV2pWadQgUxEkV0KT+VmElsdNttvgJ1vVX/7tGAQA+5sIuFLHLnesoagP/UoyD9moZYxIWD2q/RR2AT4+0uZ8xD4dc3F9Tr5F3+B14lfDfLUIp2D9ewvDLti9I/zWoXQHtPlRAs3k2QDQTWmHRbN1uROG0p0KuZBhy5ilyadeOTP/Jl4EQl318y2NKO2E1/5Dv+M8IIb8daiM/g5M0HMJ/4Ff2p8EBVSjqAENwmysZF9KbhtMniU3MevRxXm/9WetTCVMpsfAq5bFRD1yJ24FCAt/zH+RMIt0m3GZMjuKfqH8Qh3FXFqhSgYcRjzPL9HmeP8RLdsG20nm8VRmfxLYg3/4qoUxCiEyCoVw3EQ9utWkAGxF34Cxq8AwXfavB8Oh8HtHkDZ/HKMQ9rUmJOn0YZ3EhVWP3x8h2lBAIZLLKhv6K29wA1JXcyH9qm2IrlSrY7teNI1yRdJXjQGmr6NsOD1CTY4/FrsUEq8RUkh9mzFgkOqF3R5hL18fXrFwhdXmbD5FYwxGdm9AhgQJZNlFPOi6WObiwFkq6lHERFDg5KlsEKNTZ5K+uCwvCGwSRy35OHNdz5902mpaVciv07cU0Tvso4ayG0eRjJR9XEJm6LlgeJLivUROOVLjAJOECTWIvKUBSHV+vIYEe+T/zL9K3dg=";
 
             var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
 
@@ -20,7 +20,7 @@ namespace EncryptDecryptCore
 
             foreach (var cert in store.Certificates)
             {
-                if (cert.IssuerName.Name == null || !cert.IssuerName.Name.Contains("MooMed"))
+                if (!cert.Issuer.ToLower().Contains("moomed"))
                 {
                     continue;
                 }

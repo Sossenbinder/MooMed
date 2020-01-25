@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Models.User;
 using ProtoBuf;
 
 namespace MooMed.Core.DataTypes
@@ -18,6 +19,7 @@ namespace MooMed.Core.DataTypes
 
         protected ServiceResponseBase()
         {
+
         }
 
         protected ServiceResponseBase(bool isSuccess, [CanBeNull] string errorMessage)
@@ -28,7 +30,7 @@ namespace MooMed.Core.DataTypes
         }
 	}
 
-    [ProtoContract()]
+    [ProtoContract]
     // Simple base class to transport the result of a backend task to the frontend and provide a way to check whether call was successful
     public class ServiceResponse<TPayload> : ServiceResponseBase
     {

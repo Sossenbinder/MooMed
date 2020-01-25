@@ -51,7 +51,9 @@ namespace MooMed.Web.Controllers.Base
 	    {
 		    if (actionExecutingContext.HttpContext.IsAuthenticated())
 		    {
-			    CurrentSession = await m_sessionService.GetSessionContext(Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name));
+			    var test = await m_sessionService.LoginAccount(new Account());
+				var sessionServiceResponse = await m_sessionService.GetSessionContext(Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name));
+				CurrentSession = sessionServiceResponse.PayloadOrNull;
 		    }
 	    }
 	}

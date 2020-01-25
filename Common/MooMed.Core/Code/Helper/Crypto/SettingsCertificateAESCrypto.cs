@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using JetBrains.Annotations;
 using MooMed.Core.Code.Configuration.Interface;
 using MooMed.Core.Code.Helper.Crypto.Interface;
@@ -24,27 +28,19 @@ namespace MooMed.Core.Code.Helper.Crypto
 
         private void InitCryptoData()
         {
-            var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-
             try
             {
-                store.Open(OpenFlags.OpenExistingOnly);
+	            var certPath = "/usr/local/share/ca-certificates/moomed.pfx";
+	            var cert = new X509Certificate2(File.ReadAllBytes(certPath), "xfvesXTs1fFhm5yKsb9H");
 
-                foreach (var cert in store.Certificates)
-                {
-                    if (cert.IssuerName.Name == null || !cert.IssuerName.Name.Contains("MooMed"))
-                    {
-                        continue;
-                    }
 
-                    var encryptedIv = m_configSettingsAccessor.GetValueFromConfigSource("MooMed.IV");
-                    var encryptedKey = m_configSettingsAccessor.GetValueFromConfigSource("MooMed.Key");
+                var encryptedIv = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_IV");
+                var encryptedKey = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_Key");
 
-                    var decryptedIv = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedIv));
-                    var decryptedKey = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedKey));
+                var decryptedIv = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedIv));
+                var decryptedKey = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedKey));
 
-                    m_aesHelper = new AESHelper(decryptedIv, decryptedKey);
-                }
+                m_aesHelper = new AESHelper(decryptedIv, decryptedKey);
             }
             catch (CryptographicException exc)
             {

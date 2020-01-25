@@ -8,6 +8,7 @@ using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.Core.DataTypes;
 
 namespace MooMed.Stateful.SessionService.Service
 {
@@ -26,18 +27,18 @@ namespace MooMed.Stateful.SessionService.Service
 
 	    [ItemCanBeNull]
         [CanBeNull]
-        public async Task<ISessionContext> GetSessionContext(AccountIdQuery accountIdQuery)
+        public Task<ServiceResponse<ISessionContext>> GetSessionContext(AccountIdQuery accountIdQuery)
         {
             var accountIdKey = GetKeyFromAccountId(accountIdQuery.AccountId);
             var sessionContext = m_sessionContextCache.GetItem(accountIdKey);
 
             if (sessionContext == null)
             {
-                return null;
+                return Task.FromResult(ServiceResponse<ISessionContext>.Failure());
             }
 
             m_sessionContextCache.PutItem(accountIdKey, sessionContext);
-            return sessionContext;
+            return Task.FromResult(ServiceResponse<ISessionContext>.Success(sessionContext));
         }
 
         [ItemNotNull]

@@ -57,7 +57,6 @@ namespace MooMed.Stateful.AccountService.Service
         [ItemNotNull]
         public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
         {
-	        var test = RuntimeTypeModel.Default.GetTypes();
             // Do the actual login in the AccountManager
             var loginResult = await m_accountSignInService.Login(loginModel);
             
@@ -78,37 +77,6 @@ namespace MooMed.Stateful.AccountService.Service
 
             return loginResult;
         }
-        private void PopulateTypes(Type t)
-        {
-	        foreach (object mt in RuntimeTypeModel.Default.GetTypes())
-	        {
-		        MetaType theType = mt as MetaType;
-		        if (null != theType)
-		        {
-			        if (theType.Type == t)
-				        return;
-		        }
-	        }
-
-	        Type objType = typeof(object);
-	        List<Type> inheritanceTree = new List<Type>();
-	        do
-	        {
-		        inheritanceTree.Insert(0, t);
-		        t = t.BaseType;
-	        } while (null != t && t != objType);
-
-	        if (!inheritanceTree.Any(gt => gt.IsGenericType))
-		        return;
-
-	        int n = 100;
-	        for (int i = 0; i < inheritanceTree.Count - 1; i++)
-	        {
-		        Type type = inheritanceTree[i];
-		        MetaType mt = RuntimeTypeModel.Default.Add(type, true);
-		        mt.AddSubType(n++, inheritanceTree[i + 1]);
-	        }
-        }
 
         /// <summary>
         /// Refresh login for an account which is already authenticated but lost its session
@@ -125,7 +93,6 @@ namespace MooMed.Stateful.AccountService.Service
 			}
 
 			account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(accountIdQuery.AccountId);
-
 
 			var sessionContext = await m_sessionService.LoginAccount(account);
 

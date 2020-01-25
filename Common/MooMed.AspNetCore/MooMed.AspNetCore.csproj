@@ -10,7 +10,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
+    <PackageReference Include="protobuf-net" Version="3.0.0-alpha.128" />
     <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
   </ItemGroup>
 
 </Project>

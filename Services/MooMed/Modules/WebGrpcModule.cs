@@ -1,6 +1,6 @@
 ﻿using Autofac;
+using MooMed.AspNetCore.Modules;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Modules;
 using MooMed.Core.Code.Utils;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.AccountValidationService.Remoting;
@@ -15,10 +15,6 @@ namespace MooMed.Web.Modules
 		protected override void Load(ContainerBuilder builder)
 		{
 			base.Load(builder);
-
-			builder.RegisterType<SerializationModelBinderService>()
-				.As<IStartable>()
-				.SingleInstance();
 
 			builder.RegisterType<AccountServiceProxy>()
 				.As<IAccountService>()

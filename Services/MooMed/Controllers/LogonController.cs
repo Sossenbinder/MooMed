@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -6,12 +7,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
 using ProtoBuf.Meta;
+using Serilog;
 
 namespace MooMed.Web.Controllers
 {
@@ -37,6 +40,8 @@ namespace MooMed.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login([NotNull] LoginModel loginModel)
         {
+	        var types = RuntimeTypeModel.Default.GetTypes();
+
             var serviceResponse = await m_accountService.Login(loginModel);
 			
             if (serviceResponse.IsSuccess)

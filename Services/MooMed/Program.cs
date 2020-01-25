@@ -12,10 +12,6 @@ namespace MooMed.Web
 		{
 			var host = Host.CreateDefaultBuilder(args)
 				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureAppConfiguration(configBuilder =>
-				{
-					configBuilder.AddEnvironmentVariables();
-				})
 				.ConfigureWebHostDefaults(webHostBuilder => {
 					webHostBuilder
 						.UseContentRoot(Directory.GetCurrentDirectory())

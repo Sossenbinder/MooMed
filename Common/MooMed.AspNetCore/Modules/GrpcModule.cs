@@ -1,7 +1,7 @@
 ﻿using Autofac;
-using MooMed.Core.Code.Utils;
+using MooMed.AspNetCore.Grpc;
 
-namespace MooMed.Core.Code.Modules
+namespace MooMed.AspNetCore.Modules
 {
 	public class GrpcModule : Autofac.Module
 	{

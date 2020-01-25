@@ -19,7 +19,6 @@
     <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Search\MooMed.Module.Search.csproj" />
-    <ProjectReference Include="..\..\Modules\MooMed.Module.Session\MooMed.Module.Session.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />

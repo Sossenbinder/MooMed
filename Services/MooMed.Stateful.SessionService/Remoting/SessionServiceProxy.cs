@@ -4,6 +4,7 @@ using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
@@ -24,7 +25,7 @@ namespace MooMed.Stateful.SessionService.Remoting
 		{
 		}
 
-		public Task<ISessionContext> GetSessionContext(AccountIdQuery accountIdQuery)
+		public Task<ServiceResponse<ISessionContext>> GetSessionContext(AccountIdQuery accountIdQuery)
 			=> Invoke(accountIdQuery.AccountId, service => service.GetSessionContext(accountIdQuery));
 
 		public Task<ISessionContext> LoginAccount(Account account)

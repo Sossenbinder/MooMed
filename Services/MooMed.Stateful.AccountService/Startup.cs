@@ -5,7 +5,6 @@ using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core;
-using MooMed.Core.Code.Utils;
 using MooMed.IPC.Module;
 using MooMed.Module.Accounts;
 using MooMed.Stateful.AccountService.Module;
