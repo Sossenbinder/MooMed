@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const cookieHelper = require("helper/cookieHelper");
 const moment = require("moment");
+require("views/Components/General/Styles/LanguagePicker.less");
 class LanguagePicker extends React.Component {
     constructor(props) {
         super(props);

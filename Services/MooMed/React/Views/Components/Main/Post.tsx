@@ -1,7 +1,6 @@
 ﻿import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { store } from "data/store";
+
+import "Views/Components/Main/Styles/PostForm.less";
 
 interface IProps {
     Post: any;

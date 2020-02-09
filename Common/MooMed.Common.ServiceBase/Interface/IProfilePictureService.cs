@@ -1,10 +1,12 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.DataTypes;
 using MooMed.Grpc.Definitions.Interface;
+using ProtoBuf.Grpc;
 
 namespace MooMed.Common.ServiceBase.Interface
 {
@@ -13,11 +15,11 @@ namespace MooMed.Common.ServiceBase.Interface
 	{
 		[OperationContract]
 		[NotNull]
-		Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] ISessionContext sessionContext, [NotNull] ProfilePictureData profilePictureData);
+		Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] IAsyncEnumerable<byte[]> pictureStream, CallContext callContext);
 
 		[OperationContract]
 		[NotNull]
-		Task<string> GetProfilePictureForAccountById([NotNull] AccountIdQuery accountIdQuery);
+		Task<string> GetProfilePictureForAccountById([NotNull] Primitive<int> accountId);
 
 		[OperationContract]
 		[NotNull]

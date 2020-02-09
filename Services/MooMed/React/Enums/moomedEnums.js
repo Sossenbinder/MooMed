@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var LoginResponseCodes;
-(function (LoginResponseCodes) {
-    LoginResponseCodes[LoginResponseCodes["None"] = 0] = "None";
-    LoginResponseCodes[LoginResponseCodes["Success"] = 1] = "Success";
-    LoginResponseCodes[LoginResponseCodes["EmailNullOrEmpty"] = 2] = "EmailNullOrEmpty";
-    LoginResponseCodes[LoginResponseCodes["PasswordNullOrEmpty"] = 3] = "PasswordNullOrEmpty";
-    LoginResponseCodes[LoginResponseCodes["EmailNotValidated"] = 4] = "EmailNotValidated";
-    LoginResponseCodes[LoginResponseCodes["AccountNotFound"] = 5] = "AccountNotFound";
-})(LoginResponseCodes = exports.LoginResponseCodes || (exports.LoginResponseCodes = {}));
+var LoginResponseCode;
+(function (LoginResponseCode) {
+    LoginResponseCode[LoginResponseCode["None"] = 0] = "None";
+    LoginResponseCode[LoginResponseCode["Success"] = 1] = "Success";
+    LoginResponseCode[LoginResponseCode["EmailNullOrEmpty"] = 2] = "EmailNullOrEmpty";
+    LoginResponseCode[LoginResponseCode["PasswordNullOrEmpty"] = 3] = "PasswordNullOrEmpty";
+    LoginResponseCode[LoginResponseCode["EmailNotValidated"] = 4] = "EmailNotValidated";
+    LoginResponseCode[LoginResponseCode["AccountNotFound"] = 5] = "AccountNotFound";
+})(LoginResponseCode = exports.LoginResponseCode || (exports.LoginResponseCode = {}));
 var AccountValidationResult;
 (function (AccountValidationResult) {
     AccountValidationResult[AccountValidationResult["None"] = 0] = "None";

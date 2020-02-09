@@ -1,0 +1,19 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-web-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: moomed-web
+  template:
+    metadata:
+      labels:
+        name: moomed-web
+    spec:
+      containers:
+      - name: moomed-web
+        image: MooMed.Web
+        ports:
+        - containerPort: 80

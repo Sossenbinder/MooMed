@@ -3,7 +3,7 @@ using MooMed.AspNetCore.Grpc;
 
 namespace MooMed.AspNetCore.Modules
 {
-	public class GrpcModule : Autofac.Module
+	public class GrpcModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{

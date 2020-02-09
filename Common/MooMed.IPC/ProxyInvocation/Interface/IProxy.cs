@@ -9,10 +9,10 @@ namespace MooMed.IPC.ProxyInvocation.Interface
 	public interface IProxy<out TServiceType> where TServiceType : IGrpcService
 	{
 		[NotNull]
-		Task Invoke([NotNull] Func<TServiceType, Task> invocationFunc);
+		Task InvokeOnRandomReplica([NotNull] Func<TServiceType, Task> invocationFunc);
 
 		[NotNull]
-		Task<TResult> Invoke<TResult>([NotNull] Func<TServiceType, Task<TResult>> invocationFunc);
+		Task<TResult> InvokeOnRandomReplica<TResult>([NotNull] Func<TServiceType, Task<TResult>> invocationFunc);
 
 		[NotNull]
 		Task Invoke([NotNull] IEndpointSelector endpointSelector, [NotNull] Func<TServiceType, Task> invocationFunc);

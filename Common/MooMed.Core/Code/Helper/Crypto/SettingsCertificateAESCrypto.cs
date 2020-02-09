@@ -31,10 +31,10 @@ namespace MooMed.Core.Code.Helper.Crypto
             try
             {
 	            var certPath = "/usr/local/share/ca-certificates/moomed.pfx";
+                // TODO: Fix this
 	            var cert = new X509Certificate2(File.ReadAllBytes(certPath), "xfvesXTs1fFhm5yKsb9H");
 
-
-                var encryptedIv = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_IV");
+	            var encryptedIv = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_IV");
                 var encryptedKey = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_Key");
 
                 var decryptedIv = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedIv));

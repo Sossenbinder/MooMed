@@ -41,3 +41,10 @@ services:
       context: .
       dockerfile: Services/MooMed.Stateful.AccountService/Dockerfile
 
+
+  moomed.financeservice:
+    image: ${DOCKER_REGISTRY-}moomedfinanceservice
+    build:
+      context: .
+      dockerfile: Services/MooMed.FinanceService/Dockerfile
+

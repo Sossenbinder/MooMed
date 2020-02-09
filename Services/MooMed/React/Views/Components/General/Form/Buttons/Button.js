@@ -9,16 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//Framework
 const React = require("react");
+const hookUtils = require("helper/Utils/hookUtils");
+require("./Styles/Controls.less");
 exports.Button = (props) => {
     const [loading, setLoading] = React.useState(false);
-    const onClick = React.useCallback(() => (event) => __awaiter(void 0, void 0, void 0, function* () {
+    const onClick = (event) => __awaiter(void 0, void 0, void 0, function* () {
         event.preventDefault();
-        setLoading(true);
-        yield props.handleClick();
-        setLoading(false);
-    }), []);
+        yield hookUtils.usingBoolAsync(setLoading, props.handleClick);
+    });
     return (React.createElement("button", { className: "mooMedButton" + (props.customStyles !== undefined ? (" " + props.customStyles) : ""), onClick: onClick, disabled: props.disabled },
         React.createElement(Choose, null,
             React.createElement(When, { condition: loading },

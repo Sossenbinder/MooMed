@@ -45,7 +45,7 @@ export default class PostRequest<TRequest, TResponse> {
 					success: response.ok,
 					errorMessage: responseJsonData.errorMessage !== undefined ? responseJsonData.errorMessage : response.statusText,
 					statusCode: response.status,
-					payload: responseJson.data !== "undefined" ? responseJson.data : responseJson,
+					payload: responseJsonData.data !== "undefined" ? responseJsonData.data : responseJsonData,
 				};
 			}
 		);

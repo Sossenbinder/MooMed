@@ -8,11 +8,12 @@ namespace MooMed.Caching.Cache.Factory
 {
     public class ObjectCacheFactory : IDefaultCacheFactory
     {
-        private readonly int m_baseTTLTimeInSeconds;
+	    [NotNull]
+        private readonly CacheSettingsProvider m_cacheSettingsProvider;
 
-        public ObjectCacheFactory([NotNull] IConfigSettingsProvider settingsProvider)
+        public ObjectCacheFactory([NotNull] CacheSettingsProvider cacheSettingsProvider)
         {
-            m_baseTTLTimeInSeconds = settingsProvider.ReadValueOrFail<int>("MooMed_Cache_BaseTtlInSeconds");
+	        m_cacheSettingsProvider = cacheSettingsProvider;
         }
 
         [NotNull]
@@ -20,7 +21,7 @@ namespace MooMed.Caching.Cache.Factory
         {
 	        if (cacheSettings == null)
 	        {
-		        cacheSettings = CacheSettingsProvider.DefaultCacheSettings;
+		        cacheSettings = m_cacheSettingsProvider.DefaultCacheSettings;
 	        }
 
             return new ObjectCache<TDataType>(cacheSettings);
@@ -31,7 +32,7 @@ namespace MooMed.Caching.Cache.Factory
 		{
 			if (cacheSettings == null)
 			{
-				cacheSettings = CacheSettingsProvider.DefaultCacheSettings;
+				cacheSettings = m_cacheSettingsProvider.DefaultCacheSettings;
 			}
 
 			return new ObjectCache<TKey, TDataType>(cacheSettings);

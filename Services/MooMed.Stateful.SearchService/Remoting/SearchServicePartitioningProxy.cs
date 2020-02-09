@@ -23,6 +23,6 @@ namespace MooMed.Stateful.SearchService.Remoting
 		}
 
 			public Task<SearchResult> Search(string query)
-			=> Invoke(service => service.Search(query));
+			=> InvokeOnRandomReplica(service => service.Search(query));
 	}
 }

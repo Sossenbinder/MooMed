@@ -3,6 +3,8 @@
 import ajaxPost from "helper/ajaxHelper";
 import requestUrl from "helper/requestUrls";
 
+import "Views/Pages/Other/Styles/AccountValidation.less";
+
 interface IAccountValidationTokenData {
     AccountId: number;
     ValidationGuid: string;

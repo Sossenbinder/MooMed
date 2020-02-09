@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-class AboutDialog extends React.Component {
-    render() {
-        return (React.createElement("div", null, "AboutDialog"));
-    }
-}
-exports.default = AboutDialog;
+exports.AboutDialog = () => {
+    return (React.createElement("div", null, "AboutDialog"));
+};
+exports.default = exports.AboutDialog;
 //# sourceMappingURL=AboutDialog.js.map

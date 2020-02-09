@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Localization;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Core.Code.Helper.Crypto;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Core.Translations.Resources;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
 
@@ -83,7 +85,7 @@ namespace MooMed.Module.Accounts.Helper
             }
 
             var account = (await m_accountDataRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email) 
-                                                                               && accDbModel.PasswordHash.Equals(hashedPassword)))?.ToModel();
+                                                                                   && accDbModel.PasswordHash.Equals(hashedPassword)))?.ToModel();
 
             if (account == null)
 			{

@@ -6,7 +6,7 @@ using MooMed.Stateful.SessionService.Remoting;
 
 namespace MooMed.Stateful.AccountService.Module
 {
-	public class AccountServiceModule : GrpcModule
+	public class AccountServiceModule : Autofac.Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using MooMed.AspNetCore.Modules;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Stateful.SearchService.Remoting;
 

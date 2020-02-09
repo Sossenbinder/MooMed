@@ -5,17 +5,23 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using MooMed.Common.Database.Repository;
 using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Core.Code.Database.Repository;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-    public class AccountDataRepository : AbstractCrudRepository<AccountDbContext, AccountEntity>, IAccountDataRepository
-	{
+    public class AccountDataRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountEntity>, IAccountDataRepository
+    {
+	    public AccountDataRepository([NotNull] AccountDbContextFactory contextFactory) 
+		    : base(contextFactory)
+	    {
+
+	    }
+
         [ItemNotNull]
         public async Task<AccountEntity> CreateAccount([NotNull] RegisterModel registerModel)
         {
@@ -28,7 +34,7 @@ namespace MooMed.Module.Accounts.Repository
 
         public async Task UpdateLastAccessedAt([NotNull] AccountEntity accountEntity)
         {
-            using (var ctx = AccountDbContext.Create())
+            using (var ctx = CreateContext())
             {
                 // Don't try-catch here, if there's an error resolving this accountId, that is catastrophic failure
                 var account = await ctx.Account.Where(acc => acc.Id == accountEntity.Id).FirstAsync();
@@ -43,7 +49,7 @@ namespace MooMed.Module.Accounts.Repository
         [ItemCanBeNull]
         public async Task<AccountEntity> FindAccount([NotNull] Expression<Func<AccountEntity, bool>> predicateFunc)
         {
-            using (var ctx = AccountDbContext.Create())
+	        using (var ctx = CreateContext())
             {
                 var suitableAccount = ctx.Account.Where(predicateFunc);
 
@@ -59,7 +65,7 @@ namespace MooMed.Module.Accounts.Repository
         [ItemNotNull]
         public async Task<List<AccountEntity>> FindAccounts([NotNull] Expression<Func<AccountEntity, bool>> predicateFunc)
         {
-            using (var ctx = AccountDbContext.Create())
+	        using (var ctx = CreateContext())
             {
                 var accList = ctx.Account.Where(predicateFunc);
 
@@ -76,7 +82,7 @@ namespace MooMed.Module.Accounts.Repository
         public async Task<bool> RefreshLastAccessedAt([NotNull] ISessionContext sessionContext)
         {
             int rowsAffected;
-            using(var ctx = AccountDbContext.Create())
+            using (var ctx = CreateContext())
             {
                 var account = await ctx.Account.FirstAsync(acc => acc.Id.Equals(sessionContext.Account.Id));
                 account.LastAccessedAt = DateTime.Now;
@@ -86,5 +92,5 @@ namespace MooMed.Module.Accounts.Repository
 
             return rowsAffected == 1;
         }
-    }
+	}
 }

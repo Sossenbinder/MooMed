@@ -4,7 +4,7 @@ using MooMed.AspNetCore.Grpc;
 
 namespace MooMed.Stateful.SearchService
 {
-	public class Startup : GrpcEndpointStartup
+	public class Startup : GrpcEndpointStartup<Service.SearchService>
 	{
 		protected override void RegisterServices(IEndpointRouteBuilder endpointRouteBuilder)
 		{

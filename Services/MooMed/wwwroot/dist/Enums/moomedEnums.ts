@@ -1,5 +1,5 @@
 
-export enum LoginResponseCodes {
+export enum LoginResponseCode {
 	None = 0,
 	Success = 1,
 	EmailNullOrEmpty = 2,

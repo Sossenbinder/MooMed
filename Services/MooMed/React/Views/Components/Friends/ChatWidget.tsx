@@ -1,5 +1,7 @@
 ﻿import * as React from "react";
 
+import "Views/Components/Friends/Styles/ChatWidget.less";
+
 interface IProps {
 
 }

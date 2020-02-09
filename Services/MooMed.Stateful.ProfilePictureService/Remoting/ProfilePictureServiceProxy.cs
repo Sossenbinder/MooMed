@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Http;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
+using ProtoBuf.Grpc;
 
 namespace MooMed.Stateful.ProfilePictureService.Remoting
 {
@@ -25,11 +25,11 @@ namespace MooMed.Stateful.ProfilePictureService.Remoting
 		{
 		}
 
-		public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(ISessionContext sessionContext, ProfilePictureData profilePictureData)
-			=> Invoke(sessionContext, service => service.ProcessUploadedProfilePicture(sessionContext, profilePictureData));
+		public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] IAsyncEnumerable<byte[]> pictureStream, CallContext callContext)
+			=> Invoke(1, service => service.ProcessUploadedProfilePicture(pictureStream, callContext));
 
-		public Task<string> GetProfilePictureForAccountById(AccountIdQuery accountIdQuery)
-			=> Invoke(service => service.GetProfilePictureForAccountById(accountIdQuery));
+		public Task<string> GetProfilePictureForAccountById(Primitive<int> accountId)
+			=> InvokeOnRandomReplica(service => service.GetProfilePictureForAccountById(accountId));
 
 		public Task<string> GetProfilePictureForAccount(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.GetProfilePictureForAccount(sessionContext));

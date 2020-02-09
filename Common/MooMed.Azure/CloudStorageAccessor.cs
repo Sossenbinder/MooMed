@@ -40,7 +40,7 @@ namespace MooMed.Azure
         }
 
         [ItemNotNull]
-        public async Task<CloudBlobContainer> CreateContainer([NotNull] string containerName, BlobContainerPublicAccessType blobContainerAccessType)
+        public async Task<CloudBlobContainer> CreatePublicContainerIfNotExists([NotNull] string containerName, BlobContainerPublicAccessType blobContainerAccessType)
         {
             var container = GetContainer(containerName);
 

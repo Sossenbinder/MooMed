@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Grpc.Core;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +12,8 @@ using MooMed.Core.Code.Extensions;
 using MooMed.Core.DataTypes;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
+using ProtoBuf.Grpc;
+using ProtoBuf.Meta;
 
 namespace MooMed.Web.Controllers
 {
@@ -35,15 +41,22 @@ namespace MooMed.Web.Controllers
 
             var formFile = form.Files[0];
 
-            var profilePictureData = new ProfilePictureData();
+            var profilePictureData = new ProfilePictureQuery(CurrentSessionOrFail);
 
             bool uploadResult;
-            using (var imgStream = formFile.OpenReadStream())
-            {
-	            profilePictureData.RawData = imgStream.ReadToEnd();
-				profilePictureData.FileExtension = formFile.GetFileExtension();
 
-				uploadResult = (await m_profilePictureService.ProcessUploadedProfilePicture(CurrentSessionOrFail, profilePictureData)).PayloadOrNull;
+            await using (var imgStream = formFile.OpenReadStream())
+            {
+	            profilePictureData.RawDataStream = imgStream.ReadAsAsyncEnumerable();
+
+	            var callOptions = new CallOptions(new Metadata()
+	            {
+		            {"fileextension", formFile.GetFileExtension()},
+		            {"accountid", CurrentSessionOrFail.Account.Id.ToString()},
+	            });
+				var callContext = new CallContext(callOptions);
+
+                uploadResult = (await m_profilePictureService.ProcessUploadedProfilePicture(imgStream.ReadAsAsyncEnumerable(), callContext)).PayloadOrNull;
             }
 
             if (uploadResult)

@@ -7,6 +7,7 @@ const ajaxHelper_1 = require("helper/ajaxHelper");
 const requestUrls_1 = require("helper/requestUrls");
 const LogOff_1 = require("views/Components/Account/LogOff");
 const accountReducer_1 = require("data/reducers/accountReducer");
+require("./Styles/SmallAccountManager.less");
 class SmallAccountManager extends React.Component {
     constructor() {
         super(...arguments);
@@ -40,12 +41,12 @@ class SmallAccountManager extends React.Component {
                 React.createElement(LogOff_1.default, null))));
     }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         account: state.accountReducer.account
     };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         updateAccountPicture: (profilePicturePath) => dispatch(accountReducer_1.updateAccountPicture(profilePicturePath))
     };

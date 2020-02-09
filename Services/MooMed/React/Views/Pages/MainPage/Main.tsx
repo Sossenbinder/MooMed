@@ -18,34 +18,26 @@ import GlobalClickCapturer from "views/Components/Helper/GlobalClickCapturer";
 
 import "./Styles/Home.less";
 
-interface IProps {
-
-}
-
-interface IState {
-
-}
-
-class Main extends React.Component<IProps, IState> {
-    render() {
-        return (
-			<div className="mainContentContainer">
-                <NavBar />
-                <PopUpMessageHolder />
-                <div className="contentContainer">
-                    <div className="bodyContent">
-                        <Route path="/about" render={(props: IProps) => <AboutDialog {...props} />} />
-                        <Route path="/editProfile" render={(props: IProps) => <ProfileFull {...props} />} />
-                    </div>
-					<div className="friendList">
-                        
-                    </div>
-                </div>
-                <ChatWidget />
+const Main: React.FC = () => (
+    <div className="mainContentContainer">
+        <NavBar />
+        <PopUpMessageHolder />
+        <div className="contentContainer">
+            <div className="bodyContent">
+                <Route 
+                    path="/about" 
+                    render={() => <AboutDialog />} />
+                <Route 
+                    path="/editProfile" 
+                    render={() => <ProfileFull />} />
             </div>
-        );
-    }
-}
+            <div className="friendList">
+                
+            </div>
+        </div>
+        <ChatWidget />
+    </div>
+);
 
 export default function renderMainView() {
     ReactDOM.render(

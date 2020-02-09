@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
+require("Views/Components/Main/Styles/PostForm.less");
 class Post extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +13,6 @@ class Post extends React.Component {
                 React.createElement("p", null, "\"No Content\"")));
     }
 }
-//Move partial into this and listen to posts inside
 class PostFeed extends React.Component {
     constructor(props) {
         super(props);

@@ -1,1 +1,1 @@
-{"version":3,"file":"AboutDialog.js","sourceRoot":"","sources":["AboutDialog.tsx"],"names":[],"mappings":";;AAAA,+BAA+B;AAU/B,MAAqB,WAAY,SAAQ,KAAK,CAAC,SAAyB;IAEpE,MAAM;QACF,OAAO,CACH,+CAEM,CACT,CAAC;IACN,CAAC;CACJ;AATD,8BASC"}
+{"version":3,"file":"AboutDialog.js","sourceRoot":"","sources":["AboutDialog.tsx"],"names":[],"mappings":";;AAAA,+BAA+B;AAElB,QAAA,WAAW,GAAa,GAAG,EAAE;IAEtC,OAAO,CACH,+CAEM,CACT,CAAC;AACN,CAAC,CAAA;AAED,kBAAe,mBAAW,CAAC"}

@@ -27,24 +27,24 @@ namespace MooMed.Stateful.AccountService.Remoting
 		}
 
 		public Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
-			=> Invoke(service => service.Login(loginModel));
+			=> InvokeOnRandomReplica(service => service.Login(loginModel));
 
-		public Task RefreshLoginForAccount(AccountIdQuery accountIdQuery)
-			=> Invoke(service => service.RefreshLoginForAccount(accountIdQuery));
+		public Task RefreshLoginForAccount(Primitive<int> accountId)
+			=> InvokeOnRandomReplica(service => service.RefreshLoginForAccount(accountId));
 
 		public Task<RegistrationResult> Register(RegisterModel registerModel, Language lang)
-			=> Invoke(service => service.Register(registerModel, lang));
+			=> InvokeOnRandomReplica(service => service.Register(registerModel, lang));
 		
 		public Task LogOff(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.LogOff(sessionContext));
 
-		public Task<Account> FindById(AccountIdQuery accountIdQuery)
-			=> Invoke(service => service.FindById(accountIdQuery));
+		public Task<Account> FindById(Primitive<int> accountId)
+			=> InvokeOnRandomReplica(service => service.FindById(accountId));
 
 		public Task<List<Account>> FindAccountsStartingWithName(string name)
-			=> Invoke(service => service.FindAccountsStartingWithName(name));
+			=> InvokeOnRandomReplica(service => service.FindAccountsStartingWithName(name));
 
 		public Task<Account> FindByEmail(string email)
-			=> Invoke(service => service.FindByEmail(email));
+			=> InvokeOnRandomReplica(service => service.FindByEmail(email));
 	}
 }

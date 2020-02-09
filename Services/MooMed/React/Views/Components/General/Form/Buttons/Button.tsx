@@ -1,6 +1,11 @@
 //Framework
 import * as React from "react";
 
+//Functionality
+import * as hookUtils from "helper/Utils/hookUtils";
+
+import "./Styles/Controls.less";
+
 type IProps = {
     title: string;
     handleClick: () => Promise<void>;
@@ -12,14 +17,11 @@ export const Button: React.FC<IProps> = (props) => {
 
     const [loading, setLoading] = React.useState(false);
 
-    const onClick = React.useCallback(() => async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-
+    const onClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
         
-        setLoading(true);
-        await props.handleClick();
-        setLoading(false);
-    }, []);
+        await hookUtils.usingBoolAsync(setLoading, props.handleClick);
+    }
 
     return (
         <button

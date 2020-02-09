@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
+require("Views/Components/Friends/Styles/ChatWidget.less");
 class ChatWidget extends React.Component {
     constructor(props) {
         super(props);

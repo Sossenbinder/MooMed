@@ -1,6 +1,7 @@
 ﻿using System.ServiceModel;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.DataTypes;
@@ -12,7 +13,7 @@ namespace MooMed.Common.ServiceBase.Interface
 	public interface ISessionService : IGrpcService
 	{
         [OperationContract]
-        Task<ServiceResponse<ISessionContext>> GetSessionContext([NotNull] AccountIdQuery accountIdQuery);
+        Task<ServiceResponse<ISessionContext>> GetSessionContext([NotNull] Primitive<int> accountId);
 
         [OperationContract]
         Task<ISessionContext> LoginAccount([NotNull] Account account);

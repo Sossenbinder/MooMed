@@ -91,9 +91,9 @@
   !*** ./CSS/Other.less ***!
   \************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("throw new Error(\"Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):\\nModuleBuildError: Module build failed (from ./node_modules/less-loader/dist/cjs.js):\\n\\r\\n\\r\\n\\r\\n@import \\\"General/LanguagePicker.less\\\";\\r\\n^\\r\\nCan't resolve './General/LanguagePicker.less' in 'P:\\\\Coding\\\\Projects\\\\Programmieren\\\\C-Sharp\\\\MooMed\\\\Services\\\\MooMed\\\\CSS'\\r\\n      in P:\\\\Coding\\\\Projects\\\\Programmieren\\\\C-Sharp\\\\MooMed\\\\Services\\\\MooMed\\\\CSS\\\\Other.less (line 4, column 0)\\n    at P:\\\\Coding\\\\Projects\\\\Programmieren\\\\C-Sharp\\\\MooMed\\\\Services\\\\MooMed\\\\node_modules\\\\webpack\\\\lib\\\\NormalModule.js:316:20\\n    at P:\\\\Coding\\\\Projects\\\\Programmieren\\\\C-Sharp\\\\MooMed\\\\Services\\\\MooMed\\\\node_modules\\\\loader-runner\\\\lib\\\\LoaderRunner.js:367:11\\n    at P:\\\\Coding\\\\Projects\\\\Programmieren\\\\C-Sharp\\\\MooMed\\\\Services\\\\MooMed\\\\node_modules\\\\loader-runner\\\\lib\\\\LoaderRunner.js:233:18\\n    at context.callback (P:\\\\Coding\\\\Projects\\\\Programmieren\\\\C-Sharp\\\\MooMed\\\\Services\\\\MooMed\\\\node_modules\\\\loader-runner\\\\lib\\\\LoaderRunner.js:111:13)\\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)\");\n\n//# sourceURL=webpack:///./CSS/Other.less?");
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./CSS/Other.less?");
 
 /***/ })
 

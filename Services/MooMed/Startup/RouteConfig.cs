@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace MooMed.Web.Startup
 {
-    public class RouteConfig
+    public static class RouteConfig
     {
         private static class RouteDirectory
         {
@@ -24,36 +24,31 @@ namespace MooMed.Web.Startup
             };
         }
 
-        public static void RegisterRoutes([NotNull] IRouteBuilder routeBuilder)
+        public static void RegisterRoutes([NotNull] IEndpointRouteBuilder endpoints)
         {
             // Route attempts on reload of LogonPage with url edited by react router back to original logon
             foreach (var subRoute in RouteDirectory.LogonRoutes)
             {
-                routeBuilder.MapRoute(
-                    name: $"{subRoute}",
-                    template: $"{subRoute}",
-                    defaults: new { controller = "Home", action = "Index", route = subRoute }
+                endpoints.MapControllerRoute(
+                    subRoute,
+                    subRoute,
+                    new { controller = "Home", action = "Index", route = subRoute }
                 );
             }
 
             // Route attempts on reload of Mainpage with url edited by react router back to original logon
             foreach (var subRoute in RouteDirectory.MainRoutes)
             {
-                routeBuilder.MapRoute(
-                    name: $"{subRoute}",
-                    template: $"{subRoute}",
-                    defaults: new { controller = "Home", action = "Index", route = subRoute }
+                endpoints.MapControllerRoute(
+                    subRoute,
+                    subRoute,
+                    new { controller = "Home", action = "Index", route = subRoute }
                 );
             }
 
-            routeBuilder.MapRoute(
-                name: "default",
-                template: "{controller=Home}/{action=Index}/{id?}");
-        }
-
-        public static void ConfigureRoute([NotNull] IApplicationBuilder app)
-        {
-            app.UseMvc(RegisterRoutes);
+            endpoints.MapControllerRoute(
+                "default",
+	            "{controller=Home}/{action=Index}/{id?}");
         }
     }
 }

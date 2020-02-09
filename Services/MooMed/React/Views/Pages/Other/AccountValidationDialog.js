@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const ajaxHelper_1 = require("helper/ajaxHelper");
 const requestUrls_1 = require("helper/requestUrls");
+require("Views/Pages/Other/Styles/AccountValidation.less");
 class AccountValidationDialog extends React.Component {
     constructor(props) {
         super(props);

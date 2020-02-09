@@ -8,35 +8,35 @@ namespace MooMed.Core.Code.Configuration
 {
     public class MainConfigSettingsProvider : IConfigSettingsProvider
     {
-        public static MainConfigSettingsProvider CurrentProvider;
-
-        [NotNull]
-        private readonly IConfigSettingsAccessor m_configSettingsAccessor;
+	    [NotNull]
+        private readonly IEnumerable<IConfigSettingsAccessor> m_configSettingsAccessors;
 
         [NotNull]
         private readonly ISettingsCrypto m_settingsCrypto;
 
         public MainConfigSettingsProvider(
-			[NotNull] IEnumerable<IConfigSettingsAccessor> accessorEnumerable,
-            [NotNull] IConfigSettingsAccessor configSettingsAccessor,
+			[NotNull] IEnumerable<IConfigSettingsAccessor> configSettingsAccessors,
             [NotNull] ISettingsCrypto settingsCrypto)
         {
-            m_configSettingsAccessor = configSettingsAccessor;
+            m_configSettingsAccessors = configSettingsAccessors;
             m_settingsCrypto = settingsCrypto;
-
-            CurrentProvider = this;
         }
 
         public T ReadValueOrDefault<T>(string key)
         {
-            var value = m_configSettingsAccessor.GetValueFromConfigSource(key);
+	        foreach (var configSettingsAccessor in m_configSettingsAccessors)
+	        {
+		        var value = configSettingsAccessor.GetValueFromConfigSource(key);
 
-            if (value == null)
-            {
-                return default;
-            }
+		        if (value == null)
+		        {
+			        return default;
+		        }
 
-            return (T)Convert.ChangeType(value, typeof(T));
+		        return (T)Convert.ChangeType(value, typeof(T));
+	        }
+
+	        return default;
         }
 
         public T ReadValueOrFail<T>(string key)

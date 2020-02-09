@@ -12,6 +12,14 @@ namespace MooMed.Module.Accounts.Repository
 {
     public class AccountValidationDataHelper
     {
+	    [NotNull]
+	    private readonly AccountDbContextFactory m_accountDbContextFactory;
+
+	    public AccountValidationDataHelper([NotNull] AccountDbContextFactory accountDbContextFactory)
+	    {
+		    m_accountDbContextFactory = accountDbContextFactory;
+	    }
+
         /// <summary>
         /// Adds a new validation key for a given account
         /// </summary>
@@ -26,7 +34,7 @@ namespace MooMed.Module.Accounts.Repository
                 ValidationGuid = Guid.NewGuid()
             };
 
-            using(var ctx = AccountDbContext.Create())
+            using(var ctx = m_accountDbContextFactory.CreateContext())
             {
                 ctx.AccountEmailValidation.Add(accountEmailValidationDbModel);
                 await ctx.SaveChangesAsync();
@@ -42,7 +50,7 @@ namespace MooMed.Module.Accounts.Repository
         /// <returns>Result whether the accountValidation was successful</returns>
         public async Task<AccountValidationResult> CheckAndUpdateValidation([NotNull] AccountValidationTokenData accountValidationTokenData)
         {
-            using(var ctx = AccountDbContext.Create())
+            using(var ctx = m_accountDbContextFactory.CreateContext())
             {
                 var candidate = await ctx.AccountEmailValidation.Where(val =>
                     val.AccountId == accountValidationTokenData.AccountId).FirstAsync();
@@ -76,7 +84,7 @@ namespace MooMed.Module.Accounts.Repository
 
         public async Task DeleteValidationDetails(int accountId)
         {
-            using (var ctx = AccountDbContext.Create())
+            using (var ctx = m_accountDbContextFactory.CreateContext())
             {
                 var validation = await ctx.AccountEmailValidation.FirstAsync(x => x.AccountId == accountId);
 

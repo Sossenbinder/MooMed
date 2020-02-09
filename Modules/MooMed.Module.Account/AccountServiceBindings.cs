@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using JetBrains.Annotations;
+using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Events;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper;
@@ -41,6 +42,11 @@ namespace MooMed.Module.Accounts
             builder.RegisterType<AccountValidationTokenHelper>()
                 .As<IAccountValidationTokenHelper>()
                 .SingleInstance();
+
+            builder.RegisterType<AccountDbContextFactory>()
+	            .AsSelf()
+	            .SingleInstance()
+	            .WithParameter("key", "MooMed_Database_Account");
         }
     }
 }

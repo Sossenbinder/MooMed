@@ -12,21 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const PostRequest_1 = require("helper/requests/PostRequest");
 const requestUrls_1 = require("helper/requestUrls");
-class LogOff extends React.Component {
-    constructor(props) {
-        super(props);
-        this._handleLogOff = () => __awaiter(this, void 0, void 0, function* () {
-            const request = new PostRequest_1.default(requestUrls_1.default.logOn.logOff);
-            const response = yield request.send();
-            if (response.success) {
-                location.href = "/";
-            }
-        });
-    }
-    render() {
-        return (React.createElement("div", { onClick: this._handleLogOff, className: "logOffIoBtnContainer" },
-            React.createElement("div", { className: "logOffIoBtn" })));
-    }
-}
-exports.default = LogOff;
+exports.LogOff = () => {
+    const handleLogOff = () => __awaiter(void 0, void 0, void 0, function* () {
+        const request = new PostRequest_1.default(requestUrls_1.default.logOn.logOff);
+        const response = yield request.send();
+        if (response.success) {
+            location.href = "/";
+        }
+    });
+    return (React.createElement("div", { onClick: handleLogOff, className: "logOffIoBtnContainer" },
+        React.createElement("div", { className: "logOffIoBtn" })));
+};
+exports.default = exports.LogOff;
 //# sourceMappingURL=LogOff.js.map

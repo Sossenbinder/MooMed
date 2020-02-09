@@ -57,7 +57,7 @@ namespace MooMed.TestBase
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterModule(new CoreBindings());
+            builder.RegisterModule(new CoreModule());
 
             builder
                 .RegisterType<UnitTestSettingsAccessor>()

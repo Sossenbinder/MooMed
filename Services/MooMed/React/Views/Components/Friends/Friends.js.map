@@ -1,1 +1,1 @@
-{"version":3,"file":"Friends.js","sourceRoot":"","sources":["Friends.tsx"],"names":[],"mappings":";;AAAA,+BAA+B;AAK/B,mDAAmD;AACnD,MAAqB,UAAW,SAAQ,KAAK,CAAC,SAAS;IACnD,YAAY,KAAK;QACb,KAAK,CAAC,KAAK,CAAC,CAAC;IACjB,CAAC;IAED,MAAM;QACF,OAAO,CACH,2CAEM,CACT,CAAC;IACN,CAAC;CACJ;AAZD,6BAYC"}
+{"version":3,"file":"Friends.js","sourceRoot":"","sources":["Friends.tsx"],"names":[],"mappings":";;AAAA,+BAA+B;AAE/B,iCAA+B;AAElB,QAAA,UAAU,GAAa,GAAG,EAAE;IAErC,OAAO,CACH,2CAEM,CACT,CAAC;AACN,CAAC,CAAA"}

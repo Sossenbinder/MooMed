@@ -9,6 +9,8 @@ import LogOff from "views/Components/Account/LogOff";
 
 import { updateAccountPicture } from "data/reducers/accountReducer";
 
+import "./Styles/SmallAccountManager.less";
+
 interface IProps {
 	account: Account;
 

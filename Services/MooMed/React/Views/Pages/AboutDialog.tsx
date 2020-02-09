@@ -1,20 +1,12 @@
 ﻿import * as React from "react";
 
-interface IProps {
+export const AboutDialog: React.FC = () => {
 
+    return (
+        <div>
+            AboutDialog
+        </div>
+    );
 }
 
-interface IState {
-
-}
-
-export default class AboutDialog extends React.Component<IProps, IState> {
-
-    render() {
-        return (
-            <div>
-                AboutDialog
-            </div>
-        );
-    }
-}
+export default AboutDialog;

@@ -8,6 +8,7 @@ const LanguagePicker_1 = require("views/Components/General/LanguagePicker");
 const AccountValidationDialog_1 = require("views/Pages/Other/AccountValidationDialog");
 const AccountValidationSuccess_1 = require("views/Pages/Other/AccountValidationSuccess");
 const AccountValidationFailure_1 = require("views/Pages/Other/AccountValidationFailure");
+require("Views/Page/Other/OtherPage.less");
 class OtherMain extends React.Component {
     render() {
         let redirectRoute = window["reactRoute"];

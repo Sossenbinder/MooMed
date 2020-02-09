@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MooMed.Azure;
+using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase;
 using MooMed.Core.Code.Configuration.Interface;
-using MooMed.Core.Code.Extensions;
 using MooMed.Core.Code.Logging.Loggers.Interface;
-using MooMed.Core.Code.Utils;
 using MooMed.Core.DataTypes;
+using MooMed.Stateful.ProfilePictureService.Utils;
+using ProtoBuf.Grpc;
+using SixLabors.ImageSharp;
 
 namespace MooMed.Stateful.ProfilePictureService.Service
 {
@@ -46,16 +45,16 @@ namespace MooMed.Stateful.ProfilePictureService.Service
 
         public Task<string> GetProfilePictureForAccount([NotNull] ISessionContext sessionContext)
             => GetProfilePictureForAccountById(sessionContext.Account.Id);
-		
+
         [ItemNotNull]
-        public async Task<string> GetProfilePictureForAccountById(AccountIdQuery accountIdQuery)
+        public async Task<string> GetProfilePictureForAccountById(Primitive<int> accountId)
         {
-            if (accountIdQuery.AccountId <= 0)
+            if (accountId <= 0)
             {
                 return m_defaultProfilePicture;
             }
 
-            var containerName = $"a-{accountIdQuery.AccountId}";
+            var containerName = $"a-{accountId.Value}";
             var blobName = "80x80picture.png";
 
 
@@ -69,57 +68,58 @@ namespace MooMed.Stateful.ProfilePictureService.Service
             return $"{storageAccountBasePath}/{containerName}/80x80picture.png?refreshTimer={DateTime.Now.ToString(CultureInfo.InvariantCulture)}";
         }
 
+        public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(IAsyncEnumerable<byte[]> pictureStream, CallContext callContext)
+        {
+	        var fileExtension = callContext.RequestHeaders.Single(x => x.Key.Equals("fileextension")).Value;
+	        var accountId = int.Parse(callContext.RequestHeaders.Single(x => x.Key.Equals("accountid")).Value);
+
+	        return ProcessUploadedProfilePicture(pictureStream, fileExtension, accountId);
+        }
+
         /// <summary>
         /// Processes uploaded profile picture
         /// </summary>
-        /// <param name="sessionContext"></param>
-        /// <param name="pictureData"></param>
-        /// <param name="files"></param>
-        /// <param name="file"></param>
+        /// <param name="pictureStream"></param>
+        /// <param name="fileExtension"></param>
+        /// <param name="accountId"></param>
         /// <returns></returns>
-        public async Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(ISessionContext sessionContext, ProfilePictureData profilePictureData)
+        private async Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] IAsyncEnumerable<byte[]> pictureStream, [NotNull] string fileExtension, int accountId)
         {
-	        if (profilePictureData.RawData.Length != 0)
+	        using var imgStream = !m_possibleImageExtensions.Contains(fileExtension) ? null : await ImageUtils.ConvertAndScaleRequestImage(pictureStream, fileExtension);
+
+	        if (imgStream == null)
 	        {
-                var fileExtension = profilePictureData.FileExtension;
-
-		        var image = !m_possibleImageExtensions.Contains(fileExtension)
-			        ? null
-			        : ImageUtils.ConvertAndScaleRequestImage(profilePictureData.RawData);
-
-		        if (image != null)
-		        {
-			        var result = await SaveProfilePicture(sessionContext, image, fileExtension);
-                    return ServiceResponse<bool>.Success(result);
-		        }
+		        return ServiceResponse<bool>.Failure();
 	        }
 
-	        return ServiceResponse<bool>.Failure();
+	        var result = await SaveProfilePicture(accountId, imgStream, fileExtension);
+	        return ServiceResponse<bool>.Success(result);
         }
 
         /// <summary>
         /// Stores an Image to the respective directory
         /// </summary>
-        /// <param name="sessionContext">SessionContext of user</param>
+        /// <param name="accountId">Account id of user</param>
         /// <param name="image">Image to store</param>
         /// <param name="fileExtension">Extension of file</param>
         /// <returns>Success / Failure</returns>
-        private async Task<bool> SaveProfilePicture([NotNull] ISessionContext sessionContext, [NotNull] Image image, [NotNull] string fileExtension)
+        private async Task<bool> SaveProfilePicture(int accountId, [NotNull] Image image, [NotNull] string fileExtension)
         {
-            var container = await m_cloudStorageAccessor.CreateContainer(sessionContext.Account.IdAsKey(), BlobContainerPublicAccessType.Blob);
+            var container = await m_cloudStorageAccessor.CreatePublicContainerIfNotExists($"a-{accountId}", BlobContainerPublicAccessType.Blob);
 
             var blob = m_cloudStorageAccessor.CreateBlockBlob(container, "80x80picture.png");
 
-            await container.SetPermissionsAsync(new BlobContainerPermissions
+            await using (var uploadStream = await blob.OpenWriteAsync())
             {
-                PublicAccess = BlobContainerPublicAccessType.Blob
-            });
+	            if (fileExtension.Equals(".png"))
+	            {
+                    image.SaveAsPng(uploadStream);
+	            }
+	            else
+	            {
+		            image.SaveAsJpeg(uploadStream);
 
-            await using (var ms = new MemoryStream())
-            {
-                image.Save(ms, fileExtension.Equals(".png") ? ImageFormat.Png : ImageFormat.Jpeg);
-                var imageChopped = ms.ToArray();
-                await blob.UploadFromByteArrayAsync(imageChopped, 0, imageChopped.Length);
+	            }
             }
 
             return true;

@@ -25,8 +25,8 @@ namespace MooMed.Stateful.SessionService.Remoting
 		{
 		}
 
-		public Task<ServiceResponse<ISessionContext>> GetSessionContext(AccountIdQuery accountIdQuery)
-			=> Invoke(accountIdQuery.AccountId, service => service.GetSessionContext(accountIdQuery));
+		public Task<ServiceResponse<ISessionContext>> GetSessionContext(Primitive<int> accountId)
+			=> Invoke(accountId, service => service.GetSessionContext(accountId));
 
 		public Task<ISessionContext> LoginAccount(Account account)
 			=> Invoke(account.Id, service => service.LoginAccount(account));

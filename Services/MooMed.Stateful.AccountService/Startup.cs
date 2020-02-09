@@ -13,7 +13,7 @@ using MooMed.Stateful.SessionService.Remoting;
 
 namespace MooMed.Stateful.AccountService
 {
-	public class Startup : GrpcEndpointStartup
+	public class Startup : GrpcEndpointStartup<Service.AccountService>
 	{
 		protected override void RegisterServices(IEndpointRouteBuilder endpointRouteBuilder)
 		{
@@ -22,8 +22,10 @@ namespace MooMed.Stateful.AccountService
 
 		protected override void RegisterModules(ContainerBuilder containerBuilder)
 		{
+			base.RegisterModules(containerBuilder);
+
 			containerBuilder.RegisterModule(new AccountServiceBindings());
-			containerBuilder.RegisterModule(new CoreBindings());
+			containerBuilder.RegisterModule(new CoreModule());
 			containerBuilder.RegisterModule(new AccountServiceModule());
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());

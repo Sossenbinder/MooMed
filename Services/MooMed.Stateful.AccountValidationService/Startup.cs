@@ -4,7 +4,7 @@ using MooMed.AspNetCore.Grpc;
 
 namespace MooMed.Stateful.AccountValidationService
 {
-	public class Startup : GrpcEndpointStartup
+	public class Startup : GrpcEndpointStartup<Service.AccountValidationService>
 	{
 		protected override void RegisterServices(IEndpointRouteBuilder endpointRouteBuilder)
 		{

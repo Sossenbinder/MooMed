@@ -27,9 +27,9 @@ namespace FrontendTranslationGenerator
 
         private void GetTranslationResourcesPath()
         {
-            m_translationPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\MooMed.Core\\Translations\\Resources";
-            m_translationOutputPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\MooMed.Web\\Scripts\\Translations";
-            m_wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\MooMed.Web\\wwwroot\\dist\\Translations";
+            m_translationPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Common\\MooMed.Core\\Translations\\Resources";
+            m_translationOutputPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Translations";
+            m_wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Translations";
         }
 
         private IEnumerable<string> GetRelevantTranslations()

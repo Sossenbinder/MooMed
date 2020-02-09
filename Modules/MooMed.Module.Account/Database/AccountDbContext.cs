@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MooMed.Common.Database.Context;
 using MooMed.Common.Definitions.Database.Entities;
-using MooMed.Core.Code.Database;
 
 namespace MooMed.Module.Accounts.Database
 {
-	public class AccountDbContext : BaseDbContext
+    public class AccountDbContext : AbstractDbContext
     {
         public DbSet<AccountEntity> Account { get; set; }
 
         public DbSet<AccountValidationDbModel> AccountEmailValidation { get; set; }
 
-        public static AccountDbContext Create()
+        public AccountDbContext(string connectionString) 
+	        : base(connectionString)
         {
-            return new AccountDbContext();
         }
     }
 }

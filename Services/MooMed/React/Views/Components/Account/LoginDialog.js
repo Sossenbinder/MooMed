@@ -18,79 +18,60 @@ const PostRequest_1 = require("helper/requests/PostRequest");
 const PopUpNotificationDefinitions_1 = require("definitions/PopUpNotificationDefinitions");
 const popUpMessageHelper_1 = require("helper/popUpMessageHelper");
 const Button_1 = require("views/components/general/form/Buttons/Button");
-class LoginDialog extends React.Component {
-    constructor(props) {
-        super(props);
-        this._onChangeUpdate = (identifier, newState, isValid) => {
-            const currentState = this.state.formElements[identifier];
-            if (newState !== currentState) {
-                const respectiveFormElement = this.state.formElements[identifier];
-                respectiveFormElement.Value = newState;
-                if (typeof isValid !== "undefined") {
-                    respectiveFormElement.IsValid = isValid;
-                }
-                const formElementsNew = this.state.formElements;
-                formElementsNew[identifier] = respectiveFormElement;
-                this.setState({
-                    formElements: formElementsNew,
-                });
+const moomedEnums_1 = require("enums/moomedEnums");
+exports.LoginDialog = () => {
+    const [email, setEmail] = React.useState({ Value: "", IsValid: false });
+    const [password, setPassword] = React.useState({ Value: "", IsValid: false });
+    const [rememberMe, setRememberMe] = React.useState({ Value: false, IsValid: false });
+    const onChangeUpdate = React.useCallback((newVal, currentVal, setFunc, isValid) => {
+        if (currentVal.Value === newVal) {
+            return;
+        }
+        const newStateVal = Object.assign({}, currentVal);
+        if (typeof isValid !== "undefined") {
+            newStateVal.IsValid = isValid;
+        }
+        newStateVal.Value = newVal;
+        setFunc(newStateVal);
+    }, []);
+    const hasErrors = () => {
+        return email.IsValid || password.IsValid;
+    };
+    const handleLogin = () => __awaiter(void 0, void 0, void 0, function* () {
+        if (!hasErrors()) {
+            const loginModel = {
+                Email: email.Value,
+                Password: password.Value,
+                RememberMe: rememberMe.Value,
+            };
+            const request = new PostRequest_1.default(requestUrls_1.default.logOn.login);
+            const response = yield request.send(loginModel);
+            if (response.success) {
+                location.href = "/";
             }
-        };
-        this._hasErrors = () => {
-            return this.state.formElements.email.IsValid || this.state.formElements.password.IsValid;
-        };
-        this._handleChange = (event) => {
-            let newStateProperty = {};
-            newStateProperty[event.target.id] = event.target.value;
-            this.setState(newStateProperty);
-        };
-        this._handleLogin = () => __awaiter(this, void 0, void 0, function* () {
-            if (!this._hasErrors()) {
-                const loginModel = {
-                    Email: this.state.formElements.email.Value,
-                    Password: this.state.formElements.password.Value,
-                    RememberMe: this.state.formElements.rememberMe.Value,
-                };
-                const request = new PostRequest_1.default(requestUrls_1.default.logOn.login);
-                const response = yield request.send(loginModel);
-                if (response.success) {
-                    location.href = "/";
+            else {
+                const loginResultErrorCode = response.payload.loginResponseCode;
+                let errorMessage = "";
+                switch (loginResultErrorCode) {
+                    case moomedEnums_1.LoginResponseCode.AccountNotFound:
+                        errorMessage = Translation.AccountNotFound;
+                        break;
+                    case moomedEnums_1.LoginResponseCode.EmailNotValidated:
+                        errorMessage = Translation.AccountValidationEmailNotValidatedYet;
                 }
-                else {
-                    popUpMessageHelper_1.createPopUpMessage(response.errorMessage, PopUpNotificationDefinitions_1.PopUpMessageLevel.Error, undefined, 5000);
-                }
+                popUpMessageHelper_1.createPopUpMessage(errorMessage, PopUpNotificationDefinitions_1.PopUpMessageLevel.Error, undefined, 5000);
             }
-        });
-        this.state = {
-            formElements: {
-                email: {
-                    IsValid: true,
-                    Value: "",
-                },
-                password: {
-                    IsValid: true,
-                    Value: "",
-                },
-                rememberMe: {
-                    IsValid: true,
-                    Value: false,
-                },
-            },
-            isLoading: false,
-        };
-    }
-    render() {
-        return (React.createElement("div", null,
-            React.createElement("form", { className: "signInDialog", id: "loginForm", onSubmit: this._handleLogin },
-                React.createElement(ErrorAttachedTextInput_1.default, { name: "Email", payload: "", errorMessage: "Please provide a valid email address", onChangeFunc: (newVal, isValid) => this._onChangeUpdate("email", newVal, isValid), errorFunc: (currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1 }),
-                React.createElement(ErrorAttachedTextInput_1.default, { name: "Password", inputType: "password", payload: "", onChangeFunc: (newVal, isValid) => this._onChangeUpdate("password", newVal, isValid), errorMessage: "Please provide a valid password", errorFunc: (currentVal) => currentVal === "" }),
-                React.createElement(CheckBoxToggle_1.CheckBoxToggle, { name: "Stay logged in?", initialToggle: false, onChange: (newVal) => this._onChangeUpdate("rememberMe", newVal) }),
-                React.createElement("div", { className: "form-group" },
-                    React.createElement(Button_1.default, { title: Translation.Login, customStyles: "col-md-offset-2 col-md-10", disabled: this._hasErrors(), handleClick: this._handleLogin }))),
-            React.createElement("hr", null),
-            React.createElement("div", { className: "align-middle" },
-                React.createElement(react_router_dom_1.Link, { to: "/forgotPassword" }, "Forgot password?"))));
-    }
-}
-exports.default = LoginDialog;
+        }
+    });
+    return (React.createElement("div", null,
+        React.createElement(ErrorAttachedTextInput_1.default, { name: "Email", payload: "", errorMessage: "Please provide a valid email address", onChangeFunc: (newVal, isValid) => onChangeUpdate(newVal, email, setEmail, isValid), errorFunc: (currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1 }),
+        React.createElement(ErrorAttachedTextInput_1.default, { name: "Password", inputType: "password", payload: "", onChangeFunc: (newVal, isValid) => onChangeUpdate(newVal, password, setPassword, isValid), errorMessage: "Please provide a valid password", errorFunc: (currentVal) => currentVal === "" }),
+        React.createElement(CheckBoxToggle_1.CheckBoxToggle, { name: "Stay logged in?", initialToggle: false, onChange: (newVal) => onChangeUpdate(newVal, rememberMe, setRememberMe) }),
+        React.createElement("div", { className: "form-group" },
+            React.createElement(Button_1.default, { title: Translation.Login, customStyles: "col-md-offset-2 col-md-10", disabled: hasErrors(), handleClick: handleLogin })),
+        React.createElement("hr", null),
+        React.createElement("div", { className: "align-middle" },
+            React.createElement(react_router_dom_1.Link, { to: "/forgotPassword" }, "Forgot password?"))));
+};
+exports.default = exports.LoginDialog;
 //# sourceMappingURL=LoginDialog.js.map

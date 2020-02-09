@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import RegisterDialog from "./RegisterDialog";
 import LoginDialog from "./LoginDialog";
 
-import "./Styles/SignIn";
+import "views/Components/Account/Styles/SignIn.less";
 
 interface IProps {
 

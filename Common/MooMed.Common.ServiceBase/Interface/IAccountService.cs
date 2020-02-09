@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.DataTypes;
@@ -19,7 +20,7 @@ namespace MooMed.Common.ServiceBase.Interface
 
         [OperationContract]
         [NotNull]
-        Task RefreshLoginForAccount([NotNull] AccountIdQuery accountIdQuery);
+        Task RefreshLoginForAccount([NotNull] Primitive<int> accountId);
 
         [OperationContract]
         [NotNull]
@@ -31,7 +32,7 @@ namespace MooMed.Common.ServiceBase.Interface
 
         [OperationContract]
         [NotNull]
-        Task<Account> FindById([NotNull] AccountIdQuery accountIdQuery);
+        Task<Account> FindById([NotNull] Primitive<int> accountId);
 
         [OperationContract]
         [NotNull]

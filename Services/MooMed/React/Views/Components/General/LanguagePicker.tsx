@@ -2,7 +2,7 @@
 import * as cookieHelper from "helper/cookieHelper";
 import * as moment from "moment";
 
-import "./Styles/LanguagePicker.less";
+import "views/Components/General/Styles/LanguagePicker.less";
 
 interface IProps {
 

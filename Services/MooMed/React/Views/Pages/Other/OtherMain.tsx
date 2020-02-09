@@ -8,6 +8,8 @@ import AccountValidationDialog from "views/Pages/Other/AccountValidationDialog";
 import AccountValidationSuccess from "views/Pages/Other/AccountValidationSuccess";
 import AccountValidationFailure from "views/Pages/Other/AccountValidationFailure";
 
+import "Views/Page/Other/OtherPage.less";
+
 interface IProps {
 
 }

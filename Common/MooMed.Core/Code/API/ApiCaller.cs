@@ -1,41 +1,65 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Core.Code.API.Interface;
+using MooMed.Core.Code.API.Types;
+using MooMed.Core.Code.Extensions;
 using Newtonsoft.Json;
 
 namespace MooMed.Core.Code.API
 {
-    public class ApiCaller : IApiCaller
-    {
-        [NotNull]
-        private readonly ApiWebRequestProvider m_apiWebRequestProvider;
+	public class ApiCaller : IApiCaller
+	{
+		[NotNull]
+		private readonly HttpClient m_httpClient;
 
-        public ApiCaller([NotNull] ApiInformation apiInformation)
-        {
-            m_apiWebRequestProvider = new ApiWebRequestProvider(apiInformation);
-        }
+		public ApiCaller([NotNull] HttpClient httpClient)
+		{
+			m_httpClient = httpClient;
+		}
 
-        [ItemNotNull]
-        public async Task<ApiGetRequestResponse<TPayload>> SendGetRequest<TPayload>(string subRoute)
-            where TPayload : class
-        {
-            var requestObject = m_apiWebRequestProvider.GenerateGetRequest(subRoute);
+		public async Task<TOut> PostWithJson<TIn, TOut>(PostData<TIn> postData)
+		{
+			var response = await m_httpClient.PostAsJsonAsync(postData.Path, postData.Data);
 
-            var response = await requestObject.GetResponseAsync();
+			var responseStr = await response.Content.ReadAsStringAsync();
 
-            var responseStream = response?.GetResponseStream();
+			return JsonConvert.DeserializeObject<TOut>(responseStr);
+		}
 
-            if (responseStream != null)
-            {
-                var responseString = await new StreamReader(responseStream).ReadToEndAsync();
+		public async Task<IEnumerable<TOut>> PostWithJsonSequential<TIn, TOut>(
+			PostData<TIn> postData, 
+			Func<TOut, bool> retryDeterminerFunc,
+			Action<PostData<TIn>> onSuccessTransformer,
+			TimeSpan? waitTimer = null)
+		{
+			if (waitTimer == null)
+			{
+				waitTimer = TimeSpan.Zero;
+			}
 
-                var objectifiedResponse = JsonConvert.DeserializeObject<TPayload>(responseString);
+			var responseData = new List<TOut>();
+			var currentPostData = postData;
 
-                return new ApiGetRequestResponse<TPayload>(ApiRequestResult.Success, objectifiedResponse);
-            }
+			while (true)
+			{
+				var response = await PostWithJson<TIn, TOut>(currentPostData);
 
-            return new ApiGetRequestResponse<TPayload>(ApiRequestResult.EndpointNotFound, null);
-        }
-    }
+				responseData.Add(response);
+
+				if (!retryDeterminerFunc(response))
+				{
+					break;
+				}
+
+				onSuccessTransformer(currentPostData);
+
+				await Task.Delay(waitTimer.Value);
+			}
+
+			return responseData;
+		}
+	}
 }

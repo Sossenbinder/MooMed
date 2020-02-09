@@ -6,9 +6,6 @@ const react_router_dom_1 = require("react-router-dom");
 const SearchBar_1 = require("./SearchBar/SearchBar");
 const SmallAccountManager_1 = require("views/Components/Account/SmallAccountManager");
 class NavBar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (React.createElement("div", { id: "navBar", className: "mainNavBar navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top" },
             React.createElement(react_router_dom_1.Link, { to: "/", className: "navbar-brand" }, "MooMed - Finance done right"),
@@ -25,7 +22,7 @@ class NavBar extends React.Component {
             React.createElement(SmallAccountManager_1.default, null)));
     }
 }
-const mapStateToProps = store => {
+const mapStateToProps = (store) => {
     return {
         account: store.accountReducer.account
     };

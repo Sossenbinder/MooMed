@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
@@ -13,7 +12,6 @@ using MooMed.Core.Translations;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
-using ProtoBuf.Meta;
 
 namespace MooMed.Stateful.AccountService.Service
 {
@@ -83,16 +81,16 @@ namespace MooMed.Stateful.AccountService.Service
         /// </summary>
         /// <param name="accountIdQuery">Account id of account to relogin</param>
         /// <returns></returns>
-        public async Task RefreshLoginForAccount(AccountIdQuery accountIdQuery)
+        public async Task RefreshLoginForAccount(Primitive<int> accountId)
         {
-            var account = await FindById(accountIdQuery);
+            var account = await FindById(accountId);
 
             if (account == null)
             {
                 throw new AuthenticationException("Account logged in but could not be found");
 			}
 
-			account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(accountIdQuery.AccountId);
+			account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(accountId);
 
 			var sessionContext = await m_sessionService.LoginAccount(account);
 
@@ -125,9 +123,9 @@ namespace MooMed.Stateful.AccountService.Service
         }
 
         [ItemCanBeNull]
-        public async Task<Account> FindById(AccountIdQuery accountIdQuery)
+        public async Task<Account> FindById(Primitive<int> accountId)
         {
-            var account = (await m_accountDataRepository.FindAccount(acc => acc.Id == accountIdQuery.AccountId))?.ToModel();
+            var account = (await m_accountDataRepository.FindAccount(acc => acc.Id == accountId))?.ToModel();
 
             if (account != null)
             {

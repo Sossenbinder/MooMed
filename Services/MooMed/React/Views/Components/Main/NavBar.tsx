@@ -15,10 +15,6 @@ interface IState {
 
 class NavBar extends React.Component<IProps, IState> {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div id="navBar" className="mainNavBar navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top">
@@ -45,7 +41,7 @@ class NavBar extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = (store: any) => {
     return {
 		account: store.accountReducer.account
     };

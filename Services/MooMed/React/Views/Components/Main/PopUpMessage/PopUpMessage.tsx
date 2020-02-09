@@ -5,6 +5,8 @@ import { deletePopUpNotification } from "data/reducers/popUpNotificationReducer"
 
 import { PopUpMessageLevel, PopUpNotification } from "definitions/PopUpNotificationDefinitions";
 
+import "Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less";
+
 interface IProps {
     PopUpNotification: PopUpNotification;
 

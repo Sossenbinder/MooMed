@@ -4,6 +4,7 @@ const React = require("react");
 const react_redux_1 = require("react-redux");
 const popUpNotificationReducer_1 = require("data/reducers/popUpNotificationReducer");
 const PopUpNotificationDefinitions_1 = require("definitions/PopUpNotificationDefinitions");
+require("Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less");
 class PopUpMessageImpl extends React.Component {
     constructor(props) {
         super(props);

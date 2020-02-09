@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using MooMed.AspNetCore.Modules;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Utils;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;

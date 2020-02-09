@@ -5,6 +5,7 @@ const React = require("react");
 const SignIn_1 = require("views/Components/Account/SignIn");
 const PopUpMessageHolder_1 = require("views/Components/Main/PopUpMessage/PopUpMessageHolder");
 const LanguagePicker_1 = require("views/Components/General/LanguagePicker");
+require("Views/Pages/LogOn/Styles/LogOnMain.less");
 class LogonPage extends React.Component {
     render() {
         return (React.createElement("div", { className: "logOnContentContainer" },

@@ -1,5 +1,8 @@
 ﻿using Autofac;
 using JetBrains.Annotations;
+using MooMed.AspNetCore.Modules;
+using MooMed.Module.Session.Cache;
+using MooMed.Module.Session.Cache.Interface;
 
 namespace MooMed.Stateful.SessionService.Module
 {
@@ -8,6 +11,10 @@ namespace MooMed.Stateful.SessionService.Module
         protected override void Load([NotNull] ContainerBuilder builder)
         {
             base.Load(builder);
+
+            builder.RegisterType<SessionContextCache>()
+	            .As<ISessionContextCache>()
+	            .SingleInstance();
         }
     }
 }

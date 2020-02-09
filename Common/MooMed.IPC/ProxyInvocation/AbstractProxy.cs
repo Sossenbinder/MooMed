@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.IPC.Interface;
 using MooMed.Grpc.Definitions.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.ProxyInvocation.Interface;
@@ -43,7 +44,7 @@ namespace MooMed.IPC.ProxyInvocation
 			m_deployedService = deployedService;
 		}
 
-		public async Task Invoke(Func<TServiceType, Task> invocationFunc)
+		public async Task InvokeOnRandomReplica(Func<TServiceType, Task> invocationFunc)
 		{
 			var proxy = await m_clientProvider.GetGrpcClientAsync<TServiceType>(
 				m_deployedService,
@@ -52,7 +53,7 @@ namespace MooMed.IPC.ProxyInvocation
 			await invocationFunc(proxy);
 		}
 
-		public async Task<TResult> Invoke<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
+		public async Task<TResult> InvokeOnRandomReplica<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
 		{
 			var proxy = await m_clientProvider.GetGrpcClientAsync<TServiceType>(
 				m_deployedService,
@@ -89,6 +90,28 @@ namespace MooMed.IPC.ProxyInvocation
 			var proxy = await m_clientProvider.GetGrpcClientAsync<TServiceType>(
 				m_deployedService,
 				await ResolveToReplicaNumber(hashableIdentifier));
+
+			return await invocationFunc(proxy);
+		}
+
+		protected async Task Invoke(
+			ISessionContextAttachedDataType hashableIdentifier,
+			[NotNull] Func<TServiceType, Task> invocationFunc)
+		{
+			var proxy = await m_clientProvider.GetGrpcClientAsync<TServiceType>(
+				m_deployedService,
+				await ResolveToReplicaNumber(hashableIdentifier.SessionContext.HashableIdentifier));
+
+			await invocationFunc(proxy);
+		}
+
+		protected async Task<TResult> Invoke<TResult>(
+			ISessionContextAttachedDataType hashableIdentifier,
+			[NotNull] Func<TServiceType, Task<TResult>> invocationFunc)
+		{
+			var proxy = await m_clientProvider.GetGrpcClientAsync<TServiceType>(
+				m_deployedService,
+				await ResolveToReplicaNumber(hashableIdentifier.SessionContext.HashableIdentifier));
 
 			return await invocationFunc(proxy);
 		}

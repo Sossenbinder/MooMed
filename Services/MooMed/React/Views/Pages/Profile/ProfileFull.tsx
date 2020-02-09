@@ -1,25 +1,23 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 import { connect } from "react-redux";
 
-interface IProps {
+// Components
+import Flex from "Views/Components/General/Flex";
+
+type Props = {
 	account: Account;
 }
 
-interface IState {
-
-}
-
-class ProfileFull extends React.Component<IProps, IState> {
-    render() {
-        return (
-            <div className="profileFull">
-                <div className="header">                    
-                    <img className="picture" src={this.props.account.profilePicturePath} alt="Profile picture" />
-				    <h2 className="name">{this.props.account.userName}</h2>   
-                </div>
-            </div>
-        );
-    }
+export const ProfileFull: React.FC<Props> = ({account}) => {
+    return (
+        <Flex className="profileFull">
+            <div className="header">                    
+                <img className="picture" src={account.profilePicturePath} alt="Profile picture" />
+                <h2 className="name">{account.userName}</h2>   
+            </div>            
+        </Flex>
+    );
 }
 
 

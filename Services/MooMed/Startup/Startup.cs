@@ -39,7 +39,7 @@ namespace MooMed.Web.Startup
 
         public void ConfigureContainer([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule(new CoreBindings());
+            builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new CachingModule());
             builder.RegisterModule(new WebGrpcModule());
             builder.RegisterModule(new KubernetesModule());
@@ -66,12 +66,7 @@ namespace MooMed.Web.Startup
 			app.UseAuthentication();
 			app.UseAuthorization();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller=Home}/{action=Index}/{id?}");
-			});
+			app.UseEndpoints(RouteConfig.RegisterRoutes);
 		}
     }
 }

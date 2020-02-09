@@ -4,12 +4,10 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using JetBrains.Annotations;
-using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.IPC;
 using MooMed.Common.ServiceBase;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Extensions;
 using MooMed.Core.DataTypes;
-using MooMed.Grpc.Definitions.Interface;
 using ProtoBuf.Meta;
 
 namespace MooMed.AspNetCore.Grpc
@@ -23,8 +21,15 @@ namespace MooMed.AspNetCore.Grpc
 
 		public SerializationModelBinderService()
 		{
-			m_grpServices = AppDomain.CurrentDomain.GetAssemblies()
-				.Single(x => x.FullName.Contains("MooMed.Common.ServiceBase"))
+			var assemblyName = Assembly.GetEntryAssembly()?.GetReferencedAssemblies()
+				.Single(x => x.FullName.Contains("MooMed.Common.ServiceBase"));
+
+			if (assemblyName == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			m_grpServices = Assembly.Load(assemblyName)
 				.GetTypes()
 				.Where(x => x != typeof(MooMedServiceBase));
 		}

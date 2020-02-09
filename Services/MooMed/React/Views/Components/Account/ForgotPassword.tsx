@@ -4,56 +4,33 @@ import ErrorAttachedTextInput from "views/Components/General/Form/ErrorAttached/
 
 import { IFormElement } from "definitions/Forms";
 
-interface IProps {
 
-}
+export const ForgotPassword: React.FC = () => {
 
-interface IState {
-	forgotPasswordEmail: IFormElement<string>;
-}
-
-export default class ForgotPassword extends React.Component<IProps, IState> {
+	const [forgotPasswordEmail, setForgotPasswordEmail] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
 	
-	constructor(props: any) {
-		super(props);
-
-		this.state = {
-			forgotPasswordEmail: {
-				Value: "",
-				IsValid: true,
-			},
-		}
-	}
-
-	// Use submit instead
-	render() {
-		return (
-			<div>
-				<ErrorAttachedTextInput
-					name="Email"
-					payload=""
-					errorMessage="Please provide a valid email address"
-					onEnterPress={this._handleRequestPasswordReset}
-					onChangeFunc={(newVal, isValid) => {
-						if (this.state.forgotPasswordEmail.Value !== newVal) {
-							this.setState({
-								forgotPasswordEmail: {
-									Value: newVal,
-									IsValid: isValid,
-								}
-							});
-						}
-					}}
-					errorFunc={(currentVal) => {
-						const isEmpty = currentVal === "";
-						const isInValidEmail = currentVal.search(/^\S+@\S+$/) === -1;
-						return isEmpty || isInValidEmail;
-					}} />
-			</div>
-		);
-	}
-
-	_handleRequestPasswordReset = () => {
-		console.log(this.state.forgotPasswordEmail.Value);
-	}
+	return (
+		<div>
+			<ErrorAttachedTextInput
+				name="Email"
+				payload=""
+				errorMessage="Please provide a valid email address"
+				onEnterPress={() => {}}
+				onChangeFunc={(newVal, isValid) => {
+					if (forgotPasswordEmail.Value !== newVal) {
+						setForgotPasswordEmail({						
+							Value: newVal,
+							IsValid: isValid,						
+						});
+					}
+				}}
+				errorFunc={(currentVal) => {
+					const isEmpty = currentVal === "";
+					const isInValidEmail = currentVal.search(/^\S+@\S+$/) === -1;
+					return isEmpty || isInValidEmail;
+				}} />
+		</div>
+	);
 }
+
+export default ForgotPassword;

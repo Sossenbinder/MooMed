@@ -40,9 +40,7 @@ namespace MooMed.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login([NotNull] LoginModel loginModel)
         {
-	        var types = RuntimeTypeModel.Default.GetTypes();
-
-            var serviceResponse = await m_accountService.Login(loginModel);
+	        var serviceResponse = await m_accountService.Login(loginModel);
 			
             if (serviceResponse.IsSuccess)
             {

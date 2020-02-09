@@ -21,7 +21,7 @@ namespace MooMed.Caching.Cache.UnderlyingCache
 		public override void PutItem(TKeyType key, TValueType value, int? secondsToLive = null)
 		{
 			// TODO: Make this lock-safe
-			m_memoryCache.Set(key, value, DateTimeOffset.Now.AddSeconds(secondsToLive ?? m_baseTTLTimeInSeconds));
+			m_memoryCache.Set(key, value, /*DateTimeOffset.Now.AddSeconds(secondsToLive ?? m_baseTTLTimeInSeconds)*/ DateTimeOffset.Now.AddSeconds(6000));
 		}
 
 		public override TValueType GetItem(TKeyType key)

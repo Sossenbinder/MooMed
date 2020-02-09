@@ -7,15 +7,16 @@
     "module": "commonjs",
     "jsx": "react",
     "moduleResolution": "node",
-		"noImplicitAny": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
+		// "noImplicitAny": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
     "allowJs": false,
     "paths": {
       "components": ["Views/Components/*"],
       "data": ["Data/*"],
       "definitions": ["Definitions/*"],
       "helper": ["Helper/*"],
+      "utils": ["Helper/Utils/*"],
       "views": [ "Views/*"],
 	  "enums":  ["Enums/*"]
     }
