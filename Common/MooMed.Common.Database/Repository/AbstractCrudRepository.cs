@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Database.Context;
+using MooMed.Common.Database.Converter;
 using MooMed.Common.Database.Repository.Interface;
 using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Database.Repository
 {
-	public abstract class AbstractCrudRepository<TContextFactory, TDbContext, TEntity> : ICrudRepository<TEntity> 
-		where TEntity : class, IDatabaseEntity 
+	public abstract class AbstractCrudRepository<TContextFactory, TDbContext, TModel, TEntity> : ICrudRepository<TEntity> 
+		where TModel : class, IModel
+		where TEntity : class, IEntity 
 		where TContextFactory : AbstractDbContextFactory<TDbContext>
 		where TDbContext : AbstractDbContext
 	{
 		[NotNull]
 		private readonly TContextFactory m_contextFactory;
 
-		protected AbstractCrudRepository([NotNull] TContextFactory contextFactory)
+		protected AbstractCrudRepository(
+			[NotNull] TContextFactory contextFactory)
 		{
 			m_contextFactory = contextFactory;
 		}
@@ -30,7 +33,7 @@ namespace MooMed.Common.Database.Repository
 		}
 
 		[NotNull]
-		public Task Create(TEntity entity)
+		public Task<bool> Create(TEntity entity)
 			=> RunInContextAndCommit(set => set.AddAsync(entity).AsTask());
 
 		[NotNull]
@@ -73,7 +76,16 @@ namespace MooMed.Common.Database.Repository
 			return await dbFunc(ctx.Set<TEntity>());
 		}
 
-		private async Task RunInContextAndCommit([NotNull] Func<DbSet<TEntity>, Task> contextFunc)
+		private async Task<bool> RunInContextAndCommit([NotNull] Func<DbSet<TEntity>, Task> contextFunc)
+		{
+			await using var ctx = m_contextFactory.CreateContext();
+			await contextFunc(ctx.Set<TEntity>());
+			var affectedRows = await ctx.SaveChangesAsync();
+
+			return affectedRows != 0;
+		}
+
+		private async Task RunInContextAndCommitWithResult([NotNull] Func<DbSet<TEntity>, Task> contextFunc)
 		{
 			await using var ctx = m_contextFactory.CreateContext();
 			await contextFunc(ctx.Set<TEntity>());

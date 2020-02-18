@@ -8,14 +8,14 @@ using MooMed.Common.Definitions.Interface;
 namespace MooMed.Common.Database.Repository.Interface
 {
 	public interface ICrudRepository<TEntity>
-		where TEntity : IDatabaseEntity
+		where TEntity: IEntity
 	{
-		Task Create([NotNull] TEntity entity);
+		Task<bool> Create([NotNull] TEntity entity);
 
 		Task<List<TEntity>> Read([NotNull] Expression<Func<TEntity, bool>> predicate);
 
-		Task Update(TEntity newEntity, Action<TEntity> updateFunc);
+		Task Update(TEntity newItem, Action<TEntity> updateFunc);
 
-		Task Delete([NotNull] TEntity entity);
+		Task Delete([NotNull] TEntity model);
 	}
 }

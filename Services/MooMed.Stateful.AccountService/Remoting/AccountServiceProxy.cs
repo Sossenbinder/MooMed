@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
@@ -10,6 +11,7 @@ using MooMed.Core.Translations;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
+using ProtoBuf.Grpc;
 
 namespace MooMed.Stateful.AccountService.Remoting
 {
@@ -32,8 +34,8 @@ namespace MooMed.Stateful.AccountService.Remoting
 		public Task RefreshLoginForAccount(Primitive<int> accountId)
 			=> InvokeOnRandomReplica(service => service.RefreshLoginForAccount(accountId));
 
-		public Task<RegistrationResult> Register(RegisterModel registerModel, Language lang)
-			=> InvokeOnRandomReplica(service => service.Register(registerModel, lang));
+		public Task<RegistrationResult> Register(RegisterModel registerModel)
+			=> InvokeOnRandomReplica(service => service.Register(registerModel));
 		
 		public Task LogOff(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.LogOff(sessionContext));

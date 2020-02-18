@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
+using MooMed.Common.Definitions;
 
 namespace MooMed.Core.Translations.Helper
 {

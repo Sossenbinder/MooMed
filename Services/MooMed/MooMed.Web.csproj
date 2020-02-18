@@ -5,6 +5,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <DockerfileContext>..\..</DockerfileContext>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
@@ -19,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
-    <ProjectReference Include="..\..\Modules\MooMed.Module.Search\MooMed.Module.Search.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />
@@ -32,5 +32,5 @@
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+  
 </Project>

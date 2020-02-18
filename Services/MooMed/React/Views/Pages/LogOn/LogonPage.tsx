@@ -1,9 +1,11 @@
-﻿import "bootstrap";
+﻿// Framework
 import * as React from "react";
 
+// Components
 import SignIn from "views/Components/Account/SignIn";
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
 import LanguagePicker from "views/Components/General/LanguagePicker";
+import Flex from "views/Components/General/Flex";
 
 import "Views/Pages/LogOn/Styles/LogOnMain.less";
 
@@ -11,18 +13,23 @@ export default class LogonPage extends React.Component {
 
     render() {
         return (
-            <div className="logOnContentContainer">
+            <Flex 
+                direction="Column"
+                className="logOnContentContainer">
                 <PopUpMessageHolder />
-                <LanguagePicker />
-                <div className="mooMedLogoContainer">
-                    <div className="mooMedLogo">
+                <Flex className="mooMedLogoContainer">
+                    <Flex className="mooMedLogo">
                         MooMed
-                    </div>
-                </div>
-                <div className="signUpLoginContainer">
+                    </Flex>
+                </Flex>
+                <Flex className="signUpLoginContainer">
                     <SignIn />
-                </div>
-            </div>
+                </Flex>
+                <Flex 
+                    crossAlign="End">
+                    <LanguagePicker />
+                </Flex>
+            </Flex>
         );
     }
 }

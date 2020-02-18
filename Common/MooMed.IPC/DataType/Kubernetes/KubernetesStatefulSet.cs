@@ -9,7 +9,7 @@ namespace MooMed.IPC.DataType.Kubernetes
 
 		public IEnumerable<IStatefulEndpoint> StatefulEndpoints { get; set; }
 
-		public KubernetesStatefulSet([NotNull] List<KubernetesStatefulPod> statefulEndpoints)
+		public KubernetesStatefulSet([NotNull] IReadOnlyCollection<KubernetesEndpoint> statefulEndpoints)
 		{
 			ReplicaCount = statefulEndpoints.Count;
 			StatefulEndpoints = statefulEndpoints;

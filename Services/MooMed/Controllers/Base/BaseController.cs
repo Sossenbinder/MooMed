@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using MooMed.Common.Definitions;
 using MooMed.Core.Translations;
 
 namespace MooMed.Web.Controllers.Base

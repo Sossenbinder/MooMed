@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions;
 using MooMed.Core.Code.Helper.Email.Interface;
 using MooMed.Core.Translations;
 using MooMed.Core.Translations.Helper;

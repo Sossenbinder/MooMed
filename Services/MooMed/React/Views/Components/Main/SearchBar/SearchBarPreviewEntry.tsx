@@ -15,7 +15,7 @@ export default class SearchBarPreviewUserEntry extends React.Component<IProps, I
 		return (
 			<div className="searchBarPreviewEntryContainer">
 				<img src={this.props.account.profilePicturePath} alt="Profile picture" className="searchBarPreviewEntryProfilePicture"/>
-				<Link to={`/editProfile/${this.props.account.id}`} className="searchBarPreviewEntryProfileLink">{this.props.account.userName}</Link>
+				<Link to={`/profile/${this.props.account.id}`} className="searchBarPreviewEntryProfileLink">{this.props.account.userName}</Link>
 			</div>
         );
     }

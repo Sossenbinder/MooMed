@@ -1,11 +1,15 @@
 ﻿using Autofac;
 using JetBrains.Annotations;
+using MooMed.Common.Database.Converter;
+using MooMed.Common.Definitions.Database.Entities;
+using MooMed.Common.Definitions.Models.User;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Events;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
+using MooMed.Module.Accounts.Repository.Converters;
 
 namespace MooMed.Module.Accounts
 {
@@ -47,6 +51,14 @@ namespace MooMed.Module.Accounts
 	            .AsSelf()
 	            .SingleInstance()
 	            .WithParameter("key", "MooMed_Database_Account");
+
+            builder.RegisterType<AccountDbConverter>()
+	            .As<IModelConverter<Account, AccountEntity>, IBiDirectionalDbConverter<Account, AccountEntity>>()
+	            .SingleInstance();
+
+            builder.RegisterType<RegisterModelAccountDbConverter>()
+	            .As<IEntityConverter<RegisterModel, AccountEntity>>()
+	            .SingleInstance();
         }
     }
 }

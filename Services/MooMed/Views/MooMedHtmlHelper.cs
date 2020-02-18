@@ -2,6 +2,7 @@
 using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Html;
+using MooMed.Common.Definitions;
 using MooMed.Core.Translations;
 
 namespace MooMed.Web.Views

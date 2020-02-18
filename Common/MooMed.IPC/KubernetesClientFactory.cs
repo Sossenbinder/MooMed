@@ -13,7 +13,7 @@ namespace MooMed.IPC
 			m_kubernetesClient = new Lazy<Kubernetes>(() =>
 			{
 				// Load from in-cluster configuration:
-				var config = KubernetesClientConfiguration.BuildDefaultConfig();
+				var config = KubernetesClientConfiguration.InClusterConfig();
 
 				// Use the config object to create a client.
 				return new Kubernetes(config);

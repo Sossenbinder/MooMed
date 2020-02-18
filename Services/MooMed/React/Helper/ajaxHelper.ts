@@ -5,7 +5,7 @@ import { createPopUpMessage } from "./popUpMessageHelper";
 interface IAjaxParams {
     actionUrl: string;
     data?: any;
-    onSuccess: (data: any) => any;
+    onSuccess?: (data: any) => any;
     onError?: (data: any) => any;
     useVerificationToken?: boolean;
     uploadFile?: boolean;

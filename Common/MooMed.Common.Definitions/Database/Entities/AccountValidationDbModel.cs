@@ -9,11 +9,11 @@ namespace MooMed.Common.Definitions.Database.Entities
     [Table("AccountEmailValidation")]
     public class AccountValidationDbModel
     {
-        [ForeignKey("AccountDbModel")]
+        [ForeignKey("AccountEntity")]
         [Column("AccountId")]
         public int AccountId { get; set; }
 
-        public virtual AccountEntity AccountEntity { get; set; }
+        public AccountEntity AccountEntity { get; set; }
 
         [Key]
         [Column("ValidationGuid")]

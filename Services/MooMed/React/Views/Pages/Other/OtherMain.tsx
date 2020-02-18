@@ -8,41 +8,34 @@ import AccountValidationDialog from "views/Pages/Other/AccountValidationDialog";
 import AccountValidationSuccess from "views/Pages/Other/AccountValidationSuccess";
 import AccountValidationFailure from "views/Pages/Other/AccountValidationFailure";
 
-import "Views/Page/Other/OtherPage.less";
+import "Views/Pages/Other/Styles/OtherPage.less";
 
-interface IProps {
+export const OtherMain: React.FC = () => {
 
-}
+    const redirectRoute = window["reactRoute"];
 
-interface IState {
-
-}
-
-export default class OtherMain extends React.Component<IProps, IState> {
-    render() {
-        let redirectRoute = window["reactRoute"];
-
-        if (redirectRoute !== undefined) {
-            window["reactRoute"] = undefined;
-            return <Redirect to={redirectRoute}/>;
-        }
-
-        return (
-            <div className="otherContentContainer">
-                <PopUpMessageHolder />
-                <LanguagePicker />
-                <div className="mooMedLogoContainer">
-                    <div className="mooMedLogo">
-                        MooMed
-                    </div>
-                </div>
-                <div>
-                    MooMed - Finance done right
-                </div>
-                <Route exact path="/AccountValidation" render={() => <AccountValidationDialog />} />
-                <Route path="/AccountValidation/Success" render={props => <AccountValidationSuccess />} />
-                <Route path="/AccountValidation/Failure" render={props => <AccountValidationFailure />} />
-            </div>
-        );
+    if (typeof redirectRoute !== "undefined") {
+        window["reactRoute"] = undefined;
+        return <Redirect to={redirectRoute}/>;
     }
+
+    return (
+        <div className="otherContentContainer">
+            <PopUpMessageHolder />
+            <LanguagePicker />
+            <div className="mooMedLogoContainer">
+                <div className="mooMedLogo">
+                    MooMed
+                </div>
+            </div>
+            <div>
+                MooMed - Finance done right
+            </div>
+            <Route exact path="/AccountValidation" render={() => <AccountValidationDialog />} />
+            <Route path="/AccountValidation/Success" render={props => <AccountValidationSuccess />} />
+            <Route path="/AccountValidation/Failure" render={props => <AccountValidationFailure />} />
+        </div>
+    );
 }
+
+export default OtherMain;

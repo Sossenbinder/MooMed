@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Localization;
+using MooMed.Common.Database.Converter;
+using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
@@ -25,13 +27,18 @@ namespace MooMed.Module.Accounts.Helper
         [NotNull]
         private readonly AccountDataRepository m_accountDataRepository;
 
+        [NotNull]
+        private readonly IModelConverter<Account, AccountEntity> m_accountModelConverter;
+
         public AccountSignInService(
             [NotNull] IAccountSignInValidator accountSignInValidator,
             [NotNull] IMainLogger mainLogger,
-            [NotNull] AccountDataRepository accountDataRepository)
+            [NotNull] AccountDataRepository accountDataRepository, 
+            [NotNull] IModelConverter<Account, AccountEntity> accountModelConverter)
         {
             m_accountSignInValidator = accountSignInValidator;
             m_accountDataRepository = accountDataRepository;
+            m_accountModelConverter = accountModelConverter;
             m_mainLogger = mainLogger;
         }
 
@@ -58,8 +65,8 @@ namespace MooMed.Module.Accounts.Helper
             }
 
             // Actually Create the account
-            var account = (await m_accountDataRepository.CreateAccount(registerModel)).ToModel();
-
+            var account = m_accountModelConverter.ToModel(await m_accountDataRepository.CreateAccount(registerModel));
+            
             return RegistrationResult.Success(account);
         }
 

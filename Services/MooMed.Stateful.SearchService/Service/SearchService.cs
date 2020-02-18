@@ -9,19 +9,19 @@ namespace MooMed.Stateful.SearchService.Service
 {
     public class SearchService : MooMedServiceBase, ISearchService
     {
-	    [System.Diagnostics.CodeAnalysis.NotNull]
+	    [NotNull]
 	    private readonly IAccountService m_accountService;
 
 	    public SearchService(
-            [System.Diagnostics.CodeAnalysis.NotNull] IMainLogger logger,
-            [System.Diagnostics.CodeAnalysis.NotNull] IAccountService accountService)
+            [NotNull] IMainLogger logger,
+            [NotNull] IAccountService accountService)
             : base(logger)
         {
 	        m_accountService = accountService;
         }
 
         [ItemNotNull]
-        public async Task<SearchResult> Search([System.Diagnostics.CodeAnalysis.NotNull] string query)
+        public async Task<SearchResult> Search([NotNull] string query)
         {
             var searchResult = new SearchResult
             {

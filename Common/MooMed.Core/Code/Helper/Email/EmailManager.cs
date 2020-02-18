@@ -25,16 +25,17 @@ namespace MooMed.Core.Code.Helper.Email
         [NotNull]
         private SmtpClient GetSmtpClient()
         {
-            var smtpClient = new SmtpClient
-            {
+	        var smtpClient = new SmtpClient
+	        {
+		        Host = "smtp.gmail.com",
                 Port = 587,
-                EnableSsl = true,
+		        EnableSsl = true,
+		        DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Host = "smtp.gmail.com",
-                Credentials = new NetworkCredential(m_smtpClientUserName, m_smtpClientPassword)
-            };
+		        Credentials = new NetworkCredential(m_smtpClientUserName, m_smtpClientPassword),
+	        };
 
-            return smtpClient;
+	        return smtpClient;
         }
 
         public async Task Send(string address, string subject, string messageContent)

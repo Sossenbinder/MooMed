@@ -37,29 +37,28 @@ export type FlexProps = {
     children: React.ReactNode;
 }
 
-export const Flex: React.FC<FlexProps> = ({ className, direction = FlexDirections.Row, wrap, mainAlign = FlexAlign.Start, crossAlign = FlexAlign.Start, space, children }) => {
+export const Flex: React.FC<FlexProps> = ({ className, direction = "Row", wrap, mainAlign = "Start", crossAlign = "Start", space, children }) => {
 
     const classes = classNames({
         "flex": true,
-        "flexColumn": direction === FlexDirections.Column.toString(),
-        "flexRow": direction === FlexDirections.Row.toString(),
-        "flexRowReverse": direction === FlexDirections.RowReverse.toString(),
-        "flexNoWrap": wrap === FlexWrap.NoWrap.toString(),
-        "flexWrap": wrap === FlexWrap.Wrap.toString(),
-        "flexWrapReverse": wrap === FlexWrap.WrapReverse.toString(),
-        "flexMainCenter": mainAlign === FlexAlign.Center.toString(),
-        "flexMainStart": mainAlign === FlexAlign.Start.toString(),
-        "flexMainEnd": mainAlign === FlexAlign.End.toString(),
-        "flexAround": space === FlexSpace.Around.toString(),
-        "flexBetween": space === FlexSpace.Between.toString(),
-        "flexCrossCenter": crossAlign === FlexAlign.Center.toString(),
-        "flexCrossStart": crossAlign === FlexAlign.Start.toString(),
-        "flexCrossEnd": crossAlign === FlexAlign.End.toString(),
-        className
+        "flexColumn": direction === "Column",
+        "flexRow": direction === "Row",
+        "flexRowReverse": direction === "RowReverse",
+        "flexNoWrap": wrap === "NoWrap",
+        "flexWrap": wrap === "Wrap",
+        "flexWrapReverse": wrap === "WrapReverse",
+        "flexMainCenter": mainAlign === "Center",
+        "flexMainStart": mainAlign === "Start",
+        "flexMainEnd": mainAlign === "End",
+        "flexAround": space === "Around",
+        "flexBetween": space === "Between",
+        "flexCrossCenter": crossAlign === "Center",
+        "flexCrossStart": crossAlign === "Start",
+        "flexCrossEnd": crossAlign === "End",
     });
 
     return (
-        <div className={classes}>
+        <div className={`${classes} ${className}`}>
             { children }
         </div>
     )

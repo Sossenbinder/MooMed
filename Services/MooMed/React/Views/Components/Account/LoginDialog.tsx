@@ -29,7 +29,7 @@ export const LoginDialog: React.FC = () => {
 
 	const [email, setEmail] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
 	const [password, setPassword] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
-	const [rememberMe, setRememberMe] = React.useState<IFormElement<boolean>>({ Value: false, IsValid: false});
+	const [rememberMe, setRememberMe] = React.useState<IFormElement<boolean>>({ Value: false, IsValid: true});
 
 	const onChangeUpdate = React.useCallback(<T extends {}>(newVal: T, currentVal: IFormElement<T>, setFunc: React.Dispatch<React.SetStateAction<IFormElement<T>>>, isValid?: boolean) => {
 
@@ -49,7 +49,7 @@ export const LoginDialog: React.FC = () => {
 	}, []);
 
 	const hasErrors = () => {
-		return email.IsValid || password.IsValid;
+		return !(email.IsValid && password.IsValid && rememberMe.IsValid);
 	};
 
 	const handleLogin = async () => {
@@ -90,7 +90,7 @@ export const LoginDialog: React.FC = () => {
 				payload=""
 				errorMessage="Please provide a valid email address"
 				onChangeFunc={(newVal, isValid) => onChangeUpdate<string>(newVal, email, setEmail, isValid)}
-				errorFunc={(currentVal) =>  currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1}/>
+				errorFunc={(currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1}/>
 			<ErrorAttachedTextInput
 				name="Password"
 				inputType="password"

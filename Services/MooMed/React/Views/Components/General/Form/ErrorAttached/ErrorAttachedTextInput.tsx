@@ -1,89 +1,91 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 import { setTimeout } from "timers";
 
-interface IProps {
-    name: string;
-    inputType?: string;
+// Components
+import Flex from "views/Components/General/Flex";
+
+type Props = {
+	name: string;
+	inputType?: string;
 	payload: string;
 	onChangeFunc: (currentVal: string, isValid: boolean) => void;
-    errorFunc?: (currentVal: string) => boolean;
+	errorFunc?: (currentVal: string) => boolean;
 	errorMessage?: string;
 	onEnterPress?: () => void;
 }
 
-interface IState {
-    payload: string;
-    touched: boolean;
-}
+export const ErrorAttachedTextInput: React.FC<Props> = ({ name, inputType, payload: propPayload, onChangeFunc, errorFunc, errorMessage, onEnterPress }) => {
 
-export default class ErrorAttachedTextInput extends React.Component<IProps, IState> {
+	let touchTimeout: NodeJS.Timer;
 
-    _errorTimer: NodeJS.Timer;
+	const [touched, setTouched] = React.useState(false);
+	const [payload, setPayload] = React.useState(propPayload);
+	const [isValid, setIsValid] = React.useState(true);
 
-    constructor(props: IProps) {
-        super(props);
+	const calculateValidity = React.useCallback((data: string) => {
+		let validity = true;
 
-        this.state = {
-            payload: props.payload,
-            touched: false
-        }
-    }
-
-    render() {
-        return (
-            <div className="form-group">
-                <input
-                    className={this._isError() ? "form-control is-invalid" : "form-control"}
-                    type={this.props.inputType != null ? this.props.inputType : "text"}
-                    name={this.props.name}
-                    value={this.state.payload}
-                    onChange={this._handleChange}
-					placeholder={this.props.name}
-					onKeyPress={this._handleKeyPress}
-                />
-                {
-                    (this.props.errorMessage !== "") &&
-                    <div className="invalid-feedback">
-                        {this.props.errorMessage}
-                    </div>
-                }
-            </div>
-        )
-    }
-
-    public _getPayload = () => this.state.payload;
-
-    public _isError = () => {
-
-        if (this.state.touched) {
-            if (this.props.errorFunc) {
-                return this.props.errorFunc(this.state.payload);
-            }
-        }
-
-        return false;
-    };
-
-    private _handleChange = (event) => {
-
-        this.setState({
-            payload: event.target.value as string
-		});
-
-        this.props.onChangeFunc(event.target.value, this._isError());
-
-        clearTimeout(this._errorTimer);
-        this._errorTimer = setTimeout(() => {
-            this.setState({
-                touched: true
-            });
-        }, 500);
-	}
-
-	private _handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-
-		if (event.charCode === 13 && this.props.onEnterPress !== undefined) {
-			this.props.onEnterPress();
+		if (touched) {
+			if (errorFunc) {
+				validity = !errorFunc(data);
+			}
 		}
-	}
-}
+		
+		setIsValid(validity);
+
+		return validity;
+	}, [touched, errorFunc]);
+
+	const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+
+		const val = event.target.value;
+
+		setPayload(val);
+
+		const validity = calculateValidity(val);
+
+		onChangeFunc(val, validity);
+
+		if (!touched) {
+
+			if (touchTimeout) {
+				clearTimeout(touchTimeout)
+			}
+
+			touchTimeout = setTimeout(() => {
+				setTouched(true);
+			}, 500);
+		}
+	}, [touched]);
+
+	const handleKeyPress = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+
+		if (event.charCode === 13 && typeof onEnterPress !== "undefined") {
+			onEnterPress();
+		}
+	}, [onEnterPress]);
+	
+	return (
+		<Flex 
+			direction="Column"
+			className="form-group">
+			<input
+				className={(touched && !isValid) ?  "form-control is-invalid" : "form-control"}
+				type={inputType != null ? inputType : "text"}
+				name={name}
+				value={payload}
+				onChange={handleChange}
+				placeholder={name}
+				onKeyPress={handleKeyPress}
+			/>
+			<If condition={touched && !isValid && errorMessage !== ""}>
+				<Flex className="invalid-feedback">
+					{errorMessage}
+				</Flex>
+			</If>
+		</Flex>
+	)
+};
+
+export default ErrorAttachedTextInput;

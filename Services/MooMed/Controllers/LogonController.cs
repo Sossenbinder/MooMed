@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.Web.Controllers.Base;
@@ -69,9 +70,12 @@ namespace MooMed.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register([NotNull] RegisterModel registerModel)
+        public async Task<ActionResult> Register([NotNull] RegisterUiModel registerModel)
         {
-            var result = await m_accountService.Register(registerModel, CurrentUiLanguage);
+	        var model = registerModel.ToModel();
+	        model.Language = CurrentUiLanguage;
+
+            var result = await m_accountService.Register(model);
 
             return result.IsSuccess ? JsonResponse.Success() : JsonResponse.Error(result.RegistrationValidationResult);
         }

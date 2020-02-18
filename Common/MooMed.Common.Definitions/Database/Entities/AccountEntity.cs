@@ -8,7 +8,7 @@ using MooMed.Common.Definitions.Models.User;
 namespace MooMed.Common.Definitions.Database.Entities
 {
     [Table("Account")]
-    public class AccountEntity : IConvertibleDatabaseEntity<Account>
+    public class AccountEntity : IEntity
     {
         [Key]
         [Column("Id")]

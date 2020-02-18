@@ -5,27 +5,35 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using MooMed.Common.Database.Converter;
 using MooMed.Common.Database.Repository;
 using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Core.Code.Helper.Crypto;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-    public class AccountDataRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountEntity>, IAccountDataRepository
+    public class AccountDataRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, Account, AccountEntity>, IAccountDataRepository
     {
-	    public AccountDataRepository([NotNull] AccountDbContextFactory contextFactory) 
+	    [NotNull]
+	    private readonly IEntityConverter<RegisterModel, AccountEntity> m_registerModelToAccountConverter;
+
+        public AccountDataRepository(
+		    [NotNull] AccountDbContextFactory contextFactory,
+		    [NotNull] IEntityConverter<RegisterModel, AccountEntity> registerModelToAccountConverter) 
 		    : base(contextFactory)
 	    {
-
-	    }
+		    m_registerModelToAccountConverter = registerModelToAccountConverter;
+        }
 
         [ItemNotNull]
         public async Task<AccountEntity> CreateAccount([NotNull] RegisterModel registerModel)
         {
-	        var accountDbModel = registerModel.ToAccountEntity();
+	        var accountDbModel = m_registerModelToAccountConverter.ToEntity(registerModel);
+	        accountDbModel.PasswordHash = Sha256Helper.Hash(registerModel.Password);
 
             await Create(accountDbModel);
 

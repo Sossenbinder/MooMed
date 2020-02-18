@@ -34,7 +34,7 @@ class SmallAccountManager extends React.Component<IProps, IState> {
                 </div>
                 <div className="smallAccountManagerDescription">
                     <div className="smallAccountManagerDescriptionUserName">
-                        <Link to="/editProfile">{this.props.account.userName}</Link>
+                        <Link to="/profile">{this.props.account.userName}</Link>
                     </div>
                 </div>
                 <div className="smallAccountManagerLogOff">

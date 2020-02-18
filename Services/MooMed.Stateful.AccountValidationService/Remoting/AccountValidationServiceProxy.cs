@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
@@ -21,6 +23,9 @@ namespace MooMed.Stateful.AccountValidationService.Remoting
 				DeployedService.AccountValidationService)
 		{
 		}
+
+		public Task SendAccountValidationMail(AccountValidationMailData accountValidationMailData)
+			=> InvokeOnRandomReplica(service => service.SendAccountValidationMail(accountValidationMailData));
 
 		public Task<AccountValidationTokenData> DeserializeRawToken(string token)
 			=> InvokeOnRandomReplica(service => service.DeserializeRawToken(token));

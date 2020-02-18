@@ -1,5 +1,8 @@
-﻿namespace MooMed.Common.Definitions.Models.User
+﻿using ProtoBuf;
+
+namespace MooMed.Common.Definitions.Models.User
 {
+    [ProtoContract]
     public enum RegistrationValidationResult
     {
         None,

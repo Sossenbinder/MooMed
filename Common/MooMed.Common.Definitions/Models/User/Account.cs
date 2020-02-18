@@ -8,7 +8,7 @@ using ProtoBuf;
 namespace MooMed.Common.Definitions.Models.User
 {
     [ProtoContract]
-    public class Account : IEntityConvertibleModel<AccountEntity>
+    public class Account : IModel
     {
         [ProtoMember(1)]
         public int Id { get; set; }

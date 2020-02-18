@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
+using MooMed.Common.Definitions;
 using MooMed.Core.Translations;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Models;

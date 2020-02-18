@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
@@ -30,20 +31,17 @@ namespace MooMed.Stateful.AccountValidationService.Service
             [NotNull] IMainLogger logger,
             [NotNull] AccountValidationDataHelper accountValidationDataHelper,
             [NotNull] IAccountValidationEmailHelper accountValidationEmailHelper,
-            [NotNull] IAccountValidationTokenHelper accountValidationTokenHelper,
-            [NotNull] IAccountEventHub accountEventHub)
+            [NotNull] IAccountValidationTokenHelper accountValidationTokenHelper)
             : base(logger)
         {
             m_accountValidationDataHelper = accountValidationDataHelper;
             m_accountValidationEmailHelper = accountValidationEmailHelper;
             m_accountValidationTokenHelper = accountValidationTokenHelper;
-
-            accountEventHub.AccountRegistered.Register(OnAccountRegistered);
         }
 
-        private async Task OnAccountRegistered((Account, Language) args)
+        public async Task SendAccountValidationMail(AccountValidationMailData accountValidationMailData)
         {
-            var (account, lang) = args;
+	        var account = accountValidationMailData.Account;
 
             var accountEmailValidationInfo = (await m_accountValidationDataHelper.CreateEmailValidationKey(account.Id)).ToModel();
 
@@ -53,7 +51,7 @@ namespace MooMed.Stateful.AccountValidationService.Service
                 ValidationGuid = accountEmailValidationInfo.ValidationGuid
             });
 
-            await m_accountValidationEmailHelper.SendAccountValidationEmail(lang, account.Email, accountValidationEmailToken);
+            await m_accountValidationEmailHelper.SendAccountValidationEmail(accountValidationMailData.Language, account.Email, accountValidationEmailToken);
         }
 
         [NotNull]
@@ -72,14 +70,11 @@ namespace MooMed.Stateful.AccountValidationService.Service
         {
             var resultCode = await m_accountValidationDataHelper.CheckAndUpdateValidation(tokenData);
 
-            if (resultCode == AccountValidationResult.Success || resultCode == AccountValidationResult.AlreadyValidated)
+            if (resultCode == AccountValidationResult.Success)
             {
                 // Validation went smoothly or already happened, we can get rid of the validation entry for this account
                 await m_accountValidationDataHelper.DeleteValidationDetails(tokenData.AccountId);
-            }
 
-            if (resultCode == AccountValidationResult.Success)
-            {
                 return ServiceResponse<bool>.Success(true);
             }
 

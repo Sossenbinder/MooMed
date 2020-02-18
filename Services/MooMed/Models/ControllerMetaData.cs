@@ -1,4 +1,5 @@
-﻿using MooMed.Core.Translations;
+﻿using MooMed.Common.Definitions;
+using MooMed.Core.Translations;
 
 namespace MooMed.Web.Models
 {

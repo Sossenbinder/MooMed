@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Grpc\MooMed.Grpc.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+    <ProjectReference Include="..\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj" />
   </ItemGroup>
 
 </Project>

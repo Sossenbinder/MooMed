@@ -3,9 +3,11 @@
 import { accountReducer } from "./reducers/accountReducer";
 import { popUpNotificationReducer } from "./reducers/popUpNotificationReducer";
 
-const reducers = redux.combineReducers({
-    accountReducer: accountReducer,
-    popUpNotificationReducer: popUpNotificationReducer,
-});
+export const store = redux.createStore(
+    redux.combineReducers({
+        accountReducer: accountReducer,
+        popUpNotificationReducer: popUpNotificationReducer,
+    })
+);
 
-export const store = redux.createStore(reducers);
+export default store;

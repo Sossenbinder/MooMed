@@ -10,10 +10,6 @@ namespace MooMed.Stateful.SearchService.Module
         protected override void Load(ContainerBuilder builder)
         {
 	        base.Load(builder);
-
-	        builder.RegisterType<SearchServiceProxy>()
-		        .As<ISearchService>()
-		        .SingleInstance();
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿import * as $ from "jquery";
+﻿import AjaxRequest, { RequestMethods } from "./AjaxRequest"
 
-export default class PostRequest<TRequest, TResponse> {
-
-	private m_url: string;
+export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TRequest, TResponse> {
 
 	constructor(url: string) {
-		this.m_url = url;
+		super(url, RequestMethods.POST);
 	}
-
 
 	public async send(requestData?: TRequest, attachVerificationToken: boolean = true): Promise<RequestPayload<TResponse>> {
 

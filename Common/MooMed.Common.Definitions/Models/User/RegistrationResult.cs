@@ -1,19 +1,24 @@
-﻿using System.Runtime.Serialization;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.User
 {
-    [DataContract]
+    [ProtoContract]
     public class RegistrationResult
     {
-        [DataMember]
+        [ProtoMember(1)]
         public bool IsSuccess { get; private set; }
 
-        [DataMember]
+        [ProtoMember(2)]
         public RegistrationValidationResult RegistrationValidationResult { get; private set; }
 
-        [DataMember]
+        [ProtoMember(3)]
         public Account Account { get; private set; }
+
+        private RegistrationResult()
+        {
+
+        }
 
         public RegistrationResult(bool isSuccess, RegistrationValidationResult registrationValidationResult, [CanBeNull] Account account)
         {

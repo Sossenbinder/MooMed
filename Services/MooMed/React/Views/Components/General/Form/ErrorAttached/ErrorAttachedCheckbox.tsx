@@ -1,5 +1,9 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 import { setTimeout } from "timers";
+
+// Components
+import Flex from "views/Components/General/Flex";
 
 interface IProps {
     name: string;
@@ -13,6 +17,28 @@ interface IState{
     payload: boolean;
     touched: boolean;
 }
+
+export const ErrorAttachedCheckboxFn: React.FC<IProps> = (props) => {
+    
+    const [payload, setPayload] = React.useState(props.payload);
+    const [touched, setTouched] = React.useState(false);
+
+    return (
+        <Flex className="form-group">
+            <Flex className="form-check">
+                <input
+                    id={this.props.name}
+                    className="form-check-input"
+                    type="checkbox"
+                    name={this.props.name}
+                    checked={this.state.payload}
+                    onChange={this._handleChange}/>
+                <label className="form-check-label" htmlFor={this.props.name}>{this.props.name}?</label>
+            </Flex>
+        </Flex>
+    );
+};
+
 export default class ErrorAttachedCheckbox extends React.Component<IProps, IState> {
 
     _errorTimer: NodeJS.Timer;

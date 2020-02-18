@@ -2,12 +2,14 @@
 using System.ServiceModel;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.DataTypes;
 using MooMed.Core.Translations;
 using MooMed.Grpc.Definitions.Interface;
+using ProtoBuf.Grpc;
 
 namespace MooMed.Common.ServiceBase.Interface
 {
@@ -24,7 +26,7 @@ namespace MooMed.Common.ServiceBase.Interface
 
         [OperationContract]
         [NotNull]
-        Task<RegistrationResult> Register([NotNull] RegisterModel registerModel, Language lang);
+        Task<RegistrationResult> Register([NotNull] RegisterModel registerModel);
 
         [OperationContract]
         [NotNull]

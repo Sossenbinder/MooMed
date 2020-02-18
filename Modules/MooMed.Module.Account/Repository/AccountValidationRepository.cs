@@ -52,8 +52,10 @@ namespace MooMed.Module.Accounts.Repository
         {
             using(var ctx = m_accountDbContextFactory.CreateContext())
             {
-                var candidate = await ctx.AccountEmailValidation.Where(val =>
-                    val.AccountId == accountValidationTokenData.AccountId).FirstAsync();
+                var candidate = await ctx.AccountEmailValidation
+	                .Where(val => val.AccountId == accountValidationTokenData.AccountId)
+	                .Include(x => x.AccountEntity)
+	                .FirstOrDefaultAsync();
 
                 // If we don't find an account here, it is most likely already validated and the entry is gone for good
                 if (candidate == null)

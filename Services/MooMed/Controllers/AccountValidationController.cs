@@ -57,7 +57,7 @@ namespace MooMed.Web.Controllers
                         AccountName = account.UserName,
                         AccountValidationTokenData = deserializedToken
                     };
-                    jsonString = JsonConvert.SerializeObject(accountValidationModel);
+                    jsonString = JsonConvert.SerializeObject(accountValidationModel); 
                 }
             }
             else

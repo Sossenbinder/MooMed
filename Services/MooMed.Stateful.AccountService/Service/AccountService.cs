@@ -2,6 +2,9 @@
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Database.Converter;
+using MooMed.Common.Definitions;
+using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
@@ -12,6 +15,7 @@ using MooMed.Core.Translations;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
+using ProtoBuf.Grpc;
 
 namespace MooMed.Stateful.AccountService.Service
 {
@@ -32,13 +36,17 @@ namespace MooMed.Stateful.AccountService.Service
         [NotNull]
         private readonly ISessionService m_sessionService;
 
+        [NotNull]
+        private readonly IAccountValidationService m_accountValidationService;
+
         public AccountService(
             [NotNull] IMainLogger logger,
             [NotNull] IAccountSignInService accountSignInService,
             [NotNull] IAccountEventHub accountEventHub,
             [NotNull] AccountDataRepository accountDataRepository,
             [NotNull] IProfilePictureService profilePictureService,
-            [NotNull] ISessionService sessionService)
+            [NotNull] ISessionService sessionService,
+            [NotNull] IAccountValidationService accountValidationService)
             : base(logger)
         {
             m_accountSignInService = accountSignInService;
@@ -46,6 +54,7 @@ namespace MooMed.Stateful.AccountService.Service
             m_accountDataRepository = accountDataRepository;
             m_profilePictureService = profilePictureService;
             m_sessionService = sessionService;
+            m_accountValidationService = accountValidationService;
         }
         /// <summary>
         /// Login an account
@@ -79,7 +88,7 @@ namespace MooMed.Stateful.AccountService.Service
         /// <summary>
         /// Refresh login for an account which is already authenticated but lost its session
         /// </summary>
-        /// <param name="accountIdQuery">Account id of account to relogin</param>
+        /// <param name="accountId">Account id of account to re-login</param>
         /// <returns></returns>
         public async Task RefreshLoginForAccount(Primitive<int> accountId)
         {
@@ -105,13 +114,18 @@ namespace MooMed.Stateful.AccountService.Service
         /// <param name="registerModel">Register model of that account</param>
         /// <returns></returns>
         [ItemNotNull]
-        public async Task<RegistrationResult> Register(RegisterModel registerModel, Language lang)
+        public async Task<RegistrationResult> Register(RegisterModel registerModel)
         {
-            var registrationResult = await m_accountSignInService.Register(registerModel);
+	        var registrationResult = await m_accountSignInService.Register(registerModel);
 
             if (registrationResult.IsSuccess)
             {
-                await m_accountEventHub.AccountRegistered.Raise((registrationResult.Account, lang));
+                _ = Task.Run(() =>
+                      m_accountValidationService.SendAccountValidationMail(new AccountValidationMailData()
+                      {
+                          Account = registrationResult.Account,
+                          Language = registerModel.Language
+                      }));
             }
 
             return registrationResult;

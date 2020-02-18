@@ -12,7 +12,6 @@ namespace MooMed.IPC.EndpointResolution
 {
 	public class DockerComposeStatefulCollectionDiscovery : IStatefulCollectionDiscovery
 	{
-
 		public IAsyncEnumerable<(DeployedService, IStatefulCollection)> RefreshForAllStatefulSets()
 		{
 			throw new NotImplementedException();

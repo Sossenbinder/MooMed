@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
 import { store } from "data/store";
 import { BrowserRouter } from "react-router-dom";
 import { Route } from "react-router";
@@ -18,7 +18,11 @@ import GlobalClickCapturer from "views/Components/Helper/GlobalClickCapturer";
 
 import "./Styles/Home.less";
 
-const Main: React.FC = () => (
+type Props = {
+    account: Account;
+}
+
+const Main: React.FC<Props> = ({ account }) => (
     <div className="mainContentContainer">
         <NavBar />
         <PopUpMessageHolder />
@@ -28,8 +32,8 @@ const Main: React.FC = () => (
                     path="/about" 
                     render={() => <AboutDialog />} />
                 <Route 
-                    path="/editProfile" 
-                    render={() => <ProfileFull />} />
+                    path="/profile" 
+                    render={routeProps => <ProfileFull profileAccount={account}/>} />
             </div>
             <div className="friendList">
                 
@@ -39,12 +43,21 @@ const Main: React.FC = () => (
     </div>
 );
 
+const mapStateToProps = state => {
+	return {
+		account: state.accountReducer.account
+	};
+}
+
+
+const MainConnected = connect(mapStateToProps)(Main);
+
 export default function renderMainView() {
     ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
 				<GlobalClickCapturer>
-					<Main />
+					<MainConnected />
 				</GlobalClickCapturer>
             </BrowserRouter>
         </Provider>,

@@ -1,7 +1,14 @@
 ﻿import * as React from "react";
 
 import ajaxPost from "helper/ajaxHelper";
+// Framework
 import requestUrl from "helper/requestUrls";
+
+// Components
+import Flex from "Views/Components/General/Flex";
+
+// Functionality
+
 
 import "Views/Pages/Other/Styles/AccountValidation.less";
 
@@ -15,55 +22,33 @@ interface IAccountValidationModel {
     AccountValidationTokenData: IAccountValidationTokenData;
 }
 
-interface IProps {
+export const AccountValidationDialog: React.FC = () => {
 
-}
+    const accountValidationMetaData: IAccountValidationModel = window["dataModel"];
 
-interface IState {
-
-}
-
-export default class AccountValidationDialog extends React.Component<IProps, IState> {
-
-    _accountValidationMetaData: IAccountValidationModel;
-
-    constructor(props: IProps) {
-        super(props);
-
-        if (window["dataModel"]) {
-            this._accountValidationMetaData = window["dataModel"];
-        }
-    }
-
-    render() {
-        return (
-            <div className="validationContainer">
-                <div className="validationContent">
-                    <h2>Account validation</h2>
-                    Do you want to validate your account?
-                    
-                    <input type="button" className="btn btn-primary" value="Validate" onClick={this._onValidationClicked}/>
-
-                    <div className="validationBackToLoginBtnContainer">
-                        <a className="btn btn-primary validationBackToLoginBtn" href="/">Back to login</a>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    _onValidationClicked = (event) => {
+    const onValidationClicked = React.useCallback((event) => {
         event.preventDefault();
 
         ajaxPost({
             actionUrl: requestUrl.accountValidation.validateRegistration,
-            data: this._accountValidationMetaData,
-            onSuccess: () => {
-                console.log("Success");
-            },
-            onError: () => {
-                console.log("Failure");
-            }
+            data: accountValidationMetaData,
         });
-    }
+    }, []);
+
+    return (
+        <div className="validationContainer">
+            <div className="validationContent">
+                <h2>Account validation</h2>
+                Do you want to validate your account?
+                
+                <input type="button" className="btn btn-primary" value="Validate" onClick={onValidationClicked}/>
+
+                <div className="validationBackToLoginBtnContainer">
+                    <a className="btn btn-primary validationBackToLoginBtn" href="/">Back to login</a>
+                </div>
+            </div>
+        </div>
+    );
 }
+
+export default AccountValidationDialog;

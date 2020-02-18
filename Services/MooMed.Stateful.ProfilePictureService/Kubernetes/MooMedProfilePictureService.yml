@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moomed-profilepictureservice-service
+spec:
+  clusterIP: None
+  selector:
+    name: moomed-profilepictureservice
+  ports:
+    - protocol: TCP
+      port: 16422
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moomed-profilepictureservice
+  labels:
+    name: moomed-profilepictureservice
+spec:
+  serviceName: moomed-profilepictureservice
+  replicas: 3
+  selector:  
+    matchLabels:
+      name: moomed-profilepictureservice
+  template:
+    metadata:
+      labels:
+        name: moomed-profilepictureservice
+    spec:
+      containers:
+      - name: moomed-profilepictureservice
+        image: moomed.azurecr.io/profilepictureservice
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: acrimgpullsecret

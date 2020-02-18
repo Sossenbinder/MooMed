@@ -10,11 +10,12 @@ namespace MooMed.Web.Controllers.Result
 		{
 			var serviceResponseObj = new ServiceResponseFrontendContainer<TPayload>
 			{
+				Success = serviceResponse.IsSuccess,
 				Data = serviceResponse.PayloadOrNull,
 				ErrorMessage = serviceResponse.ErrorMessage?.Message
 			};
 
-			return serviceResponse.IsSuccess ? JsonResponse.Success(serviceResponseObj) : JsonResponse.Error(serviceResponseObj);
+			return JsonResponse.Success(serviceResponseObj);
 		}
     }
 }

@@ -43,7 +43,7 @@ export const RegisterDialog: React.FC = () => {
 		setFunc(newStateVal);
 	}
 	
-	const hasErrors = () => !email.IsValid || !userName.IsValid || !password.IsValid || !confirmPassword.IsValid;
+	const hasErrors = () => !(email.IsValid && userName.IsValid && password.IsValid && confirmPassword.IsValid);
 
 	const handleRegisterClick = async () => {
 
@@ -55,7 +55,7 @@ export const RegisterDialog: React.FC = () => {
 				ConfirmPassword: confirmPassword.Value,
 			}
 
-			const request = new PostRequest<IRegisterModel, any>(requestUrls.logOn.login);
+			const request = new PostRequest<IRegisterModel, any>(requestUrls.logOn.register);
 			const response = await request.send(registerModel);
 
 			if (response.success) {

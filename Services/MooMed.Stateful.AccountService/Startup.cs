@@ -8,6 +8,7 @@ using MooMed.Core;
 using MooMed.IPC.Module;
 using MooMed.Module.Accounts;
 using MooMed.Stateful.AccountService.Module;
+using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;
 using MooMed.Stateful.SessionService.Remoting;
 
@@ -36,6 +37,10 @@ namespace MooMed.Stateful.AccountService
 
 			containerBuilder.RegisterType<SessionServiceProxy>()
 				.As<ISessionService>()
+				.SingleInstance();
+
+			containerBuilder.RegisterType<AccountValidationServiceProxy>()
+				.As<IAccountValidationService>()
 				.SingleInstance();
 		}
 	}
