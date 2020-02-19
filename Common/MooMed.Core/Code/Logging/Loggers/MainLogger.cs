@@ -24,6 +24,7 @@ namespace MooMed.Core.Code.Logging.Loggers
 				.WriteTo
 				.Async(logConfig =>
 				{
+					logConfig.Console();
 					logConfig.AzureTableStorage(storage);
 				})
 				.CreateLogger();

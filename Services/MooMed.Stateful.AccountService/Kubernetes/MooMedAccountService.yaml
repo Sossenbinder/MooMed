@@ -28,6 +28,7 @@ spec:
       containers:
       - name: moomed-accountservice
         image: moomed.azurecr.io/accountservice
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
       imagePullSecrets:

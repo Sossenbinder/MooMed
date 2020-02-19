@@ -3,14 +3,13 @@ kind: Service
 metadata:
   name: moomed-frontendservice-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     name: moomed-frontendservice
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30522
 ---
 apiVersion: apps/v1
 kind: Deployment

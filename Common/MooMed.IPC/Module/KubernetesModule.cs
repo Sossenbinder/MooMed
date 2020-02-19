@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using MooMed.IPC.EndpointResolution;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Interface;
@@ -22,7 +21,12 @@ namespace MooMed.IPC.Module
 				.As<IGrpcClientProvider>()
 				.SingleInstance();
 
-			builder.RegisterType<DockerComposeStatefulCollectionDiscovery>()
+			builder
+#if DEBUG
+				.RegisterType<DockerComposeStatefulCollectionDiscovery>()
+#else
+				.RegisterType<KubernetesStatefulCollectionDnsDiscovery>()
+#endif
 				.As<IStatefulCollectionDiscovery>()
 				.SingleInstance();
 

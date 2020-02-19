@@ -50,13 +50,12 @@ namespace MooMed.IPC.EndpointResolution
 
 				var affectedPods = podList.Items.Select(x => x).Where(x => x.Metadata.Labels.SequenceEqual(statefulSetTemplateLabels));
 
-				var pods = new List<KubernetesStatefulEndpoint>();
+				var pods = new List<KubernetesEndpoint>();
 				foreach (var affectedPod in affectedPods)
 				{
-					pods.Add(new KubernetesStatefulEndpoint()
+					pods.Add(new KubernetesEndpoint()
 					{
 						IpAddress = affectedPod.Status.PodIP,
-						StatefulSetPodInstance = 1
 					});
 				}
 

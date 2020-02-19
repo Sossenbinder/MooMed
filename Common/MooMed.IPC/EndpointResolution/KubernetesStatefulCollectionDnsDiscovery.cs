@@ -20,16 +20,12 @@ namespace MooMed.IPC.EndpointResolution
 		private readonly IDictionary<DeployedService, (int, string)> m_kubernetesStatefulSetNameDict;
 
 		[NotNull]
-		private readonly IKubernetesClientFactory m_kubernetesClientFactory;
-
-		[NotNull]
 		private readonly IMainLogger m_logger;
 
 		public KubernetesStatefulCollectionDnsDiscovery(
 			[NotNull] IKubernetesClientFactory kubernetesClientFactory,
 			[NotNull] IMainLogger logger)
 		{
-			m_kubernetesClientFactory = kubernetesClientFactory;
 			m_logger = logger;
 			m_kubernetesStatefulSetNameDict = new Dictionary<DeployedService, (int, string)>()
 			{
@@ -68,6 +64,8 @@ namespace MooMed.IPC.EndpointResolution
 
 				return null;
 			}
+
+			m_logger.Info($"Successfully queried {serviceName}.{id} to IP {ip}", null);
 
 			var endpoint = new KubernetesEndpoint()
 			{
