@@ -5,6 +5,7 @@
     <UserSecretsId>dotnet-KubeWatcher-BF4D0642-C804-4967-BC3C-709595285EAC</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

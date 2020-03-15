@@ -1,5 +1,6 @@
 ﻿var path = require("path");
 const statements = require('tsx-control-statements').default;
+const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
@@ -34,7 +35,7 @@ module.exports = {
 				}
 			}
 		]
-	},
+    },
 	resolve: {
 		extensions: [".tsx", ".ts", ".js", ".jsx"],
 		plugins: [new TsconfigPathsPlugin({configFile: "./tsconfig.json"})],

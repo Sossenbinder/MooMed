@@ -44,13 +44,13 @@ namespace MooMed.Stateful.SessionService.Service
 
         [ItemNotNull]
         [NotNull]
-        public async Task<ISessionContext> LoginAccount(Account account)
+        public Task<ISessionContext> LoginAccount(Account account)
         {
             var sessionContext = CreateSessionContext(account);
 
             m_sessionContextCache.PutItem(account.IdAsKey(), sessionContext);
 
-            return sessionContext;
+            return Task.FromResult<ISessionContext>(sessionContext);
         }
 
         [NotNull]

@@ -5,3 +5,10 @@ export type Account = {
     lastAccessedAt: Date;
     id: number;
 }
+
+export namespace Network {
+
+    export type GetAccountRequest = {
+        accountId: number;
+    }
+}

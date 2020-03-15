@@ -37,11 +37,11 @@ namespace MooMed.Web.Controllers
 
 		[NotNull]
 		[Authorize]
-		[HttpGet]
+		[HttpPost]
 		public async Task<JsonResponse> GetAccount(int accountId)
 		{
-			var account = await m_accountService.FindById(accountId);
-			return JsonResponse.Success(account);
+			var accountResponse = await m_accountService.FindById(accountId);
+			return accountResponse.ToJsonResponse();
 		}
 
 		[NotNull]

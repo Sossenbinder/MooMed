@@ -52,7 +52,7 @@ export const SmallAccountManager: React.FC<Props> = ({ account, updateAccountPic
             </div>
             <div className="smallAccountManagerDescription">
                 <div className="smallAccountManagerDescriptionUserName">
-                    <Link to="/profile">{account.userName}</Link>
+                    <Link to={`/profileDetails/${account.id}`}>{account.userName}</Link>
                 </div>
             </div>
             <div className="smallAccountManagerLogOff">

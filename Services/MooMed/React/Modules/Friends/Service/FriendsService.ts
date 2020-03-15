@@ -11,6 +11,6 @@ export default class FriendsService implements IFriendsService {
     
     public async getFriends(): Promise<Array<Friend>> {
         const response = await friendsCommunication.getFriends();
-        return response.payload;
+        return undefined;
     }
 }

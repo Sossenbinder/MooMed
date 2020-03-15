@@ -39,7 +39,7 @@ export default abstract class AjaxRequest<TRequest, TResponse> {
                 })
                 .join('&');
 
-                requestInit.body = params;
+            requestInit.body = params;
 		}
 
         const response = await fetch(this.m_url, requestInit);

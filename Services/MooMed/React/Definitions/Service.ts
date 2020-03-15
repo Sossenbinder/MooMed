@@ -3,6 +3,7 @@ import { SearchResult } from "modules/Search/types";
 import { Friend } from "modules/Friends/types";
 
 export interface IAccountService {
+    getAccount(accountId: number): Promise<Account>;
     getOwnAccount(): Promise<Account>;
 }
 

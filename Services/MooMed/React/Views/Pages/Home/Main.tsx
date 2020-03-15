@@ -9,7 +9,7 @@ import { Route } from "react-router";
 // Components
 import NavBar from "views/Components/Main/NavBar";
 import AboutDialog from "views/Pages/AboutDialog";
-import ProfileFull from "views/Pages/Profile/ProfileFull";
+import Profile from "modules/Account/Components/Profile/Profile";
 import ChatWidget from "views/Components/Friends/ChatWidget";
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
 import GlobalClickCapturer from "views/Components/Helper/GlobalClickCapturer";
@@ -43,7 +43,7 @@ const Main: React.FC<Props> = ({ account }) => (
                     render={routeProps => {
                             const url = routeProps.location.pathname;
                             const accountId = parseInt(url.substring(url.lastIndexOf('/') + 1));
-                            return <ProfileFull
+                            return <Profile
                                 accountId={accountId} />;
                         }
                     } />
