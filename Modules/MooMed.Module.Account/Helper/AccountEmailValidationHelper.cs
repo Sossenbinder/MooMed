@@ -24,7 +24,7 @@ namespace MooMed.Module.Accounts.Helper
         {
             using (new TranslationScope(lang))
             {
-                var emailBody = TranslationFormatter.FormatWithParams(Translation.AccountEmailValidationBody, accountValidationToken);
+                var emailBody = TranslationFormatter.FormatWithParams(Translation.AccountEmailValidationBody, "http://51.136.126.247", accountValidationToken);
                 await m_emailManager.Send(recipient, Translation.AccountEmailValidationSubject, emailBody);
             }
         }

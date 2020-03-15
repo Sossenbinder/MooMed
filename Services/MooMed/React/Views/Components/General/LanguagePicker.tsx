@@ -36,14 +36,14 @@ export const LanguagePicker: React.FC = () => {
 
     return (
         <Flex className="languagePickerContainer">
-            <div 
+            <Flex 
                 className={currentLang === "en" ? "languagePickerEn highlight" : "languagePickerEn"} 
                 onClick={() => pickLang("en")}>
-            </div>
-            <div 
+            </Flex>
+            <Flex 
                 className={currentLang === "de" ? "languagePickerDe highlight" : "languagePickerDe"} 
                 onClick={() => pickLang("de")}>
-            </div>
+            </Flex>
         </Flex>
     );
 }

@@ -7,8 +7,8 @@ module.exports = {
 	mode: "development",
 	entry: {
 		bundle: "./React/index.ts",
-		logonBundle: "./React/logonIndex.ts",
-		otherBundle: "./React/otherEntryPoint.ts",
+		logonBundle: "./React/logonIndex.tsx",
+		otherBundle: "./React/otherEntryPoint.tsx",
 	},
 	output: {
 		filename: "[name].js",

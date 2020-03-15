@@ -46,7 +46,7 @@ export function popUpNotificationReducer(state = initialState, action: PopUpNoti
             };
         case POPUPNOTIFICATION_DELETE:
             return {
-                popUpNotifications: state.popUpNotifications.filter(notification => notification.Id !== action.popUpNotification.Id)
+                popUpNotifications: state.popUpNotifications.filter(notification => notification.message !== action.popUpNotification.message)
             };
         default:
         return initialState;

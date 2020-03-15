@@ -10,7 +10,7 @@ namespace MooMed.IPC.ProxyInvocation
 
 		public int HashIdentifierToPartitionIntIdentifier(int hashableIdentifier, int replicas)
 		{
-			return replicas % hashableIdentifier;
+			return hashableIdentifier % replicas;
 		}
 	}
 }

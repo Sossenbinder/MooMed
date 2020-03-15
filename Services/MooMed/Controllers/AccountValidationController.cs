@@ -35,16 +35,14 @@ namespace MooMed.Web.Controllers
         public async Task<ActionResult> Index([CanBeNull] string token)
         {
             string jsonString;
-            string subRoute = null;
 
             if (token != null)
             {
                 var deserializedToken = await m_accountValidationService.DeserializeRawToken(token);
                 var account = await m_accountService.FindById(deserializedToken.AccountId);
 
-                if (account == null)
+                if (account.IsFailure)
                 {
-                    subRoute = "AccountValidation/Failure";
                     jsonString = JsonConvert.SerializeObject(new
                     {
                         AccountValidationResult = AccountValidationResult.AccountNotFound
@@ -54,7 +52,7 @@ namespace MooMed.Web.Controllers
                 {
                     var accountValidationModel = new AccountValidationModel
                     {
-                        AccountName = account.UserName,
+                        AccountName = account.PayloadOrFail.UserName,
                         AccountValidationTokenData = deserializedToken
                     };
                     jsonString = JsonConvert.SerializeObject(accountValidationModel); 
@@ -62,14 +60,13 @@ namespace MooMed.Web.Controllers
             }
             else
             {
-                subRoute = "AccountValidation/Failure";
                 jsonString = JsonConvert.SerializeObject(new
                 {
                     AccountValidationResult = AccountValidationResult.TokenInvalid
                 });
             }
 
-            return View("~/Views/Other/Other.cshtml", new ControllerMetaData("MooMed - AccountValidation", CurrentUiLanguage, subRoute, jsonString));
+            return View("~/Views/Other/Other.cshtml", new ControllerMetaData("MooMed - AccountValidation", CurrentUiLanguage, jsonString));
         }
 
         /// <summary>

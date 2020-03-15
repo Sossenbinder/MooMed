@@ -20,13 +20,8 @@ namespace MooMed.Web.Controllers
         public async Task<JsonResponse> SearchForQuery(string query)
         {
             var searchResult = await m_searchService.Search(query);
-
-            var result = new
-            {
-                searchResult
-            };
-
-            return JsonResponse.Success(result);
+            
+            return searchResult.ToJsonResponse();
         }
     }
 }

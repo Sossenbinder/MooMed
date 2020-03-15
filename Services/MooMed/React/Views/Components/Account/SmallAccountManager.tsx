@@ -1,51 +1,29 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import ajaxPost from "helper/ajaxHelper";
-import requestUrls from "helper/requestUrls";
-
+// Components
 import LogOff from "views/Components/Account/LogOff";
 
+// Functionality
 import { updateAccountPicture } from "data/reducers/accountReducer";
+import ajaxPost from "helper/ajaxHelper";
+import requestUrls from "helper/requestUrls";
+import { Account } from "modules/Account/types";
 
 import "./Styles/SmallAccountManager.less";
 
-interface IProps {
+type Props = {
 	account: Account;
 
 	updateAccountPicture: (profilePicturePath: string) => any;
 }
 
-interface IState {
-
-}
-
-class SmallAccountManager extends React.Component<IProps, IState> {
+export const SmallAccountManager: React.FC<Props> = ({ account, updateAccountPicture}) => {
 	
-	render() {
-        return (
-            <div className="row rounded border smallAccountManager" id="profileBlock">
-                <div id="profilePicture" className="smallAccountManagerPicture">
-                    <label id="profilePictureLabel" htmlFor="smallAccountManagerPictureUploadInput" className="smallAccountManagerPictureLabel">
-                        <img src={this.props.account.profilePicturePath} alt="Profile picture" />
-                    </label>
-                    <input id="smallAccountManagerPictureUploadInput" onChange={this._uploadPicture} type="file" accept=".png,.img" />
-                </div>
-                <div className="smallAccountManagerDescription">
-                    <div className="smallAccountManagerDescriptionUserName">
-                        <Link to="/profile">{this.props.account.userName}</Link>
-                    </div>
-                </div>
-                <div className="smallAccountManagerLogOff">
-                    <LogOff />
-                </div>
-            </div>
-        );
-    }
 
-    _uploadPicture = (event: any) => {
-
+    const uploadPicture = React.useCallback((event: any) => {
         const formData = new FormData();
         const files = event.target.files;
         if (files.length > 0) {
@@ -58,11 +36,30 @@ class SmallAccountManager extends React.Component<IProps, IState> {
             uploadFile: true,
             data: formData,
 			onSuccess: (response) => {
-				this.props.updateAccountPicture(response.data);
+				updateAccountPicture(response.data);
             },
             useVerificationToken: true,
         });
-    }
+    }, [updateAccountPicture]);
+
+    return (
+        <div className="row rounded border smallAccountManager" id="profileBlock">
+            <div id="profilePicture" className="smallAccountManagerPicture">
+                <label id="profilePictureLabel" htmlFor="smallAccountManagerPictureUploadInput" className="smallAccountManagerPictureLabel">
+                    <img src={account.profilePicturePath} alt="Profile picture" />
+                </label>
+                <input id="smallAccountManagerPictureUploadInput" onChange={uploadPicture} type="file" accept=".png,.img" />
+            </div>
+            <div className="smallAccountManagerDescription">
+                <div className="smallAccountManagerDescriptionUserName">
+                    <Link to="/profile">{account.userName}</Link>
+                </div>
+            </div>
+            <div className="smallAccountManagerLogOff">
+                <LogOff />
+            </div>
+        </div>
+    );
 }
 
 const mapStateToProps = (state: any) => {

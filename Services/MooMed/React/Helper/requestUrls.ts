@@ -1,5 +1,6 @@
 ﻿const requestUrls = {
     account: {
+        getOwnAccount: "Account/GetOwnAccount",
         getAccount: "Account/GetAccount",
     },
     accountValidation: {
@@ -17,9 +18,6 @@
         logOff: "Logon/LogOff",
         register: "Logon/Register",
     },
-    search: {
-        searchForQuery: "Search/SearchForQuery"
-    }
 }
 
 export default requestUrls;

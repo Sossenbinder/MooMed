@@ -7,7 +7,11 @@ namespace MooMed.Core.Code.Helper.Retry
 {
     public static class RetryStrategy
     {
-        public static async Task DoRetry([NotNull] Action action, [CanBeNull] TimeSpan? msBetweenRetries = null, int retryCount = 10)
+        public static async Task DoRetry(
+	        [NotNull] Action action,
+            [CanBeNull] Func<int, Task> onRetry = null,
+	        [CanBeNull] TimeSpan? msBetweenRetries = null, 
+	        int retryCount = 10)
         {
             var subExceptions = new List<Exception>();
 
@@ -26,6 +30,11 @@ namespace MooMed.Core.Code.Helper.Retry
                 if (msBetweenRetries.HasValue)
                 {
                     await Task.Delay(msBetweenRetries.Value);
+
+                    if (onRetry != null)
+                    {
+	                    await onRetry(i);
+                    }
                 }
             }
 

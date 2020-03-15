@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: moomed-frontendservice-service
+  name: moomed-frontendservice
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     name: moomed-frontendservice
   ports:
@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: moomed-frontendservice-deployment
+  name: moomed-frontendservice
 spec:
   replicas: 2
   selector:

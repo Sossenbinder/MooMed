@@ -5,9 +5,8 @@
 };
 
 export interface PopUpNotification {
-    Id: number;
-    Message: string;
-    MessageLevel: PopUpMessageLevel;
-    Heading: string;
-    TimeToLive: number;
+    message: string;
+    messageLevel: PopUpMessageLevel;
+    heading: string;
+    timeToLive: number;
 }

@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Caching.Module;
 using MooMed.Core;
+using MooMed.Dns.Module;
+using MooMed.Eventing.Module;
 using MooMed.IPC.Module;
 using MooMed.Web.Modules;
 
@@ -43,7 +45,9 @@ namespace MooMed.Web.Startup
             builder.RegisterModule(new CachingModule());
             builder.RegisterModule(new WebGrpcModule());
             builder.RegisterModule(new KubernetesModule());
-		}
+            builder.RegisterModule(new DnsModule());
+			builder.RegisterModule(new EventingModule());
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure([NotNull] IApplicationBuilder app, IWebHostEnvironment env)

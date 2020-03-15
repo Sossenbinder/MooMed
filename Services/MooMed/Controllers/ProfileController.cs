@@ -41,14 +41,10 @@ namespace MooMed.Web.Controllers
 
             var formFile = form.Files[0];
 
-            var profilePictureData = new ProfilePictureQuery(CurrentSessionOrFail);
-
             bool uploadResult;
 
             await using (var imgStream = formFile.OpenReadStream())
             {
-	            profilePictureData.RawDataStream = imgStream.ReadAsAsyncEnumerable();
-
 	            var callOptions = new CallOptions(new Metadata()
 	            {
 		            {"fileextension", formFile.GetFileExtension()},

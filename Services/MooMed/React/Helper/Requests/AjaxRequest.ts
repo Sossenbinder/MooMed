@@ -1,41 +1,56 @@
 import { NetworkResponse } from "./Types/NetworkDefinitions";
 
 export enum RequestMethods {
-    GET = "GET",
-    POST = "POST"
+	GET = "GET",
+	POST = "POST"
 }
 
 export default abstract class AjaxRequest<TRequest, TResponse> {
 
-    private m_url: string;
+	private m_url: string;
 
-    private m_requestMethod: string;
+	private m_requestMethod: string;
 
-    constructor(
-        url: string, 
-        requestMethod: RequestMethods = RequestMethods.POST) {
-        this.m_url = url;
-        this.m_requestMethod = requestMethod;
-    }
+	constructor(
+		url: string, 
+		requestMethod: RequestMethods = RequestMethods.POST) {
+		this.m_url = url;
+		this.m_requestMethod = requestMethod;
+	}
 
-    public async send(): Promise<NetworkResponse<TResponse>> {
+	public async send(requestData?: TRequest): Promise<NetworkResponse<TResponse>> {
 
-        const response = await fetch(this.m_url,
-			{
-				method: this.m_requestMethod,
-				headers: {
-					'Accept': 'application/json, text/javascript, */*',
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				credentials: 'include'
-            }
-        );
-        
-        return {
-            success: response.ok,
-            errorMessage: response.statusText,
-            statusCode: response.status,
-            payload: response.ok ? <TResponse>JSON.parse(await response.json()) : undefined,
-        };
-    }
+		const requestInit: RequestInit = {
+			method: this.m_requestMethod,
+			cache: "no-cache",
+			headers: {
+				'Accept': 'application/json, text/javascript, */*',
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			credentials: 'include'
+		}
+
+		if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
+
+            const params = Object
+                .keys(requestData)
+                .map((key) => {
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(requestData[key]);
+                })
+                .join('&');
+
+                requestInit.body = params;
+		}
+
+        const response = await fetch(this.m_url, requestInit);
+
+        const jsonResponse = response.ok ? await response.json() : undefined;
+
+        const payload: TResponse = typeof jsonResponse !== "undefined" ? jsonResponse?.data as TResponse : undefined;
+		
+		return {
+			success: jsonResponse.success,
+			payload,
+		};
+	}
 }

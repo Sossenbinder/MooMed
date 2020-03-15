@@ -3,45 +3,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using MooMed.Common.Definitions.Database.Entities;
+using MooMed.Common.Database.Repository;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Core.DataTypes;
 using MooMed.Module.Accounts.Database;
+using MooMed.Module.Accounts.Datatypes.Entity;
+using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-    public class AccountValidationDataHelper
+    public class AccountValidationDataHelper : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountValidationEntity>, IAccountValidationDataHelper
     {
 	    [NotNull]
 	    private readonly AccountDbContextFactory m_accountDbContextFactory;
 
-	    public AccountValidationDataHelper([NotNull] AccountDbContextFactory accountDbContextFactory)
+	    public AccountValidationDataHelper([NotNull] AccountDbContextFactory accountDbContextFactory) 
+		    : base(accountDbContextFactory)
 	    {
 		    m_accountDbContextFactory = accountDbContextFactory;
 	    }
-
-        /// <summary>
-        /// Adds a new validation key for a given account
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <returns></returns>
-        [ItemNotNull]
-        public async Task<AccountValidationDbModel> CreateEmailValidationKey(int accountId)
-        {
-            var accountEmailValidationDbModel = new AccountValidationDbModel()
-            {
-                AccountId = accountId,
-                ValidationGuid = Guid.NewGuid()
-            };
-
-            using(var ctx = m_accountDbContextFactory.CreateContext())
-            {
-                ctx.AccountEmailValidation.Add(accountEmailValidationDbModel);
-                await ctx.SaveChangesAsync();
-            }
-
-            return accountEmailValidationDbModel;
-        }
 
         /// <summary>
         /// Check the given validation token for an account and update it's validation status if it should be okaY
@@ -50,7 +30,7 @@ namespace MooMed.Module.Accounts.Repository
         /// <returns>Result whether the accountValidation was successful</returns>
         public async Task<AccountValidationResult> CheckAndUpdateValidation([NotNull] AccountValidationTokenData accountValidationTokenData)
         {
-            using(var ctx = m_accountDbContextFactory.CreateContext())
+	        await using(var ctx = m_accountDbContextFactory.CreateContext())
             {
                 var candidate = await ctx.AccountEmailValidation
 	                .Where(val => val.AccountId == accountValidationTokenData.AccountId)

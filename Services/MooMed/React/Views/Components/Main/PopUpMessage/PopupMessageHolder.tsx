@@ -5,46 +5,36 @@ import { PopUpNotification } from "definitions/PopUpNotificationDefinitions";
 
 import PopUpMessage from "./PopUpMessage";
 
-interface IProps {
-    PopUpMessages: Array<PopUpNotification>;
-}
-
-interface IState {
-
+type Props = {
+    popupMessages: Array<PopUpNotification>;
 }
 
 //Move partial into this and listen to posts inside
-class PopUpMessageHolderImpl extends React.Component<IProps, IState> {
+export const PopUpMessageHolder: React.FC<Props> = ({ popupMessages }) => {
 
-    render() {
-        let popUpMessages = [];
-
-        this.props.PopUpMessages.forEach(popUp => {
-            popUpMessages.push(
-                <PopUpMessage
-					PopUpNotification={popUp}
-					key={popUp.Id}
-                />
-            );
-        });
-
-        return (
-            <div className="popUpMessageHolderContainer">
-                <div className="popUpMessageHolder">
-                    {popUpMessages}
-                </div>
-            </div>
+    const popupMessageRenders = React.useMemo(() => {
+        return popupMessages?.map((msg, index) => 
+            <PopUpMessage
+                popupNotification={msg}
+                key={index}
+            />
         );
-    }
+    }, [popupMessages]);
+    
+    return (
+        <div className="popUpMessageHolderContainer">
+            <div className="popUpMessageHolder">
+                {popupMessageRenders}
+            </div>
+        </div>
+    );
 }
 
 
 const mapStateToProps = state => {
     return {
-        PopUpMessages: state.popUpNotificationReducer.popUpNotifications
+        popupMessages: state.popUpNotificationReducer.popUpNotifications
     };
 }
 
-const PopUpMessageHolder = connect(mapStateToProps)(PopUpMessageHolderImpl);
-
-export default PopUpMessageHolder;
+export default connect(mapStateToProps)(PopUpMessageHolder);

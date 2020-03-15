@@ -21,17 +21,17 @@ namespace MooMed.Stateful.ProfilePictureService.Remoting
 			: base(statefulCollectionInfoProvider, 
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				DeployedService.ProfilePictureService)
+				StatefulSet.ProfilePictureService)
 		{
 		}
 
 		public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] IAsyncEnumerable<byte[]> pictureStream, CallContext callContext)
 			=> Invoke(1, service => service.ProcessUploadedProfilePicture(pictureStream, callContext));
 
-		public Task<string> GetProfilePictureForAccountById(Primitive<int> accountId)
+		public Task<ServiceResponse<string>> GetProfilePictureForAccountById(Primitive<int> accountId)
 			=> InvokeOnRandomReplica(service => service.GetProfilePictureForAccountById(accountId));
 
-		public Task<string> GetProfilePictureForAccount(ISessionContext sessionContext)
+		public Task<ServiceResponse<string>> GetProfilePictureForAccount(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.GetProfilePictureForAccount(sessionContext));
 	}
 }

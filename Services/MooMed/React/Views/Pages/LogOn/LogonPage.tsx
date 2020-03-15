@@ -14,19 +14,26 @@ export default class LogonPage extends React.Component {
     render() {
         return (
             <Flex 
-                direction="Column"
-                className="logOnContentContainer">
+                space={"Between"}
+                direction={"Column"}
+                className={"logOnContentContainer"}>
                 <PopUpMessageHolder />
-                <Flex className="mooMedLogoContainer">
-                    <Flex className="mooMedLogo">
+                <Flex className={"mooMedLogoContainer"}>
+                    <Flex className={"mooMedLogo"}>
                         MooMed
                     </Flex>
                 </Flex>
-                <Flex className="signUpLoginContainer">
-                    <SignIn />
+                <Flex
+                    direction={"Row"}
+                    mainAlign={"End"}>
+                    <Flex className={"signUpLoginContainer"}>
+                        <SignIn />
+                    </Flex>
                 </Flex>
-                <Flex 
-                    crossAlign="End">
+                <Flex
+                    direction={"Row"}
+                    mainAlign={"End"}
+                    className={"languagePicker"}>
                     <LanguagePicker />
                 </Flex>
             </Flex>

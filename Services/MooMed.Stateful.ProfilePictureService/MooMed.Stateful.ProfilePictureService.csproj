@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.0.0" />
+    <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Azure\MooMed.Azure.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Dns\MooMed.Dns.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
   </ItemGroup>
 

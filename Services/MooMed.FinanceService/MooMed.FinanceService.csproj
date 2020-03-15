@@ -18,10 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MooMed.Module.Finance\MooMed.Module.Finance.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Dns\MooMed.Dns.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+    <ProjectReference Include="..\..\Modules\MooMed.Module.Finance\MooMed.Module.Finance.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,7 +17,7 @@ namespace MooMed.IPC.EndpointResolution
 	    private readonly IGrpcChannelProvider m_grpcChannelProvider;
 
         [NotNull]
-        private readonly ConcurrentDictionary<DeployedService, ConcurrentDictionary<int, Task<IGrpcService>>> m_grpcClientDictionary;
+        private readonly ConcurrentDictionary<StatefulSet, ConcurrentDictionary<int, Task<IGrpcService>>> m_grpcClientDictionary;
 
         public GrpcClientProvider([NotNull] IGrpcChannelProvider grpcChannelProvider)
         {
@@ -25,23 +25,23 @@ namespace MooMed.IPC.EndpointResolution
 
             m_grpcChannelProvider = grpcChannelProvider;
 
-	        m_grpcClientDictionary = new ConcurrentDictionary<DeployedService, ConcurrentDictionary<int, Task<IGrpcService>>>();
+	        m_grpcClientDictionary = new ConcurrentDictionary<StatefulSet, ConcurrentDictionary<int, Task<IGrpcService>>>();
         }
 
-        public async Task<TService> GetGrpcClientAsync<TService>(DeployedService deployedService, int channelNumber)
+        public async Task<TService> GetGrpcClientAsync<TService>(StatefulSet statefulSet, int replicaNr)
 	        where TService : class, IGrpcService
 		{
-	        var grpcServiceDict = m_grpcClientDictionary.GetOrAdd(deployedService, service => new ConcurrentDictionary<int, Task<IGrpcService>>());
+	        var grpcServiceDict = m_grpcClientDictionary.GetOrAdd(statefulSet, service => new ConcurrentDictionary<int, Task<IGrpcService>>());
 
-	        var grpcService = await grpcServiceDict.GetOrAdd(channelNumber, channelNr => CreateNewGrpcService<TService>(deployedService, channelNr));
+	        var grpcService = await grpcServiceDict.GetOrAdd(replicaNr, newReplicaNr => CreateNewGrpcService<TService>(statefulSet, newReplicaNr));
 
 	        return grpcService as TService;
         }
 
-        private async Task<IGrpcService> CreateNewGrpcService<TService>(DeployedService deployedService, int channelNumber)
+        private async Task<IGrpcService> CreateNewGrpcService<TService>(StatefulSet statefulSet, int channelNumber)
 			where TService : class, IGrpcService
         {
-	        var grpcChannel = await m_grpcChannelProvider.GetGrpcChannelForService(deployedService, channelNumber);
+	        var grpcChannel = await m_grpcChannelProvider.GetGrpcChannelForService(statefulSet, channelNumber);
 
 	        return grpcChannel.CreateGrpcService<TService>();
         }

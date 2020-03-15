@@ -19,10 +19,10 @@ namespace MooMed.Common.ServiceBase.Interface
 
 		[OperationContract]
 		[NotNull]
-		Task<string> GetProfilePictureForAccountById([NotNull] Primitive<int> accountId);
+		Task<ServiceResponse<string>> GetProfilePictureForAccountById([NotNull] Primitive<int> accountId);
 
 		[OperationContract]
 		[NotNull]
-        Task<string> GetProfilePictureForAccount(ISessionContext sessionContext);
+        Task<ServiceResponse<string>> GetProfilePictureForAccount(ISessionContext sessionContext);
     }
 }

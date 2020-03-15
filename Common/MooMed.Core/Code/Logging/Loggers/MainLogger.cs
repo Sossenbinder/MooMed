@@ -4,7 +4,6 @@ using Microsoft.WindowsAzure.Storage;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Core.Code.Configuration.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
-using MooMed.Core.Code.Logging.LogManagement.Interface;
 using Serilog;
 using Serilog.Context;
 
@@ -25,20 +24,47 @@ namespace MooMed.Core.Code.Logging.Loggers
 				.Async(logConfig =>
 				{
 					logConfig.Console();
-					logConfig.AzureTableStorage(storage);
+					logConfig.AzureTableStorage(storage, storageTableName: "Logs");
 				})
 				.CreateLogger();
 		}
 
-		public void Info(string message, ISessionContext sessionContext) => LogWithSessionContext(message, m_logger.Information, sessionContext);
+		public void Info(string message)
+			=> LogWithOutSessionContext(message, m_logger.Information);
 
-		public void Warning(string message, ISessionContext sessionContext) => LogWithSessionContext(message, m_logger.Warning, sessionContext);
+		public void Info(string message, ISessionContext sessionContext)
+			=> LogWithSessionContext(message, m_logger.Information, sessionContext);
 
-		public void Error(string message, ISessionContext sessionContext) => LogWithSessionContext(message, m_logger.Error, sessionContext);
+		public void Debug(string message)
+			=> LogWithOutSessionContext(message, m_logger.Debug);
 
-		public void Fatal(string message, ISessionContext sessionContext) => LogWithSessionContext(message, m_logger.Fatal, sessionContext);
+		public void Debug(string message, ISessionContext sessionContext)
+			=> LogWithSessionContext(message, m_logger.Debug, sessionContext);
 
-		public void System(string message, ISessionContext sessionContext) => LogWithSessionContext(message, m_logger.Debug, sessionContext);
+		public void Warning(string message)
+			=> LogWithOutSessionContext(message, m_logger.Warning);
+
+		public void Warning(string message, ISessionContext sessionContext)
+			=> LogWithSessionContext(message, m_logger.Warning, sessionContext);
+
+		public void Error(string message)
+			=> LogWithOutSessionContext(message, m_logger.Error);
+
+		public void Error(string message, ISessionContext sessionContext)
+			=> LogWithSessionContext(message, m_logger.Error, sessionContext);
+
+		public void Fatal(string message)
+			=> LogWithOutSessionContext(message, m_logger.Fatal);
+
+		public void Fatal(string message, ISessionContext sessionContext)
+			=> LogWithSessionContext(message, m_logger.Fatal, sessionContext);
+
+		private void LogWithOutSessionContext(
+			[NotNull] string message,
+			[NotNull] Action<string> logAction)
+		{
+			logAction(message);
+		}
 
 		private void LogWithSessionContext(
 			[NotNull] string message, 

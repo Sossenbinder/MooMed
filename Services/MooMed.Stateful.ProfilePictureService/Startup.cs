@@ -5,6 +5,7 @@ using MooMed.AspNetCore.Grpc;
 using MooMed.AspNetCore.Modules;
 using MooMed.Caching.Module;
 using MooMed.Core;
+using MooMed.Dns.Module;
 using MooMed.IPC.Module;
 using MooMed.Stateful.ProfilePictureService.Module;
 
@@ -25,6 +26,7 @@ namespace MooMed.Stateful.ProfilePictureService
 			containerBuilder.RegisterModule(new CoreModule());
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
+			containerBuilder.RegisterModule(new DnsModule());
 		}
 	}
 }

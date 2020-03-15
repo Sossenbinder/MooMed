@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -7,15 +6,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.DataTypes;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
-using ProtoBuf.Meta;
-using Serilog;
 
 namespace MooMed.Web.Controllers
 {
@@ -77,7 +72,7 @@ namespace MooMed.Web.Controllers
 
             var result = await m_accountService.Register(model);
 
-            return result.IsSuccess ? JsonResponse.Success() : JsonResponse.Error(result.RegistrationValidationResult);
+            return result.IsSuccess ? JsonResponse.Success() : JsonResponse.Error(result.PayloadOrNull);
         }
 
         [ItemNotNull]

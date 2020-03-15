@@ -1,75 +1,55 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 import { connect } from "react-redux";
+import classnames from "classnames";
 
-import { deletePopUpNotification } from "data/reducers/popUpNotificationReducer";
-
+//Components
 import { PopUpMessageLevel, PopUpNotification } from "definitions/PopUpNotificationDefinitions";
+import Flex from "Views/Components/General/Flex";
+
+// Functionality
+import { deletePopUpNotification } from "data/reducers/popUpNotificationReducer";
 
 import "Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less";
 
-interface IProps {
-    PopUpNotification: PopUpNotification;
+type Props = {
+    popupNotification: PopUpNotification;
 
     deletePopUpNotification: (notification: PopUpNotification) => void;
 }
 
-interface IState {
+export const PopUpMessage: React.FC<Props> = ({ popupNotification, deletePopUpNotification }) => {
 
-}
+    const classNames = classnames({
+        "Info": popupNotification.messageLevel === PopUpMessageLevel.Info,
+        "Warning": popupNotification.messageLevel === PopUpMessageLevel.Warning,
+        "Error": popupNotification.messageLevel === PopUpMessageLevel.Error,
+        "popUpMessageContainer": true
+    });
 
-class PopUpMessageImpl extends React.Component<IProps, IState> {
-
-    IsSelfClosing: boolean;
-
-    constructor(props) {
-        super(props);
-
-        this.IsSelfClosing = this.props.PopUpNotification.TimeToLive > 0;
-    }
-
-    componentDidUpdate() {
-        if (this.IsSelfClosing) {
+    React.useEffect(() => {
+        if (popupNotification.timeToLive > 0) {
             setTimeout(() => {
-                this._closePopUpMessage();
-            }, this.props.PopUpNotification.TimeToLive);
+                deletePopUpNotification(popupNotification);
+            }, popupNotification.timeToLive);
         }
-    }
-
-    render() {
-        let errorLevelStyle;
-
-        switch (this.props.PopUpNotification.MessageLevel) {
-            case PopUpMessageLevel.Info:
-                break;
-            case PopUpMessageLevel.Warning:
-                break;
-            case PopUpMessageLevel.Error:
-                break;
-            default:
-                errorLevelStyle = "";
-                break;
-        }
-
-        return (
-            <div className="popUpMessageContainer" style={errorLevelStyle}>
-				<div className="popUpMessageContentContainer">
-					<If condition={this.props.PopUpNotification.Heading !== undefined}>
-	                    <h4>
-	                        {this.props.PopUpNotification.Heading}
-						</h4>
-					</If>
-                    <p className="popupMessageText">
-                        {this.props.PopUpNotification.Message}
-                    </p>
-                    <div className="popUpMessageCloseBtn" onClick={this._closePopUpMessage}></div>
-                </div>
-            </div>
-        );
-    }
-
-    _closePopUpMessage = () => {
-        this.props.deletePopUpNotification(this.props.PopUpNotification);
-    }
+    }, []);
+ 
+    return (
+        <Flex className={classNames}>
+            <Flex className="popUpMessageContentContainer">
+                <If condition={popupNotification.heading !== undefined}>
+                    <h4>
+                        {popupNotification.heading}
+                    </h4>
+                </If>
+                <p className="popupMessageText">
+                    {popupNotification.message}
+                </p>
+                <div className="popUpMessageCloseBtn" onClick={() => deletePopUpNotification(popupNotification)}></div>
+            </Flex>
+        </Flex>
+    );
 }
 
 const mapDispatchToProps = dispatch => {
@@ -78,4 +58,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(PopUpMessageImpl);
+export default connect(null, mapDispatchToProps)(PopUpMessage);

@@ -8,9 +8,7 @@ namespace MooMed.IPC.EndpointResolution.Interface
 {
 	public interface IStatefulCollectionDiscovery
 	{
-		IAsyncEnumerable<(DeployedService, IStatefulCollection)> RefreshForAllStatefulSets();
-
 		[ItemNotNull]
-		Task<IStatefulCollection> GetStatefulSetInfo(DeployedService deployedService);
+		Task<IStatefulCollection> GetStatefulSetInfo(StatefulSet statefulSet, int totalReplicas = 1);
 	}
 }

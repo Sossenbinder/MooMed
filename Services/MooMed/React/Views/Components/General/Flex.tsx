@@ -29,15 +29,17 @@ enum FlexSpace {
 
 export type FlexProps = {
     className?: string;
+    styles?: React.CSSProperties;
     direction?: keyof typeof FlexDirections;
     wrap?: keyof typeof FlexWrap;
     mainAlign?: keyof typeof FlexAlign;
     crossAlign?: keyof typeof FlexAlign;
     space?: keyof typeof FlexSpace;
-    children: React.ReactNode;
+    children?: React.ReactNode;
+    onClick?: () => void;
 }
 
-export const Flex: React.FC<FlexProps> = ({ className, direction = "Row", wrap, mainAlign = "Start", crossAlign = "Start", space, children }) => {
+export const Flex: React.FC<FlexProps> = ({ className, styles, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => {}}) => {
 
     const classes = classNames({
         "flex": true,
@@ -58,7 +60,10 @@ export const Flex: React.FC<FlexProps> = ({ className, direction = "Row", wrap, 
     });
 
     return (
-        <div className={`${classes} ${className}`}>
+        <div 
+            className={`${classes} ${className}`}
+            style={styles}
+            onClick={onClick}>
             { children }
         </div>
     )

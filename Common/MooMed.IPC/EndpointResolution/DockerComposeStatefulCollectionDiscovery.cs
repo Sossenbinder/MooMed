@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Dns.Service.Interface;
 using MooMed.IPC.DataType;
 using MooMed.IPC.DataType.Docker;
 using MooMed.IPC.EndpointResolution.Interface;
@@ -12,22 +12,23 @@ namespace MooMed.IPC.EndpointResolution
 {
 	public class DockerComposeStatefulCollectionDiscovery : IStatefulCollectionDiscovery
 	{
-		public IAsyncEnumerable<(DeployedService, IStatefulCollection)> RefreshForAllStatefulSets()
+		[NotNull]
+		private readonly IDnsResolutionService m_dnsResolutionService;
+
+		public DockerComposeStatefulCollectionDiscovery([NotNull] IDnsResolutionService dnsResolutionService)
 		{
-			throw new NotImplementedException();
+			m_dnsResolutionService = dnsResolutionService;
 		}
 
-		public Task<IStatefulCollection> GetStatefulSetInfo(DeployedService deployedService)
+		public async Task<IStatefulCollection> GetStatefulSetInfo(StatefulSet statefulSet, int totalReplicas = 1)
 		{
-			var ipAddresses = Dns.GetHostEntry($"moomed.stateful.{deployedService.ToString().ToLower()}").AddressList;
-
-			var respectiveContainers = ipAddresses.Select((x, i) => new DockerContainer()
+			var ipAddress = await m_dnsResolutionService.ResolveStatefulSetReplicaToIp(statefulSet, totalReplicas);
+			
+			return new DockerStatefulSet(new List<DockerContainer>(){ new DockerContainer()
 			{
-				InstanceNumber = i,
-				IpAddress = x.ToString()
-			}).ToList();
-
-			return Task.FromResult<IStatefulCollection>(new DockerStatefulSet(respectiveContainers));
+				InstanceNumber = 0,
+				IpAddress = ipAddress.ToString()
+			}});
 		}
 	}
 }

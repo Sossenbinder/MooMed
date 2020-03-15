@@ -1,0 +1,24 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-kubewatcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: moomed-kubewatcher
+  template:
+    metadata:
+      labels:
+        name: moomed-kubewatcher
+    spec:
+      limits:
+      - max:
+          cpu: "500m"
+          memory: "1Gi"
+      containers:
+      - name: moomed-kubewatcher
+        image: kubewatcher:latest
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+        - name: acrimgpullsecret

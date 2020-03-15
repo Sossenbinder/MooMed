@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Messages.Account;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
@@ -24,7 +25,7 @@ namespace MooMed.Stateful.AccountService.Remoting
 			: base(statefulCollectionInfoProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				DeployedService.AccountService)
+				StatefulSet.AccountService)
 		{
 		}
 
@@ -34,19 +35,22 @@ namespace MooMed.Stateful.AccountService.Remoting
 		public Task RefreshLoginForAccount(Primitive<int> accountId)
 			=> InvokeOnRandomReplica(service => service.RefreshLoginForAccount(accountId));
 
-		public Task<RegistrationResult> Register(RegisterModel registerModel)
+		public Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
 			=> InvokeOnRandomReplica(service => service.Register(registerModel));
 		
-		public Task LogOff(ISessionContext sessionContext)
+		public Task<ServiceResponse> LogOff(ISessionContext sessionContext)
 			=> Invoke(sessionContext, service => service.LogOff(sessionContext));
 
-		public Task<Account> FindById(Primitive<int> accountId)
+		public Task<ServiceResponse<Account>> FindById(Primitive<int> accountId)
 			=> InvokeOnRandomReplica(service => service.FindById(accountId));
 
-		public Task<List<Account>> FindAccountsStartingWithName(string name)
+		public Task<ServiceResponse<List<Account>>> FindAccountsStartingWithName(string name)
 			=> InvokeOnRandomReplica(service => service.FindAccountsStartingWithName(name));
 
-		public Task<Account> FindByEmail(string email)
+		public Task<ServiceResponse<Account>> FindByEmail(string email)
 			=> InvokeOnRandomReplica(service => service.FindByEmail(email));
+
+		public Task<ServiceResponse> AddAsFriend(AddAsFriendMessage message)
+			=> Invoke(message, service => service.AddAsFriend(message));
 	}
 }

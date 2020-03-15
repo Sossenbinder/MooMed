@@ -22,11 +22,11 @@ namespace MooMed.Web.Controllers
 		    m_accountService = accountService;
 	    }
 
-        public async Task<ActionResult> Index([CanBeNull] string route)
+        public async Task<ActionResult> Index()
         {
             if (!Request.HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("~/Views/Logon/Landing.cshtml", new ControllerMetaData("MooMed - Logon", CurrentUiLanguage, route, null));
+                return View("~/Views/Logon/Landing.cshtml", new ControllerMetaData("MooMed - Logon", CurrentUiLanguage, null));
             }
 
             if (CurrentSession == null)
@@ -34,18 +34,7 @@ namespace MooMed.Web.Controllers
                 await m_accountService.RefreshLoginForAccount(Convert.ToInt32(User.Identity.Name));
             }
 
-            return View(new ControllerMetaData("MooMed", CurrentUiLanguage, route, null));
-        }
-        
-        /// <summary>
-        /// Route which is hit if a request comes in which is NOT known by the RouteConfig.cs, as in possibly every react-router route
-        /// </summary>
-        /// <returns></returns>
-        public Task<ActionResult> SpaFallback()
-        {
-	        var routeToForward = HttpContext.GetRouteData().Values["Path"] as string ?? "";
-
-	        return Index(routeToForward);
+            return View(new ControllerMetaData("MooMed", CurrentUiLanguage, null));
         }
     }
 }

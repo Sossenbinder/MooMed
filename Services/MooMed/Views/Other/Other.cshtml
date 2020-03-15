@@ -6,11 +6,6 @@
 }
 
 <script>
-    @if (Model.ReactRoute != null)
-    {
-        @:window.reactRoute = "@Html.Raw(Model.ReactRoute)";
-    }
-
     @if (Model.DataModel != null)
     {
         @:window.dataModel = JSON.parse('@Html.Raw(Model.DataModel)');

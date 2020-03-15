@@ -29,7 +29,8 @@ spec:
     spec:
       containers:
       - name: moomed-sessionservice
-        image: moomed.azurecr.io/sessionservice
+        image: moomed-sessionservice:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
       imagePullSecrets:

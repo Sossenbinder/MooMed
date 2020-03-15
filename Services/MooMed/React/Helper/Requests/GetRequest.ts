@@ -4,5 +4,5 @@ export default class GetRequest<TResponse, TRequest = void> extends AjaxRequest<
 
 	constructor(url: string) {
 		super(url, RequestMethods.GET);
-	}	
+	}
 }

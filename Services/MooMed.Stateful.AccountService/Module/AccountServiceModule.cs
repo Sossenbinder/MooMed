@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using MooMed.AspNetCore.Modules;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Stateful.ProfilePictureService.Remoting;
 using MooMed.Stateful.SessionService.Remoting;

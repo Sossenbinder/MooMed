@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
-using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Interface;
 using ProtoBuf;
 
@@ -27,19 +26,6 @@ namespace MooMed.Common.Definitions.Models.User
 
         [ProtoMember(6)]
         public string ProfilePicturePath { get; set; }
-
-        public AccountEntity ToEntity()
-        {
-			return new AccountEntity
-			{
-				Id = Id,
-				Email = Email,
-				UserName = UserName,
-				EmailValidated = EmailValidated,
-				LastAccessedAt = LastAccessedAt
-			};
-
-		}
     }
 
     public static class AccountExtensions

@@ -12,7 +12,7 @@ namespace MooMed.Web.Startup
                 "default",
 	            "{controller=Home}/{action=Index}/{id?}");
 
-            endpoints.MapFallbackToController("SpaFallback", "Home");
+            endpoints.MapFallbackToController("Index", "Home");
         }
     }
 }

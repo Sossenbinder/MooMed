@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
@@ -18,11 +19,11 @@ namespace MooMed.Stateful.SearchService.Remoting
 			: base(statefulCollectionInfoProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				DeployedService.SearchService)
+				StatefulSet.SearchService)
 		{
 		}
 
-			public Task<SearchResult> Search(string query)
+			public Task<ServiceResponse<SearchResult>> Search(string query)
 			=> InvokeOnRandomReplica(service => service.Search(query));
 	}
 }

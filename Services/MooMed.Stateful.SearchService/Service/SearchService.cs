@@ -4,6 +4,7 @@ using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.ServiceBase;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.Core.DataTypes;
 
 namespace MooMed.Stateful.SearchService.Service
 {
@@ -21,14 +22,16 @@ namespace MooMed.Stateful.SearchService.Service
         }
 
         [ItemNotNull]
-        public async Task<SearchResult> Search([NotNull] string query)
+        public async Task<ServiceResponse<SearchResult>> Search([NotNull] string query)
         {
+	        var accountsStartingWithNameResponse = await m_accountService.FindAccountsStartingWithName(query);
+
             var searchResult = new SearchResult
             {
-                CorrespondingUsers = await m_accountService.FindAccountsStartingWithName(query)
+                CorrespondingUsers = accountsStartingWithNameResponse.PayloadOrNull,
             };
 
-            return searchResult;
+            return ServiceResponse<SearchResult>.Success(searchResult);
         }
     }
 }

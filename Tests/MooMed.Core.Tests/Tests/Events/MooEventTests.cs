@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MooMed.Core.Code.Events;
+using MooMed.Eventing.Events;
 using MooMed.TestBase;
 using NUnit.Framework;
 

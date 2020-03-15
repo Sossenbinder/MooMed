@@ -1,4 +1,5 @@
-﻿import { Action } from "redux";
+﻿import { Account } from "modules/Account/types";
+import { Action } from "redux";
 
 export interface IAccountReducerState {
     account: Account;

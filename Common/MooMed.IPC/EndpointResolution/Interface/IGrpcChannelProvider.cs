@@ -9,6 +9,6 @@ namespace MooMed.IPC.EndpointResolution.Interface
 	/// </summary>
 	public interface IGrpcChannelProvider
 	{
-		Task<GrpcChannel> GetGrpcChannelForService(DeployedService deployedService, int channelNumber);
+		Task<GrpcChannel> GetGrpcChannelForService(StatefulSet statefulSet, int replicaNumber);
 	}
 }

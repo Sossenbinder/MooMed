@@ -120,7 +120,7 @@
   <data name="AccountEmailValidationBody" xml:space="preserve">
     <value>Hello!
 Thank you for registering your account to MooMed! Please click the following link to complete your registration:
-http://stefan-pc:8738/AccountValidation?token={{0}}</value>
+http://{{0}}/AccountValidation?token={{1}}</value>
   </data>
   <data name="AccountEmailValidationSubject" xml:space="preserve">
     <value>Please validate your MooMed account</value>

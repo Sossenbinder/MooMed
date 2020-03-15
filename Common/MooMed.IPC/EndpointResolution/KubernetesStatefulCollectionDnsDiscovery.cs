@@ -1,79 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.Dns.Service.Interface;
 using MooMed.IPC.DataType;
 using MooMed.IPC.DataType.Kubernetes;
 using MooMed.IPC.EndpointResolution.Interface;
-using MooMed.IPC.Interface;
 
 namespace MooMed.IPC.EndpointResolution
 {
 	public class KubernetesStatefulCollectionDnsDiscovery : IStatefulCollectionDiscovery
 	{
 		[NotNull]
-		private readonly IDictionary<DeployedService, (int, string)> m_kubernetesStatefulSetNameDict;
-
-		[NotNull]
-		private readonly IMainLogger m_logger;
+		private readonly IDnsResolutionService m_dnsResolutionService;
 
 		public KubernetesStatefulCollectionDnsDiscovery(
-			[NotNull] IKubernetesClientFactory kubernetesClientFactory,
-			[NotNull] IMainLogger logger)
+			[NotNull] IDnsResolutionService dnsResolutionService)
 		{
-			m_logger = logger;
-			m_kubernetesStatefulSetNameDict = new Dictionary<DeployedService, (int, string)>()
-			{
-				{ DeployedService.AccountService, (3, "moomed-accountservice")},
-				{ DeployedService.ProfilePictureService, (3, "moomed-profilepictureservice")},
-				{ DeployedService.SessionService, (3, "moomed-sessionservice")},
-			};
+			m_dnsResolutionService = dnsResolutionService;
 		}
 
-		public IAsyncEnumerable<(DeployedService, IStatefulCollection)> RefreshForAllStatefulSets()
+		public async Task<IStatefulCollection> GetStatefulSetInfo(StatefulSet statefulSet, int totalReplicas = 1)
 		{
-			throw new NotImplementedException();
-		}
+			var endpoints = await Task.WhenAll(
+				Enumerable.Range(0, totalReplicas)
+				.Select(async replicaNr =>
+				{
+					var ip = await m_dnsResolutionService.ResolveStatefulSetReplicaToIp(statefulSet, replicaNr);
 
-		public async Task<IStatefulCollection> GetStatefulSetInfo(DeployedService deployedService)
-		{
-			var metaDataForService = m_kubernetesStatefulSetNameDict[deployedService];
-
-			var endpoints = await Task.WhenAll(Enumerable.Range(0, metaDataForService.Item1)
-				.Select(x => ResolveIdToEndpoint(x, metaDataForService.Item2)));
+					return new KubernetesEndpoint()
+					{
+						InstanceNumber = replicaNr,
+						IpAddress = ip.ToString()
+					};
+				})
+			);
 
 			return new KubernetesStatefulSet(endpoints.Where(x => x != null).ToArray());
-		}
-
-		private async Task<KubernetesEndpoint> ResolveIdToEndpoint(int id, string serviceName)
-		{
-			var dnsEntryToQuery = $"{serviceName}-{id}.{serviceName}.default.svc.cluster.local";
-
-			var hostEntry = await Dns.GetHostEntryAsync(dnsEntryToQuery);
-
-			var ip = hostEntry.AddressList.FirstOrDefault();
-
-			if (ip == null)
-			{
-				m_logger.Fatal($"Failed to resolve IP for dns name {dnsEntryToQuery}", null);
-
-				return null;
-			}
-
-			m_logger.Info($"Successfully queried {serviceName}.{id} to IP {ip}", null);
-
-			var endpoint = new KubernetesEndpoint()
-			{
-				InstanceNumber = id,
-				IpAddress = ip.ToString()
-		};
-
-			return endpoint;
 		}
 	}
 }

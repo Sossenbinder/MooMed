@@ -1,16 +1,17 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 import { Link } from "react-router-dom";
 
+// Components
 import ErrorAttachedTextInput from "views/Components/General/Form/ErrorAttached/ErrorAttachedTextInput";
 import { CheckBoxToggle } from "views/Components/General/Form/CheckBoxToggle";
-
-import requestUrls from "helper/requestUrls";
-import PostRequest from "helper/requests/PostRequest";
-
-import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
-import { createPopUpMessage } from "helper/popUpMessageHelper";
 import Button from "views/components/general/form/Buttons/Button";
 
+// Functionality
+import requestUrls from "helper/requestUrls";
+import PostRequest from "helper/requests/PostRequest";
+import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
+import { createPopUpMessage } from "helper/popUpMessageHelper";
 import { IFormElement } from "definitions/Forms";
 import { LoginResponseCode } from "enums/moomedEnums";
 

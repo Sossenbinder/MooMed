@@ -11,16 +11,11 @@ namespace MooMed.Web.Controllers
     public class OtherController : BaseController
     {
         // GET: Other
-        public ActionResult Index([CanBeNull] string route)
+        public ActionResult Index()
         {
-            if (route != null)
-            {
-                ViewBag.reactRoute = route;
-            }
-
             ViewBag.lang = Enum.GetName(typeof(Language), CurrentUiLanguage);
 
-            return View("~/Views/Other/Other.cshtml", new ControllerMetaData("Other", CurrentUiLanguage, route, null));
+            return View("~/Views/Other/Other.cshtml", new ControllerMetaData("Other", CurrentUiLanguage, null));
         }
     }
 }

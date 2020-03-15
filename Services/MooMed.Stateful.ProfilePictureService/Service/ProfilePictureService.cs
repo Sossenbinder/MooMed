@@ -43,29 +43,28 @@ namespace MooMed.Stateful.ProfilePictureService.Service
             m_possibleImageExtensions = new List<string> { ".png", ".jpg" };
         }
 
-        public Task<string> GetProfilePictureForAccount([NotNull] ISessionContext sessionContext)
+        public Task<ServiceResponse<string>> GetProfilePictureForAccount([NotNull] ISessionContext sessionContext)
             => GetProfilePictureForAccountById(sessionContext.Account.Id);
 
         [ItemNotNull]
-        public async Task<string> GetProfilePictureForAccountById(Primitive<int> accountId)
+        public async Task<ServiceResponse<string>> GetProfilePictureForAccountById(Primitive<int> accountId)
         {
             if (accountId <= 0)
             {
-                return m_defaultProfilePicture;
+                return ServiceResponse<string>.Success(m_defaultProfilePicture);
             }
 
             var containerName = $"a-{accountId.Value}";
             var blobName = "80x80picture.png";
 
-
             if (!await m_cloudStorageAccessor.DoesBlobExistOnContainer(containerName, blobName))
-			{
-				return m_defaultProfilePicture;
-			}
+            {
+	            return ServiceResponse<string>.Success(m_defaultProfilePicture);
+            }
 
             var storageAccountBasePath = m_settingsProvider.ReadValueOrFail<string>("MooMed_ProfilePictures_StorageAccountUrl");
 
-            return $"{storageAccountBasePath}/{containerName}/80x80picture.png?refreshTimer={DateTime.Now.ToString(CultureInfo.InvariantCulture)}";
+            return ServiceResponse<string>.Success($"{storageAccountBasePath}/{containerName}/80x80picture.png?refreshTimer={DateTime.Now.ToString(CultureInfo.InvariantCulture)}");
         }
 
         public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(IAsyncEnumerable<byte[]> pictureStream, CallContext callContext)

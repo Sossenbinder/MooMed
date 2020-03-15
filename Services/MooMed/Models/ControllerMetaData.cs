@@ -9,8 +9,6 @@ namespace MooMed.Web.Models
 
         public Language UiLanguage { get; set; }
 
-        public string ReactRoute { get; set; }
-
         public object DataModel { get; set; }
 
         public ControllerMetaData()
@@ -18,11 +16,10 @@ namespace MooMed.Web.Models
 
         }
 
-        public ControllerMetaData(string title, Language uiLanguage, string reactRoute, object dataModel)
+        public ControllerMetaData(string title, Language uiLanguage, object dataModel)
         {
             Title = title;
             UiLanguage = uiLanguage;
-            ReactRoute = reactRoute;
             DataModel = dataModel;
         }
     }

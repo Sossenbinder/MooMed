@@ -11,7 +11,7 @@ namespace MooMed.IPC.EndpointResolution.Interface
 	public interface IGrpcClientProvider
     {
 		[ItemCanBeNull]
-        Task<TService> GetGrpcClientAsync<TService>(DeployedService deployedService, int channelNumber)
+        Task<TService> GetGrpcClientAsync<TService>(StatefulSet statefulSet, int replicaNumber)
 	        where TService : class, IGrpcService;
     }
 }

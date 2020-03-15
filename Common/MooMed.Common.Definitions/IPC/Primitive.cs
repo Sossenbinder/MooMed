@@ -3,7 +3,6 @@
 namespace MooMed.Common.Definitions.IPC
 {
 	[ProtoContract]
-	[ProtoInclude(1, typeof(int))]
 	
 	public class Primitive<T>
 	{

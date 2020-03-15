@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MooMed.AspNetCore.Modules;
+using MooMed.Eventing.Module;
 using MooMed.Grpc.Definitions.Interface;
 using ProtoBuf.Grpc.Server;
 
@@ -35,6 +36,7 @@ namespace MooMed.AspNetCore.Grpc
 		protected virtual void RegisterModules([NotNull] ContainerBuilder containerBuilder)
 		{
 			containerBuilder.RegisterModule(new GrpcModule());
+			containerBuilder.RegisterModule(new EventingModule());
 		}
 
 		protected abstract void RegisterServices([NotNull] IEndpointRouteBuilder endpointRouteBuilder);

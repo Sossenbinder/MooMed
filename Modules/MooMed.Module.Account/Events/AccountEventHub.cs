@@ -1,5 +1,5 @@
 ﻿using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Core.Code.Events;
+using MooMed.Eventing.Events;
 using MooMed.Module.Accounts.Events.Interface;
 
 namespace MooMed.Module.Accounts.Events

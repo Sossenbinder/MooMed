@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moomed-rabbitmq
+spec:
+  clusterIP: None
+  selector:
+    name: moomed-rabbitmq
+  ports:
+    - protocol: TCP
+      port: 5672
+      targetPort: 5672
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: moomed-rabbitmq
+  template:
+    metadata:
+      name: moomed-rabbitmq
+      labels:
+        name: moomed-rabbitmq
+    spec:
+      containers:
+      - name: moomed-rabbitmq
+        image: docker.io/library/rabbitmq:latest
+        imagePullPolicy: Always 
+        ports:
+        - containerPort: 5672

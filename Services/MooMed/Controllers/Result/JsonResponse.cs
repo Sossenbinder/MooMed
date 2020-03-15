@@ -9,9 +9,10 @@ namespace MooMed.Web.Controllers.Result
     {
         private readonly HttpStatusCode m_statusCode;
 
-        private JsonResponse([NotNull] object data, HttpStatusCode statusCode)
+        private JsonResponse([NotNull] object data, bool success, HttpStatusCode statusCode)
             :base(new
             {
+                success,
                 data
             })
         {
@@ -19,15 +20,15 @@ namespace MooMed.Web.Controllers.Result
         }
 
         [NotNull]
-        public static JsonResponse Success([CanBeNull] object data = null)
+        public static JsonResponse Success([CanBeNull] object data = null, bool internalSuccess = true)
         {
-            return new JsonResponse(data ?? new EmptyResult(), HttpStatusCode.OK);
+            return new JsonResponse(data ?? new EmptyResult(), internalSuccess, HttpStatusCode.OK);
         }
 
         [NotNull]
         public static JsonResponse Error([CanBeNull] object data = null)
         {
-            return new JsonResponse(data ?? new EmptyResult(), HttpStatusCode.BadRequest);
+            return new JsonResponse(data ?? new EmptyResult(), false, HttpStatusCode.BadRequest);
         }
 
         public override Task ExecuteResultAsync([NotNull] ActionContext context)

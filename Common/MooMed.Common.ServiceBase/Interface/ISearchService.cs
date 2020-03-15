@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Search;
+using MooMed.Core.DataTypes;
 using MooMed.Grpc.Definitions.Interface;
 
 namespace MooMed.Common.ServiceBase.Interface
@@ -11,6 +12,6 @@ namespace MooMed.Common.ServiceBase.Interface
     {
         [OperationContract]
         [NotNull]
-        Task<SearchResult> Search(string query);
+        Task<ServiceResponse<SearchResult>> Search(string query);
     }
 }

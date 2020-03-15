@@ -42,7 +42,7 @@ namespace MooMed.Core.Code.Helper.Crypto
 
                 m_aesHelper = new AESHelper(decryptedIv, decryptedKey);
             }
-            catch (CryptographicException exc)
+            catch (CryptographicException)
             {
 
             }

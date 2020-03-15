@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.Interface;
 using ProtoBuf;
 

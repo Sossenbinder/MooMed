@@ -1,4 +1,9 @@
 ﻿import AjaxRequest, { RequestMethods } from "./AjaxRequest"
+import { NetworkResponse } from "./Types/NetworkDefinitions";
+
+type VerificationTokenRequest = {
+	__RequestVerificationToken?: string;
+}
 
 export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TRequest, TResponse> {
 
@@ -6,45 +11,16 @@ export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TReque
 		super(url, RequestMethods.POST);
 	}
 
-	public async send(requestData?: TRequest, attachVerificationToken: boolean = true): Promise<RequestPayload<TResponse>> {
+	public async send(requestData?: TRequest, attachVerificationToken: boolean = true): Promise<NetworkResponse<TResponse>> {
 
-		let params = undefined;
+		const postData: TRequest & VerificationTokenRequest = requestData ?? ({} as TRequest & VerificationTokenRequest);
 
 		if (attachVerificationToken) {
-			if (requestData === undefined) {
-				requestData = Object.assign({});
-			}
+			const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
 
-			requestData["__RequestVerificationToken"] = $("input[name='__RequestVerificationToken']", $("#__AjaxAntiForgeryToken")).val();
+			postData.__RequestVerificationToken = tokenHolder.value;
 		}
 
-		if (requestData !== undefined) {
-			params = Object.keys(requestData).map((key) => {
-				return encodeURIComponent(key) + '=' + encodeURIComponent(requestData[key]);
-			}).join('&');
-		}
-
-		return fetch(this.m_url,
-			{
-				method: "POST",
-				body: params,
-				headers: {
-					'Accept': 'application/json, text/javascript, */*',
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				credentials: 'include'
-			}).then(async response => {
-				const responseJson = await response.json();
-
-				const responseJsonData = responseJson.data;
-
-				return {
-					success: response.ok,
-					errorMessage: responseJsonData.errorMessage !== undefined ? responseJsonData.errorMessage : response.statusText,
-					statusCode: response.status,
-					payload: responseJsonData.data !== "undefined" ? responseJsonData.data : responseJsonData,
-				};
-			}
-		);
+		return super.send(postData)
 	}
 }

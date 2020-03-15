@@ -8,8 +8,8 @@ namespace MooMed.IPC.EndpointResolution.Interface
 	public interface IStatefulCollectionInfoProvider
 	{
 		[ItemNotNull]
-		Task<IStatefulCollection> GetStatefulCollectionInfoForService(DeployedService deployedService);
+		Task<IStatefulCollection> GetStatefulCollectionInfoForService(StatefulSet statefulSet);
 
-		Task<int> GetAvailableReplicasForService(DeployedService deployedService);
+		Task<int> GetAvailableReplicasForService(StatefulSet statefulSet);
 	}
 }

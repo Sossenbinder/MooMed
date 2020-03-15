@@ -20,7 +20,7 @@ namespace MooMed.Stateful.AccountValidationService.Remoting
 			: base(statefulCollectionInfoProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				DeployedService.AccountValidationService)
+				StatefulSet.AccountValidationService)
 		{
 		}
 

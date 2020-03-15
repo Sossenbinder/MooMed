@@ -1,44 +1,38 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
+
+// Components
+import Flex from "Views/Components/General/Flex";
+
+// Functionality
 import { AccountValidationResult } from "enums/moomedEnums";
 
-interface IAccountValidationResponse {
+type IAccountValidationResponse = {
     AccountValidationResult: AccountValidationResult;
 }
 
-interface IProps {
+export const AccountValidationFailure: React.FC = () => {
 
-}
+    let accountValidationResponse: IAccountValidationResponse;
 
-interface IState {
-
-}
-
-export default class AccountValidationFailure extends React.Component<IProps, IState> {
-
-    _accountValidationResponse: IAccountValidationResponse;
-
-    constructor(props: IProps) {
-        super(props);
-
-        if (window["dataModel"]) {
-            this._accountValidationResponse = window["dataModel"];
-        }
+    if (window["dataModel"]) {
+        accountValidationResponse = window["dataModel"];
     }
 
-    render() {
-        return (
-            <div className="validationContainer">
-                <div className="validationContent">
-                    <h2>Account validation</h2>
-                    <p>Sadly your account could not be validated due to the following error:</p>
+    return (
+        <Flex className="validationContainer">
+            <Flex className="validationContent">
+                <h2>Account validation</h2>
+                <p>Sadly your account could not be validated due to the following error:</p>
 
-                    <p>Blablabla</p>
+                <p>Blablabla</p>
 
-                    <div className="validationBackToLoginBtnContainer">
-                        <a className="btn btn-primary validationBackToLoginBtn" href="/">Back to login</a>
-                    </div>
+                <div className="validationBackToLoginBtnContainer">
+                    <a className="btn btn-primary validationBackToLoginBtn" href="/">Back to login</a>
                 </div>
-            </div>
-        );
-    }
+            </Flex>
+        </Flex>
+    );
 }
+
+export default AccountValidationFailure;

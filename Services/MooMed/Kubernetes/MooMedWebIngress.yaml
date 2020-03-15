@@ -1,5 +1,40 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
+metadata: moomed-frontend-ingress
+---
+apiVersion: v1
+kind: Service
 metadata:
-  name: moomed-Ingress
-  annotations:
+  name: moomed-frontendservice
+spec:
+  type: LoadBalancer
+  selector:
+    name: moomed-frontendservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30522
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-frontendservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: moomed-frontendservice
+  template:
+    metadata:
+      labels:
+        name: moomed-frontendservice
+    spec:
+      containers:
+      - name: moomed-frontendservice
+        image: moomed.azurecr.io/frontendservice
+        imagePullPolicy: Always 
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: acrimgpullsecret

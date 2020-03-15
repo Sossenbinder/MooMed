@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
 using JetBrains.Annotations;
@@ -17,7 +18,7 @@ namespace MooMed.IPC.EndpointResolution
 		private readonly IStatefulCollectionInfoProvider m_statefulCollectionInfoProvider;
 
 		[NotNull]
-		private readonly Dictionary<DeployedService, Dictionary<int, GrpcChannel>> m_grpcChannels;
+		private readonly Dictionary<StatefulSet, Dictionary<int, GrpcChannel>> m_grpcChannels;
 
 		public GrpcChannelProvider([NotNull] IStatefulCollectionInfoProvider statefulCollectionInfoProvider)
 		{
@@ -25,36 +26,31 @@ namespace MooMed.IPC.EndpointResolution
 
 			m_statefulCollectionInfoProvider = statefulCollectionInfoProvider;
 
-			m_grpcChannels = new Dictionary<DeployedService, Dictionary<int, GrpcChannel>>();
+			m_grpcChannels = new Dictionary<StatefulSet, Dictionary<int, GrpcChannel>>();
 		}
 
-		public async Task<GrpcChannel> GetGrpcChannelForService(DeployedService deployedService, int channelNumber)
+		public async Task<GrpcChannel> GetGrpcChannelForService(StatefulSet statefulSet, int replicaNumber)
 		{
-			if (m_grpcChannels.TryGetValue(deployedService, out var serviceChannelDict))
+			if (m_grpcChannels.TryGetValue(statefulSet, out var serviceChannelDict))
 			{
-				if (serviceChannelDict.ContainsKey(channelNumber))
+				if (serviceChannelDict.ContainsKey(replicaNumber))
 				{
-					return serviceChannelDict[channelNumber];
+					return serviceChannelDict[replicaNumber];
 				}
 			}
 
-			await RefreshServiceChannels(deployedService);
+			await RefreshServiceChannels(statefulSet);
 
-			return m_grpcChannels[deployedService][channelNumber]; 
+			return m_grpcChannels[statefulSet][replicaNumber]; 
 		}
 
-		private async Task RefreshServiceChannels(DeployedService deployedService)
+		private async Task RefreshServiceChannels(StatefulSet statefulSet)
 		{
-			var statefulCollection = await m_statefulCollectionInfoProvider.GetStatefulCollectionInfoForService(deployedService);
+			var statefulCollection = await m_statefulCollectionInfoProvider.GetStatefulCollectionInfoForService(statefulSet);
 
-			var channelDict = new Dictionary<int, GrpcChannel>();
+			var channelDict = statefulCollection.StatefulEndpoints.ToDictionary(x => x.InstanceNumber, x => GrpcChannel.ForAddress($"http://{x.IpAddress}:10042"));
 
-			foreach (var pod in statefulCollection.StatefulEndpoints)
-			{
-				channelDict.Add(pod.InstanceNumber, GrpcChannel.ForAddress($"http://{pod.IpAddress}:10042"));
-			}
-
-			m_grpcChannels[deployedService] = channelDict;
+			m_grpcChannels[statefulSet] = channelDict;
 		}
 	}
 }

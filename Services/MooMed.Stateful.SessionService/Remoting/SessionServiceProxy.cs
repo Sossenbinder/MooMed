@@ -21,7 +21,7 @@ namespace MooMed.Stateful.SessionService.Remoting
 			: base(statefulCollectionInfoProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				DeployedService.SessionService)
+				StatefulSet.SessionService)
 		{
 		}
 

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+    <PackageReference Include="MassTransit" Version="6.2.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="6.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\MooMed.Dns\MooMed.Dns.csproj" />
+  </ItemGroup>
+
+</Project>

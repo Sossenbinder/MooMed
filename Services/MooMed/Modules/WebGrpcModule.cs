@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using MooMed.AspNetCore.Modules;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.DependencyInjection.Extensions;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;
@@ -15,25 +16,11 @@ namespace MooMed.Web.Modules
 		{
 			base.Load(builder);
 
-			builder.RegisterType<AccountServiceProxy>()
-				.As<IAccountService>()
-				.SingleInstance();
-
-			builder.RegisterType<AccountValidationServiceProxy>()
-				.As<IAccountValidationService>()
-				.SingleInstance();
-
-			builder.RegisterType<ProfilePictureServiceProxy>()
-				.As<IProfilePictureService>()
-				.SingleInstance();
-
-			builder.RegisterType<SearchServiceProxy>()
-				.As<ISearchService>()
-				.SingleInstance();
-
-			builder.RegisterType<SessionServiceProxy>()
-				.As<ISessionService>()
-				.SingleInstance();
+			builder.RegisterGrpcService<IAccountService, AccountServiceProxy>();
+			builder.RegisterGrpcService<IAccountValidationService, AccountValidationServiceProxy>();
+			builder.RegisterGrpcService<IProfilePictureService, ProfilePictureServiceProxy>();
+			builder.RegisterGrpcService<ISearchService, SearchServiceProxy>();
+			builder.RegisterGrpcService<ISessionService, SessionServiceProxy>();
 		}
 	}
 }

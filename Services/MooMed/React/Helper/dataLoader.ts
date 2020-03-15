@@ -1,20 +1,17 @@
-﻿import * as $ from "jquery";
+﻿// Functionality
 import { addAccount } from "data/reducers/accountReducer";
-
-import requestUrls from "./requestUrls";
-
 import { store } from "data/store";
+import renderMainView from "views/Pages/Home/Main";
+import useServices from "hooks/useServices";
 
-import renderMainView from "views/Pages/MainPage/Main";
-import GetRequest from "helper/requests/GetRequest";
+export const init = async () => {
+    
+    const { AccountService } = useServices();
 
-$(async () => {
+    const account = await AccountService.getOwnAccount();
 
-	const request = new GetRequest<any>(requestUrls.account.getAccount);
-	const response = await request.send();
-
-	if (response.success) {
-		store.dispatch(addAccount(response.payload.data));
-		renderMainView();
-	}
-});
+    if (account) {
+        store.dispatch(addAccount(account));
+        renderMainView();
+    }
+};

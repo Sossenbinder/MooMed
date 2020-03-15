@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Database.Context;
-using MooMed.Common.Database.Converter;
 using MooMed.Common.Database.Repository.Interface;
 using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Database.Repository
 {
-	public abstract class AbstractCrudRepository<TContextFactory, TDbContext, TModel, TEntity> : ICrudRepository<TEntity> 
-		where TModel : class, IModel
+	public abstract class AbstractCrudRepository<TContextFactory, TDbContext, TEntity> : ICrudRepository<TEntity> 
 		where TEntity : class, IEntity 
 		where TContextFactory : AbstractDbContextFactory<TDbContext>
 		where TDbContext : AbstractDbContext
@@ -34,7 +32,7 @@ namespace MooMed.Common.Database.Repository
 
 		[NotNull]
 		public Task<bool> Create(TEntity entity)
-			=> RunInContextAndCommit(set => set.AddAsync(entity).AsTask());
+			=> RunInContextAndCommit(async set => await set.AddAsync(entity));
 
 		[NotNull]
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate)
@@ -76,7 +74,7 @@ namespace MooMed.Common.Database.Repository
 			return await dbFunc(ctx.Set<TEntity>());
 		}
 
-		private async Task<bool> RunInContextAndCommit([NotNull] Func<DbSet<TEntity>, Task> contextFunc)
+		private async Task<bool> RunInContextAndCommit([NotNull] Func<DbSet<TEntity>, ValueTask> contextFunc)
 		{
 			await using var ctx = m_contextFactory.CreateContext();
 			await contextFunc(ctx.Set<TEntity>());

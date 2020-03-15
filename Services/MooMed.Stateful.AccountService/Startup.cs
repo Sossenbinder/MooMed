@@ -5,8 +5,10 @@ using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core;
+using MooMed.DependencyInjection.Extensions;
+using MooMed.Dns.Module;
 using MooMed.IPC.Module;
-using MooMed.Module.Accounts;
+using MooMed.Module.Accounts.Module;
 using MooMed.Stateful.AccountService.Module;
 using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;
@@ -25,23 +27,16 @@ namespace MooMed.Stateful.AccountService
 		{
 			base.RegisterModules(containerBuilder);
 
-			containerBuilder.RegisterModule(new AccountServiceBindings());
+			containerBuilder.RegisterModule(new AccountModule());
 			containerBuilder.RegisterModule(new CoreModule());
 			containerBuilder.RegisterModule(new AccountServiceModule());
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
+			containerBuilder.RegisterModule(new DnsModule());
 
-			containerBuilder.RegisterType<ProfilePictureServiceProxy>()
-				.As<IProfilePictureService>()
-				.SingleInstance();
-
-			containerBuilder.RegisterType<SessionServiceProxy>()
-				.As<ISessionService>()
-				.SingleInstance();
-
-			containerBuilder.RegisterType<AccountValidationServiceProxy>()
-				.As<IAccountValidationService>()
-				.SingleInstance();
+			containerBuilder.RegisterGrpcService<IProfilePictureService, ProfilePictureServiceProxy>();
+			containerBuilder.RegisterGrpcService<ISessionService, SessionServiceProxy>();
+			containerBuilder.RegisterGrpcService<IAccountValidationService, AccountValidationServiceProxy>();
 		}
 	}
 }

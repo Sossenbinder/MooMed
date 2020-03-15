@@ -5,17 +5,12 @@ namespace MooMed.Web.Controllers.Result
 {
     public static class ServiceResponseFrontendExtensions
     {
-        [NotNull]
-        public static JsonResponse ToJsonResponse<TPayload>([NotNull] this ServiceResponse<TPayload> serviceResponse)
-		{
-			var serviceResponseObj = new ServiceResponseFrontendContainer<TPayload>
-			{
-				Success = serviceResponse.IsSuccess,
-				Data = serviceResponse.PayloadOrNull,
-				ErrorMessage = serviceResponse.ErrorMessage?.Message
-			};
+	    [NotNull]
+	    public static JsonResponse ToJsonResponse([NotNull] this ServiceResponse serviceResponse)
+		    => JsonResponse.Success(serviceResponse.IsSuccess);
 
-			return JsonResponse.Success(serviceResponseObj);
-		}
+		[NotNull]
+	    public static JsonResponse ToJsonResponse<TPayload>([NotNull] this ServiceResponse<TPayload> serviceResponse)
+		    => JsonResponse.Success(serviceResponse.PayloadOrNull, serviceResponse.IsSuccess);
     }
 }

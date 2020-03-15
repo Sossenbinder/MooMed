@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Common.Database.Converter;
-using MooMed.Common.Definitions;
-using MooMed.Common.Definitions.Database.Entities;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Messages.Account;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
-using MooMed.Core.Translations;
 using MooMed.Module.Accounts.Events.Interface;
-using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
-using ProtoBuf.Grpc;
+using MooMed.Module.Accounts.Repository.Interface;
+using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Stateful.AccountService.Service
 {
@@ -28,7 +26,7 @@ namespace MooMed.Stateful.AccountService.Service
         private readonly IAccountSignInService m_accountSignInService;
 
         [NotNull]
-        private readonly AccountDataRepository m_accountDataRepository;
+        private readonly IAccountDataRepository m_accountDataRepository;
 
         [NotNull]
         private readonly IProfilePictureService m_profilePictureService;
@@ -39,14 +37,18 @@ namespace MooMed.Stateful.AccountService.Service
         [NotNull]
         private readonly IAccountValidationService m_accountValidationService;
 
+        [NotNull]
+        private readonly IFriendsService m_friendsService;
+
         public AccountService(
             [NotNull] IMainLogger logger,
             [NotNull] IAccountSignInService accountSignInService,
             [NotNull] IAccountEventHub accountEventHub,
-            [NotNull] AccountDataRepository accountDataRepository,
+            [NotNull] IAccountDataRepository accountDataRepository,
             [NotNull] IProfilePictureService profilePictureService,
             [NotNull] ISessionService sessionService,
-            [NotNull] IAccountValidationService accountValidationService)
+            [NotNull] IAccountValidationService accountValidationService,
+            [NotNull] IFriendsService friendsService)
             : base(logger)
         {
             m_accountSignInService = accountSignInService;
@@ -55,6 +57,7 @@ namespace MooMed.Stateful.AccountService.Service
             m_profilePictureService = profilePictureService;
             m_sessionService = sessionService;
             m_accountValidationService = accountValidationService;
+            m_friendsService = friendsService;
         }
         /// <summary>
         /// Login an account
@@ -73,8 +76,10 @@ namespace MooMed.Stateful.AccountService.Service
             }
 			
             var payload = loginResult.PayloadOrFail;
+            
+            var profilePictureResponse = await m_profilePictureService.GetProfilePictureForAccountById(payload.Account.Id);
 
-            payload.Account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(payload.Account.Id);
+            payload.Account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
 
             var sessionContext = await m_sessionService.LoginAccount(payload.Account);
 
@@ -92,14 +97,18 @@ namespace MooMed.Stateful.AccountService.Service
         /// <returns></returns>
         public async Task RefreshLoginForAccount(Primitive<int> accountId)
         {
-            var account = await FindById(accountId);
+            var accountResponse = await FindById(accountId);
 
-            if (account == null)
+            if (accountResponse.IsFailure)
             {
                 throw new AuthenticationException("Account logged in but could not be found");
 			}
 
-			account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(accountId);
+            var account = accountResponse.PayloadOrFail;
+
+            var profilePictureResponse = await m_profilePictureService.GetProfilePictureForAccountById(accountId);
+
+            account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
 
 			var sessionContext = await m_sessionService.LoginAccount(account);
 
@@ -114,7 +123,7 @@ namespace MooMed.Stateful.AccountService.Service
         /// <param name="registerModel">Register model of that account</param>
         /// <returns></returns>
         [ItemNotNull]
-        public async Task<RegistrationResult> Register(RegisterModel registerModel)
+        public async Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
         {
 	        var registrationResult = await m_accountSignInService.Register(registerModel);
 
@@ -128,55 +137,65 @@ namespace MooMed.Stateful.AccountService.Service
                       }));
             }
 
-            return registrationResult;
+            return ServiceResponse<RegistrationResult>.Success(registrationResult);
         }
 
-        public async Task LogOff(ISessionContext sessionContext)
+        public async Task<ServiceResponse> LogOff(ISessionContext sessionContext)
         {
             await m_accountEventHub.AccountLoggedOut.Raise(sessionContext);
+
+            return ServiceResponse.Success();
         }
 
-        [ItemCanBeNull]
-        public async Task<Account> FindById(Primitive<int> accountId)
+        public async Task<ServiceResponse<Account>> FindById(Primitive<int> accountId)
         {
             var account = (await m_accountDataRepository.FindAccount(acc => acc.Id == accountId))?.ToModel();
 
             if (account != null)
             {
-                account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(account.Id);
+                account.ProfilePicturePath = (await m_profilePictureService.GetProfilePictureForAccountById(account.Id)).PayloadOrNull;
+
+                return ServiceResponse<Account>.Success(account);
             }
 
-            return account;
+            return ServiceResponse<Account>.Failure();
         }
 
         [ItemNotNull]
-        public async Task<List<Account>> FindAccountsStartingWithName(string name)
+        public async Task<ServiceResponse<List<Account>>> FindAccountsStartingWithName(string name)
         {
             var accounts = (await m_accountDataRepository.FindAccounts(acc => acc.UserName.StartsWith(name)))
 	            .ConvertAll(accDbModel => accDbModel?.ToModel());
 
-			foreach (var account in accounts)
-            {
-                if (account != null)
-                {
-                    account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(account.Id);
-                }
-            }
+			foreach (var account in accounts.Where(account => account != null))
+			{
+				account.ProfilePicturePath = (await m_profilePictureService.GetProfilePictureForAccountById(account.Id)).PayloadOrNull;
+			}
 
-            return accounts;
+            return ServiceResponse<List<Account>>.Success(accounts);
         }
 
         [ItemCanBeNull]
-        public async Task<Account> FindByEmail(string email)
+        public async Task<ServiceResponse<Account>> FindByEmail(string email)
         {
             var account = (await m_accountDataRepository.FindAccount(acc => email.Equals(acc.Email)))?.ToModel();
 
-            if (account != null)
+            if (account == null)
             {
-                account.ProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccountById(account.Id);
+	            return ServiceResponse<Account>.Failure();
             }
 
-            return account;
+            account.ProfilePicturePath = (await m_profilePictureService.GetProfilePictureForAccountById(account.Id)).PayloadOrNull;
+
+            return ServiceResponse<Account>.Success(account);
+
+        }
+
+        public async Task<ServiceResponse> AddAsFriend(AddAsFriendMessage message)
+        {
+	        var addResult = await m_friendsService.AddFriend(message.SessionContext, message.AccountId);
+
+            return addResult ? ServiceResponse.Success() : ServiceResponse.Failure();
         }
     }
 }
