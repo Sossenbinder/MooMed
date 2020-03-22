@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using JetBrains.Annotations;
 using MooMed.Common.Database.Converter;
+using MooMed.Common.Definitions.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Datatypes.Entity;
@@ -67,6 +68,10 @@ namespace MooMed.Module.Accounts.Module
 
             builder.RegisterType<AccountDbConverter>()
 	            .As<IModelConverter<Account, AccountEntity>, IBiDirectionalDbConverter<Account, AccountEntity>>()
+	            .SingleInstance();
+
+            builder.RegisterType<FriendsMappingDbConverter>()
+	            .As<IModelConverter<Friend, AccountEntity>>()
 	            .SingleInstance();
 
             builder.RegisterType<RegisterModelAccountDbConverter>()

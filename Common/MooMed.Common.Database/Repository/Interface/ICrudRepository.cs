@@ -14,6 +14,8 @@ namespace MooMed.Common.Database.Repository.Interface
 
 		Task<List<TEntity>> Read([NotNull] Expression<Func<TEntity, bool>> predicate);
 
+		Task<List<TEntity>> Read([NotNull] Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes);
+
 		Task Update(TEntity newItem, Action<TEntity> updateFunc);
 
 		Task Delete([NotNull] TEntity model);

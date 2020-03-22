@@ -23,7 +23,7 @@ namespace MooMed.Module.Finance.Service
 
 		public void Start()
 		{
-			Task.Run(GetEtfs);
+			//Task.Run(GetEtfs);
 		}
 	}
 }

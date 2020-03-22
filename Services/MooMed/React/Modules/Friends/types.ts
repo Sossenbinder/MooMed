@@ -1,7 +1,7 @@
 export type Friend = {
-    userName: string;
-    email: string;
-    profilePicturePath: string;
-    lastAccessedAt: Date;
-    id: number;
+	id: number;
+	userName: string;
+	email: string;
+	lastAccessedAt: Date;
+	profilePicturePath: string;
 }

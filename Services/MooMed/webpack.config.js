@@ -36,6 +36,9 @@ module.exports = {
 			}
 		]
     },
+    plugins: [
+        //new CheckerPlugin()
+    ],
 	resolve: {
 		extensions: [".tsx", ".ts", ".js", ".jsx"],
 		plugins: [new TsconfigPathsPlugin({configFile: "./tsconfig.json"})],

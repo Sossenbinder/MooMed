@@ -10,7 +10,7 @@ export async function addFriend(friendId: number) {
 }
 
 export async function getFriends() {
-    const request = new GetRequest<Friend>("/Friends/GetFriends");
+    const request = new PostRequest<void, Array<Friend>>("/Friends/GetFriends");
 
     return await request.send();    
 }

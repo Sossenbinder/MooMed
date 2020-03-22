@@ -28,7 +28,7 @@ export function addPopUpNotification(popUpNotification: PopUpNotification): AddP
     return {
         type: POPUPNOTIFICATION_ADD,
         popUpNotification: popUpNotification
-    };;
+    };
 }
 
 export function deletePopUpNotification(popUpNotification: PopUpNotification): DeletePopUpNotification {

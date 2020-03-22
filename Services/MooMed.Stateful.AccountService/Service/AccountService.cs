@@ -197,5 +197,12 @@ namespace MooMed.Stateful.AccountService.Service
 
             return addResult ? ServiceResponse.Success() : ServiceResponse.Failure();
         }
+
+        public async Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
+        {
+            var friends = await m_friendsService.GetFriends(sessionContext);
+
+            return ServiceResponse<List<Friend>>.Success(friends);
+        }
     }
 }

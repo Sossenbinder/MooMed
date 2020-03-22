@@ -44,5 +44,8 @@ namespace MooMed.Common.ServiceBase.Interface
 
         [OperationContract]
         Task<ServiceResponse> AddAsFriend([NotNull] AddAsFriendMessage message);
+
+        [OperationContract]
+        Task<ServiceResponse<List<Friend>>> GetFriends([NotNull] ISessionContext sessionContext);
     }
 }

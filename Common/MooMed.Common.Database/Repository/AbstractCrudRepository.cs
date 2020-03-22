@@ -39,6 +39,22 @@ namespace MooMed.Common.Database.Repository
 			=> RunInContextWithResult(dbSet => dbSet.Where(predicate).ToListAsync());
 
 		[NotNull]
+		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes)
+		{
+			return RunInContextWithResult(async dbSet =>
+			{
+				var query = dbSet
+					.Where(predicate);
+
+				query = foreignIncludes.Aggregate(
+					query, 
+					(current, foreignInclude) => current.Include(foreignInclude));
+
+				return await query.ToListAsync();
+			});
+		}
+
+		[NotNull]
 		public Task Update(TEntity newEntity, Action<TEntity> updateFunc)
 			=> RunInContextAndCommit(async set =>
 			{

@@ -9,7 +9,6 @@ export interface IAccountService {
 
 export interface IFriendsService {
     addFriend(friendId: number): Promise<void>;
-    getFriends(): Promise<Array<Friend>>;
 }
 
 export interface ISearchService {

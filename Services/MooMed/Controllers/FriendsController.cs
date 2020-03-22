@@ -26,9 +26,11 @@ namespace MooMed.Web.Controllers
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		public Task<ActionResult> GetFriends()
+		public async Task<ActionResult> GetFriends()
 		{
-			return Task.FromResult(null as ActionResult);
+			var getFriendsResponse = await m_accountService.GetFriends(CurrentSessionOrFail);
+
+			return getFriendsResponse.ToJsonResponse();
 		}
 
 		[ItemNotNull]

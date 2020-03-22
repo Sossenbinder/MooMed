@@ -9,13 +9,17 @@ import FriendsService from "modules/Friends/Service/FriendsService";
 
 window.onload = async () => {
     
-    initServices();
+    await initServices();
 
     await dataLoader.init();
 }
 
-const initServices = () => {
-    services.SearchService = new SearchService();
-    services.AccountService = new AccountService();
-    services.FriendsService = new FriendsService();
+const initServices = async () => {
+	services.SearchService = new SearchService();
+	
+	services.AccountService = new AccountService();
+	
+	const friendsService = new FriendsService();
+	await friendsService.start();
+	services.FriendsService = friendsService;
 }

@@ -52,5 +52,8 @@ namespace MooMed.Stateful.AccountService.Remoting
 
 		public Task<ServiceResponse> AddAsFriend(AddAsFriendMessage message)
 			=> Invoke(message, service => service.AddAsFriend(message));
+
+		public Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
+			=> Invoke(sessionContext, service => service.GetFriends(sessionContext));
 	}
 }
