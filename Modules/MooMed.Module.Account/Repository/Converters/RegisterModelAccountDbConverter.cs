@@ -5,7 +5,7 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Converters
 {
-	public class RegisterModelAccountDbConverter : IEntityConverter<RegisterModel, AccountEntity>
+	public class RegisterModelAccountDbConverter : IEntityConverter<RegisterModel, AccountEntity, int>
 	{
 		public AccountEntity ToEntity(RegisterModel model)
 		{

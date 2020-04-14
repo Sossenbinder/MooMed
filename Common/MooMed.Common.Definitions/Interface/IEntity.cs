@@ -1,10 +1,14 @@
-﻿using JetBrains.Annotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using JetBrains.Annotations;
 
 namespace MooMed.Common.Definitions.Interface
 {
-	public interface IEntity
+	public interface IEntity<TKeyType>
 	{
 		[NotNull]
-		string GetKey();
+		[Key]
+		[Column("Id")]
+		public TKeyType Id { get; set; }
 	}
 }

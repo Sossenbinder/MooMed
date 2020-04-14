@@ -6,6 +6,7 @@ using MooMed.Caching.Module;
 using MooMed.Core;
 using MooMed.Dns.Module;
 using MooMed.IPC.Module;
+using MooMed.Module.Accounts.Module;
 using MooMed.Stateful.SessionService.Module;
 
 namespace MooMed.Stateful.SessionService
@@ -26,6 +27,7 @@ namespace MooMed.Stateful.SessionService
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
 			containerBuilder.RegisterModule(new DnsModule());
+			containerBuilder.RegisterModule(new AccountModule());
 		}
 	}
 }

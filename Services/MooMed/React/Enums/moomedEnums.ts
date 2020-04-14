@@ -1,4 +1,3 @@
-
 export enum LoginResponseCode {
 	None = 0,
 	Success = 1,
@@ -15,4 +14,9 @@ export enum AccountValidationResult {
 	ValidationGuidInvalid = 3,
 	TokenInvalid = 4,
 	AccountNotFound = 5,
+}
+
+export enum AccountOnlineState {
+	Offline = 0,
+	Online = 1,
 }

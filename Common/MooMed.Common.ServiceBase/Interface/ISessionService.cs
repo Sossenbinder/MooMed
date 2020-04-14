@@ -17,6 +17,10 @@ namespace MooMed.Common.ServiceBase.Interface
 
         [OperationContract]
         Task<ISessionContext> LoginAccount([NotNull] Account account);
-    }
+
+        [OperationContract]
+        [NotNull]
+        Task UpdateSessionContext([NotNull] ISessionContext sessionContext);
+	}
 }
  

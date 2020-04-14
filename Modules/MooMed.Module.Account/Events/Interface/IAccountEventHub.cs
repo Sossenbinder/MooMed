@@ -1,5 +1,5 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Common.Definitions.Models.Session.Interface;
+using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Eventing.Events;
 
 namespace MooMed.Module.Accounts.Events.Interface
@@ -7,9 +7,9 @@ namespace MooMed.Module.Accounts.Events.Interface
     public interface IAccountEventHub
     {
 	    [NotNull]
-        MooEvent<ISessionContext> AccountLoggedIn { get; }
+	    MtMooEvent<AccountLoggedInEvent> AccountLoggedIn { get; }
 
         [NotNull]
-        MooEvent<ISessionContext> AccountLoggedOut { get; }
+        MtMooEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
     }
 }

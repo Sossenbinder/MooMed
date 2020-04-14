@@ -12,19 +12,19 @@ namespace MooMed.Web.Controllers
     public class AccountController : SessionBaseController
     {
 	    [NotNull]
-	    private readonly IAccountService m_accountService;
+	    private readonly IAccountService _accountService;
 
 		[NotNull]
-		private readonly IProfilePictureService m_profilePictureService;
+		private readonly IProfilePictureService _profilePictureService;
 
 		public AccountController(
 	        [NotNull] ISessionService sessionService,
 	        [NotNull] IAccountService accountService,
 			[NotNull] IProfilePictureService profilePictureService) 
             : base(sessionService)
-		{
-			m_accountService = accountService;
-			m_profilePictureService = profilePictureService;
+		{ 
+			_accountService = accountService;
+			_profilePictureService = profilePictureService;
 		}
 
         [NotNull]
@@ -32,7 +32,7 @@ namespace MooMed.Web.Controllers
 		[HttpGet]
 		public JsonResponse GetOwnAccount()
         {
-            return JsonResponse.Success(CurrentAccount);
+            return JsonResponse.Success(CurrentAccountOrNull);
         }
 
 		[NotNull]
@@ -40,7 +40,7 @@ namespace MooMed.Web.Controllers
 		[HttpPost]
 		public async Task<JsonResponse> GetAccount(int accountId)
 		{
-			var accountResponse = await m_accountService.FindById(accountId);
+			var accountResponse = await _accountService.FindById(accountId);
 			return accountResponse.ToJsonResponse();
 		}
 
@@ -49,7 +49,7 @@ namespace MooMed.Web.Controllers
 		[ItemNotNull]
 		public async Task<JsonResponse> GetProfilePicturePath()
 		{
-			var profilePicturePath = await m_profilePictureService.GetProfilePictureForAccount(CurrentSession);
+			var profilePicturePath = await _profilePictureService.GetProfilePictureForAccount(CurrentSession);
 
 			return profilePicturePath.ToJsonResponse();
 		}

@@ -7,20 +7,15 @@ import { Route } from "react-router";
 import AboutDialog from "views/Pages/AboutDialog";
 import Profile from "modules/Account/Components/Profile/Profile";
 import ChatWidget from "views/Components/Friends/ChatWidget";
-import FriendsList from "modules/Friends/Components/FriendsList";
+import FriendsList from "modules/Friends/Components/FriendsList/FriendsList";
 import Flex from "Views/Components/General/Flex";
-
-// Functionality
-import { Account } from "modules/Account/types";
 
 import "./Styles/Home.less";
 
-type Props = {
-	account: Account;
-}
-
-const MainContent: React.FC<Props> = ({ account }) => (
-	<Flex direction={"Row"}>
+const MainContent: React.FC = () => (
+	<Flex 
+		className={"contentContainerHolder"}
+		direction={"Row"}>
 		<Flex 
 			direction={"Column"}
 			className={"contentContainer"}>
@@ -46,10 +41,4 @@ const MainContent: React.FC<Props> = ({ account }) => (
 	</Flex>
 );
 
-const mapStateToProps = state => {
-	return {
-		account: state.accountReducer.account
-	};
-}
-
-export default connect(mapStateToProps)(MainContent);
+export default MainContent;

@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.Code.Logging.Loggers;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
+using Serilog;
 
 namespace MooMed.Web.Controllers
 {
@@ -35,30 +37,31 @@ namespace MooMed.Web.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login([NotNull] LoginModel loginModel)
-        {
-	        var serviceResponse = await m_accountService.Login(loginModel);
-			
-            if (serviceResponse.IsSuccess)
-            {
-	            await HttpContext.SignInAsync(
-		            CookieAuthenticationDefaults.AuthenticationScheme,
-		            new ClaimsPrincipal(
-			            new ClaimsIdentity(
-				            new List<Claim>
-				            {
-					            new Claim(type: ClaimTypes.Name, value: serviceResponse.PayloadOrFail.Account.Id.ToString())
-				            }
-				            , "login"
-			            )
-		            ),
-		            new AuthenticationProperties()
-		            {
-			            IsPersistent = loginModel.RememberMe
-		            }
-	            );
-            }
+		{
+			var serviceResponse = await m_accountService.Login(loginModel);
 
-            return serviceResponse.ToJsonResponse();
+	        if (serviceResponse.IsSuccess)
+	        {
+		        await HttpContext.SignInAsync(
+			        CookieAuthenticationDefaults.AuthenticationScheme,
+			        new ClaimsPrincipal(
+				        new ClaimsIdentity(
+					        new List<Claim>
+					        {
+						        new Claim(type: ClaimTypes.Name,
+							        value: serviceResponse.PayloadOrFail.Account.Id.ToString())
+					        }
+					        , "login"
+				        )
+			        ),
+			        new AuthenticationProperties()
+			        {
+				        IsPersistent = loginModel.RememberMe
+			        }
+		        );
+	        }
+
+	        return serviceResponse.ToJsonResponse();
         }
 
         [ItemNotNull]

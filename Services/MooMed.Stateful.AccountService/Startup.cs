@@ -27,7 +27,7 @@ namespace MooMed.Stateful.AccountService
 		{
 			base.RegisterModules(containerBuilder);
 
-			containerBuilder.RegisterModule(new AccountModule());
+			containerBuilder.RegisterModule<InternalAccountModule>();
 			containerBuilder.RegisterModule(new CoreModule());
 			containerBuilder.RegisterModule(new AccountServiceModule());
 			containerBuilder.RegisterModule(new CachingModule());

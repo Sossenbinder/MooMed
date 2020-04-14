@@ -3,7 +3,7 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Interface
 {
-	public interface IFriendsMappingRepository : ICrudRepository<FriendsMappingEntity>
+	public interface IFriendsMappingRepository : ICrudRepository<FriendsMappingEntity, int>
 	{
 	}
 }

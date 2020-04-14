@@ -3,9 +3,9 @@ using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Database.Converter
 {
-	public interface IEntityConverter<in TModel, out TEntity>
+	public interface IEntityConverter<in TModel, out TEntity, TKeyType>
 		where TModel : IModel
-		where TEntity : IEntity
+		where TEntity : IEntity<TKeyType>
 	{
 		TEntity ToEntity([NotNull] TModel model);
 	}

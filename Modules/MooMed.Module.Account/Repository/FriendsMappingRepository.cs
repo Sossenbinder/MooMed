@@ -6,7 +6,7 @@ using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-	public class FriendsMappingRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, FriendsMappingEntity>, IFriendsMappingRepository
+	public class FriendsMappingRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, FriendsMappingEntity, int>, IFriendsMappingRepository
 	{
 		public FriendsMappingRepository([NotNull] AccountDbContextFactory contextFactory) 
 			: base(contextFactory)

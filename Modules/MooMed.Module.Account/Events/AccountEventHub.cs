@@ -1,13 +1,21 @@
-﻿using MooMed.Common.Definitions.Models.Session.Interface;
+﻿using JetBrains.Annotations;
+using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Eventing.Events;
+using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 
 namespace MooMed.Module.Accounts.Events
 {
     public class AccountEventHub : IAccountEventHub
-    {
-	    public MooEvent<ISessionContext> AccountLoggedIn { get; } = new MooEvent<ISessionContext>();
+	{
+		public MtMooEvent<AccountLoggedInEvent> AccountLoggedIn { get; }
 
-        public MooEvent<ISessionContext> AccountLoggedOut { get; } = new MooEvent<ISessionContext>();
+		public MtMooEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
+
+		public AccountEventHub([NotNull] IMassTransitEventingService massTransitEventingService)
+	    {
+			AccountLoggedIn = new MtMooEvent<AccountLoggedInEvent>("AccountLoggedIn", massTransitEventingService);
+			AccountLoggedOut = new MtMooEvent<AccountLoggedOutEvent>("AccountLoggedOut", massTransitEventingService);
+		}
     }
 }

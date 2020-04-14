@@ -33,6 +33,11 @@ namespace MooMed.Core
                 .As<IMainLogger>()
                 .SingleInstance();
 
+            builder.RegisterType<StaticLogger>()
+	            .AsSelf()
+	            .AutoActivate()
+	            .SingleInstance();
+
             builder.RegisterType<LogFileManager>()
                 .As<LogFileManager>()
                 .SingleInstance();

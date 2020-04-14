@@ -10,6 +10,8 @@ namespace MooMed.Module.Accounts.Database
 
         public DbSet<AccountValidationEntity> AccountEmailValidation { get; set; }
 
+        public DbSet<AccountOnlineStateEntity> AccountOnlineState { get; set; }
+
         public DbSet<FriendsMappingEntity> FriendsMapping { get; set; }
 
         public AccountDbContext(string connectionString) 
@@ -23,12 +25,12 @@ namespace MooMed.Module.Accounts.Database
 
 	        modelBuilder.Entity<FriendsMappingEntity>()
 		        .HasOne(fs => fs.Account)
-		        .WithMany(fs => fs.FriendsFrom)
-		        .HasForeignKey(fs => fs.AccountId);
+		        .WithMany(acc => acc.FriendsFrom)
+		        .HasForeignKey(fs => fs.Id);
 
 	        modelBuilder.Entity<FriendsMappingEntity>()
 		        .HasOne(fs => fs.Friend)
-		        .WithMany(fs => fs.FriendsTo)
+		        .WithMany(acc => acc.FriendsTo)
 		        .HasForeignKey(fs => fs.FriendId);
         }
     }

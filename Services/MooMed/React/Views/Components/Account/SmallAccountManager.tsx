@@ -7,71 +7,74 @@ import { Link } from "react-router-dom";
 import LogOff from "views/Components/Account/LogOff";
 
 // Functionality
-import { updateAccountPicture } from "data/reducers/accountReducer";
+import { ReduxStore } from "data/store";
 import ajaxPost from "helper/ajaxHelper";
 import requestUrls from "helper/requestUrls";
 import { Account } from "modules/Account/types";
+import { reducer as accountReducer } from "data/reducers/accountReducer";
 
 import "./Styles/SmallAccountManager.less";
 
 type Props = {
 	account: Account;
 
-	updateAccountPicture: (profilePicturePath: string) => any;
+	updateAccount: (account: Account) => void;
 }
 
-export const SmallAccountManager: React.FC<Props> = ({ account, updateAccountPicture}) => {
+export const SmallAccountManager: React.FC<Props> = ({ account, updateAccount}) => {
 	
 
-    const uploadPicture = React.useCallback((event: any) => {
-        const formData = new FormData();
-        const files = event.target.files;
-        if (files.length > 0) {
+	const uploadPicture = React.useCallback((event: any) => {
+		const formData = new FormData();
+		const files = event.target.files;
+		if (files.length > 0) {
 
-            formData.append("UploadedImage", files[0]);
-        }
+			formData.append("UploadedImage", files[0]);
+		}
 
-        ajaxPost({
-            actionUrl: requestUrls.profile.uploadProfilePicture,
-            uploadFile: true,
-            data: formData,
+		ajaxPost({
+			actionUrl: requestUrls.profile.uploadProfilePicture,
+			uploadFile: true,
+			data: formData,
 			onSuccess: (response) => {
-				updateAccountPicture(response.data);
-            },
-            useVerificationToken: true,
-        });
-    }, [updateAccountPicture]);
 
-    return (
-        <div className="row rounded border smallAccountManager" id="profileBlock">
-            <div id="profilePicture" className="smallAccountManagerPicture">
-                <label id="profilePictureLabel" htmlFor="smallAccountManagerPictureUploadInput" className="smallAccountManagerPictureLabel">
-                    <img src={account.profilePicturePath} alt="Profile picture" />
-                </label>
-                <input id="smallAccountManagerPictureUploadInput" onChange={uploadPicture} type="file" accept=".png,.img" />
-            </div>
-            <div className="smallAccountManagerDescription">
-                <div className="smallAccountManagerDescriptionUserName">
-                    <Link to={`/profileDetails/${account.id}`}>{account.userName}</Link>
-                </div>
-            </div>
-            <div className="smallAccountManagerLogOff">
-                <LogOff />
-            </div>
-        </div>
-    );
+				account.profilePicturePath = response.data;
+				updateAccount(account);
+			},
+			useVerificationToken: true,
+		});
+	}, [updateAccount]);
+
+	return (
+		<div className="row rounded border smallAccountManager" id="profileBlock">
+			<div id="profilePicture" className="smallAccountManagerPicture">
+				<label id="profilePictureLabel" htmlFor="smallAccountManagerPictureUploadInput" className="smallAccountManagerPictureLabel">
+					<img src={account.profilePicturePath} alt="Profile picture" />
+				</label>
+				<input id="smallAccountManagerPictureUploadInput" onChange={uploadPicture} type="file" accept=".png,.img" />
+			</div>
+			<div className="smallAccountManagerDescription">
+				<div className="smallAccountManagerDescriptionUserName">
+					<Link to={`/profileDetails/${account.id}`}>{account.userName}</Link>
+				</div>
+			</div>
+			<div className="smallAccountManagerLogOff">
+				<LogOff />
+			</div>
+		</div>
+	);
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        account: state.accountReducer.account
-    };
+const mapStateToProps = (state: ReduxStore) => {
+	return {
+		account: state.accountReducer.data[0]
+	};
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-    return {
-        updateAccountPicture: (profilePicturePath: string) => dispatch(updateAccountPicture(profilePicturePath))
-    }
+	return {
+		updateAccount: (account: Account) => dispatch(accountReducer.update(account))
+	}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SmallAccountManager);

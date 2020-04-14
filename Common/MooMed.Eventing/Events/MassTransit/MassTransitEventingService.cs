@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autofac;
+using GreenPipes;
 using JetBrains.Annotations;
 using MassTransit;
 using MooMed.Common.Definitions.IPC;
@@ -19,19 +20,31 @@ namespace MooMed.Eventing.Events.MassTransit
 		[NotNull]
 		private readonly IBusControl m_eventBus;
 
+		[NotNull]
+		private readonly IDnsResolutionService m_dnsResolutionService;
+
 		public MassTransitEventingService(
 			[NotNull] IMainLogger logger,
 			[NotNull] IDnsResolutionService dnsResolutionService)
 		{
 			m_logger = logger;
+			m_dnsResolutionService = dnsResolutionService;
 
 			m_eventBus = Bus.Factory.CreateUsingRabbitMq(async config =>
 			{
-				await RetryStrategy.DoRetry(async () =>
+				config.PurgeOnStartup = true;
+
+				await RetryStrategy.DoRetryExponential(async () =>
 				{
-					var deploymentIp = await dnsResolutionService.ResolveDeploymentToIp(Deployment.RabbitMq);
+					var deploymentIp = await dnsResolutionService.ResolveDeploymentToIp(Deployment.RabbitMqManagement);
+
+					if (deploymentIp == null)
+					{
+						throw new NullReferenceException("Couldn't resolve IP");
+					}
 					config.Host($"rabbitmq://{deploymentIp}");
-				}, retryCount =>
+
+				}, retryCount => 
 				{
 					logger.Info($"Retrying RabbitMQ setup for the {retryCount}# time");
 					return Task.CompletedTask;
@@ -60,22 +73,21 @@ namespace MooMed.Eventing.Events.MassTransit
 			return m_eventBus.Publish(message);
 		}
 
-		public void RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler)
+		private void RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler)
 			where T : class
 		{
+			// To ensure every queue is unique, add the DNS hostname to it
+			queueName = $"{queueName}_{m_dnsResolutionService.GetOwnHostName()}";
+
 			m_eventBus.ConnectReceiveEndpoint(queueName, ep =>
 			{
+				ep.UseMessageRetry(retry => retry.Exponential(
+					10, 
+					TimeSpan.FromSeconds(2), 
+					TimeSpan.FromMinutes(5), 
+					TimeSpan.FromSeconds(10)));
+
 				ep.Handler<T>(ctx => handler(ctx));
-			});
-		}
-
-		public void RegisterForEvent<T>(string queueName, Action<T> handler) where T : class
-		{
-			RegisterForEvent<T>(queueName, ctx =>
-			{
-				handler(ctx.Message);
-
-				return Task.CompletedTask;
 			});
 		}
 

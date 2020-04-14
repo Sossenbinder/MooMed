@@ -10,12 +10,22 @@ namespace MooMed.Core.Code.Logging.Loggers
 		    
 	    }
 
+	    public void Info(string message, int accountId)
+	    {
+		    
+	    }
+
 	    public void Info(string message, ISessionContext sessionContext)
 	    {
 
 	    }
 
 	    public void Debug(string message)
+	    {
+
+	    }
+
+	    public void Debug(string message, int accountId)
 	    {
 
 	    }
@@ -30,6 +40,11 @@ namespace MooMed.Core.Code.Logging.Loggers
 
 	    }
 
+	    public void Warning(string message, int accountId)
+	    {
+
+	    }
+
 	    public void Warning(string message, ISessionContext sessionContext)
         {
 
@@ -40,12 +55,22 @@ namespace MooMed.Core.Code.Logging.Loggers
 
 	    }
 
+	    public void Error(string message, int accountId)
+	    {
+
+	    }
+
 	    public void Error(string message, ISessionContext sessionContext)
 		{
 
 		}
 
 	    public void Fatal(string message)
+	    {
+
+	    }
+
+	    public void Fatal(string message, int accountId)
 	    {
 
 	    }

@@ -1,23 +1,22 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Module.Accounts.Datatypes.Entity
 {
     [Table("AccountEmailValidation")]
-    public class AccountValidationEntity : IEntity
+    public class AccountValidationEntity : IEntity<int>
     {
         [ForeignKey("AccountEntity")]
-        [Column("AccountId")]
-        public int AccountId { get; set; }
+        public int Id { get; set; }
 
+        [NotNull]
         public AccountEntity AccountEntity { get; set; }
 
         [Key]
         [Column("ValidationGuid")]
         public Guid ValidationGuid { get; set; }
-
-        public string GetKey() => AccountId.ToString();
     }
 }

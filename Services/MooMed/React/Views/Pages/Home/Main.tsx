@@ -17,7 +17,6 @@ import "./Styles/Home.less";
 const Main: React.FC = () => (
 	<Flex
 		direction={"Column"}
-		space={"Around"}
 		className={"mainContentContainer"}>
 		<NavBar />
 		<PopUpMessageHolder />

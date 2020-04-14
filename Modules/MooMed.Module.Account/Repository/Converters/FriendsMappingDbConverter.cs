@@ -1,11 +1,10 @@
-﻿using System;
-using MooMed.Common.Database.Converter;
+﻿using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Converters
 {
-	public class FriendsMappingDbConverter : IModelConverter<Friend, AccountEntity>
+	public class FriendsMappingDbConverter : IModelConverter<Friend, AccountEntity, int>
 	{
 		public Friend ToModel(AccountEntity entity)
 		{
@@ -15,6 +14,7 @@ namespace MooMed.Module.Accounts.Repository.Converters
 				Id = entity.Id,
 				LastAccessedAt = entity.LastAccessedAt,
 				UserName = entity.UserName,
+				OnlineState = entity.AccountOnlineStateEntity?.OnlineState ?? AccountOnlineState.Offline,
 			};
 		}
 	}

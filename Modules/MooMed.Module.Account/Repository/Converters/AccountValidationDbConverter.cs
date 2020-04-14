@@ -4,13 +4,13 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Converters
 {
-	public class AccountValidationDbConverter : IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity>
+	public class AccountValidationDbConverter : IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int>
 	{
 		public AccountValidationEntity ToEntity(AccountValidation model)
 		{
 			return new AccountValidationEntity()
 			{
-				AccountId = model.AccountId,
+				Id = model.AccountId,
 				ValidationGuid = model.ValidationGuid,
 			};
 		}
@@ -19,7 +19,7 @@ namespace MooMed.Module.Accounts.Repository.Converters
 		{
 			return new AccountValidation()
 			{
-				AccountId = entity.AccountId,
+				AccountId = entity.Id,
 				ValidationGuid = entity.ValidationGuid,
 			};
 		}

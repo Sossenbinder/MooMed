@@ -6,6 +6,7 @@ import { services } from "hooks/useServices";
 import SearchService from "modules/Search/Service/SearchService";
 import AccountService from "modules/Account/Service/AccountService";
 import FriendsService from "modules/Friends/Service/FriendsService";
+import NotificationService from "modules/common/Notifications/NotificationService";
 
 window.onload = async () => {
     
@@ -15,10 +16,14 @@ window.onload = async () => {
 }
 
 const initServices = async () => {
-	services.SearchService = new SearchService();
-	
+
+	const notificationService = new NotificationService();
+	await notificationService.start();
+	services.NotificationService = notificationService;
+
+	services.SearchService = new SearchService();	
 	services.AccountService = new AccountService();
-	
+
 	const friendsService = new FriendsService();
 	await friendsService.start();
 	services.FriendsService = friendsService;

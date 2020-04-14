@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace MooMed.AspNetCore.Extensions
 {
-	public static class IWebHostBuilderExtensions
+	public static class WebHostBuilderExtensions
 	{
 		[NotNull]
 		public static IWebHostBuilder ConfigureGrpc([NotNull] this IWebHostBuilder webHostBuilder, int port = 10042)

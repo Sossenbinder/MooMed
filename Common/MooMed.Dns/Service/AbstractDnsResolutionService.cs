@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
@@ -50,5 +49,10 @@ namespace MooMed.Dns.Service
 		public abstract Task<IPAddress> ResolveDeploymentToIp(Deployment deployment);
 
 		public abstract Task<IPAddress> ResolveStatefulSetReplicaToIp(StatefulSet service, int replica);
+
+		public string GetOwnHostName()
+		{
+			return System.Net.Dns.GetHostName();
+		}
 	}
 }

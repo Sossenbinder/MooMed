@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moomed-profilepictureservice
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - image: 127.0.0.1:5000/profilepictureservice
+        name: moomed-profilepictureservice

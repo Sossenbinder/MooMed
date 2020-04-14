@@ -16,14 +16,14 @@ using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-    public class AccountDataRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountEntity>, IAccountDataRepository
+    public class AccountRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountEntity, int>, IAccountRepository
     {
 	    [NotNull]
-	    private readonly IEntityConverter<RegisterModel, AccountEntity> m_registerModelToAccountConverter;
+	    private readonly IEntityConverter<RegisterModel, AccountEntity, int> m_registerModelToAccountConverter;
 
-        public AccountDataRepository(
+        public AccountRepository(
 		    [NotNull] AccountDbContextFactory contextFactory,
-		    [NotNull] IEntityConverter<RegisterModel, AccountEntity> registerModelToAccountConverter) 
+		    [NotNull] IEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter) 
 		    : base(contextFactory)
 	    {
 		    m_registerModelToAccountConverter = registerModelToAccountConverter;

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moomed-accountservice
+spec:
+  replicas: 3
+  serviceName: moomed-accountservice
+  template:
+    spec:
+      containers:
+      - image: 127.0.0.1:5000/accountservice:latest
+        name: moomed-accountservice

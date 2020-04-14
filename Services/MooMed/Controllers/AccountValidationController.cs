@@ -14,17 +14,17 @@ namespace MooMed.Web.Controllers
     public class AccountValidationController : BaseController
     {
 	    [NotNull]
-	    private readonly IAccountService m_accountService;
+	    private readonly IAccountService _accountService;
 
 	    [NotNull]
-	    private readonly IAccountValidationService m_accountValidationService;
+	    private readonly IAccountValidationService _accountValidationService;
 
 	    public AccountValidationController(
 		    [NotNull] IAccountService accountService,
 		    [NotNull] IAccountValidationService accountValidationService)
 	    {
-		    m_accountService = accountService;
-		    m_accountValidationService = accountValidationService;
+		    _accountService = accountService;
+		    _accountValidationService = accountValidationService;
 	    }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace MooMed.Web.Controllers
 
             if (token != null)
             {
-                var deserializedToken = await m_accountValidationService.DeserializeRawToken(token);
-                var account = await m_accountService.FindById(deserializedToken.AccountId);
+                var deserializedToken = await _accountValidationService.DeserializeRawToken(token);
+                var account = await _accountService.FindById(deserializedToken.AccountId);
 
                 if (account.IsFailure)
                 {
@@ -78,7 +78,7 @@ namespace MooMed.Web.Controllers
         [AllowAnonymous]
         public async Task<JsonResponse> ValidateRegistration([NotNull] AccountValidationModel accountValidationModel)
         {
-            var result = await m_accountValidationService.ValidateRegistration(accountValidationModel.AccountValidationTokenData);
+            var result = await _accountValidationService.ValidateRegistration(accountValidationModel.AccountValidationTokenData);
 
             return result.ToJsonResponse();
         }

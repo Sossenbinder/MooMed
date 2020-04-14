@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.Code.Logging.Loggers;
 
 namespace MooMed.Web.Controllers.Base
 {
@@ -31,9 +32,12 @@ namespace MooMed.Web.Controllers.Base
 	    }
 
 	    [CanBeNull]
-	    protected Account CurrentAccount => CurrentSession?.Account;
+	    protected Account CurrentAccountOrNull => CurrentSession?.Account;
 
-	    public SessionBaseController([NotNull] ISessionService sessionService)
+	    [NotNull]
+	    protected Account CurrentAccountOrFail => CurrentSession?.Account ?? throw new InvalidOperationException();
+
+		public SessionBaseController([NotNull] ISessionService sessionService)
 	    {
 		    m_sessionService = sessionService;
 	    }
@@ -51,8 +55,18 @@ namespace MooMed.Web.Controllers.Base
 	    {
 		    if (actionExecutingContext.HttpContext.IsAuthenticated())
 		    {
-				var sessionServiceResponse = await m_sessionService.GetSessionContext(Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name));
-				CurrentSession = sessionServiceResponse.PayloadOrNull;
+			    var accountId = Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name);
+				var sessionServiceResponse = await m_sessionService.GetSessionContext(accountId);
+
+				if (sessionServiceResponse.IsFailure)
+				{
+					StaticLogger.Fatal("Couldn't retrieve SessionContext.", accountId);
+				}
+				else
+				{
+					StaticLogger.Info("Retrieved SessionContext..", accountId);
+					CurrentSession = sessionServiceResponse.PayloadOrFail;
+				}
 		    }
 	    }
 	}

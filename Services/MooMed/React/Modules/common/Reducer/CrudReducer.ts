@@ -48,7 +48,6 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 						...payloadAsArray
 					],
 				};
-				debugger;
 				return newState;
 			case UPDATE_IDENTIFIER:
 				return {
@@ -63,7 +62,7 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 					...state,
 				};
 			default:
-				return initialState;
+				return state;
 		}
 	}
 

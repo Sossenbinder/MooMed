@@ -7,7 +7,7 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Interface
 {
-	public interface IAccountValidationDataHelper : ICrudRepository<AccountValidationEntity>
+	public interface IAccountValidationRepository : ICrudRepository<AccountValidationEntity, int>
 	{
 		Task<AccountValidationResult> CheckAndUpdateValidation([NotNull] AccountValidationTokenData accountValidationTokenData);
 	}

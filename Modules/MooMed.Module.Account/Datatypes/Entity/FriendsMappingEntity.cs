@@ -1,25 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Module.Accounts.Datatypes.Entity
 {
 	[Table("FriendsMapping")]
-	public class FriendsMappingEntity : IEntity
+	public class FriendsMappingEntity : IEntity<int>
 	{
-		[Key]
-		[Column("AccountId")]
-		public int AccountId { get; set; }
+		public int Id { get; set; }
 
-		[NotMapped]
-		public AccountEntity Account { get; private set; }
+		[ForeignKey("Id")]
+		public AccountEntity Account { 
+			get; 
+			[UsedImplicitly] private set;
+		}
 
 		[Column("FriendId")]
 		public int FriendId { get; set; }
 
-		[NotMapped]
-		public AccountEntity Friend { get; private set; }
-
-		public string GetKey() => AccountId.ToString();
+		[ForeignKey("FriendId")]
+		public AccountEntity Friend
+		{
+			get; 
+			[UsedImplicitly] private set;
+		}
 	}
 }

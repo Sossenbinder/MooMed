@@ -9,13 +9,13 @@ namespace MooMed.Core.Tests.Tests.Events
     [TestFixture]
     public class MooEventTests : MooMedTestBase
     {
-        private MooEvent<int> m_mooEvent;
+        private ServiceLocalMooEvent<int> m_serviceLocalMooEvent;
 
         protected override void Setup()
         {
             base.Setup();
 
-            m_mooEvent = new MooEvent<int>();
+            m_serviceLocalMooEvent = new ServiceLocalMooEvent<int>();
         }
 
         [Test]
@@ -23,9 +23,9 @@ namespace MooMed.Core.Tests.Tests.Events
         {
             var testFunc = new Func<int, Task>((args) => Task.CompletedTask);
 
-            m_mooEvent.Register(testFunc);
+            m_serviceLocalMooEvent.Register(testFunc);
 
-            Assert.NotZero(m_mooEvent.GetAllRegisteredEvents().Count);
+            Assert.NotZero(m_serviceLocalMooEvent.GetAllRegisteredEvents().Count);
         }
 
         [Test]
@@ -33,13 +33,13 @@ namespace MooMed.Core.Tests.Tests.Events
         {
             var testFunc = new Func<int, Task>((args) => Task.CompletedTask);
 
-            m_mooEvent.Register(testFunc);
+            m_serviceLocalMooEvent.Register(testFunc);
 
-            Assert.NotZero(m_mooEvent.GetAllRegisteredEvents().Count);
+            Assert.NotZero(m_serviceLocalMooEvent.GetAllRegisteredEvents().Count);
 
-            m_mooEvent.UnRegister(testFunc);
+            m_serviceLocalMooEvent.UnRegister(testFunc);
 
-            Assert.Zero(m_mooEvent.GetAllRegisteredEvents().Count);
+            Assert.Zero(m_serviceLocalMooEvent.GetAllRegisteredEvents().Count);
         }
     }
 }

@@ -48,13 +48,7 @@ services:
       context: .
       dockerfile: Services/MooMed.FinanceService/Dockerfile
 
-
-  moomedRabbitMQ:
-    container_name: moomed-rabbitmq
-    image: docker.io/library/rabbitmq:latest
-
-
-  moomedRabbitMQManagement:
+  moomed-rabbitMQManagement:
     container_name: moomedRabbitMQManagement
     image: docker.io/library/rabbitmq:3-management
     ports:

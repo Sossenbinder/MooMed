@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moomed-accountvalidationservice
+spec:
+  clusterIP: None
+  selector:
+    name: moomed-accountvalidationservice
+  ports:
+    - protocol: TCP
+      port: 16756
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moomed-accountvalidationservice
+  labels:
+    name: moomed-accountvalidationservice
+spec:
+  serviceName: moomed-accountvalidationservice
+  replicas: 3
+  selector:  
+    matchLabels:
+      name: moomed-accountvalidationservice
+  template:
+    metadata:
+      labels:
+        name: moomed-accountvalidationservice
+    spec:
+      containers:
+      - name: moomed-accountvalidationservice
+        image: moomed.azurecr.io/accountvalidationservice
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: acrimgpullsecret

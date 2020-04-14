@@ -26,7 +26,7 @@ namespace MooMed.Dns.Service
 		{
 			var statefulServiceName = service.ToString().ToLower();
 
-			var dnsEntryToQuery = $"moomed-{statefulServiceName}-{replica}.{statefulServiceName}.default.svc.cluster.local";
+			var dnsEntryToQuery = $"moomed-{statefulServiceName}-{replica}.moomed-{statefulServiceName}.default.svc.cluster.local";
 
 			return await ResolveDnsNameToIp(dnsEntryToQuery);
 		}

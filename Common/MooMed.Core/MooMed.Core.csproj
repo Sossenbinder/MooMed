@@ -60,7 +60,6 @@
   <ItemGroup>
     <Folder Include="Code\DI\" />
     <Folder Include="Code\Logging\Loggers\Helper\" />
-    <Folder Include="Code\Utils\" />
     <Folder Include="Translations\Resources\" />
   </ItemGroup>
 

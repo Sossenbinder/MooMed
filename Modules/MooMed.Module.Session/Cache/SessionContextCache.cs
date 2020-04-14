@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using MooMed.Caching.Cache.CacheImplementations;
+﻿using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
-using MooMed.Caching.Cache.UnderlyingCache.Locking;
+using MooMed.Caching.Extensions;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Module.Session.Cache.Interface;
 
@@ -20,14 +17,20 @@ namespace MooMed.Module.Session.Cache
 			m_sessionContextCache = defaultCacheFactory.CreateCache<ISessionContext>();
 		}
 
-		public void PutItem(string key, ISessionContext value, int? secondsToLive = null)
+		public void PutItem(ISessionContext sessionContext, int? secondsToLive = null)
 		{
-			m_sessionContextCache.PutItem(key, value, secondsToLive);
+			var key = sessionContext.GetAccountKey();
+			m_sessionContextCache.PutItem(key, sessionContext, secondsToLive);
 		}
 
 		public ISessionContext GetItem(string key)
 		{
 			return m_sessionContextCache.GetItem(key);
+		}
+
+		public void RemoveItem(ISessionContext sessionContext)
+		{
+			m_sessionContextCache.Remove(sessionContext.GetAccountKey());
 		}
 	}
 }

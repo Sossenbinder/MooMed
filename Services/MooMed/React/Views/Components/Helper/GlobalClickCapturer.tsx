@@ -27,8 +27,9 @@ export default class GlobalClickCapturer extends React.Component<IProps, IState>
 
 	render() {
 		return (
-			<div>
+			<div style={{height: "100%",width: "100%"}}>
 				{this.props.children}
-			</div>);
+			</div>
+		);
 	}
 }

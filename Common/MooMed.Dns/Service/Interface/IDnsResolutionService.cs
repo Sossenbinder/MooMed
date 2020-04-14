@@ -12,5 +12,7 @@ namespace MooMed.Dns.Service.Interface
 		Task<IPAddress> ResolveDeploymentToIp(Deployment deployment);
 
 		Task<IPAddress> ResolveStatefulSetReplicaToIp(StatefulSet service, int replica);
+
+		string GetOwnHostName();
 	}
 }

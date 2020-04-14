@@ -25,19 +25,19 @@ namespace MooMed.Module.Accounts.Service
         private readonly IMainLogger m_mainLogger;
 
         [NotNull]
-        private readonly IAccountDataRepository m_accountDataRepository;
+        private readonly IAccountRepository m_accountRepository;
 
         [NotNull]
-        private readonly IModelConverter<Account, AccountEntity> m_accountModelConverter;
+        private readonly IModelConverter<Account, AccountEntity, int> m_accountModelConverter;
 
         public AccountSignInService(
             [NotNull] IAccountSignInValidator accountSignInValidator,
             [NotNull] IMainLogger mainLogger,
-            [NotNull] IAccountDataRepository accountDataRepository, 
-            [NotNull] IModelConverter<Account, AccountEntity> accountModelConverter)
+            [NotNull] IAccountRepository accountRepository, 
+            [NotNull] IModelConverter<Account, AccountEntity, int> accountModelConverter)
         {
             m_accountSignInValidator = accountSignInValidator;
-            m_accountDataRepository = accountDataRepository;
+            m_accountRepository = accountRepository;
             m_accountModelConverter = accountModelConverter;
             m_mainLogger = mainLogger;
         }
@@ -54,18 +54,18 @@ namespace MooMed.Module.Accounts.Service
             }
 
             // Check if the database already has entries for given email or username
-            if (await m_accountDataRepository.FindAccount(acc => acc.Email.Equals(registerModel.Email)) != null)
+            if (await m_accountRepository.FindAccount(acc => acc.Email.Equals(registerModel.Email)) != null)
             {
                 return RegistrationResult.Failure(RegistrationValidationResult.EmailTaken);
             }
 
-            if (await m_accountDataRepository.FindAccount(acc => acc.UserName.Equals(registerModel.UserName)) != null)
+            if (await m_accountRepository.FindAccount(acc => acc.UserName.Equals(registerModel.UserName)) != null)
             {
                 return RegistrationResult.Failure(RegistrationValidationResult.UserNameTaken);
             }
 
             // Actually Create the account
-            var account = m_accountModelConverter.ToModel(await m_accountDataRepository.CreateAccount(registerModel));
+            var account = m_accountModelConverter.ToModel(await m_accountRepository.CreateAccount(registerModel));
             
             return RegistrationResult.Success(account);
         }
@@ -91,7 +91,7 @@ namespace MooMed.Module.Accounts.Service
                 return ServiceResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
             }
 
-            var account = (await m_accountDataRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email) 
+            var account = (await m_accountRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email) 
                                                                                    && accDbModel.PasswordHash.Equals(hashedPassword)))?.ToModel();
 
             if (account == null)
@@ -110,7 +110,7 @@ namespace MooMed.Module.Accounts.Service
         public async Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
         {
             m_mainLogger.Info("Refreshing login for account", sessionContext);
-            return await m_accountDataRepository.RefreshLastAccessedAt(sessionContext);
+            return await m_accountRepository.RefreshLastAccessedAt(sessionContext);
         }
     }
 }

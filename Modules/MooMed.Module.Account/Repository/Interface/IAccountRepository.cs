@@ -10,7 +10,7 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Interface
 {
-	public interface IAccountDataRepository : ICrudRepository<AccountEntity>
+	public interface IAccountRepository : ICrudRepository<AccountEntity, int>
 	{
 		[ItemNotNull]
 		Task<AccountEntity> CreateAccount([NotNull] RegisterModel registerModel);

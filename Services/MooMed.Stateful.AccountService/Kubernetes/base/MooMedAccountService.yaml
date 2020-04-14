@@ -4,32 +4,32 @@ metadata:
   name: moomed-accountservice
 spec:
   clusterIP: None
+  ports:
+  - port: 23523
+    protocol: TCP
   selector:
     name: moomed-accountservice
-  ports:
-    - protocol: TCP
-      port: 23523
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: moomed-accountservice
 spec:
-  serviceName: moomed-accountservice
   replicas: 3
-  selector:  
+  selector:
     matchLabels:
       name: moomed-accountservice
+  serviceName: moomed-accountservice
   template:
     metadata:
       labels:
         name: moomed-accountservice
     spec:
       containers:
-      - name: moomed-accountservice
-        image: moomed.azurecr.io/accountservice
+      - image: moomed.azurecr.io/accountservice
         imagePullPolicy: Always
+        name: moomed-accountservice
         ports:
         - containerPort: 80
       imagePullSecrets:
-        - name: acrimgpullsecret
+      - name: acrimgpullsecret

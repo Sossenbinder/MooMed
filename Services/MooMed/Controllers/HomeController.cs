@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Models;

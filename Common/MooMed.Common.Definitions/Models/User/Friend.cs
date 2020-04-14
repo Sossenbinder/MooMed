@@ -21,5 +21,8 @@ namespace MooMed.Common.Definitions.Models.User
 
 		[ProtoMember(5)]
 		public string ProfilePicturePath { get; set; }
+
+		[ProtoMember(6)]
+		public AccountOnlineState OnlineState { get; set; }
 	}
 }

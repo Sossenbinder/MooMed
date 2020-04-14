@@ -3,11 +3,13 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Messages.Account;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.Code.Extensions;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.Module.Accounts.Events.Interface;
@@ -26,7 +28,7 @@ namespace MooMed.Stateful.AccountService.Service
         private readonly IAccountSignInService m_accountSignInService;
 
         [NotNull]
-        private readonly IAccountDataRepository m_accountDataRepository;
+        private readonly IAccountRepository m_accountRepository;
 
         [NotNull]
         private readonly IProfilePictureService m_profilePictureService;
@@ -44,7 +46,7 @@ namespace MooMed.Stateful.AccountService.Service
             [NotNull] IMainLogger logger,
             [NotNull] IAccountSignInService accountSignInService,
             [NotNull] IAccountEventHub accountEventHub,
-            [NotNull] IAccountDataRepository accountDataRepository,
+            [NotNull] IAccountRepository accountRepository,
             [NotNull] IProfilePictureService profilePictureService,
             [NotNull] ISessionService sessionService,
             [NotNull] IAccountValidationService accountValidationService,
@@ -53,7 +55,7 @@ namespace MooMed.Stateful.AccountService.Service
         {
             m_accountSignInService = accountSignInService;
             m_accountEventHub = accountEventHub;
-            m_accountDataRepository = accountDataRepository;
+            m_accountRepository = accountRepository;
             m_profilePictureService = profilePictureService;
             m_sessionService = sessionService;
             m_accountValidationService = accountValidationService;
@@ -85,7 +87,7 @@ namespace MooMed.Stateful.AccountService.Service
 
             Logger.Info("Login happened", sessionContext);
 
-            await m_accountEventHub.AccountLoggedIn.Raise(sessionContext);
+            await m_accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
 
             return loginResult;
         }
@@ -114,7 +116,7 @@ namespace MooMed.Stateful.AccountService.Service
 
             await m_accountSignInService.RefreshLastAccessed(sessionContext);
 
-            await m_accountEventHub.AccountLoggedIn.Raise(sessionContext);
+            await m_accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
         }
 
         /// <summary>
@@ -142,20 +144,23 @@ namespace MooMed.Stateful.AccountService.Service
 
         public async Task<ServiceResponse> LogOff(ISessionContext sessionContext)
         {
-            await m_accountEventHub.AccountLoggedOut.Raise(sessionContext);
+	        Logger.Info($"Logging {sessionContext.Account.Id} off.");
+            await m_accountEventHub.AccountLoggedOut.Raise(new AccountLoggedOutEvent(sessionContext));
 
             return ServiceResponse.Success();
         }
 
         public async Task<ServiceResponse<Account>> FindById(Primitive<int> accountId)
         {
-            var account = (await m_accountDataRepository.FindAccount(acc => acc.Id == accountId))?.ToModel();
+	        var account = (await m_accountRepository.Read(acc => acc.Id == accountId, acc => acc.AccountOnlineStateEntity)).SingleOrDefault();
 
-            if (account != null)
+            var accountAsModel = account?.ToModel();
+
+            if (accountAsModel != null)
             {
-                account.ProfilePicturePath = (await m_profilePictureService.GetProfilePictureForAccountById(account.Id)).PayloadOrNull;
+	            accountAsModel.ProfilePicturePath = (await m_profilePictureService.GetProfilePictureForAccountById(account.Id)).PayloadOrNull;
 
-                return ServiceResponse<Account>.Success(account);
+                return ServiceResponse<Account>.Success(accountAsModel);
             }
 
             return ServiceResponse<Account>.Failure();
@@ -164,7 +169,7 @@ namespace MooMed.Stateful.AccountService.Service
         [ItemNotNull]
         public async Task<ServiceResponse<List<Account>>> FindAccountsStartingWithName(string name)
         {
-            var accounts = (await m_accountDataRepository.FindAccounts(acc => acc.UserName.StartsWith(name)))
+            var accounts = (await m_accountRepository.FindAccounts(acc => acc.UserName.StartsWith(name)))
 	            .ConvertAll(accDbModel => accDbModel?.ToModel());
 
 			foreach (var account in accounts.Where(account => account != null))
@@ -178,7 +183,7 @@ namespace MooMed.Stateful.AccountService.Service
         [ItemCanBeNull]
         public async Task<ServiceResponse<Account>> FindByEmail(string email)
         {
-            var account = (await m_accountDataRepository.FindAccount(acc => email.Equals(acc.Email)))?.ToModel();
+            var account = (await m_accountRepository.FindAccount(acc => email.Equals(acc.Email)))?.ToModel();
 
             if (account == null)
             {
@@ -201,6 +206,16 @@ namespace MooMed.Stateful.AccountService.Service
         public async Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
         {
             var friends = await m_friendsService.GetFriends(sessionContext);
+
+            await friends.ForEachAsync(async friend =>
+            {
+	            var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(friend.Id);
+
+	            if (profilePictureResponse.IsSuccess)
+	            {
+		            friend.ProfilePicturePath = profilePictureResponse.PayloadOrFail;
+	            }
+            });
 
             return ServiceResponse<List<Friend>>.Success(friends);
         }

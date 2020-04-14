@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Grpc.Core;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
@@ -9,11 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Extensions;
-using MooMed.Core.DataTypes;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
 using ProtoBuf.Grpc;
-using ProtoBuf.Meta;
 
 namespace MooMed.Web.Controllers
 {
@@ -22,12 +17,16 @@ namespace MooMed.Web.Controllers
 		[NotNull]
 		private readonly IProfilePictureService m_profilePictureService;
 
+		[NotNull]
+		private readonly ISessionService m_sessionService;
+
 		public ProfileController(
 	        [NotNull] ISessionService sessionService,
 	        [NotNull] IProfilePictureService profilePictureService) 
             : base(sessionService)
 		{
 			m_profilePictureService = profilePictureService;
+			m_sessionService = sessionService;
 		}
 
         [ItemNotNull]
@@ -48,7 +47,7 @@ namespace MooMed.Web.Controllers
 	            var callOptions = new CallOptions(new Metadata()
 	            {
 		            {"fileextension", formFile.GetFileExtension()},
-		            {"accountid", CurrentSessionOrFail.Account.Id.ToString()},
+		            {"accountid", CurrentAccountOrFail.Id.ToString()},
 	            });
 				var callContext = new CallContext(callOptions);
 
@@ -58,6 +57,9 @@ namespace MooMed.Web.Controllers
             if (uploadResult)
             {
                 var newProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccount(CurrentSession);
+
+                CurrentAccountOrFail.ProfilePicturePath = newProfilePicturePath.PayloadOrNull;
+                await m_sessionService.UpdateSessionContext(CurrentSessionOrFail);
 
                 return JsonResponse.Success(newProfilePicturePath);                  
             }

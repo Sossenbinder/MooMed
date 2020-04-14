@@ -1,6 +1,5 @@
 import { Account } from "modules/Account/types";
 import { SearchResult } from "modules/Search/types";
-import { Friend } from "modules/Friends/types";
 
 export interface IAccountService {
     getAccount(accountId: number): Promise<Account>;
@@ -15,8 +14,13 @@ export interface ISearchService {
     search(query: string): Promise<SearchResult>;
 }
 
+export interface INotificationService {
+
+}
+
 export type ServiceContext = {
     AccountService: IAccountService;
     FriendsService: IFriendsService;
-    SearchService: ISearchService;
+	SearchService: ISearchService;
+	NotificationService: INotificationService;
 }

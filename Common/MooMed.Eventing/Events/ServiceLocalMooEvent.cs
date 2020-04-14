@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Eventing.Events.Interface;
 
 [assembly:InternalsVisibleTo("MooMed.Core.Tests")]
 namespace MooMed.Eventing.Events
 {
-    public class MooEvent<TEventArgs>
+    public class ServiceLocalMooEvent<TEventArgs> : IAwaitableEvent<TEventArgs>
     {
         [NotNull]
         private readonly List<Func<TEventArgs, Task>> m_registeredActions;
 
-        public MooEvent()
+        public ServiceLocalMooEvent()
         {
             m_registeredActions = new List<Func<TEventArgs, Task>>();
         }
@@ -37,24 +38,24 @@ namespace MooMed.Eventing.Events
             return accumulatedExceptions;
         }
 
-        public void Register([NotNull] Action<TEventArgs> actionItem)
+        public void Register([NotNull] Action<TEventArgs> handler)
         {
 			m_registeredActions.Add(args =>
 			{
-				actionItem(args);
+				handler(args);
 
 				return Task.CompletedTask;
 			});
         }
 
-		public void Register([NotNull] Func<TEventArgs, Task> actionItem)
+		public void Register([NotNull] Func<TEventArgs, Task> handler)
         {
-            m_registeredActions.Add(actionItem);
+            m_registeredActions.Add(handler);
         }
 
-        public void UnRegister([NotNull] Func<TEventArgs, Task> actionItem)
+        public void UnRegister([NotNull] Func<TEventArgs, Task> handler)
         {
-            m_registeredActions.Remove(actionItem);
+            m_registeredActions.Remove(handler);
         }
 
         [NotNull]

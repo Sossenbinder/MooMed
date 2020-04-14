@@ -9,10 +9,8 @@ using MooMed.Common.Definitions.Models.User;
 namespace MooMed.Module.Accounts.Datatypes.Entity
 {
     [Table("Account")]
-    public class AccountEntity : IEntity
+    public class AccountEntity : IEntity<int>
     {
-        [Key]
-        [Column("Id")]
         public int Id { get; set; }
 
         [NotNull]
@@ -33,8 +31,14 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
         [Column("LastAccessedAt")]
         public DateTime LastAccessedAt { get; set; }
 
+        [CanBeNull]
+        [InverseProperty("Account")]
+        public AccountOnlineStateEntity AccountOnlineStateEntity { get; set; }
+
+        [NotNull]
         public List<FriendsMappingEntity> FriendsTo { get; set; }
 
+        [NotNull]
         public List<FriendsMappingEntity> FriendsFrom { get; set; }
 
         [UsedImplicitly]
@@ -42,8 +46,6 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
         public AccountEntity()
         {
         }
-
-        public string GetKey() => Id.ToString();
 
         public Account ToModel()
         {
