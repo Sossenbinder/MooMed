@@ -6,7 +6,7 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 {
 	public class LockedCacheItem<T> : IDisposable
 	{
-		private readonly ICacheLock m_cacheLock;
+		private readonly ICacheLock _cacheLock;
 
 		public T Payload { get; }
 
@@ -14,13 +14,13 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 			T payload, 
 			[NotNull] ICacheLock cacheLock)
 		{
-			m_cacheLock = cacheLock;
+			_cacheLock = cacheLock;
 			Payload = payload;
 		}
 
 		public void Release()
 		{
-			m_cacheLock.Unlock();
+			_cacheLock.Unlock();
 		}
 
 		public void Dispose()

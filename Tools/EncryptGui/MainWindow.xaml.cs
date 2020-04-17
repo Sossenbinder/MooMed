@@ -17,11 +17,11 @@ namespace EncryptGui
 		[UsedImplicitly]
 		public MainWindowModel Model { get; }
 
-		private ICertificateHelper m_certificateHelper { get; }
+		private ICertificateHelper _certificateHelper { get; }
 
 		public MainWindow()
 		{
-			m_certificateHelper = new CertificateHelper();
+			_certificateHelper = new CertificateHelper();
 			Model = new MainWindowModel();
 
 			InitializeComponent();
@@ -58,7 +58,7 @@ namespace EncryptGui
 		{
 			CertificateListBox.Items.Clear();
 
-			var certificates = m_certificateHelper.GetAllCertificatesInStore(Model.SelectedStoreName, Model.SelectedCertStore);
+			var certificates = _certificateHelper.GetAllCertificatesInStore(Model.SelectedStoreName, Model.SelectedCertStore);
 
 			foreach (var cert in certificates)
 			{

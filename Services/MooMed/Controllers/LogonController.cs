@@ -20,14 +20,14 @@ namespace MooMed.Web.Controllers
     public class LogonController : SessionBaseController
 	{
 		[NotNull]
-		private readonly IAccountService m_accountService;
+		private readonly IAccountService _accountService;
 
 		public LogonController(
 	        [NotNull] ISessionService sessionService,
 	        [NotNull] IAccountService accountService) 
             : base(sessionService)
 		{
-			m_accountService = accountService;
+			_accountService = accountService;
 		}
 
         //
@@ -38,7 +38,7 @@ namespace MooMed.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login([NotNull] LoginModel loginModel)
 		{
-			var serviceResponse = await m_accountService.Login(loginModel);
+			var serviceResponse = await _accountService.Login(loginModel);
 
 	        if (serviceResponse.IsSuccess)
 	        {
@@ -73,7 +73,7 @@ namespace MooMed.Web.Controllers
 	        var model = registerModel.ToModel();
 	        model.Language = CurrentUiLanguage;
 
-            var result = await m_accountService.Register(model);
+            var result = await _accountService.Register(model);
 
             return result.IsSuccess ? JsonResponse.Success() : JsonResponse.Error(result.PayloadOrNull);
         }
@@ -84,7 +84,7 @@ namespace MooMed.Web.Controllers
         [Authorize]
         public async Task<ActionResult> LogOff()
         {
-            await m_accountService.LogOff(CurrentSessionOrFail);
+            await _accountService.LogOff(CurrentSessionOrFail);
 
             await HttpContext.SignOutAsync();
 

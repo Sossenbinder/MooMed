@@ -18,7 +18,7 @@ namespace MooMed.Stateful.SessionService.Service
     public class SessionService : MooMedServiceBase, ISessionService
     {
 	    [NotNull]
-	    private readonly ISessionContextCache m_sessionContextCache;
+	    private readonly ISessionContextCache _sessionContextCache;
         
 	    public SessionService(
 		    [NotNull] IMainLogger mainLogger,
@@ -26,7 +26,7 @@ namespace MooMed.Stateful.SessionService.Service
 		    [NotNull] IAccountEventHub accountEventHub)
 		    : base(mainLogger)
 	    {
-		    m_sessionContextCache = sessionContextCache;
+		    _sessionContextCache = sessionContextCache;
 
             accountEventHub.AccountLoggedOut.Register(OnAccountLoggedOut);
 	    }
@@ -36,7 +36,7 @@ namespace MooMed.Stateful.SessionService.Service
 		    var sessionContext = accountLoggedOutEvent.SessionContext;
 
 		    Logger.Debug($"AccountId {sessionContext.Account.Id} logged out.");
-		    m_sessionContextCache.RemoveItem(sessionContext);
+		    _sessionContextCache.RemoveItem(sessionContext);
 	    }
 
 	    [ItemCanBeNull]
@@ -44,7 +44,7 @@ namespace MooMed.Stateful.SessionService.Service
         public Task<ServiceResponse<ISessionContext>> GetSessionContext(Primitive<int> accountId)
         {
             var accountIdKey = CacheKeyUtils.GetCacheKeyForAccountId(accountId);
-            var sessionContext = m_sessionContextCache.GetItem(accountIdKey);
+            var sessionContext = _sessionContextCache.GetItem(accountIdKey);
 
             return Task.FromResult(sessionContext == null 
 	            ? ServiceResponse<ISessionContext>.Failure() 
@@ -57,14 +57,14 @@ namespace MooMed.Stateful.SessionService.Service
         {
             var sessionContext = CreateSessionContext(account);
 
-            m_sessionContextCache.PutItem(sessionContext);
+            _sessionContextCache.PutItem(sessionContext);
 
             return Task.FromResult<ISessionContext>(sessionContext);
         }
 
         public Task UpdateSessionContext(ISessionContext sessionContext)
         {
-	        m_sessionContextCache.PutItem(sessionContext);
+	        _sessionContextCache.PutItem(sessionContext);
 
 	        return Task.CompletedTask;
         }

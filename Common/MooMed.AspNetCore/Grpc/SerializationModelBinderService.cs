@@ -16,11 +16,11 @@ namespace MooMed.AspNetCore.Grpc
 	public class SerializationModelBinderService : IStartable
 	{
 		[NotNull]
-		private readonly IEnumerable<Type> m_grpServices;
+		private readonly IEnumerable<Type> _grpServices;
 
-		private readonly Dictionary<Type, int> m_protoIndexDict;
+		private readonly Dictionary<Type, int> _protoIndexDict;
 
-		private int m_protoIndex = 50;
+		private int _protoIndex = 50;
 
 		public SerializationModelBinderService([NotNull] IEnumerable<IGrpcService> services)
 		{
@@ -36,7 +36,7 @@ namespace MooMed.AspNetCore.Grpc
 				grpcServices.Add(ownServiceType);
 			}
 
-			m_grpServices = grpcServices.Select(service =>
+			_grpServices = grpcServices.Select(service =>
 				service.GetInterfaces().First(i =>
 					i.FullName != null && i.FullName.StartsWith("MooMed.Common.ServiceBase.Interface")));
 
@@ -48,7 +48,7 @@ namespace MooMed.AspNetCore.Grpc
 
 			var baseProtoIndex = 50;
 
-			m_protoIndexDict = allGrpcServices.ToDictionary(x => x, x => baseProtoIndex += 50);
+			_protoIndexDict = allGrpcServices.ToDictionary(x => x, x => baseProtoIndex += 50);
 		}
 
 		private void InitializeBindingsForGrpcService([NotNull] Type grpcService)
@@ -84,12 +84,12 @@ namespace MooMed.AspNetCore.Grpc
 		{
 			if (type == null)
 			{
-				return m_protoIndex++;
+				return _protoIndex++;
 			}
 
-			var index = m_protoIndexDict[type];
+			var index = _protoIndexDict[type];
 
-			m_protoIndexDict[type] = index + 1;
+			_protoIndexDict[type] = index + 1;
 
 			return index;
 		}
@@ -112,7 +112,7 @@ namespace MooMed.AspNetCore.Grpc
 
 		public void Start()
 		{
-			foreach (var grpcService in m_grpServices)
+			foreach (var grpcService in _grpServices)
 			{
 				InitializeBindingsForGrpcService(grpcService);
 			}

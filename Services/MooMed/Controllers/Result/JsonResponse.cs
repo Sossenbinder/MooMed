@@ -7,7 +7,7 @@ namespace MooMed.Web.Controllers.Result
 {
     public class JsonResponse : JsonResult
     {
-        private readonly HttpStatusCode m_statusCode;
+        private readonly HttpStatusCode _statusCode;
 
         private JsonResponse([NotNull] object data, bool success, HttpStatusCode statusCode)
             :base(new
@@ -16,7 +16,7 @@ namespace MooMed.Web.Controllers.Result
                 data
             })
         {
-            m_statusCode = statusCode;
+            _statusCode = statusCode;
         }
 
         [NotNull]
@@ -33,7 +33,7 @@ namespace MooMed.Web.Controllers.Result
 
         public override Task ExecuteResultAsync([NotNull] ActionContext context)
 		{
-			context.HttpContext.Response.StatusCode = (int)m_statusCode;
+			context.HttpContext.Response.StatusCode = (int)_statusCode;
 			return base.ExecuteResultAsync(context);
         }
     }

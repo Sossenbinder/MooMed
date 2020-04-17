@@ -8,12 +8,12 @@ namespace MooMed.Core.Code.Helper.EmbeddedResource
     public class EmbeddedResourceProvider
     {
         [NotNull]
-        private readonly Assembly m_embeddedResourceAssembly;
+        private readonly Assembly _embeddedResourceAssembly;
 
         public EmbeddedResourceProvider(
             [CanBeNull] Assembly embeddedResourceAssembly = null)
         {
-            m_embeddedResourceAssembly = embeddedResourceAssembly != null 
+            _embeddedResourceAssembly = embeddedResourceAssembly != null 
                 ? embeddedResourceAssembly 
                 : Assembly.GetCallingAssembly();
         }
@@ -32,12 +32,12 @@ namespace MooMed.Core.Code.Helper.EmbeddedResource
                 throw new ArgumentException("Requested file not found in given assembly");
             }
 
-            return m_embeddedResourceAssembly.GetManifestResourceStream(completeName);
+            return _embeddedResourceAssembly.GetManifestResourceStream(completeName);
         }
 
         private bool DoesAssemblyProvideRequestedEmbeddedResource([NotNull] string name)
         {
-            var resource = m_embeddedResourceAssembly.GetManifestResourceInfo(name);
+            var resource = _embeddedResourceAssembly.GetManifestResourceInfo(name);
 
             return resource != null;
         }

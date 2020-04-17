@@ -10,27 +10,27 @@ namespace MooMed.Module.Session.Cache
 	public class SessionContextCache : ISessionContextCache
 	{
 		[NotNull]
-		private readonly ICache<ISessionContext> m_sessionContextCache;
+		private readonly ICache<ISessionContext> _sessionContextCache;
 
 		public SessionContextCache([NotNull] IDefaultCacheFactory defaultCacheFactory)
 		{
-			m_sessionContextCache = defaultCacheFactory.CreateCache<ISessionContext>();
+			_sessionContextCache = defaultCacheFactory.CreateCache<ISessionContext>();
 		}
 
 		public void PutItem(ISessionContext sessionContext, int? secondsToLive = null)
 		{
 			var key = sessionContext.GetAccountKey();
-			m_sessionContextCache.PutItem(key, sessionContext, secondsToLive);
+			_sessionContextCache.PutItem(key, sessionContext, secondsToLive);
 		}
 
 		public ISessionContext GetItem(string key)
 		{
-			return m_sessionContextCache.GetItem(key);
+			return _sessionContextCache.GetItem(key);
 		}
 
 		public void RemoveItem(ISessionContext sessionContext)
 		{
-			m_sessionContextCache.Remove(sessionContext.GetAccountKey());
+			_sessionContextCache.Remove(sessionContext.GetAccountKey());
 		}
 	}
 }

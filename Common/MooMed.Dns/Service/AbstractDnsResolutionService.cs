@@ -12,11 +12,11 @@ namespace MooMed.Dns.Service
 	public abstract class AbstractDnsResolutionService : IDnsResolutionService
 	{
 		[NotNull]
-		private readonly IMainLogger m_logger;
+		private readonly IMainLogger _logger;
 
 		protected AbstractDnsResolutionService([NotNull] IMainLogger logger)
 		{
-			m_logger = logger;
+			_logger = logger;
 		}
 
 		public async Task<IPAddress> ResolveDnsNameToIp(string name)
@@ -29,18 +29,18 @@ namespace MooMed.Dns.Service
 
 				if (ip == null)
 				{
-					m_logger.Fatal($"Failed to resolve IP for dns name {name}");
+					_logger.Fatal($"Failed to resolve IP for dns name {name}");
 
 					return null;
 				}
 
-				m_logger.Info($"Successfully queried {name} to IP {ip}");
+				_logger.Info($"Successfully queried {name} to IP {ip}");
 
 				return ip;
 			}
 			catch (SocketException)
 			{
-				m_logger.Fatal($"Failed to resolve IP for dns name {name}");
+				_logger.Fatal($"Failed to resolve IP for dns name {name}");
 
 				return null;
 			}

@@ -13,16 +13,16 @@ namespace MooMed.IPC.EndpointResolution
 	public class DockerComposeStatefulCollectionDiscovery : IStatefulCollectionDiscovery
 	{
 		[NotNull]
-		private readonly IDnsResolutionService m_dnsResolutionService;
+		private readonly IDnsResolutionService _dnsResolutionService;
 
 		public DockerComposeStatefulCollectionDiscovery([NotNull] IDnsResolutionService dnsResolutionService)
 		{
-			m_dnsResolutionService = dnsResolutionService;
+			_dnsResolutionService = dnsResolutionService;
 		}
 
 		public async Task<IStatefulCollection> GetStatefulSetInfo(StatefulSet statefulSet, int totalReplicas = 1)
 		{
-			var ipAddress = await m_dnsResolutionService.ResolveStatefulSetReplicaToIp(statefulSet, totalReplicas);
+			var ipAddress = await _dnsResolutionService.ResolveStatefulSetReplicaToIp(statefulSet, totalReplicas);
 			
 			return new DockerStatefulSet(new List<DockerContainer>(){ new DockerContainer()
 			{

@@ -12,13 +12,13 @@ namespace MooMed.Module.Accounts.Service
 	public class AccountOnlineStateService : IAccountOnlineStateService
 	{
 		[NotNull]
-		private readonly IAccountOnlineStateRepository m_accountOnlineStateRepository;
+		private readonly IAccountOnlineStateRepository _accountOnlineStateRepository;
 
 		public AccountOnlineStateService(
 			[NotNull] IAccountEventHub accountEventHub,
 			[NotNull] IAccountOnlineStateRepository accountOnlineStateRepository)
 		{
-			m_accountOnlineStateRepository = accountOnlineStateRepository;
+			_accountOnlineStateRepository = accountOnlineStateRepository;
 
 			accountEventHub.AccountLoggedIn.Register(OnAccountLoggedIn);
 			accountEventHub.AccountLoggedOut.Register(OnAccountLoggedOut);
@@ -34,14 +34,14 @@ namespace MooMed.Module.Accounts.Service
 				OnlineState = AccountOnlineState.Online,
 			};
 
-			await m_accountOnlineStateRepository.CreateOrUpdate(onlineStateEntity, entity => entity.OnlineState = AccountOnlineState.Online);
+			await _accountOnlineStateRepository.CreateOrUpdate(onlineStateEntity, entity => entity.OnlineState = AccountOnlineState.Online);
 		}
 
 		private async Task OnAccountLoggedOut(AccountLoggedOutEvent loggedOutEvent)
 		{
 			var sessionContext = loggedOutEvent.SessionContext;
 
-			await m_accountOnlineStateRepository.Update(sessionContext.Account.Id, entity => entity.OnlineState = AccountOnlineState.Offline);
+			await _accountOnlineStateRepository.Update(sessionContext.Account.Id, entity => entity.OnlineState = AccountOnlineState.Offline);
 		}
 	}
 }

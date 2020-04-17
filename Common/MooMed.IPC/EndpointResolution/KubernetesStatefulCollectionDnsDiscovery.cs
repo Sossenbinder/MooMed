@@ -13,12 +13,12 @@ namespace MooMed.IPC.EndpointResolution
 	public class KubernetesStatefulCollectionDnsDiscovery : IStatefulCollectionDiscovery
 	{
 		[NotNull]
-		private readonly IDnsResolutionService m_dnsResolutionService;
+		private readonly IDnsResolutionService _dnsResolutionService;
 
 		public KubernetesStatefulCollectionDnsDiscovery(
 			[NotNull] IDnsResolutionService dnsResolutionService)
 		{
-			m_dnsResolutionService = dnsResolutionService;
+			_dnsResolutionService = dnsResolutionService;
 		}
 
 		public async Task<IStatefulCollection> GetStatefulSetInfo(StatefulSet statefulSet, int totalReplicas = 1)
@@ -27,7 +27,7 @@ namespace MooMed.IPC.EndpointResolution
 				Enumerable.Range(0, totalReplicas)
 				.Select(async replicaNr =>
 				{
-					var ip = await m_dnsResolutionService.ResolveStatefulSetReplicaToIp(statefulSet, replicaNr);
+					var ip = await _dnsResolutionService.ResolveStatefulSetReplicaToIp(statefulSet, replicaNr);
 
 					return new KubernetesEndpoint()
 					{

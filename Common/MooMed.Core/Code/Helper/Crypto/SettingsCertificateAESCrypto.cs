@@ -14,15 +14,15 @@ namespace MooMed.Core.Code.Helper.Crypto
     public class SettingsCertificateCrypto : ISettingsCrypto
     {
         [CanBeNull]
-        private AESHelper m_aesHelper;
+        private AESHelper _aesHelper;
 
         [NotNull]
-        private readonly IConfigSettingsAccessor m_configSettingsAccessor;
+        private readonly IConfigSettingsAccessor _configSettingsAccessor;
 
         public SettingsCertificateCrypto(
             [NotNull] IConfigSettingsAccessor configSettingsAccessor)
         {
-            m_configSettingsAccessor = configSettingsAccessor;
+            _configSettingsAccessor = configSettingsAccessor;
             InitCryptoData();
         }
 
@@ -34,13 +34,13 @@ namespace MooMed.Core.Code.Helper.Crypto
                 // TODO: Fix this
 	            var cert = new X509Certificate2(File.ReadAllBytes(certPath), "xfvesXTs1fFhm5yKsb9H");
 
-	            var encryptedIv = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_IV");
-                var encryptedKey = m_configSettingsAccessor.GetValueFromConfigSource("MooMed_Key");
+	            var encryptedIv = _configSettingsAccessor.GetValueFromConfigSource("MooMed_IV");
+                var encryptedKey = _configSettingsAccessor.GetValueFromConfigSource("MooMed_Key");
 
                 var decryptedIv = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedIv));
                 var decryptedKey = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedKey));
 
-                m_aesHelper = new AESHelper(decryptedIv, decryptedKey);
+                _aesHelper = new AESHelper(decryptedIv, decryptedKey);
             }
             catch (CryptographicException)
             {
@@ -50,21 +50,21 @@ namespace MooMed.Core.Code.Helper.Crypto
 
         public string EncryptSetting(string setting, string parameterToEncrypt)
         {
-            if (m_aesHelper == null)
+            if (_aesHelper == null)
             {
                 return null;
             }
 
             var cryptoParam = GetParameterToPerformCrypto(setting, parameterToEncrypt);
 
-            var encrypted = m_aesHelper.Encrypt(Convert.FromBase64String(cryptoParam));
+            var encrypted = _aesHelper.Encrypt(Convert.FromBase64String(cryptoParam));
 
             return ReplaceCryptedParamInSetting(setting, parameterToEncrypt, encrypted);
         }
 
         public string DecryptSetting(string setting, string parameterToDecrypt)
         {
-            if (m_aesHelper == null)
+            if (_aesHelper == null)
             {
                 return null;
             }
@@ -73,13 +73,13 @@ namespace MooMed.Core.Code.Helper.Crypto
             {
                 var cryptoParam = GetParameterToPerformCrypto(setting, parameterToDecrypt);
 
-                var decrypted = m_aesHelper.Decrypt(Convert.FromBase64String(cryptoParam));
+                var decrypted = _aesHelper.Decrypt(Convert.FromBase64String(cryptoParam));
 
                 return ReplaceCryptedParamInSetting(setting, parameterToDecrypt, decrypted);
             }
             else
             {
-                var decrypted = m_aesHelper.Decrypt(Convert.FromBase64String(setting));
+                var decrypted = _aesHelper.Decrypt(Convert.FromBase64String(setting));
 
                 return Convert.ToBase64String(decrypted);
             }

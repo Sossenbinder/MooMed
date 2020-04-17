@@ -9,16 +9,16 @@ namespace MooMed.Module.Finance.Service
 	public class EtfDataService : IEtfDataService, IStartable
 	{
 		[NotNull]
-		private readonly IEtfQuerier m_etfQuerier;
+		private readonly IEtfQuerier _etfQuerier;
 
 		public EtfDataService([NotNull] IEtfQuerier etfQuerier)
 		{
-			m_etfQuerier = etfQuerier;
+			_etfQuerier = etfQuerier;
 		}
 
 		public async Task GetEtfs()
 		{
-			await m_etfQuerier.GetAllEtfs();
+			await _etfQuerier.GetAllEtfs();
 		}
 
 		public void Start()

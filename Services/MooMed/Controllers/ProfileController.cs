@@ -15,18 +15,18 @@ namespace MooMed.Web.Controllers
     public class ProfileController : SessionBaseController
 	{
 		[NotNull]
-		private readonly IProfilePictureService m_profilePictureService;
+		private readonly IProfilePictureService _profilePictureService;
 
 		[NotNull]
-		private readonly ISessionService m_sessionService;
+		private readonly ISessionService _sessionService;
 
 		public ProfileController(
 	        [NotNull] ISessionService sessionService,
 	        [NotNull] IProfilePictureService profilePictureService) 
             : base(sessionService)
 		{
-			m_profilePictureService = profilePictureService;
-			m_sessionService = sessionService;
+			_profilePictureService = profilePictureService;
+			_sessionService = sessionService;
 		}
 
         [ItemNotNull]
@@ -51,15 +51,15 @@ namespace MooMed.Web.Controllers
 	            });
 				var callContext = new CallContext(callOptions);
 
-                uploadResult = (await m_profilePictureService.ProcessUploadedProfilePicture(imgStream.ReadAsAsyncEnumerable(), callContext)).PayloadOrNull;
+                uploadResult = (await _profilePictureService.ProcessUploadedProfilePicture(imgStream.ReadAsAsyncEnumerable(), callContext)).PayloadOrNull;
             }
 
             if (uploadResult)
             {
-                var newProfilePicturePath = await m_profilePictureService.GetProfilePictureForAccount(CurrentSession);
+                var newProfilePicturePath = await _profilePictureService.GetProfilePictureForAccount(CurrentSession);
 
                 CurrentAccountOrFail.ProfilePicturePath = newProfilePicturePath.PayloadOrNull;
-                await m_sessionService.UpdateSessionContext(CurrentSessionOrFail);
+                await _sessionService.UpdateSessionContext(CurrentSessionOrFail);
 
                 return JsonResponse.Success(newProfilePicturePath);                  
             }

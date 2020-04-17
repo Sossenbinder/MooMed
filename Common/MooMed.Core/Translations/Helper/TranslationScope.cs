@@ -7,17 +7,17 @@ namespace MooMed.Core.Translations.Helper
 {
     public class TranslationScope : IDisposable
     {
-        private readonly CultureInfo m_previousCultureInfo;
+        private readonly CultureInfo _previousCultureInfo;
 
         public TranslationScope(Language lang = Language.en)
         {
-            m_previousCultureInfo = Thread.CurrentThread.CurrentCulture;
+            _previousCultureInfo = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang.ToString());
         }
 
         public void Dispose()
         {
-            Thread.CurrentThread.CurrentUICulture = m_previousCultureInfo;
+            Thread.CurrentThread.CurrentUICulture = _previousCultureInfo;
         }
     }
 }

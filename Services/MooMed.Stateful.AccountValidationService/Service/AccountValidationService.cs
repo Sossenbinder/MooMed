@@ -20,16 +20,16 @@ namespace MooMed.Stateful.AccountValidationService.Service
     public class AccountValidationService : MooMedServiceBase, IAccountValidationService
     {
         [NotNull]
-        private readonly IAccountValidationRepository m_accountValidationRepository;
+        private readonly IAccountValidationRepository _accountValidationRepository;
 
         [NotNull]
-        private readonly IAccountValidationTokenHelper m_accountValidationTokenHelper;
+        private readonly IAccountValidationTokenHelper _accountValidationTokenHelper;
 
         [NotNull]
-        private readonly IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int> m_accountValidationConverter;
+        private readonly IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int> _accountValidationConverter;
 
         [NotNull]
-        private readonly IAccountValidationEmailHelper m_accountValidationEmailHelper;
+        private readonly IAccountValidationEmailHelper _accountValidationEmailHelper;
         
         public AccountValidationService(
             [NotNull] IMainLogger logger,
@@ -39,10 +39,10 @@ namespace MooMed.Stateful.AccountValidationService.Service
             [NotNull] IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int> accountValidationConverter)
             : base(logger)
         {
-            m_accountValidationRepository = accountValidationRepository;
-            m_accountValidationEmailHelper = accountValidationEmailHelper;
-            m_accountValidationTokenHelper = accountValidationTokenHelper;
-            m_accountValidationConverter = accountValidationConverter;
+            _accountValidationRepository = accountValidationRepository;
+            _accountValidationEmailHelper = accountValidationEmailHelper;
+            _accountValidationTokenHelper = accountValidationTokenHelper;
+            _accountValidationConverter = accountValidationConverter;
         }
 
         public async Task SendAccountValidationMail(AccountValidationMailData accountValidationMailData)
@@ -55,20 +55,20 @@ namespace MooMed.Stateful.AccountValidationService.Service
 		        ValidationGuid = Guid.NewGuid()
 	        };
 
-            await m_accountValidationRepository.Create(m_accountValidationConverter.ToEntity(accountValidation));
+            await _accountValidationRepository.Create(_accountValidationConverter.ToEntity(accountValidation));
             
-            var accountValidationEmailToken = m_accountValidationTokenHelper.Serialize(new AccountValidationTokenData()
+            var accountValidationEmailToken = _accountValidationTokenHelper.Serialize(new AccountValidationTokenData()
             {
                 AccountId = account.Id,
                 ValidationGuid = accountValidation.ValidationGuid
             });
 
-            await m_accountValidationEmailHelper.SendAccountValidationEmail(accountValidationMailData.Language, account.Email, accountValidationEmailToken);
+            await _accountValidationEmailHelper.SendAccountValidationEmail(accountValidationMailData.Language, account.Email, accountValidationEmailToken);
         }
 
         public Task<AccountValidationTokenData> DeserializeRawToken(string token)
         {
-            return Task.FromResult(m_accountValidationTokenHelper.Deserialize(token));
+            return Task.FromResult(_accountValidationTokenHelper.Deserialize(token));
         }
 
         /// <summary>
@@ -79,14 +79,14 @@ namespace MooMed.Stateful.AccountValidationService.Service
         [ItemNotNull]
         public async Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
         {
-            var resultCode = await m_accountValidationRepository.CheckAndUpdateValidation(tokenData);
+            var resultCode = await _accountValidationRepository.CheckAndUpdateValidation(tokenData);
 
             if (resultCode == AccountValidationResult.Success)
             {
-	            var validationEntity = await m_accountValidationRepository.Read(x => x.Id == tokenData.AccountId);
+	            var validationEntity = await _accountValidationRepository.Read(x => x.Id == tokenData.AccountId);
 
                 // Validation went smoothly or already happened, we can get rid of the validation entry for this account
-                await m_accountValidationRepository.Delete(validationEntity.First());
+                await _accountValidationRepository.Delete(validationEntity.First());
 
                 return ServiceResponse<bool>.Success(true);
             }

@@ -15,12 +15,12 @@ namespace MooMed.Module.Accounts.Repository
     public class AccountValidationRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountValidationEntity, int>, IAccountValidationRepository
     {
 	    [NotNull]
-	    private readonly AccountDbContextFactory m_accountDbContextFactory;
+	    private readonly AccountDbContextFactory _accountDbContextFactory;
 
 	    public AccountValidationRepository([NotNull] AccountDbContextFactory accountDbContextFactory) 
 		    : base(accountDbContextFactory)
 	    {
-		    m_accountDbContextFactory = accountDbContextFactory;
+		    _accountDbContextFactory = accountDbContextFactory;
 	    }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace MooMed.Module.Accounts.Repository
         /// <returns>Result whether the accountValidation was successful</returns>
         public async Task<AccountValidationResult> CheckAndUpdateValidation([NotNull] AccountValidationTokenData accountValidationTokenData)
         {
-	        await using var ctx = m_accountDbContextFactory.CreateContext();
+	        await using var ctx = _accountDbContextFactory.CreateContext();
 
 	        var candidate = await ctx.AccountEmailValidation
 		        .Where(val => val.Id == accountValidationTokenData.AccountId)

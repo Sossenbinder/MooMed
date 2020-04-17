@@ -7,7 +7,7 @@ namespace EncryptDecryptCore
 {
     public class Crypto
     {
-        private readonly AESHelper m_aesHelper;
+        private readonly AESHelper _aesHelper;
 
         public Crypto()
         {
@@ -28,7 +28,7 @@ namespace EncryptDecryptCore
                 var decryptedIv = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedIv));
                 var decryptedKey = RSAHelper.DecryptWithCert(cert, Convert.FromBase64String(encryptedKey));
 
-                m_aesHelper = new AESHelper(decryptedIv, decryptedKey);
+                _aesHelper = new AESHelper(decryptedIv, decryptedKey);
             }
         }
 
@@ -36,7 +36,7 @@ namespace EncryptDecryptCore
         public string Encrypt([NotNull] string toEncrypt)
 		{
 			toEncrypt = toEncrypt.Replace('-', '+').Replace('_', '/').PadRight(4 * ((toEncrypt.Length + 3) / 4), '=');
-			var encrypted = m_aesHelper.Encrypt(Convert.FromBase64String(toEncrypt));
+			var encrypted = _aesHelper.Encrypt(Convert.FromBase64String(toEncrypt));
 
             return Convert.ToBase64String(encrypted);
         }
@@ -44,7 +44,7 @@ namespace EncryptDecryptCore
         [NotNull]
         public string Decrypt([NotNull] string toDecrypt)
         {
-            var decrypted = m_aesHelper.Decrypt(Convert.FromBase64String(toDecrypt));
+            var decrypted = _aesHelper.Decrypt(Convert.FromBase64String(toDecrypt));
 
             return Convert.ToBase64String(decrypted);
         }

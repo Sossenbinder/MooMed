@@ -9,11 +9,11 @@ namespace MooMed.Core.Code.Helper.Crypto
     public static class Sha256Helper
     {
         [NotNull]
-        private static readonly SHA256Managed m_sha256Managed;
+        private static readonly SHA256Managed _sha256Managed;
         
         static Sha256Helper()
         {
-            m_sha256Managed = new SHA256Managed();
+            _sha256Managed = new SHA256Managed();
         }
 
         [NotNull]
@@ -25,7 +25,7 @@ namespace MooMed.Core.Code.Helper.Crypto
             }
 
             var hash = new StringBuilder();
-            byte[] crypto = m_sha256Managed.ComputeHash(Encoding.ASCII.GetBytes(toHash));
+            byte[] crypto = _sha256Managed.ComputeHash(Encoding.ASCII.GetBytes(toHash));
 
             foreach (var cryptoByte in crypto)
             {

@@ -11,15 +11,15 @@ namespace MooMed.Core.Code.Helper.Email
     public class EmailManager : IEmailManager
     {
         [NotNull]
-        private readonly string m_smtpClientUserName;
+        private readonly string _smtpClientUserName;
 
         [NotNull]
-        private readonly string m_smtpClientPassword;
+        private readonly string _smtpClientPassword;
 
         public EmailManager([NotNull] IConfigSettingsProvider configSettingsProvider)
         {
-            m_smtpClientUserName = configSettingsProvider.ReadValueOrFail<string>("MooMed_Email_Name");
-            m_smtpClientPassword = configSettingsProvider.ReadDecryptedValueOrFail<string>("MooMed_Email_Password");
+            _smtpClientUserName = configSettingsProvider.ReadValueOrFail<string>("MooMed_Email_Name");
+            _smtpClientPassword = configSettingsProvider.ReadDecryptedValueOrFail<string>("MooMed_Email_Password");
         }
 
         [NotNull]
@@ -32,7 +32,7 @@ namespace MooMed.Core.Code.Helper.Email
 		        EnableSsl = true,
 		        DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-		        Credentials = new NetworkCredential(m_smtpClientUserName, m_smtpClientPassword),
+		        Credentials = new NetworkCredential(_smtpClientUserName, _smtpClientPassword),
 	        };
 
 	        return smtpClient;
@@ -52,7 +52,7 @@ namespace MooMed.Core.Code.Helper.Email
 
             message.Subject = subject;
             message.Body = messageContent;
-            message.From = new MailAddress(m_smtpClientUserName);
+            message.From = new MailAddress(_smtpClientUserName);
 
             using (var smtpClient = GetSmtpClient())
             {

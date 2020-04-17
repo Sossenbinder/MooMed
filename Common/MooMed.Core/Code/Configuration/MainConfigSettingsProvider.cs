@@ -9,22 +9,22 @@ namespace MooMed.Core.Code.Configuration
     public class MainConfigSettingsProvider : IConfigSettingsProvider
     {
 	    [NotNull]
-        private readonly IEnumerable<IConfigSettingsAccessor> m_configSettingsAccessors;
+        private readonly IEnumerable<IConfigSettingsAccessor> _configSettingsAccessors;
 
         [NotNull]
-        private readonly ISettingsCrypto m_settingsCrypto;
+        private readonly ISettingsCrypto _settingsCrypto;
 
         public MainConfigSettingsProvider(
 			[NotNull] IEnumerable<IConfigSettingsAccessor> configSettingsAccessors,
             [NotNull] ISettingsCrypto settingsCrypto)
         {
-            m_configSettingsAccessors = configSettingsAccessors;
-            m_settingsCrypto = settingsCrypto;
+            _configSettingsAccessors = configSettingsAccessors;
+            _settingsCrypto = settingsCrypto;
         }
 
         public T ReadValueOrDefault<T>(string key)
         {
-	        foreach (var configSettingsAccessor in m_configSettingsAccessors)
+	        foreach (var configSettingsAccessor in _configSettingsAccessors)
 	        {
 		        var value = configSettingsAccessor.GetValueFromConfigSource(key);
 
@@ -53,7 +53,7 @@ namespace MooMed.Core.Code.Configuration
 
         public T ReadDecryptedValueOrDefault<T>(string key, string parameterToDecrypt = null)
         {
-            var value = m_settingsCrypto.DecryptSetting(ReadValueOrDefault<string>(key) ?? throw new InvalidOperationException(), parameterToDecrypt);
+            var value = _settingsCrypto.DecryptSetting(ReadValueOrDefault<string>(key) ?? throw new InvalidOperationException(), parameterToDecrypt);
 
             if (value == null)
             {

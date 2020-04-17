@@ -23,24 +23,24 @@ namespace MooMed.Stateful.ProfilePictureService.Service
 	public class ProfilePictureService : MooMedServiceBase, Common.ServiceBase.Interface.IProfilePictureService
     {
         [NotNull]
-        private readonly List<string> m_possibleImageExtensions;
+        private readonly List<string> _possibleImageExtensions;
 
         [NotNull]
-        private const string m_defaultProfilePicture = "/Resources/Icons/Profile/profileBasic.png";
+        private const string _defaultProfilePicture = "/Resources/Icons/Profile/profileBasic.png";
 
         [NotNull]
-        private readonly IConfigSettingsProvider m_settingsProvider;
+        private readonly IConfigSettingsProvider _settingsProvider;
 
-        private readonly CloudStorageAccessor m_cloudStorageAccessor;
+        private readonly CloudStorageAccessor _cloudStorageAccessor;
 
         public ProfilePictureService(
 	        [NotNull] IMainLogger logger,
 	        [NotNull] IConfigSettingsProvider settingsProvider)
 			:base(logger)
         {
-            m_settingsProvider = settingsProvider;
-            m_cloudStorageAccessor = new CloudStorageAccessor(settingsProvider.ReadDecryptedValueOrFail<string>("MooMed_ProfilePictures_ConnectionString", "AccountKey"));
-            m_possibleImageExtensions = new List<string> { ".png", ".jpg" };
+            _settingsProvider = settingsProvider;
+            _cloudStorageAccessor = new CloudStorageAccessor(settingsProvider.ReadDecryptedValueOrFail<string>("MooMed_ProfilePictures_ConnectionString", "AccountKey"));
+            _possibleImageExtensions = new List<string> { ".png", ".jpg" };
         }
 
         public Task<ServiceResponse<string>> GetProfilePictureForAccount([NotNull] ISessionContext sessionContext)
@@ -51,18 +51,18 @@ namespace MooMed.Stateful.ProfilePictureService.Service
         {
             if (accountId <= 0)
             {
-                return ServiceResponse<string>.Success(m_defaultProfilePicture);
+                return ServiceResponse<string>.Success(_defaultProfilePicture);
             }
 
             var containerName = $"a-{accountId.Value}";
             var blobName = "80x80picture.png";
 
-            if (!await m_cloudStorageAccessor.DoesBlobExistOnContainer(containerName, blobName))
+            if (!await _cloudStorageAccessor.DoesBlobExistOnContainer(containerName, blobName))
             {
-	            return ServiceResponse<string>.Success(m_defaultProfilePicture);
+	            return ServiceResponse<string>.Success(_defaultProfilePicture);
             }
 
-            var storageAccountBasePath = m_settingsProvider.ReadValueOrFail<string>("MooMed_ProfilePictures_StorageAccountUrl");
+            var storageAccountBasePath = _settingsProvider.ReadValueOrFail<string>("MooMed_ProfilePictures_StorageAccountUrl");
 
             return ServiceResponse<string>.Success($"{storageAccountBasePath}/{containerName}/80x80picture.png?refreshTimer={DateTime.Now.ToString(CultureInfo.InvariantCulture)}");
         }
@@ -84,7 +84,7 @@ namespace MooMed.Stateful.ProfilePictureService.Service
         /// <returns></returns>
         private async Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] IAsyncEnumerable<byte[]> pictureStream, [NotNull] string fileExtension, int accountId)
         {
-	        using var imgStream = !m_possibleImageExtensions.Contains(fileExtension) ? null : await ImageUtils.ConvertAndScaleRequestImage(pictureStream, fileExtension);
+	        using var imgStream = !_possibleImageExtensions.Contains(fileExtension) ? null : await ImageUtils.ConvertAndScaleRequestImage(pictureStream, fileExtension);
 
 	        if (imgStream == null)
 	        {
@@ -104,9 +104,9 @@ namespace MooMed.Stateful.ProfilePictureService.Service
         /// <returns>Success / Failure</returns>
         private async Task<bool> SaveProfilePicture(int accountId, [NotNull] Image image, [NotNull] string fileExtension)
         {
-            var container = await m_cloudStorageAccessor.CreatePublicContainerIfNotExists($"a-{accountId}", BlobContainerPublicAccessType.Blob);
+            var container = await _cloudStorageAccessor.CreatePublicContainerIfNotExists($"a-{accountId}", BlobContainerPublicAccessType.Blob);
 
-            var blob = m_cloudStorageAccessor.CreateBlockBlob(container, "80x80picture.png");
+            var blob = _cloudStorageAccessor.CreateBlockBlob(container, "80x80picture.png");
 
             await using (var uploadStream = await blob.OpenWriteAsync())
             {

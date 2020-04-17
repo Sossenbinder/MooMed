@@ -12,19 +12,19 @@ namespace MooMed.Core.Code.Logging.Loggers
     public class AzureTableLogger
     {
         [NotNull]
-        private readonly AsyncLazy<CloudTable> m_cloudTable;
+        private readonly AsyncLazy<CloudTable> _cloudTable;
 
         public AzureTableLogger(
             [NotNull] IConfigSettingsProvider settingsProvider)
         {
             var tableStorageAccessor = new TableStorageAccessor(settingsProvider.ReadDecryptedValueOrFail<string>("MooMed_Logging_TableStorageConnectionString", "AccountKey"));
 
-            m_cloudTable = new AsyncLazy<CloudTable>(async () => await tableStorageAccessor.GetOrCreateCloudTable("Logging"));
+            _cloudTable = new AsyncLazy<CloudTable>(async () => await tableStorageAccessor.GetOrCreateCloudTable("Logging"));
         }
 
         public async Task Log([NotNull] ISessionContext sessionContext, string message, LogLevel logLevel)
         {
-            var cloudTable = await m_cloudTable.Value;
+            var cloudTable = await _cloudTable.Value;
 
             var loggingEntity = new LoggingEntity()
             {

@@ -11,14 +11,14 @@ namespace MooMed.Web.Controllers
     public class HomeController : SessionBaseController
     {
 	    [NotNull]
-	    private readonly IAccountService m_accountService;
+	    private readonly IAccountService _accountService;
 
 	    public HomeController(
 	        [NotNull] ISessionService sessionService,
 	        [NotNull] IAccountService accountService) 
             : base(sessionService)
 	    {
-		    m_accountService = accountService;
+		    _accountService = accountService;
 	    }
 
         public async Task<ActionResult> Index()
@@ -30,7 +30,7 @@ namespace MooMed.Web.Controllers
 
             if (CurrentSession == null)
             {
-                await m_accountService.RefreshLoginForAccount(Convert.ToInt32(User.Identity.Name));
+                await _accountService.RefreshLoginForAccount(Convert.ToInt32(User.Identity.Name));
             }
 
             return View(new ControllerMetaData("MooMed", CurrentUiLanguage, null));

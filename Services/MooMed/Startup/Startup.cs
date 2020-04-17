@@ -1,6 +1,8 @@
 ﻿using System;
 using Autofac;
 using JetBrains.Annotations;
+using MassTransit;
+using MassTransit.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,10 +10,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Caching.Module;
 using MooMed.Core;
+using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Dns.Module;
+using MooMed.Dns.Service.Interface;
+using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
 using MooMed.IPC.Module;
-using MooMed.Web.Hubs;
+using MooMed.SignalR.Hubs;
 using MooMed.Web.Modules;
 
 namespace MooMed.Web.Startup
@@ -23,15 +28,41 @@ namespace MooMed.Web.Startup
         {
 	        try
 	        {
+		        ConfigureMassTransit(services);
+
 		        services.AddMvc();
-		        services.AddSignalR();
-				services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Logon/Login");
+		        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Logon/Login");
 			}
 	        catch (DllNotFoundException)
 	        {
 				// TODO: Figure out why this is being raised
 	        }
         }
+
+        private void ConfigureMassTransit([NotNull] IServiceCollection services)
+        {
+	        services.AddSignalR().AddMassTransitBackplane();
+
+	        // creating the bus config
+	        services.AddMassTransit(x =>
+	        {
+		        // Add this for each Hub you have
+		        x.AddSignalRHubConsumers<ChatHub>();
+		        x.AddSignalRHubConsumers<NotificationHub>();
+
+		        x.AddBus(provider =>
+		        {
+			        var dnsResolutionService = provider.GetService<IDnsResolutionService>();
+			        var logger = provider.GetService<IMainLogger>();
+
+			        return MassTransitBusFactory.CreateBus(dnsResolutionService, logger, cfg =>
+			        {
+				        cfg.AddSignalRHubEndpoints<ChatHub>(provider);
+				        cfg.AddSignalRHubEndpoints<NotificationHub>(provider);
+			        });
+		        });
+	        });
+		}
 
         public void ConfigureContainer([NotNull] ContainerBuilder builder)
         {

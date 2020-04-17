@@ -14,28 +14,28 @@ namespace KubeWatcher
 	public class Worker : BackgroundService
 	{
 		[NotNull]
-		private readonly IMainLogger m_mainLogger;
+		private readonly IMainLogger _mainLogger;
 
 		[NotNull]
-		private readonly IMassTransitEventingService m_massTransitEventingService;
+		private readonly IMassTransitEventingService _massTransitEventingService;
 
 		[NotNull]
-		private readonly Dictionary<StatefulSet, int> m_replicaMap;
+		private readonly Dictionary<StatefulSet, int> _replicaMap;
 
 		[NotNull]
-		private readonly Kubernetes m_kubernetesClient;
+		private readonly Kubernetes _kubernetesClient;
 		
 		public Worker(
 			[NotNull] IMainLogger mainLogger,
 			[NotNull] IMassTransitEventingService massTransitEventingService)
 		{
-			m_mainLogger = mainLogger;
-			m_massTransitEventingService = massTransitEventingService;
-			m_replicaMap = new Dictionary<StatefulSet, int>();
+			_mainLogger = mainLogger;
+			_massTransitEventingService = massTransitEventingService;
+			_replicaMap = new Dictionary<StatefulSet, int>();
 
 			var config = KubernetesClientConfiguration.InClusterConfig();
 
-			m_kubernetesClient = new Kubernetes(config);
+			_kubernetesClient = new Kubernetes(config);
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -50,7 +50,7 @@ namespace KubeWatcher
 
 		private async Task QueryKube(CancellationToken stoppingToken)
 		{
-			var statefulSets = await m_kubernetesClient.ListStatefulSetForAllNamespacesAsync(cancellationToken: stoppingToken);
+			var statefulSets = await _kubernetesClient.ListStatefulSetForAllNamespacesAsync(cancellationToken: stoppingToken);
 
 			foreach (var statefulSet in statefulSets.Items)
 			{
@@ -66,31 +66,31 @@ namespace KubeWatcher
 					}
 					else
 					{
-						m_mainLogger.Error($"Statefulset {statefulSet.Metadata.Name} has no replica information attached.");
+						_mainLogger.Error($"Statefulset {statefulSet.Metadata.Name} has no replica information attached.");
 					}
 				}
 				else
 				{
-					m_mainLogger.Error($"Failed to resolve {statefulSet.Metadata.Name} to a corresponding StatefulSet");
+					_mainLogger.Error($"Failed to resolve {statefulSet.Metadata.Name} to a corresponding StatefulSet");
 				}
 			}
 		}
 
 		private async Task HandleNewStatefulSetInfo(StatefulSet statefulSet, int replicas)
 		{
-			if (!m_replicaMap.ContainsKey(statefulSet))
+			if (!_replicaMap.ContainsKey(statefulSet))
 			{
-				m_replicaMap.Add(statefulSet, replicas);
+				_replicaMap.Add(statefulSet, replicas);
 			}
 			else
 			{
-				var existingReplicasForService = m_replicaMap[statefulSet];
+				var existingReplicasForService = _replicaMap[statefulSet];
 
 				if (existingReplicasForService != replicas)
 				{
-					m_mainLogger.Error($"Replicas for {statefulSet.ToString()} changed from {existingReplicasForService} to {replicas}. Emitting event.");
+					_mainLogger.Error($"Replicas for {statefulSet.ToString()} changed from {existingReplicasForService} to {replicas}. Emitting event.");
 
-					await m_massTransitEventingService.RaiseEvent(new ClusterChangeEvent
+					await _massTransitEventingService.RaiseEvent(new ClusterChangeEvent
 					{
 						StatefulSet = statefulSet,
 						NewReplicaAmount = replicas
@@ -98,7 +98,7 @@ namespace KubeWatcher
 
 				}
 
-				m_replicaMap[statefulSet] = replicas;
+				_replicaMap[statefulSet] = replicas;
 			}
 		}
 	}

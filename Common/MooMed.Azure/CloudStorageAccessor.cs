@@ -8,11 +8,11 @@ namespace MooMed.Azure
 {
     public class CloudStorageAccessor
     {
-        private readonly Lazy<CloudBlobClient> m_cloudBlobClient;
+        private readonly Lazy<CloudBlobClient> _cloudBlobClient;
 
         public CloudStorageAccessor([NotNull] string connectionString)
         {
-            m_cloudBlobClient = new Lazy<CloudBlobClient>(() =>
+            _cloudBlobClient = new Lazy<CloudBlobClient>(() =>
             {
                 CloudStorageAccount.TryParse(connectionString, out var account);
                 return account.CreateCloudBlobClient();
@@ -21,7 +21,7 @@ namespace MooMed.Azure
 
         private CloudBlobContainer GetContainer([NotNull] string containerName)
         {
-            return m_cloudBlobClient.Value.GetContainerReference(containerName);
+            return _cloudBlobClient.Value.GetContainerReference(containerName);
         }
 
         public async Task<bool> DoesBlobExistOnContainer([NotNull] string containerName, [NotNull] string blobName)

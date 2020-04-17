@@ -15,31 +15,31 @@ namespace MooMed.Module.Accounts.Service
 	public class FriendsService : IFriendsService
 	{
 		[NotNull]
-		private readonly IFriendsMappingRepository m_friendsMappingRepository;
+		private readonly IFriendsMappingRepository _friendsMappingRepository;
 
 		[NotNull]
-		private readonly IModelConverter<Friend, AccountEntity, int> m_accountFriendConverter;
+		private readonly IModelConverter<Friend, AccountEntity, int> _accountFriendConverter;
 
 		public FriendsService(
 			[NotNull] IFriendsMappingRepository friendsMappingRepository,
 			[NotNull] IModelConverter<Friend, AccountEntity, int> accountFriendConverter)
 		{
-			m_friendsMappingRepository = friendsMappingRepository;
-			m_accountFriendConverter = accountFriendConverter;
+			_friendsMappingRepository = friendsMappingRepository;
+			_accountFriendConverter = accountFriendConverter;
 		}
 
 		public async Task<List<Friend>> GetFriends(ISessionContext sessionContext)
 		{
-			var friends = await m_friendsMappingRepository.Read(
+			var friends = await _friendsMappingRepository.Read(
 				x => x.Id == sessionContext.Account.Id,
 				x => x.Include(y => y.Friend).ThenInclude(y => y.AccountOnlineStateEntity));
 
-			return friends.Select(x => m_accountFriendConverter.ToModel(x.Friend)).ToList();
+			return friends.Select(x => _accountFriendConverter.ToModel(x.Friend)).ToList();
 		}
 
 		public async Task<bool> AddFriend(ISessionContext sessionContext, int accountId)
 		{
-			await m_friendsMappingRepository.Create(new FriendsMappingEntity()
+			await _friendsMappingRepository.Create(new FriendsMappingEntity()
 			{
 				Id = sessionContext.Account.Id,
 				FriendId = accountId

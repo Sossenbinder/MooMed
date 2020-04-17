@@ -11,11 +11,11 @@ namespace MooMed.Eventing.Events
     public class ServiceLocalMooEvent<TEventArgs> : IAwaitableEvent<TEventArgs>
     {
         [NotNull]
-        private readonly List<Func<TEventArgs, Task>> m_registeredActions;
+        private readonly List<Func<TEventArgs, Task>> _registeredActions;
 
         public ServiceLocalMooEvent()
         {
-            m_registeredActions = new List<Func<TEventArgs, Task>>();
+            _registeredActions = new List<Func<TEventArgs, Task>>();
         }
 
         [ItemNotNull]
@@ -23,7 +23,7 @@ namespace MooMed.Eventing.Events
         {
 			var accumulatedExceptions = new AccumulatedMooEventExceptions();
 
-            foreach (var registeredAction in m_registeredActions)
+            foreach (var registeredAction in _registeredActions)
             {
 	            try
 	            {
@@ -40,7 +40,7 @@ namespace MooMed.Eventing.Events
 
         public void Register([NotNull] Action<TEventArgs> handler)
         {
-			m_registeredActions.Add(args =>
+			_registeredActions.Add(args =>
 			{
 				handler(args);
 
@@ -50,18 +50,18 @@ namespace MooMed.Eventing.Events
 
 		public void Register([NotNull] Func<TEventArgs, Task> handler)
         {
-            m_registeredActions.Add(handler);
+            _registeredActions.Add(handler);
         }
 
         public void UnRegister([NotNull] Func<TEventArgs, Task> handler)
         {
-            m_registeredActions.Remove(handler);
+            _registeredActions.Remove(handler);
         }
 
         [NotNull]
         internal List<Func<TEventArgs, Task>> GetAllRegisteredEvents()
         {
-            return m_registeredActions;
+            return _registeredActions;
         }
     }
 }

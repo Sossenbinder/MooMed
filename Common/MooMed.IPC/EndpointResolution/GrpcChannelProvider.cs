@@ -15,23 +15,23 @@ namespace MooMed.IPC.EndpointResolution
 	public class GrpcChannelProvider : IGrpcChannelProvider
 	{
 		[NotNull]
-		private readonly IStatefulCollectionInfoProvider m_statefulCollectionInfoProvider;
+		private readonly IStatefulCollectionInfoProvider _statefulCollectionInfoProvider;
 
 		[NotNull]
-		private readonly Dictionary<StatefulSet, Dictionary<int, GrpcChannel>> m_grpcChannels;
+		private readonly Dictionary<StatefulSet, Dictionary<int, GrpcChannel>> _grpcChannels;
 
 		public GrpcChannelProvider([NotNull] IStatefulCollectionInfoProvider statefulCollectionInfoProvider)
 		{
 			GrpcClientFactory.AllowUnencryptedHttp2 = true;
 
-			m_statefulCollectionInfoProvider = statefulCollectionInfoProvider;
+			_statefulCollectionInfoProvider = statefulCollectionInfoProvider;
 
-			m_grpcChannels = new Dictionary<StatefulSet, Dictionary<int, GrpcChannel>>();
+			_grpcChannels = new Dictionary<StatefulSet, Dictionary<int, GrpcChannel>>();
 		}
 
 		public async Task<GrpcChannel> GetGrpcChannelForService(StatefulSet statefulSet, int replicaNumber)
 		{
-			if (m_grpcChannels.TryGetValue(statefulSet, out var serviceChannelDict))
+			if (_grpcChannels.TryGetValue(statefulSet, out var serviceChannelDict))
 			{
 				if (serviceChannelDict.ContainsKey(replicaNumber))
 				{
@@ -41,16 +41,16 @@ namespace MooMed.IPC.EndpointResolution
 
 			await RefreshServiceChannels(statefulSet);
 
-			return m_grpcChannels[statefulSet][replicaNumber]; 
+			return _grpcChannels[statefulSet][replicaNumber]; 
 		}
 
 		private async Task RefreshServiceChannels(StatefulSet statefulSet)
 		{
-			var statefulCollection = await m_statefulCollectionInfoProvider.GetStatefulCollectionInfoForService(statefulSet);
+			var statefulCollection = await _statefulCollectionInfoProvider.GetStatefulCollectionInfoForService(statefulSet);
 
 			var channelDict = statefulCollection.StatefulEndpoints.ToDictionary(x => x.InstanceNumber, x => GrpcChannel.ForAddress($"http://{x.IpAddress}:10042"));
 
-			m_grpcChannels[statefulSet] = channelDict;
+			_grpcChannels[statefulSet] = channelDict;
 		}
 	}
 }

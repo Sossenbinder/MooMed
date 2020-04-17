@@ -11,5 +11,7 @@ namespace MooMed.Eventing.Events.MassTransit.Interface
 
 		void RegisterForEvent<T>([NotNull] string queueName, [NotNull] Func<T, Task> handler)
 			where T : class;
+
+		Task RaiseSignalREvent<T>(T message);
 	}
 }

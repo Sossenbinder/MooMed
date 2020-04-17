@@ -7,15 +7,15 @@ namespace MooMed.Core.Code.Helper.Crypto
     public class AESHelper
     {
         [NotNull]
-        private readonly byte[] m_iv;
+        private readonly byte[] _iv;
 
         [NotNull]
-        private readonly byte[] m_key;
+        private readonly byte[] _key;
 
         public AESHelper([NotNull] byte[] iv, [NotNull] byte[] key)
         {
-            m_iv = iv;
-            m_key = key;
+            _iv = iv;
+            _key = key;
         }
 
         [NotNull]
@@ -59,8 +59,8 @@ namespace MooMed.Core.Code.Helper.Crypto
         {
             var aesManaged = new AesManaged()
             {
-                IV = m_iv,
-                Key = m_key,
+                IV = _iv,
+                Key = _key,
                 Padding = PaddingMode.PKCS7
             };
 

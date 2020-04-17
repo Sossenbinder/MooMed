@@ -9,17 +9,17 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 	{
 		// It is possible that there are locks in here which were attached to a LockedCacheItem which was already disposed
 		// but this shouldn't matter.
-		private readonly ConcurrentDictionary<TKeyType, ICacheLock> m_cacheLocks;
+		private readonly ConcurrentDictionary<TKeyType, ICacheLock> _cacheLocks;
 
 		public SemaphoreCacheLockManager()
 		{
-			m_cacheLocks = new ConcurrentDictionary<TKeyType, ICacheLock>();
+			_cacheLocks = new ConcurrentDictionary<TKeyType, ICacheLock>();
 		}
 
 		[ItemNotNull]
 		public async Task<ICacheLock> GetLockedLock(TKeyType key)
 		{
-			var semaphoreCacheLock = m_cacheLocks.GetOrAdd(key, new SemaphoreCacheLock());
+			var semaphoreCacheLock = _cacheLocks.GetOrAdd(key, new SemaphoreCacheLock());
 
 			await semaphoreCacheLock.Lock();
 
@@ -29,7 +29,7 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 		[NotNull]
 		public ICacheLock GetUnlockedLock(TKeyType key)
 		{
-			var semaphoreCacheLock = m_cacheLocks.GetOrAdd(key, new SemaphoreCacheLock());
+			var semaphoreCacheLock = _cacheLocks.GetOrAdd(key, new SemaphoreCacheLock());
 
 			semaphoreCacheLock.Unlock();
 
@@ -38,14 +38,14 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 
 		public bool HasLockedLock(TKeyType key)
 		{
-			var hasCacheLock = m_cacheLocks.TryGetValue(key, out var cacheLock);
+			var hasCacheLock = _cacheLocks.TryGetValue(key, out var cacheLock);
 
 			return hasCacheLock && cacheLock.IsLocked();
 		}
 
 		public void RemoveLock(TKeyType key)
 		{
-			m_cacheLocks.TryRemove(key, out _);
+			_cacheLocks.TryRemove(key, out _);
 		}
 	}
 }

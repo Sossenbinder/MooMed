@@ -13,26 +13,26 @@ namespace MooMed.Eventing.Events
 		where TEventArgs : class
 	{
 		[NotNull]
-		private readonly IMassTransitEventingService m_massTransitEventingService;
+		private readonly IMassTransitEventingService _massTransitEventingService;
 
 		[NotNull]
-		private readonly List<Func<TEventArgs, Task>> m_handlers;
+		private readonly List<Func<TEventArgs, Task>> _handlers;
 
 		public MtMooEvent(
 			[NotNull] string queueName,
 			[NotNull] IMassTransitEventingService massTransitEventingService)
 		{
-			m_massTransitEventingService = massTransitEventingService;
-			m_handlers = new List<Func<TEventArgs, Task>>();
+			_massTransitEventingService = massTransitEventingService;
+			_handlers = new List<Func<TEventArgs, Task>>();
 
-			m_massTransitEventingService.RegisterForEvent<TEventArgs>(queueName, OnEventReceived);
+			_massTransitEventingService.RegisterForEvent<TEventArgs>(queueName, OnEventReceived);
 		}
 
 		private async Task OnEventReceived(TEventArgs eventArgs)
 		{
 			try
 			{
-				var tasks = m_handlers.Select(handler => handler(eventArgs));
+				var tasks = _handlers.Select(handler => handler(eventArgs));
 
 				await Task.WhenAll(tasks);
 			}
@@ -44,7 +44,7 @@ namespace MooMed.Eventing.Events
 
 		public async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
 		{
-			await m_massTransitEventingService.RaiseEvent(eventArgs);
+			await _massTransitEventingService.RaiseEvent(eventArgs);
 
 			return new AccumulatedMooEventExceptions();
 		}
@@ -60,12 +60,12 @@ namespace MooMed.Eventing.Events
 
 		public void Register(Func<TEventArgs, Task> handler)
 		{
-			m_handlers.Add(handler);
+			_handlers.Add(handler);
 		}
 
 		public void UnRegister(Func<TEventArgs, Task> handler)
 		{
-			m_handlers.Remove(handler);
+			_handlers.Remove(handler);
 		}
 	}
 }

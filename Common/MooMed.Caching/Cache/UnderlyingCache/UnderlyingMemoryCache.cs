@@ -6,40 +6,40 @@ namespace MooMed.Caching.Cache.UnderlyingCache
 {
 	public class UnderlyingMemoryCache<TKeyType, TValueType> : AbstractUnderlyingCache<TKeyType, TValueType>
 	{
-		private readonly IMemoryCache m_memoryCache;
+		private readonly IMemoryCache _memoryCache;
 
-		private readonly int m_baseTTLTimeInSeconds;
+		private readonly int _baseTTLTimeInSeconds;
 
 		public UnderlyingMemoryCache(int baseTTLTimeInSeconds)
 			:base(new SemaphoreCacheLockManager<TKeyType>())
 		{
-			m_memoryCache = new MemoryCache(new MemoryCacheOptions());
+			_memoryCache = new MemoryCache(new MemoryCacheOptions());
 
-			m_baseTTLTimeInSeconds = baseTTLTimeInSeconds;
+			_baseTTLTimeInSeconds = baseTTLTimeInSeconds;
 		}
 
 		public override void PutItem(TKeyType key, TValueType value, int? secondsToLive = null)
 		{
 			// TODO: Make this lock-safe
-			m_memoryCache.Set(key, value, /*DateTimeOffset.Now.AddSeconds(secondsToLive ?? m_baseTTLTimeInSeconds)*/ DateTimeOffset.Now.AddSeconds(6000));
+			_memoryCache.Set(key, value, /*DateTimeOffset.Now.AddSeconds(secondsToLive ?? _baseTTLTimeInSeconds)*/ DateTimeOffset.Now.AddSeconds(6000));
 		}
 
 		public override TValueType GetItem(TKeyType key)
 		{
-			var value = (TValueType)m_memoryCache.Get(key);
+			var value = (TValueType)_memoryCache.Get(key);
 
 			return value == null ? default : value;
 		}
 
 		public override void Remove(TKeyType key)
 		{
-			m_memoryCache.Remove(key);
+			_memoryCache.Remove(key);
 			CacheLockManager.RemoveLock(key);
 		}
 
 		public override bool HasValue(TKeyType key)
 		{
-			return m_memoryCache.TryGetValue(key, out _);
+			return _memoryCache.TryGetValue(key, out _);
 		}
 	}
 }

@@ -57,22 +57,22 @@ namespace MooMed.Core.DataTypes
 	public class ServiceResponse<TPayload> : ServiceResponseBase
 	{
 		[ProtoMember(4)]
-		private TPayload m_payload;
+		private TPayload _payload;
 
 		[NotNull]
-		public TPayload PayloadOrNull => m_payload;
+		public TPayload PayloadOrNull => _payload;
 
 		[NotNull]
 		public TPayload PayloadOrFail
 		{
 			get
 			{
-				if (m_payload == null)
+				if (_payload == null)
 				{
 					throw new NullReferenceException();
 				}
 
-				return m_payload;
+				return _payload;
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace MooMed.Core.DataTypes
 		private ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload, [CanBeNull] string errorMessage)
 			: base(isSuccess, errorMessage)
 		{
-			m_payload = payload;
+			_payload = payload;
 		}
 
 		[NotNull]

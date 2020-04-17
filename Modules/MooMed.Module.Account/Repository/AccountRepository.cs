@@ -19,19 +19,19 @@ namespace MooMed.Module.Accounts.Repository
     public class AccountRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountEntity, int>, IAccountRepository
     {
 	    [NotNull]
-	    private readonly IEntityConverter<RegisterModel, AccountEntity, int> m_registerModelToAccountConverter;
+	    private readonly IEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
 
         public AccountRepository(
 		    [NotNull] AccountDbContextFactory contextFactory,
 		    [NotNull] IEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter) 
 		    : base(contextFactory)
 	    {
-		    m_registerModelToAccountConverter = registerModelToAccountConverter;
+		    _registerModelToAccountConverter = registerModelToAccountConverter;
         }
 
         public async Task<AccountEntity> CreateAccount(RegisterModel registerModel)
         {
-	        var accountDbModel = m_registerModelToAccountConverter.ToEntity(registerModel);
+	        var accountDbModel = _registerModelToAccountConverter.ToEntity(registerModel);
 	        accountDbModel.PasswordHash = Sha256Helper.Hash(registerModel.Password);
 
             await Create(accountDbModel);

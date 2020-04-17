@@ -17,17 +17,17 @@ namespace MooMed.Common.Database.Repository
 		where TDbContext : AbstractDbContext
 	{
 		[NotNull]
-		private readonly TContextFactory m_contextFactory;
+		private readonly TContextFactory _contextFactory;
 
 		protected AbstractCrudRepository(
 			[NotNull] TContextFactory contextFactory)
 		{
-			m_contextFactory = contextFactory;
+			_contextFactory = contextFactory;
 		}
 
 		protected TDbContext CreateContext()
 		{
-			return m_contextFactory.CreateContext();
+			return _contextFactory.CreateContext();
 		}
 
 		[NotNull]
@@ -135,6 +135,6 @@ namespace MooMed.Common.Database.Repository
 			await ctx.SaveChangesAsync();
 		}
 
-		private TDbContext GetContext() => m_contextFactory.CreateContext();
+		private TDbContext GetContext() => _contextFactory.CreateContext();
 	}
 }

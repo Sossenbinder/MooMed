@@ -18,17 +18,17 @@ namespace MooMed.Module.Finance.Helper
 	public class EtfDbQuerier : IEtfQuerier
 	{
 		[NotNull]
-		private const string m_baseUri = "https://etfdb.com/api/screener/";
+		private const string _baseUri = "https://etfdb.com/api/screener/";
 
 		[NotNull]
-		private readonly IApiCaller m_apiCaller;
+		private readonly IApiCaller _apiCaller;
 
 		public EtfDbQuerier([NotNull] IHttpClientFactory httpClientFactory)
 		{
 			var httpClient = httpClientFactory.CreateClient();
-			httpClient.BaseAddress = new Uri(m_baseUri);
+			httpClient.BaseAddress = new Uri(_baseUri);
 
-			m_apiCaller = new ApiCaller(httpClient);
+			_apiCaller = new ApiCaller(httpClient);
 		}
 
 		public async Task<List<EtfMetadata>> GetAllEtfs()
@@ -43,9 +43,9 @@ namespace MooMed.Module.Finance.Helper
 				only = new[] {"meta"},
 			});
 
-			//var response = await m_apiCaller.PostWithJson<EtfDbQuery, RootObject>(postData);
+			//var response = await _apiCaller.PostWithJson<EtfDbQuery, RootObject>(postData);
 
-			var responseBatch = await m_apiCaller.PostWithJsonSequential<EtfDbQuery, RootObject>(
+			var responseBatch = await _apiCaller.PostWithJsonSequential<EtfDbQuery, RootObject>(
 				postData,
 				rootObj => rootObj.data.Any(),
 				toTransform => toTransform.Data.page++,

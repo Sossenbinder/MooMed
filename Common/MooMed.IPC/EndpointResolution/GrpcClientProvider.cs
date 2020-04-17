@@ -14,24 +14,24 @@ namespace MooMed.IPC.EndpointResolution
     public class GrpcClientProvider : IGrpcClientProvider
     {
 		[NotNull]
-	    private readonly IGrpcChannelProvider m_grpcChannelProvider;
+	    private readonly IGrpcChannelProvider _grpcChannelProvider;
 
         [NotNull]
-        private readonly ConcurrentDictionary<StatefulSet, ConcurrentDictionary<int, Task<IGrpcService>>> m_grpcClientDictionary;
+        private readonly ConcurrentDictionary<StatefulSet, ConcurrentDictionary<int, Task<IGrpcService>>> _grpcClientDictionary;
 
         public GrpcClientProvider([NotNull] IGrpcChannelProvider grpcChannelProvider)
         {
 	        GrpcClientFactory.AllowUnencryptedHttp2 = true;
 
-            m_grpcChannelProvider = grpcChannelProvider;
+            _grpcChannelProvider = grpcChannelProvider;
 
-	        m_grpcClientDictionary = new ConcurrentDictionary<StatefulSet, ConcurrentDictionary<int, Task<IGrpcService>>>();
+	        _grpcClientDictionary = new ConcurrentDictionary<StatefulSet, ConcurrentDictionary<int, Task<IGrpcService>>>();
         }
 
         public async Task<TService> GetGrpcClientAsync<TService>(StatefulSet statefulSet, int replicaNr)
 	        where TService : class, IGrpcService
 		{
-	        var grpcServiceDict = m_grpcClientDictionary.GetOrAdd(statefulSet, service => new ConcurrentDictionary<int, Task<IGrpcService>>());
+	        var grpcServiceDict = _grpcClientDictionary.GetOrAdd(statefulSet, service => new ConcurrentDictionary<int, Task<IGrpcService>>());
 
 	        var grpcService = await grpcServiceDict.GetOrAdd(replicaNr, newReplicaNr => CreateNewGrpcService<TService>(statefulSet, newReplicaNr));
 
@@ -41,7 +41,7 @@ namespace MooMed.IPC.EndpointResolution
         private async Task<IGrpcService> CreateNewGrpcService<TService>(StatefulSet statefulSet, int channelNumber)
 			where TService : class, IGrpcService
         {
-	        var grpcChannel = await m_grpcChannelProvider.GetGrpcChannelForService(statefulSet, channelNumber);
+	        var grpcChannel = await _grpcChannelProvider.GetGrpcChannelForService(statefulSet, channelNumber);
 
 	        return grpcChannel.CreateGrpcService<TService>();
         }

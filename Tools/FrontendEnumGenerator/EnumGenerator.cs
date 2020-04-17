@@ -8,28 +8,28 @@ namespace FrontendEnumGenerator
 {
 	public class EnumGenerator
 	{
-		private List<Type> m_enumsToExport;
+		private List<Type> _enumsToExport;
 
-		private readonly string m_outputFile;
+		private readonly string _outputFile;
 
-		private readonly string m_wwwRootPath;
+		private readonly string _wwwRootPath;
 
 		public EnumGenerator()
 		{
-			m_enumsToExport = EnumsToExport.Enums;
+			_enumsToExport = EnumsToExport.Enums;
 
 			var outputDirectory = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Enums";
 
-			m_outputFile = Path.Combine(outputDirectory, "moomedEnums.ts");
+			_outputFile = Path.Combine(outputDirectory, "moomedEnums.ts");
 
-			m_wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Enums";
+			_wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Enums";
 		}
 
 		public void GenerateEnums()
 		{
 			var output = GetOutputFile();
 
-			foreach (var enumToExport in m_enumsToExport)
+			foreach (var enumToExport in _enumsToExport)
 			{
 				output.WriteLine();
 				output.WriteLine($"export enum {enumToExport.Name} {{");
@@ -66,9 +66,9 @@ namespace FrontendEnumGenerator
 
 		private void CopyTranslationsToWWWRoot()
 		{
-			var fileName = m_outputFile.Substring(m_outputFile.LastIndexOf("\\", StringComparison.Ordinal));
+			var fileName = _outputFile.Substring(_outputFile.LastIndexOf("\\", StringComparison.Ordinal));
 
-			File.Copy(m_outputFile, m_wwwRootPath + fileName, true);
+			File.Copy(_outputFile, _wwwRootPath + fileName, true);
 		}
 	}
 }

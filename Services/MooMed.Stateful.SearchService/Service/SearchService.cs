@@ -11,20 +11,20 @@ namespace MooMed.Stateful.SearchService.Service
     public class SearchService : MooMedServiceBase, ISearchService
     {
 	    [NotNull]
-	    private readonly IAccountService m_accountService;
+	    private readonly IAccountService _accountService;
 
 	    public SearchService(
             [NotNull] IMainLogger logger,
             [NotNull] IAccountService accountService)
             : base(logger)
         {
-	        m_accountService = accountService;
+	        _accountService = accountService;
         }
 
         [ItemNotNull]
         public async Task<ServiceResponse<SearchResult>> Search([NotNull] string query)
         {
-	        var accountsStartingWithNameResponse = await m_accountService.FindAccountsStartingWithName(query);
+	        var accountsStartingWithNameResponse = await _accountService.FindAccountsStartingWithName(query);
 
             var searchResult = new SearchResult
             {

@@ -12,14 +12,14 @@ namespace MooMed.Web.Controllers
 	public class FriendsController : SessionBaseController
 	{
 		[NotNull]
-		private readonly IAccountService m_accountService;
+		private readonly IAccountService _accountService;
 
 		public FriendsController(
 			[NotNull] ISessionService sessionService,
 			[NotNull] IAccountService accountService) 
 			: base(sessionService)
 		{
-			m_accountService = accountService;
+			_accountService = accountService;
 		}
 
 		[ItemNotNull]
@@ -28,7 +28,7 @@ namespace MooMed.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> GetFriends()
 		{
-			var getFriendsResponse = await m_accountService.GetFriends(CurrentSessionOrFail);
+			var getFriendsResponse = await _accountService.GetFriends(CurrentSessionOrFail);
 
 			return getFriendsResponse.ToJsonResponse();
 		}
@@ -45,7 +45,7 @@ namespace MooMed.Web.Controllers
 				AccountId = accountId,
 			};
 
-			var friendAddResponse = await m_accountService.AddAsFriend(message);
+			var friendAddResponse = await _accountService.AddAsFriend(message);
 
 			return friendAddResponse.ToJsonResponse();
 		}

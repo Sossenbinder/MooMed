@@ -9,11 +9,11 @@ namespace MooMed.Caching.Cache.Factory
     public class ObjectCacheFactory : IDefaultCacheFactory
     {
 	    [NotNull]
-        private readonly CacheSettingsProvider m_cacheSettingsProvider;
+        private readonly CacheSettingsProvider _cacheSettingsProvider;
 
         public ObjectCacheFactory([NotNull] CacheSettingsProvider cacheSettingsProvider)
         {
-	        m_cacheSettingsProvider = cacheSettingsProvider;
+	        _cacheSettingsProvider = cacheSettingsProvider;
         }
 
         [NotNull]
@@ -21,7 +21,7 @@ namespace MooMed.Caching.Cache.Factory
         {
 	        if (cacheSettings == null)
 	        {
-		        cacheSettings = m_cacheSettingsProvider.DefaultCacheSettings;
+		        cacheSettings = _cacheSettingsProvider.DefaultCacheSettings;
 	        }
 
             return new ObjectCache<TDataType>(cacheSettings);
@@ -32,7 +32,7 @@ namespace MooMed.Caching.Cache.Factory
 		{
 			if (cacheSettings == null)
 			{
-				cacheSettings = m_cacheSettingsProvider.DefaultCacheSettings;
+				cacheSettings = _cacheSettingsProvider.DefaultCacheSettings;
 			}
 
 			return new ObjectCache<TKey, TDataType>(cacheSettings);

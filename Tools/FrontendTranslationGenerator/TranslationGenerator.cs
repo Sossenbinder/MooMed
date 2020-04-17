@@ -10,11 +10,11 @@ namespace FrontendTranslationGenerator
 {
     internal class TranslationGenerator
     {
-        private string m_translationPaths;
+        private string _translationPaths;
 
-        private string m_translationOutputPaths;
+        private string _translationOutputPaths;
 
-        private string m_wwwRootPath;
+        private string _wwwRootPath;
         
         public void GenerateTranslations()
         {
@@ -27,14 +27,14 @@ namespace FrontendTranslationGenerator
 
         private void GetTranslationResourcesPath()
         {
-            m_translationPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Common\\MooMed.Core\\Translations\\Resources";
-            m_translationOutputPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Translations";
-            m_wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Translations";
+            _translationPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Common\\MooMed.Core\\Translations\\Resources";
+            _translationOutputPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Translations";
+            _wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Translations";
         }
 
         private IEnumerable<string> GetRelevantTranslations()
         {
-            var translationBase = Path.Combine(m_translationPaths, "Translation.resx");
+            var translationBase = Path.Combine(_translationPaths, "Translation.resx");
 
             var xDoc = XDocument.Load(translationBase);
 
@@ -56,7 +56,7 @@ namespace FrontendTranslationGenerator
 
         private IEnumerable<string> GetAvailableTranslationLanguages()
         {
-            var allFilesInDir = Directory.GetFiles(m_translationPaths);
+            var allFilesInDir = Directory.GetFiles(_translationPaths);
 
             return allFilesInDir.Where(fileName => Regex.IsMatch(fileName, "(Translation\\..+\\.resx)")).Select(file =>
             {
@@ -80,7 +80,7 @@ namespace FrontendTranslationGenerator
                 var outputFile = GetOutputFile(lang);
                 outputFile.WriteLine("var Translation = {");
 
-                var xDoc = XDocument.Load(Path.Combine(m_translationPaths, translationFile));
+                var xDoc = XDocument.Load(Path.Combine(_translationPaths, translationFile));
 
                 var nodesToCopy = xDoc.Element("root")
                     ?.Elements("data")
@@ -110,7 +110,7 @@ namespace FrontendTranslationGenerator
 
         private StreamWriter GetOutputFile(string lang)
         {
-            var outputPath = Path.Combine(m_translationOutputPaths, $"translation.{lang}.js");
+            var outputPath = Path.Combine(_translationOutputPaths, $"translation.{lang}.js");
 
             if (!File.Exists(outputPath))
             {
@@ -124,13 +124,13 @@ namespace FrontendTranslationGenerator
 
         private void CopyTranslationsToWWWRoot()
         {
-            var filesInOutputDir = Directory.GetFiles(m_translationOutputPaths);
+            var filesInOutputDir = Directory.GetFiles(_translationOutputPaths);
 
             foreach (var file in filesInOutputDir)
             {
                 var fileName = file.Substring(file.LastIndexOf("\\", StringComparison.Ordinal));
 
-                File.Copy(file, m_wwwRootPath + fileName, true);
+                File.Copy(file, _wwwRootPath + fileName, true);
             }
         }
     }

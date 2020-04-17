@@ -8,13 +8,13 @@ namespace MooMed.Core.DataTypes
     public class ServiceErrorMessage
     {
         [CanBeNull]
-        private string m_errorMessage;
+        private string _errorMessage;
 
         [ProtoMember(1)]
         public string Message
         {
-	        get => m_errorMessage ?? Translation.GenericErrorMessage;
-	        private set => m_errorMessage = value;
+	        get => _errorMessage ?? Translation.GenericErrorMessage;
+	        private set => _errorMessage = value;
         }
 
         private ServiceErrorMessage()
@@ -23,7 +23,7 @@ namespace MooMed.Core.DataTypes
 
         public ServiceErrorMessage([CanBeNull] string errorMessage = null)
         {
-            m_errorMessage = errorMessage;
+            _errorMessage = errorMessage;
         }
     }
 }

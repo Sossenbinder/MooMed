@@ -19,16 +19,16 @@ namespace MooMed.Module.Accounts.Service
     public class AccountSignInService : IAccountSignInService
     {
         [NotNull]
-        private readonly IAccountSignInValidator m_accountSignInValidator;
+        private readonly IAccountSignInValidator _accountSignInValidator;
 
         [NotNull]
-        private readonly IMainLogger m_mainLogger;
+        private readonly IMainLogger _mainLogger;
 
         [NotNull]
-        private readonly IAccountRepository m_accountRepository;
+        private readonly IAccountRepository _accountRepository;
 
         [NotNull]
-        private readonly IModelConverter<Account, AccountEntity, int> m_accountModelConverter;
+        private readonly IModelConverter<Account, AccountEntity, int> _accountModelConverter;
 
         public AccountSignInService(
             [NotNull] IAccountSignInValidator accountSignInValidator,
@@ -36,17 +36,17 @@ namespace MooMed.Module.Accounts.Service
             [NotNull] IAccountRepository accountRepository, 
             [NotNull] IModelConverter<Account, AccountEntity, int> accountModelConverter)
         {
-            m_accountSignInValidator = accountSignInValidator;
-            m_accountRepository = accountRepository;
-            m_accountModelConverter = accountModelConverter;
-            m_mainLogger = mainLogger;
+            _accountSignInValidator = accountSignInValidator;
+            _accountRepository = accountRepository;
+            _accountModelConverter = accountModelConverter;
+            _mainLogger = mainLogger;
         }
 
         [ItemNotNull]
         public async Task<RegistrationResult> Register(RegisterModel registerModel)
         {
             // Check if given params already make account creation impossible
-            var registrationValidationResult = m_accountSignInValidator.ValidateRegistrationModel(registerModel);
+            var registrationValidationResult = _accountSignInValidator.ValidateRegistrationModel(registerModel);
 
             if (registrationValidationResult != RegistrationValidationResult.Success)
             {
@@ -54,18 +54,18 @@ namespace MooMed.Module.Accounts.Service
             }
 
             // Check if the database already has entries for given email or username
-            if (await m_accountRepository.FindAccount(acc => acc.Email.Equals(registerModel.Email)) != null)
+            if (await _accountRepository.FindAccount(acc => acc.Email.Equals(registerModel.Email)) != null)
             {
                 return RegistrationResult.Failure(RegistrationValidationResult.EmailTaken);
             }
 
-            if (await m_accountRepository.FindAccount(acc => acc.UserName.Equals(registerModel.UserName)) != null)
+            if (await _accountRepository.FindAccount(acc => acc.UserName.Equals(registerModel.UserName)) != null)
             {
                 return RegistrationResult.Failure(RegistrationValidationResult.UserNameTaken);
             }
 
             // Actually Create the account
-            var account = m_accountModelConverter.ToModel(await m_accountRepository.CreateAccount(registerModel));
+            var account = _accountModelConverter.ToModel(await _accountRepository.CreateAccount(registerModel));
             
             return RegistrationResult.Success(account);
         }
@@ -74,7 +74,7 @@ namespace MooMed.Module.Accounts.Service
         public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
         {
 			// Validate the login data we got
-            var loginValidationResult = m_accountSignInValidator.ValidateLoginModel(loginModel);
+            var loginValidationResult = _accountSignInValidator.ValidateLoginModel(loginModel);
 
             if (loginValidationResult != LoginResponseCode.Success)
             {
@@ -91,7 +91,7 @@ namespace MooMed.Module.Accounts.Service
                 return ServiceResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
             }
 
-            var account = (await m_accountRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email) 
+            var account = (await _accountRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email) 
                                                                                    && accDbModel.PasswordHash.Equals(hashedPassword)))?.ToModel();
 
             if (account == null)
@@ -109,8 +109,8 @@ namespace MooMed.Module.Accounts.Service
 
         public async Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
         {
-            m_mainLogger.Info("Refreshing login for account", sessionContext);
-            return await m_accountRepository.RefreshLastAccessedAt(sessionContext);
+            _mainLogger.Info("Refreshing login for account", sessionContext);
+            return await _accountRepository.RefreshLastAccessedAt(sessionContext);
         }
     }
 }

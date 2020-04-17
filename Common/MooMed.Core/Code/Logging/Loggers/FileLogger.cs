@@ -10,19 +10,19 @@ namespace MooMed.Core.Code.Logging.Loggers
     public class FileLogger
     {
         [NotNull]
-        private readonly string m_logFilePath;
+        private readonly string _logFilePath;
 
         public FileLogger(
             [NotNull] ILogPathProvider logPathProvider)
         {
-            m_logFilePath = logPathProvider.GetMainLogPath();
+            _logFilePath = logPathProvider.GetMainLogPath();
         }
 
         public async Task Log([NotNull] ISessionContext sessionContext, string message, LogLevel logLevel)
         {
             var stringMetaData = FormMetadataStringPart(logLevel, sessionContext);
 
-            await FileExtensions.AppendAllTextAsync(m_logFilePath, $"{stringMetaData} --- {message}" + Environment.NewLine);
+            await FileExtensions.AppendAllTextAsync(_logFilePath, $"{stringMetaData} --- {message}" + Environment.NewLine);
         }
 
         [NotNull]

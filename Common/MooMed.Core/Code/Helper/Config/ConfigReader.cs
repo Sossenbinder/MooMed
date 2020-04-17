@@ -10,11 +10,11 @@ namespace MooMed.Core.Code.Helper.Config
     public class ConfigReader
     {
         [NotNull]
-        private readonly EmbeddedResourceProvider m_embeddedResourceProvider;
+        private readonly EmbeddedResourceProvider _embeddedResourceProvider;
 
         public ConfigReader()
         {
-            m_embeddedResourceProvider = new EmbeddedResourceProvider();
+            _embeddedResourceProvider = new EmbeddedResourceProvider();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace MooMed.Core.Code.Helper.Config
         [NotNull]
         private async Task<Dictionary<string, string>> LoadConfigFileFromEmbeddedResources([NotNull] string name)
         {
-            var embeddedStream = m_embeddedResourceProvider.GetEmbeddedResourceStream("MooMed.Core.Configuration", name);
+            var embeddedStream = _embeddedResourceProvider.GetEmbeddedResourceStream("MooMed.Core.Configuration", name);
 
             return await ParseConfigFile(embeddedStream);
         }

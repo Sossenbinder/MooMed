@@ -12,7 +12,7 @@ namespace MooMed.Web.Controllers.Base
     public class SessionBaseController : BaseController
     {
 	    [NotNull]
-	    private readonly ISessionService m_sessionService;
+	    private readonly ISessionService _sessionService;
 
 	    [CanBeNull]
 	    protected ISessionContext CurrentSession { get; private set; }
@@ -39,7 +39,7 @@ namespace MooMed.Web.Controllers.Base
 
 		public SessionBaseController([NotNull] ISessionService sessionService)
 	    {
-		    m_sessionService = sessionService;
+		    _sessionService = sessionService;
 	    }
 
 	    public override async Task OnActionExecutionAsync(
@@ -56,7 +56,7 @@ namespace MooMed.Web.Controllers.Base
 		    if (actionExecutingContext.HttpContext.IsAuthenticated())
 		    {
 			    var accountId = Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name);
-				var sessionServiceResponse = await m_sessionService.GetSessionContext(accountId);
+				var sessionServiceResponse = await _sessionService.GetSessionContext(accountId);
 
 				if (sessionServiceResponse.IsFailure)
 				{

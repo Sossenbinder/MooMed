@@ -8,20 +8,20 @@ namespace MooMed.Common.Database.Context
 		where TDbContext : AbstractDbContext
 	{
 		[NotNull]
-		private readonly IConfigSettingsProvider m_configSettingsProvider;
+		private readonly IConfigSettingsProvider _configSettingsProvider;
 
 		[NotNull]
-		private readonly string m_key;
+		private readonly string _key;
 
 		protected AbstractDbContextFactory([NotNull] IConfigSettingsProvider configSettingsProvider, [NotNull] string key)
 		{
-			m_configSettingsProvider = configSettingsProvider;
-			m_key = key;
+			_configSettingsProvider = configSettingsProvider;
+			_key = key;
 		}
 
 		protected string GetConnectionString()
 		{
-			return m_configSettingsProvider.ReadDecryptedValueOrFail<string>(m_key, "Password");
+			return _configSettingsProvider.ReadDecryptedValueOrFail<string>(_key, "Password");
 		}
 
 		public abstract TDbContext CreateContext();

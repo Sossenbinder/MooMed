@@ -12,14 +12,14 @@ namespace MooMed.Core.Code.Logging.Loggers
 {
 	public class MainTableStorageLogger : IMainLogger
 	{
-		private readonly ILogger m_logger;
+		private readonly ILogger _logger;
 
 		public MainTableStorageLogger([NotNull] IConfigSettingsProvider configSettingsProvider)
 		{
 			var connectionString = configSettingsProvider.ReadDecryptedValueOrFail<string>("MooMed_Logging_TableStorageConnectionString", "AccountKey");
 			var storage = CloudStorageAccount.Parse(connectionString);
 			
-			m_logger = Log.Logger = new LoggerConfiguration()
+			_logger = Log.Logger = new LoggerConfiguration()
 				.Enrich.FromLogContext()
 				.WriteTo
 				.Async(logConfig =>
@@ -31,49 +31,49 @@ namespace MooMed.Core.Code.Logging.Loggers
 		}
 
 		public void Info(string message)
-			=> LogWithOutSessionContext(message, m_logger.Information);
+			=> LogWithOutSessionContext(message, _logger.Information);
 
 		public void Info(string message, int accountId)
-			=> LogWithAccountId(message, m_logger.Information, accountId);
+			=> LogWithAccountId(message, _logger.Information, accountId);
 
 		public void Info(string message, ISessionContext sessionContext)
-			=> LogWithSessionContext(message, m_logger.Information, sessionContext);
+			=> LogWithSessionContext(message, _logger.Information, sessionContext);
 
 		public void Debug(string message)
-			=> LogWithOutSessionContext(message, m_logger.Debug);
+			=> LogWithOutSessionContext(message, _logger.Debug);
 
 		public void Debug(string message, int accountId)
-			=> LogWithAccountId(message, m_logger.Debug, accountId);
+			=> LogWithAccountId(message, _logger.Debug, accountId);
 
 		public void Debug(string message, ISessionContext sessionContext)
-			=> LogWithSessionContext(message, m_logger.Debug, sessionContext);
+			=> LogWithSessionContext(message, _logger.Debug, sessionContext);
 
 		public void Warning(string message)
-			=> LogWithOutSessionContext(message, m_logger.Warning);
+			=> LogWithOutSessionContext(message, _logger.Warning);
 
 		public void Warning(string message, int accountId)
-			=> LogWithAccountId(message, m_logger.Warning, accountId);
+			=> LogWithAccountId(message, _logger.Warning, accountId);
 
 		public void Warning(string message, ISessionContext sessionContext)
-			=> LogWithSessionContext(message, m_logger.Warning, sessionContext);
+			=> LogWithSessionContext(message, _logger.Warning, sessionContext);
 
 		public void Error(string message)
-			=> LogWithOutSessionContext(message, m_logger.Error);
+			=> LogWithOutSessionContext(message, _logger.Error);
 
 		public void Error(string message, int accountId)
-			=> LogWithAccountId(message, m_logger.Error, accountId);
+			=> LogWithAccountId(message, _logger.Error, accountId);
 
 		public void Error(string message, ISessionContext sessionContext)
-			=> LogWithSessionContext(message, m_logger.Error, sessionContext);
+			=> LogWithSessionContext(message, _logger.Error, sessionContext);
 
 		public void Fatal(string message)
-			=> LogWithOutSessionContext(message, m_logger.Fatal);
+			=> LogWithOutSessionContext(message, _logger.Fatal);
 
 		public void Fatal(string message, int accountId)
-			=> LogWithAccountId(message, m_logger.Fatal, accountId);
+			=> LogWithAccountId(message, _logger.Fatal, accountId);
 
 		public void Fatal(string message, ISessionContext sessionContext)
-			=> LogWithSessionContext(message, m_logger.Fatal, sessionContext);
+			=> LogWithSessionContext(message, _logger.Fatal, sessionContext);
 
 		private void LogWithOutSessionContext(
 			[NotNull] string message,

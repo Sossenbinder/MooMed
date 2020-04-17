@@ -14,8 +14,8 @@
 //    [Authorize]
 //    public class ManageController : BaseController
 //    {
-//        private ApplicationSignInManager m_signInManager;
-//        private ApplicationUserManager m_userManager;
+//        private ApplicationSignInManager _signInManager;
+//        private ApplicationUserManager _userManager;
 
 //        public ManageController()
 //        {
@@ -31,11 +31,11 @@
 //        {
 //            get
 //            {
-//                return m_signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+//                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
 //            }
 //            private set 
 //            { 
-//                m_signInManager = value; 
+//                _signInManager = value; 
 //            }
 //        }
 
@@ -43,11 +43,11 @@
 //        {
 //            get
 //            {
-//                return m_userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+//                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 //            }
 //            private set
 //            {
-//                m_userManager = value;
+//                _userManager = value;
 //            }
 //        }
 
@@ -315,10 +315,10 @@
 
 //        protected override void Dispose(bool disposing)
 //        {
-//            if (disposing && m_userManager != null)
+//            if (disposing && _userManager != null)
 //            {
-//                m_userManager.Dispose();
-//                m_userManager = null;
+//                _userManager.Dispose();
+//                _userManager = null;
 //            }
 
 //            base.Dispose(disposing);

@@ -10,9 +10,9 @@ namespace MooMed.Core.Tests.Tests.Cache
     [TestFixture]
     public class ObjectCacheTests : MooMedTestBase
     {
-        private ICache<string> m_objectCache;
+        private ICache<string> _objectCache;
 
-        private string m_cacheKey = "key1234";
+        private string _cacheKey = "key1234";
 
         protected override void SetupFixture()
         {
@@ -23,7 +23,7 @@ namespace MooMed.Core.Tests.Tests.Cache
         {
             base.TearDown();
 
-            m_objectCache = new ObjectCache<string>(new CacheSettings(60, "UnitTest"));
+            _objectCache = new ObjectCache<string>(new CacheSettings(60, "UnitTest"));
         }
 
         [Test]
@@ -31,9 +31,9 @@ namespace MooMed.Core.Tests.Tests.Cache
         {
             const string value = "blabla";
 
-            m_objectCache.PutItem(m_cacheKey, value);
+            _objectCache.PutItem(_cacheKey, value);
 
-            Assert.IsTrue(m_objectCache.HasValue(m_cacheKey));
+            Assert.IsTrue(_objectCache.HasValue(_cacheKey));
         }
 
         [Test]
@@ -41,16 +41,16 @@ namespace MooMed.Core.Tests.Tests.Cache
         {
             const string value = "blabla";
 
-            m_objectCache.PutItem(m_cacheKey, value);
-            m_objectCache.Remove(m_cacheKey);
+            _objectCache.PutItem(_cacheKey, value);
+            _objectCache.Remove(_cacheKey);
 
-            Assert.IsFalse(m_objectCache.HasValue(m_cacheKey));
+            Assert.IsFalse(_objectCache.HasValue(_cacheKey));
         }
 
         [Test]
         public void RemovingItemNotInCacheShouldFailSilently()
         {
-            m_objectCache.Remove(m_cacheKey);
+            _objectCache.Remove(_cacheKey);
         }
 
         [Test]
@@ -58,9 +58,9 @@ namespace MooMed.Core.Tests.Tests.Cache
         {
             const string value = "blabla";
 
-            m_objectCache.PutItem(m_cacheKey, value);
+            _objectCache.PutItem(_cacheKey, value);
 
-            var item = m_objectCache.GetItem(m_cacheKey);
+            var item = _objectCache.GetItem(_cacheKey);
 
             Assert.NotNull(item);
             Assert.IsTrue(value.Equals(item));
@@ -71,13 +71,13 @@ namespace MooMed.Core.Tests.Tests.Cache
         {
             const string value = "blabla";
 
-            m_objectCache.PutItem(m_cacheKey, value);
+            _objectCache.PutItem(_cacheKey, value);
 
             var replacementValue = "blablabla2";
 
-            m_objectCache.PutItem(m_cacheKey, replacementValue);
+            _objectCache.PutItem(_cacheKey, replacementValue);
 
-            var item = m_objectCache.GetItem(m_cacheKey);
+            var item = _objectCache.GetItem(_cacheKey);
 
             Assert.IsTrue(item.Equals(replacementValue));
         }
@@ -87,11 +87,11 @@ namespace MooMed.Core.Tests.Tests.Cache
         {
             const string value = "blabla";
 
-            m_objectCache.PutItem(m_cacheKey, value, 1);
+            _objectCache.PutItem(_cacheKey, value, 1);
 
             await Task.Delay(5000);
 
-            Assert.IsFalse(m_objectCache.HasValue(m_cacheKey));
+            Assert.IsFalse(_objectCache.HasValue(_cacheKey));
         }
     }
 }

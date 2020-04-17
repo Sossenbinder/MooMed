@@ -6,26 +6,26 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 {
 	public class SemaphoreCacheLock : ICacheLock
 	{
-		private readonly SemaphoreSlim m_lockingSemaphoreSlim;
+		private readonly SemaphoreSlim _lockingSemaphoreSlim;
 
 		public SemaphoreCacheLock()
 		{
-			m_lockingSemaphoreSlim = new SemaphoreSlim(1, 1);
+			_lockingSemaphoreSlim = new SemaphoreSlim(1, 1);
 		}
 
 		public async Task Lock()
 		{
-			await m_lockingSemaphoreSlim.WaitAsync();
+			await _lockingSemaphoreSlim.WaitAsync();
 		}
 
 		public void Unlock()
 		{
-			m_lockingSemaphoreSlim.Release();
+			_lockingSemaphoreSlim.Release();
 		}
 
 		public bool IsLocked()
 		{
-			return m_lockingSemaphoreSlim.CurrentCount == 0;
+			return _lockingSemaphoreSlim.CurrentCount == 0;
 		}
 	}
 }

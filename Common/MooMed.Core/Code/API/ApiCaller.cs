@@ -13,16 +13,16 @@ namespace MooMed.Core.Code.API
 	public class ApiCaller : IApiCaller
 	{
 		[NotNull]
-		private readonly HttpClient m_httpClient;
+		private readonly HttpClient _httpClient;
 
 		public ApiCaller([NotNull] HttpClient httpClient)
 		{
-			m_httpClient = httpClient;
+			_httpClient = httpClient;
 		}
 
 		public async Task<TOut> PostWithJson<TIn, TOut>(PostData<TIn> postData)
 		{
-			var response = await m_httpClient.PostAsJsonAsync(postData.Path, postData.Data);
+			var response = await _httpClient.PostAsJsonAsync(postData.Path, postData.Data);
 
 			var responseStr = await response.Content.ReadAsStringAsync();
 

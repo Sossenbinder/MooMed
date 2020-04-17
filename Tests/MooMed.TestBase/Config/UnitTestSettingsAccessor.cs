@@ -8,7 +8,7 @@ namespace MooMed.TestBase.Config
 {
     public class UnitTestSettingsAccessor : IConfigSettingsAccessor
     {
-        private Dictionary<string, string> m_settingsDict;
+        private Dictionary<string, string> _settingsDict;
 
         public UnitTestSettingsAccessor()
         {
@@ -40,12 +40,12 @@ namespace MooMed.TestBase.Config
                 }
             }
 
-            m_settingsDict = new Dictionary<string, string>(keyValueDict);
+            _settingsDict = new Dictionary<string, string>(keyValueDict);
         }
 
         public string GetValueFromConfigSource(string key)
         {
-            return m_settingsDict[key];
+            return _settingsDict[key];
         }
     }
 }
