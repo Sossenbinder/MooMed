@@ -11,10 +11,10 @@ using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Extensions;
 using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.Core.Code.Tasks;
 using MooMed.Core.DataTypes;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Module.Accounts.Events.Interface;
-using MooMed.Module.Accounts.Repository;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
 
@@ -43,9 +43,6 @@ namespace MooMed.Stateful.AccountService.Service
         [NotNull]
         private readonly IFriendsService _friendsService;
 
-        [NotNull]
-        private readonly IMassTransitEventingService _eventingService;
-
         public AccountService(
             [NotNull] IMainLogger logger,
             [NotNull] IAccountSignInService accountSignInService,
@@ -54,8 +51,7 @@ namespace MooMed.Stateful.AccountService.Service
             [NotNull] IProfilePictureService profilePictureService,
             [NotNull] ISessionService sessionService,
             [NotNull] IAccountValidationService accountValidationService,
-            [NotNull] IFriendsService friendsService,
-            [NotNull] IMassTransitEventingService eventingService)
+            [NotNull] IFriendsService friendsService)
             : base(logger)
         {
             _accountSignInService = accountSignInService;
@@ -65,7 +61,6 @@ namespace MooMed.Stateful.AccountService.Service
             _sessionService = sessionService;
             _accountValidationService = accountValidationService;
             _friendsService = friendsService;
-            _eventingService = eventingService;
         }
         /// <summary>
         /// Login an account
@@ -137,12 +132,12 @@ namespace MooMed.Stateful.AccountService.Service
 
             if (registrationResult.IsSuccess)
             {
-                _ = Task.Run(() =>
-                      _accountValidationService.SendAccountValidationMail(new AccountValidationMailData()
-                      {
-                          Account = registrationResult.Account,
-                          Language = registerModel.Language
-                      }));
+                BackgroundTask.Run(() =>
+	                _accountValidationService.SendAccountValidationMail(new AccountValidationMailData()
+	                {
+		                Account = registrationResult.Account,
+		                Language = registerModel.Language
+	                }));
             }
 
             return ServiceResponse<RegistrationResult>.Success(registrationResult);
@@ -204,10 +199,7 @@ namespace MooMed.Stateful.AccountService.Service
 
         public async Task<ServiceResponse> AddAsFriend(AddAsFriendMessage message)
         {
-
-
-	        await _eventingService.RaiseSignalREvent("string");
-            var addResult = await _friendsService.AddFriend(message.SessionContext, message.AccountId);
+	        var addResult = await _friendsService.AddFriend(message.SessionContext, message.AccountId);
 
             return addResult ? ServiceResponse.Success() : ServiceResponse.Failure();
         }

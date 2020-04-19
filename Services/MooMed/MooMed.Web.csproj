@@ -34,5 +34,9 @@
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet $(SolutionDir)\Tools\FrontendEnumGenerator\bin\x64\Debug\netcoreapp3.1\FrontendEnumGenerator.dll $(SolutionDir)" />
+  </Target>
   
 </Project>

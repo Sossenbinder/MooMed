@@ -8,21 +8,25 @@ namespace FrontendEnumGenerator
 {
 	public class EnumGenerator
 	{
+		[NotNull]
+		private readonly string _solutionDir;
+
 		private List<Type> _enumsToExport;
 
 		private readonly string _outputFile;
 
 		private readonly string _wwwRootPath;
 
-		public EnumGenerator()
+		public EnumGenerator([NotNull] string solutionDir)
 		{
+			_solutionDir = solutionDir;
 			_enumsToExport = EnumsToExport.Enums;
 
-			var outputDirectory = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Enums";
+			var outputDirectory = $"{solutionDir}\\Services\\MooMed\\React\\Enums";
 
 			_outputFile = Path.Combine(outputDirectory, "moomedEnums.ts");
 
-			_wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Enums";
+			_wwwRootPath = $"{solutionDir}\\\\Services\\MooMed\\wwwroot\\dist\\Enums";
 		}
 
 		public void GenerateEnums()
@@ -50,7 +54,7 @@ namespace FrontendEnumGenerator
 		[NotNull]
 		private StreamWriter GetOutputFile()
 		{
-			var outputDirectory = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Enums";
+			var outputDirectory = $"{_solutionDir}\\Services\\MooMed\\React\\Enums";
 
 			var outputPath = Path.Combine(outputDirectory, "moomedEnums.ts");
 

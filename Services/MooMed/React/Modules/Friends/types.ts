@@ -9,3 +9,8 @@ export type Friend = {
 	profilePicturePath: string;
 	onlineState: AccountOnlineState;
 }
+
+export type OnlineStateNotification = {
+	accountId: number;
+	accountOnlineState: AccountOnlineState;
+}

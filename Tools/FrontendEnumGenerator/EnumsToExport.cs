@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
+using MooMed.Common.Definitions.Notifications;
 
 namespace FrontendEnumGenerator
 {
@@ -10,6 +12,8 @@ namespace FrontendEnumGenerator
 		{
 			typeof(LoginResponseCode),
 			typeof(AccountValidationResult),
+			typeof(AccountOnlineState),
+			typeof(NotificationType),
 		};
 	}
 }

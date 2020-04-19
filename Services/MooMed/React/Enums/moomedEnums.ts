@@ -1,3 +1,4 @@
+
 export enum LoginResponseCode {
 	None = 0,
 	Success = 1,
@@ -19,4 +20,9 @@ export enum AccountValidationResult {
 export enum AccountOnlineState {
 	Offline = 0,
 	Online = 1,
+}
+
+export enum NotificationType {
+	None = 0,
+	FriendOnlineStateChange = 1,
 }

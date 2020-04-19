@@ -13,6 +13,16 @@ namespace MooMed.Eventing.Helper
 	public static class MassTransitBusFactory
 	{
 		public static IBusControl CreateBus(
+			[NotNull] IServiceProvider provider,
+			[CanBeNull] Action<IRabbitMqBusFactoryConfigurator> configFunc = null)
+		{
+			var dnsResolutionService = (IDnsResolutionService)provider.GetService(typeof(IDnsResolutionService));
+			var logger = (IMainLogger)provider.GetService(typeof(IMainLogger));
+
+			return CreateBus(dnsResolutionService, logger, configFunc);
+		}
+
+		public static IBusControl CreateBus(
 			[NotNull] IDnsResolutionService dnsResolutionService,
 			[NotNull] IMainLogger logger,
 			[CanBeNull] Action<IRabbitMqBusFactoryConfigurator> configFunc = null)

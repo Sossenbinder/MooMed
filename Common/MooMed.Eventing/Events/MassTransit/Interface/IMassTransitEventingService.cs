@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Notifications;
 
 namespace MooMed.Eventing.Events.MassTransit.Interface
 {
@@ -12,6 +13,6 @@ namespace MooMed.Eventing.Events.MassTransit.Interface
 		void RegisterForEvent<T>([NotNull] string queueName, [NotNull] Func<T, Task> handler)
 			where T : class;
 
-		Task RaiseSignalREvent<T>(T message);
+		Task RaiseSignalREvent<T>(FrontendNotification<T> notification);
 	}
 }

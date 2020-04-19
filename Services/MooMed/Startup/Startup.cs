@@ -50,17 +50,11 @@ namespace MooMed.Web.Startup
 		        x.AddSignalRHubConsumers<ChatHub>();
 		        x.AddSignalRHubConsumers<NotificationHub>();
 
-		        x.AddBus(provider =>
+		        x.AddBus(provider => MassTransitBusFactory.CreateBus(provider, cfg =>
 		        {
-			        var dnsResolutionService = provider.GetService<IDnsResolutionService>();
-			        var logger = provider.GetService<IMainLogger>();
-
-			        return MassTransitBusFactory.CreateBus(dnsResolutionService, logger, cfg =>
-			        {
-				        cfg.AddSignalRHubEndpoints<ChatHub>(provider);
-				        cfg.AddSignalRHubEndpoints<NotificationHub>(provider);
-			        });
-		        });
+			        cfg.AddSignalRHubEndpoints<ChatHub>(provider);
+			        cfg.AddSignalRHubEndpoints<NotificationHub>(provider);
+		        }));
 	        });
 		}
 

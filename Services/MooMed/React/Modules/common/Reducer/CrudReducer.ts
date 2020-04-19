@@ -40,18 +40,28 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 	const reducer = (state = initialState, action: ReducerAction<T>): ReducerState<T> => {
 		switch (action.type) {
 			case ADD_IDENTIFIER:
-				const payloadAsArray = ensureArray(action.payload); 
-				const newState = { 
+				const addPayloadAsArray = ensureArray(action.payload);
+
+				return { 
 					...state, 
 					data: [
 						...state.data, 
-						...payloadAsArray
+						...addPayloadAsArray
 					],
 				};
-				return newState;
 			case UPDATE_IDENTIFIER:
+
+				const updatePayloadAsArray = ensureArray(action.payload);
+				const updatedData = [ ...state.data ];
+
+				updatePayloadAsArray.forEach(val => {
+					const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
+					updatedData[existingItemIndex] = val;
+				});
+
 				return {
 					...state,
+					data: updatedData
 				};
 			case DELETE_IDENTIFIER:
 				return {

@@ -16,3 +16,13 @@ export enum AccountValidationResult {
 	TokenInvalid = 4,
 	AccountNotFound = 5,
 }
+
+export enum AccountOnlineState {
+	Offline = 0,
+	Online = 1,
+}
+
+export enum NotificationType {
+	None = 0,
+	FriendOnlineStateChange = 1,
+}

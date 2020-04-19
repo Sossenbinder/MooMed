@@ -11,7 +11,7 @@ import { popUpNotificationReducer, IPopUpNotificationReducerState } from "./redu
 import { reducer as friendsReducer } from "modules/Friends/Reducer/FriendsReducer";
 import { Friend } from "modules/Friends/types";
 
-export type ReduxStore = {
+export type ReduxStore = redux.Store & {
 	accountReducer: ReducerState<Account>;
 	popUpNotificationReducer: IPopUpNotificationReducerState;
 	friendsReducer: ReducerState<Friend>;

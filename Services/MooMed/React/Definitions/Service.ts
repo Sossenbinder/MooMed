@@ -1,5 +1,7 @@
 import { Account } from "modules/Account/types";
 import { SearchResult } from "modules/Search/types";
+import { NotificationType } from "enums/moomedEnums";
+import { SignalRNotification } from "data/notifications";
 
 export interface IAccountService {
     getAccount(accountId: number): Promise<Account>;
@@ -15,7 +17,8 @@ export interface ISearchService {
 }
 
 export interface INotificationService {
-
+	subscribe<T>(notificationType: NotificationType, onNotify: (notification: SignalRNotification<T>) => void): void;
+	unsubscribe(notificationType: NotificationType): void;
 }
 
 export type ServiceContext = {
