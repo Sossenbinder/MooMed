@@ -5,6 +5,7 @@ using System.Reflection;
 using Autofac;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.ServiceBase;
 using MooMed.Core.Code.Extensions;
 using MooMed.Core.DataTypes;
@@ -47,7 +48,7 @@ namespace MooMed.AspNetCore.Grpc
 				.Select(x => x);
 
 			var baseProtoIndex = 50;
-
+			
 			_protoIndexDict = allGrpcServices.ToDictionary(x => x, x => baseProtoIndex += 50);
 		}
 
@@ -110,6 +111,30 @@ namespace MooMed.AspNetCore.Grpc
 			RegisterBaseChain(baseType, serviceType);
 		}
 
+		private void BindSessionContextAttachedContainers()
+		{
+			var containerType = typeof(SessionContextAttachedContainer);
+			var index = 700;
+
+			var containerImplementers = Assembly
+				.GetAssembly(containerType)
+				?.GetTypes()
+				.Where(x => x.BaseType == containerType).ToList();
+
+			if (containerImplementers.IsNullOrEmpty())
+			{
+				return;
+			}
+
+			var baseMetaData = RuntimeTypeModel.Default.Add(containerType);
+
+			foreach (var implementer in containerImplementers)
+			{
+				baseMetaData.AddSubType(index, implementer);
+				index++;
+			}
+		}
+
 		public void Start()
 		{
 			foreach (var grpcService in _grpServices)
@@ -117,8 +142,7 @@ namespace MooMed.AspNetCore.Grpc
 				InitializeBindingsForGrpcService(grpcService);
 			}
 
-			var entryAssembly = Assembly.GetEntryAssembly()?.FullName;
-			var types = RuntimeTypeModel.Default.GetTypes();
+			BindSessionContextAttachedContainers();
 		}
 	}
 }

@@ -13,7 +13,6 @@ using MooMed.Core.Code.Extensions;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.Code.Tasks;
 using MooMed.Core.DataTypes;
-using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
@@ -26,7 +25,10 @@ namespace MooMed.Stateful.AccountService.Service
         private readonly IAccountEventHub _accountEventHub;
 
         [NotNull]
-        private readonly IAccountSignInService _accountSignInService;
+        private readonly IRegisterService _registerService;
+
+        [NotNull]
+        private readonly ILoginService _loginService;
 
         [NotNull]
         private readonly IAccountRepository _accountRepository;
@@ -45,7 +47,8 @@ namespace MooMed.Stateful.AccountService.Service
 
         public AccountService(
             [NotNull] IMainLogger logger,
-            [NotNull] IAccountSignInService accountSignInService,
+            [NotNull] IRegisterService registerService,
+            [NotNull] ILoginService loginService,
             [NotNull] IAccountEventHub accountEventHub,
             [NotNull] IAccountRepository accountRepository,
             [NotNull] IProfilePictureService profilePictureService,
@@ -54,8 +57,9 @@ namespace MooMed.Stateful.AccountService.Service
             [NotNull] IFriendsService friendsService)
             : base(logger)
         {
-            _accountSignInService = accountSignInService;
-            _accountEventHub = accountEventHub;
+	        _registerService = registerService;
+	        _loginService = loginService;
+	        _accountEventHub = accountEventHub;
             _accountRepository = accountRepository;
             _profilePictureService = profilePictureService;
             _sessionService = sessionService;
@@ -71,7 +75,7 @@ namespace MooMed.Stateful.AccountService.Service
         public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
         {
             // Do the actual login in the AccountManager
-            var loginResult = await _accountSignInService.Login(loginModel);
+            var loginResult = await _loginService.Login(loginModel);
             
             if (!loginResult.IsSuccess)
             {
@@ -115,7 +119,7 @@ namespace MooMed.Stateful.AccountService.Service
 
 			var sessionContext = await _sessionService.LoginAccount(account);
 
-            await _accountSignInService.RefreshLastAccessed(sessionContext);
+            await _loginService.RefreshLastAccessed(sessionContext);
 
             await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
         }
@@ -128,7 +132,7 @@ namespace MooMed.Stateful.AccountService.Service
         [ItemNotNull]
         public async Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
         {
-	        var registrationResult = await _accountSignInService.Register(registerModel);
+	        var registrationResult = await _registerService.Register(registerModel);
 
             if (registrationResult.IsSuccess)
             {

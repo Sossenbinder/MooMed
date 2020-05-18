@@ -6,7 +6,7 @@ using MooMed.Module.Accounts.Helper.Interface;
 
 namespace MooMed.Module.Accounts.Helper
 {
-    internal class AccountValidationTokenHelper : IAccountValidationTokenHelper
+    public class AccountValidationTokenHelper : IAccountValidationTokenHelper
     {
         [NotNull]
         public string Serialize(AccountValidationTokenData validationTokenData)

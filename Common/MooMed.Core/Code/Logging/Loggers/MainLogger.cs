@@ -10,11 +10,11 @@ using Serilog.Context;
 
 namespace MooMed.Core.Code.Logging.Loggers
 {
-	public class MainTableStorageLogger : IMainLogger
+	public class MainLogger : IMainLogger
 	{
 		private readonly ILogger _logger;
 
-		public MainTableStorageLogger([NotNull] IConfigSettingsProvider configSettingsProvider)
+		public MainLogger([NotNull] IConfigSettingsProvider configSettingsProvider)
 		{
 			var connectionString = configSettingsProvider.ReadDecryptedValueOrFail<string>("MooMed_Logging_TableStorageConnectionString", "AccountKey");
 			var storage = CloudStorageAccount.Parse(connectionString);

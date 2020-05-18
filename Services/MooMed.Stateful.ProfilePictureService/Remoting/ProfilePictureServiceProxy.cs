@@ -5,33 +5,28 @@ using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
-using MooMed.IPC.EndpointResolution.Interface;
+using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
-using MooMed.IPC.ProxyInvocation.Interface;
 using ProtoBuf.Grpc;
 
 namespace MooMed.Stateful.ProfilePictureService.Remoting
 {
-	public class ProfilePictureServiceProxy : AbstractProxy<IProfilePictureService>, IProfilePictureService
+	public class ProfilePictureServiceProxy : AbstractDeploymentProxy<IProfilePictureService>, IProfilePictureService
 	{
-		public ProfilePictureServiceProxy(
-			[NotNull] IStatefulCollectionInfoProvider statefulCollectionInfoProvider,
-			[NotNull] IGrpcClientProvider grpcClientProvider,
-			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper)
-			: base(statefulCollectionInfoProvider, 
+		public ProfilePictureServiceProxy([NotNull] IGrpcClientProvider grpcClientProvider)
+			: base(
 				grpcClientProvider,
-				deterministicPartitionSelectorHelper,
-				StatefulSet.ProfilePictureService)
+				MooMedService.ProfilePictureService)
 		{
 		}
 
-		public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture([NotNull] IAsyncEnumerable<byte[]> pictureStream, CallContext callContext)
-			=> Invoke(1, service => service.ProcessUploadedProfilePicture(pictureStream, callContext));
+		public Task<ServiceResponse<bool>> ProcessUploadedProfilePicture(IAsyncEnumerable<byte[]> pictureStream, CallContext callContext)
+			=> InvokeWithResult(service => service.ProcessUploadedProfilePicture(pictureStream, callContext));
 
 		public Task<ServiceResponse<string>> GetProfilePictureForAccountById(Primitive<int> accountId)
-			=> InvokeOnRandomReplica(service => service.GetProfilePictureForAccountById(accountId));
+			=> InvokeWithResult(service => service.GetProfilePictureForAccountById(accountId));
 
 		public Task<ServiceResponse<string>> GetProfilePictureForAccount(ISessionContext sessionContext)
-			=> Invoke(sessionContext, service => service.GetProfilePictureForAccount(sessionContext));
+			=> InvokeWithResult(service => service.GetProfilePictureForAccount(sessionContext));
 	}
 }

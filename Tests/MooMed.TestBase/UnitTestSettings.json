@@ -1,0 +1,6 @@
+{
+    "MooMed_IV": "ofrwOoqa3qFfErITFSFAMQ==",
+    "MooMed_Key": "ymIMtruz9kJiXwBFGu/Ap6UhkZXwPEQw6f0UgyHDLSg=",
+    "MooMed_Cache_BaseTtlInSeconds": "3600",
+    "MooMed_Logging_TableStorageConnectionString":  "DefaultEndpointsProtocol=https;AccountName=moomedlogging;AccountKey=;EndpointSuffix=core.windows.net"
+}

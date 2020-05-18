@@ -3,7 +3,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import Flex from "Views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 import { Account } from "modules/Account/types";

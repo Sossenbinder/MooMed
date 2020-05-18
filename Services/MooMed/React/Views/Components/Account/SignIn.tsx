@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 // Components
 import RegisterDialog from "./RegisterDialog";
 import LoginDialog from "./LoginDialog";
-import Flex from "views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 import "views/Components/Account/Styles/SignIn.less";
 

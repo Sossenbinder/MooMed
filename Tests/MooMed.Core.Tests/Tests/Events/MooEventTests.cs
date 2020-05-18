@@ -21,7 +21,7 @@ namespace MooMed.Core.Tests.Tests.Events
         [Test]
         public void RegisteringShouldWork()
         {
-            var testFunc = new Func<int, Task>((args) => Task.CompletedTask);
+            var testFunc = new Func<int, Task>(args => Task.CompletedTask);
 
             _serviceLocalMooEvent.Register(testFunc);
 

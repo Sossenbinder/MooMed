@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
 
@@ -15,6 +16,7 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
 			[UsedImplicitly] private set;
 		}
 
+		[Key]
 		[Column("FriendId")]
 		public int FriendId { get; set; }
 

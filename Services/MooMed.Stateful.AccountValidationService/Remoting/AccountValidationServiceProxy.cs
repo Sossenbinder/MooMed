@@ -6,31 +6,32 @@ using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
+using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
 
 namespace MooMed.Stateful.AccountValidationService.Remoting
 {
-	public class AccountValidationServiceProxy : AbstractProxy<IAccountValidationService>, IAccountValidationService
+	public class AccountValidationServiceProxy : AbstractStatefulSetProxy<IAccountValidationService>, IAccountValidationService
 	{
 		public AccountValidationServiceProxy(
-			[NotNull] IStatefulCollectionInfoProvider statefulCollectionInfoProvider,
+			[NotNull] IEndpointProvider endpointProvider,
 			[NotNull] IGrpcClientProvider grpcClientProvider,
 			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper)
-			: base(statefulCollectionInfoProvider,
+			: base(endpointProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				StatefulSet.AccountValidationService)
+				MooMedService.AccountValidationService)
 		{
 		}
 
 		public Task SendAccountValidationMail(AccountValidationMailData accountValidationMailData)
-			=> InvokeOnRandomReplica(service => service.SendAccountValidationMail(accountValidationMailData));
+			=> InvokeRandom(service => service.SendAccountValidationMail(accountValidationMailData));
 
 		public Task<AccountValidationTokenData> DeserializeRawToken(string token)
-			=> InvokeOnRandomReplica(service => service.DeserializeRawToken(token));
+			=> InvokeRandomWithResult(service => service.DeserializeRawToken(token));
 
 		public Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
-			=> InvokeOnRandomReplica(service => service.ValidateRegistration(tokenData));
+			=> InvokeRandomWithResult(service => service.ValidateRegistration(tokenData));
 	}
 }

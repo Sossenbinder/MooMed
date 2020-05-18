@@ -12,7 +12,6 @@ using MooMed.Core.DataTypes;
 using MooMed.Core.Translations.Resources;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Helper.Interface;
-using MooMed.Module.Accounts.Repository;
 using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Stateful.AccountValidationService.Service

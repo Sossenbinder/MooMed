@@ -25,4 +25,5 @@ export enum AccountOnlineState {
 export enum NotificationType {
 	None = 0,
 	FriendOnlineStateChange = 1,
+	NewChatMessage = 2,
 }

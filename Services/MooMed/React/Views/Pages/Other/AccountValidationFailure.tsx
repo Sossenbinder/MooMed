@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Components
-import Flex from "Views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 import { AccountValidationResult } from "enums/moomedEnums";

@@ -5,31 +5,36 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using JetBrains.Annotations;
 
 namespace FrontendTranslationGenerator
 {
     internal class TranslationGenerator
     {
-        private string _translationPaths;
+	    [NotNull]
+	    private string _translationPaths;
 
+        [NotNull]
         private string _translationOutputPaths;
 
+        [NotNull]
         private string _wwwRootPath;
-        
-        public void GenerateTranslations()
+
+        public void GenerateTranslations([NotNull] string solutionDir)
         {
-            GetTranslationResourcesPath();
+            GetTranslationResourcesPath(solutionDir);
             var relevantTranslations = GetRelevantTranslations();
 
+            GenerateTsDefinitionFile(relevantTranslations);
             GenerateJSTranslationFiles(relevantTranslations);
             CopyTranslationsToWWWRoot();
         }
 
-        private void GetTranslationResourcesPath()
+        private void GetTranslationResourcesPath([NotNull] string solutionDir)
         {
-            _translationPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Common\\MooMed.Core\\Translations\\Resources";
-            _translationOutputPaths = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\React\\Translations";
-            _wwwRootPath = $"{Assembly.GetExecutingAssembly().Location}\\..\\..\\..\\..\\..\\..\\Services\\MooMed\\wwwroot\\dist\\Translations";
+            _translationPaths = $"{solutionDir}\\Common\\MooMed.Core\\Translations\\Resources";
+            _translationOutputPaths = $"{solutionDir}\\Services\\MooMed\\React\\Translations";
+            _wwwRootPath = $"{solutionDir}\\Services\\MooMed\\wwwroot\\dist\\Translations";
         }
 
         private IEnumerable<string> GetRelevantTranslations()
@@ -67,6 +72,40 @@ namespace FrontendTranslationGenerator
             });
         }
 
+        private void GenerateTsDefinitionFile(IEnumerable<string> relevantTranslations)
+        {
+	        var outputFile = GetOutputFile("Translation.d.ts");
+	        var enTranslationsPath = GetAvailableTranslationLanguages().Single(x => x.Contains("en.resx"));
+
+            outputFile.WriteLine("export type Translation = {");
+
+            var xDoc = XDocument.Load(Path.Combine(_translationPaths, enTranslationsPath));
+
+            var nodesToCopy = xDoc.Element("root")
+	            ?.Elements("data")
+	            .Where(node => relevantTranslations.Contains(node.FirstAttribute.Value))
+	            .Select(node => new
+		            {
+			            name = node.FirstAttribute.Value,
+			            value = node.Element("value").Value
+		            }
+	            ).ToList();
+
+            if (nodesToCopy != null)
+            {
+	            foreach (var node in nodesToCopy)
+	            {
+		            if (node.value != null)
+		            {
+			            outputFile.WriteLine($"    \"{node.name}\": \"{node.value}\",");
+		            }
+	            }
+            }
+
+            outputFile.WriteLine("};");
+            outputFile.Close();
+        }
+
         private void GenerateJSTranslationFiles(IEnumerable<string> relevantTranslations)
         {
             var translationFiles = GetAvailableTranslationLanguages();
@@ -77,7 +116,7 @@ namespace FrontendTranslationGenerator
                 var lastIndex = translationFile.LastIndexOf(".", StringComparison.Ordinal);
                 var lang = translationFile.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
 
-                var outputFile = GetOutputFile(lang);
+                var outputFile = GetOutputFile($"translation.{lang}.js");
                 outputFile.WriteLine("var Translation = {");
 
                 var xDoc = XDocument.Load(Path.Combine(_translationPaths, translationFile));
@@ -108,9 +147,9 @@ namespace FrontendTranslationGenerator
             }
         }
 
-        private StreamWriter GetOutputFile(string lang)
+        private StreamWriter GetOutputFile(string filename)
         {
-            var outputPath = Path.Combine(_translationOutputPaths, $"translation.{lang}.js");
+            var outputPath = Path.Combine(_translationOutputPaths, filename);
 
             if (!File.Exists(outputPath))
             {

@@ -1,7 +1,5 @@
-﻿using System.IO;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
+using MooMed.AspNetCore.Helper;
 
 namespace MooMed.Web
 {
@@ -9,16 +7,7 @@ namespace MooMed.Web
 	{
 		public static void Main(string[] args)
 		{
-			var host = Host
-				.CreateDefaultBuilder(args)
-				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureWebHostDefaults(webHostBuilder => {
-					webHostBuilder
-						.UseContentRoot(Directory.GetCurrentDirectory())
-						.UseKestrel()
-						.UseStartup<Startup.Startup>();
-				})
-				.Build();
+			var host = MooMedHostBuilder.BuildDefaultKestrelHost<Startup.Startup>(args);
 
 			host.Run();
 		}

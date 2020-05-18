@@ -10,13 +10,17 @@ namespace MooMed.Dns.Module
 		{
 			base.Load(builder);
 			
+			builder.RegisterType<DnsResolutionService>()
+				.As<IDnsResolutionService>()
+				.SingleInstance();
+
 			builder
 #if DEBUG
-				.RegisterType<DockerDnsResolutionService>()
+				.RegisterType<DockerComposeEndpointDiscoveryService>()
 #else
-				.RegisterType<KubernetesDnsResolutionService>()
+				.RegisterType<KubernetesEndpointDnsDiscoveryService>()
 #endif
-				.As<IDnsResolutionService>()
+				.As<IEndpointDiscoveryService>()
 				.SingleInstance();
 		}
 	}

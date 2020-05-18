@@ -3,7 +3,7 @@ import * as React from "react";
 import * as moment from "moment";
 
 // Components
-import Flex from "views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 import * as cookieHelper from "helper/cookieHelper";

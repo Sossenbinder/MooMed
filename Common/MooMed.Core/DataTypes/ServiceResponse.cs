@@ -1,13 +1,11 @@
 ﻿using JetBrains.Annotations;
 using ProtoBuf;
 using System;
-using MooMed.Common.Definitions.Models.User;
 
 namespace MooMed.Core.DataTypes
 {
 	[ProtoContract]
 	[ProtoInclude(3253, typeof(ServiceResponse))]
-	[ProtoInclude(231, typeof(ServiceResponse<LoginResult>))]
 	public abstract class ServiceResponseBase
 	{
 		[ProtoMember(1)]

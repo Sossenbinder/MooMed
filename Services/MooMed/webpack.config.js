@@ -9,7 +9,7 @@ module.exports = {
 	entry: {
 		bundle: "./React/index.ts",
 		logonBundle: "./React/logonIndex.tsx",
-		otherBundle: "./React/otherEntryPoint.tsx",
+		//otherBundle: "./React/otherEntryPoint.tsx",
 	},
 	output: {
 		filename: "[name].js",
@@ -42,6 +42,6 @@ module.exports = {
 	resolve: {
 		extensions: [".tsx", ".ts", ".js", ".jsx"],
 		plugins: [new TsconfigPathsPlugin({configFile: "./tsconfig.json"})],
-		modules: ["node_modules"]
+		modules: ["node_modules", "React/Common/"]
 	},
 };

@@ -39,6 +39,13 @@ namespace MooMed.Module.Accounts.Service
 
 		public async Task<bool> AddFriend(ISessionContext sessionContext, int accountId)
 		{
+			var friends = await GetFriends(sessionContext);
+
+			if (friends.Any(x => x.Id == accountId))
+			{
+				return false;
+			}
+
 			await _friendsMappingRepository.Create(new FriendsMappingEntity()
 			{
 				Id = sessionContext.Account.Id,

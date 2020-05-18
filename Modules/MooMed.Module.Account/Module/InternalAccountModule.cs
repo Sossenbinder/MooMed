@@ -22,10 +22,6 @@ namespace MooMed.Module.Accounts.Module
 			builder.RegisterModule<AccountModule>();
 
 			// Services
-			builder.RegisterType<AccountSignInService>()
-				.As<IAccountSignInService>()
-				.SingleInstance();
-
 			builder.RegisterType<AccountOnlineStateService>()
 				.As<IAccountOnlineStateService>()
 				.SingleInstance()
@@ -35,6 +31,13 @@ namespace MooMed.Module.Accounts.Module
 				.As<IAccountSignInValidator>()
 				.SingleInstance();
 
+			builder.RegisterType<LoginService>()
+				.As<ILoginService>()
+				.SingleInstance();
+
+			builder.RegisterType<RegisterService>()
+				.As<IRegisterService>()
+				.SingleInstance();
 
 			// Repositories
 
@@ -51,23 +54,11 @@ namespace MooMed.Module.Accounts.Module
 				.As<IFriendsMappingRepository>()
 				.SingleInstance();
 
-			builder.RegisterType<AccountValidationRepository>()
-				.As<IAccountValidationRepository, AccountValidationRepository>()
-				.SingleInstance();
-
 			builder.RegisterType<AccountOnlineStateRepository>()
 				.As<IAccountOnlineStateRepository>()
 				.SingleInstance();
 
 			// Converters
-
-			builder.RegisterType<AccountEmailValidationHelper>()
-				.As<IAccountValidationEmailHelper>()
-				.SingleInstance();
-
-			builder.RegisterType<AccountValidationTokenHelper>()
-				.As<IAccountValidationTokenHelper>()
-				.SingleInstance();
 
 			builder.RegisterType<AccountDbConverter>()
 				.As<IModelConverter<Account, AccountEntity, int>, IBiDirectionalDbConverter<Account, AccountEntity, int>>()
@@ -79,10 +70,6 @@ namespace MooMed.Module.Accounts.Module
 
 			builder.RegisterType<RegisterModelAccountDbConverter>()
 				.As<IEntityConverter<RegisterModel, AccountEntity, int>>()
-				.SingleInstance();
-
-			builder.RegisterType<AccountValidationDbConverter>()
-				.As<IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int>>()
 				.SingleInstance();
 
 			builder.RegisterType<FriendsService>()

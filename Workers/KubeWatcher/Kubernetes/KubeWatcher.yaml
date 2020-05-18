@@ -19,6 +19,6 @@ spec:
       containers:
       - name: moomed-kubewatcher
         image: kubewatcher:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
       imagePullSecrets:
         - name: acrimgpullsecret

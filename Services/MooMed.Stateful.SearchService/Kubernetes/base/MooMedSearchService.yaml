@@ -11,13 +11,12 @@ spec:
       port: 16756
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: moomed-searchservice
   labels:
     name: moomed-searchservice
 spec:
-  serviceName: moomed-searchservice
   replicas: 3
   selector:  
     matchLabels:

@@ -3,7 +3,7 @@ import * as React from "react";
 import { setTimeout } from "timers";
 
 // Components
-import Flex from "views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 type Props = {
 	name: string;

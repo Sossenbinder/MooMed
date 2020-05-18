@@ -158,4 +158,16 @@
   <data name="AccountLoginModelInvalid" xml:space="preserve">
     <value />
   </data>
+  <data name="AddAsFriend" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="AlreadyFriendsWith" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
 </root>

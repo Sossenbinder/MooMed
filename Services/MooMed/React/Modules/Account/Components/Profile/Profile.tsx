@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 // Components
 import ProfileFull from "./ProfileFull";
-import Flex from "views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 import { Account } from "modules/Account/types";
@@ -50,4 +50,5 @@ const mapStateToProps = (store: ReduxStore) => {
 		account: store.accountReducer.data[0],
 	};
 }
+
 export default connect(mapStateToProps)(Profile);

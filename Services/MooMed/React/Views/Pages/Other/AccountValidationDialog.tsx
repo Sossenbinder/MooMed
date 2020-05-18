@@ -5,7 +5,7 @@ import ajaxPost from "helper/ajaxHelper";
 import requestUrl from "helper/requestUrls";
 
 // Components
-import Flex from "Views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 

@@ -16,7 +16,9 @@ export default class FriendsService extends ModuleService implements IFriendsSer
 
 		const notificationService = services.NotificationService;
 
-		notificationService.subscribe<OnlineStateNotification>(NotificationType.FriendOnlineStateChange, this.onOnlineStateUpdated);
+		notificationService.subscribe<OnlineStateNotification>(
+			NotificationType.FriendOnlineStateChange, 
+			this.onOnlineStateUpdated);
 	}
 
 	public async start() {

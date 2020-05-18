@@ -9,34 +9,29 @@ namespace MooMed.Core.Code.Configuration
     public class MainConfigSettingsProvider : IConfigSettingsProvider
     {
 	    [NotNull]
-        private readonly IEnumerable<IConfigSettingsAccessor> _configSettingsAccessors;
+	    private readonly IConfig _config;
 
-        [NotNull]
+	    [NotNull]
         private readonly ISettingsCrypto _settingsCrypto;
 
         public MainConfigSettingsProvider(
-			[NotNull] IEnumerable<IConfigSettingsAccessor> configSettingsAccessors,
+			[NotNull] IConfig config,
             [NotNull] ISettingsCrypto settingsCrypto)
         {
-            _configSettingsAccessors = configSettingsAccessors;
-            _settingsCrypto = settingsCrypto;
+	        _config = config;
+	        _settingsCrypto = settingsCrypto;
         }
 
         public T ReadValueOrDefault<T>(string key)
         {
-	        foreach (var configSettingsAccessor in _configSettingsAccessors)
+	        var value = _config[key];
+
+	        if (value == null)
 	        {
-		        var value = configSettingsAccessor.GetValueFromConfigSource(key);
-
-		        if (value == null)
-		        {
-			        return default;
-		        }
-
-		        return (T)Convert.ChangeType(value, typeof(T));
+		        return default;
 	        }
 
-	        return default;
+	        return (T)Convert.ChangeType(value, typeof(T));
         }
 
         public T ReadValueOrFail<T>(string key)
@@ -53,7 +48,7 @@ namespace MooMed.Core.Code.Configuration
 
         public T ReadDecryptedValueOrDefault<T>(string key, string parameterToDecrypt = null)
         {
-            var value = _settingsCrypto.DecryptSetting(ReadValueOrDefault<string>(key) ?? throw new InvalidOperationException(), parameterToDecrypt);
+            var value = _settingsCrypto.DecryptSetting(ReadValueOrDefault<string>(key) ?? throw new ArgumentException("Key not found"), parameterToDecrypt);
 
             if (value == null)
             {

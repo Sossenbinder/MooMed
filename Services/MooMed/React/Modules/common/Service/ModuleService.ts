@@ -6,7 +6,7 @@ import { store, ReduxStore } from "data/store";
 
 export default abstract class ModuleService {
 	
-	public abstract async start();
+	public abstract async start()
 
 	private Store: ReduxStore;
 

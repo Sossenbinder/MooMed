@@ -26,17 +26,10 @@ namespace MooMed.Web.Startup
 	    // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-	        try
-	        {
-		        ConfigureMassTransit(services);
+	        ConfigureMassTransit(services);
 
-		        services.AddMvc();
-		        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Logon/Login");
-			}
-	        catch (DllNotFoundException)
-	        {
-				// TODO: Figure out why this is being raised
-	        }
+	        services.AddMvc();
+	        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Logon/Login");
         }
 
         private void ConfigureMassTransit([NotNull] IServiceCollection services)
@@ -47,13 +40,11 @@ namespace MooMed.Web.Startup
 	        services.AddMassTransit(x =>
 	        {
 		        // Add this for each Hub you have
-		        x.AddSignalRHubConsumers<ChatHub>();
-		        x.AddSignalRHubConsumers<NotificationHub>();
+		        x.AddSignalRHubConsumers<SignalRHub>();
 
 		        x.AddBus(provider => MassTransitBusFactory.CreateBus(provider, cfg =>
 		        {
-			        cfg.AddSignalRHubEndpoints<ChatHub>(provider);
-			        cfg.AddSignalRHubEndpoints<NotificationHub>(provider);
+			        cfg.AddSignalRHubEndpoints<SignalRHub>(provider);
 		        }));
 	        });
 		}
@@ -94,8 +85,7 @@ namespace MooMed.Web.Startup
 			{
 				RouteConfig.RegisterRoutes(endpointRouteBuilder);
 
-				endpointRouteBuilder.MapHub<ChatHub>("/chatHub");
-				endpointRouteBuilder.MapHub<NotificationHub>("/notificationHub");
+				endpointRouteBuilder.MapHub<SignalRHub>("/signalRHub");
 			});
 		}
     }

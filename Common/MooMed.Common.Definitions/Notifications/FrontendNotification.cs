@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MooMed.Common.Definitions.Notifications
+﻿namespace MooMed.Common.Definitions.Notifications
 {
 	public class FrontendNotification<T>
 	{

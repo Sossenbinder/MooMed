@@ -12,6 +12,7 @@
 		// "noUnusedParameters": true,
     "allowJs": false,
     "paths": {
+	  "common": ["Common/*"],
       "components": ["Views/Components/*"],
       "data": ["Data/*"],
       "definitions": ["Definitions/*"],

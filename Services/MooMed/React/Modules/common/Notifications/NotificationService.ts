@@ -6,19 +6,19 @@ import { INotificationService } from "Definitions/Service";
 import ModuleService from "modules/common/Service/ModuleService";
 import { SignalRNotification } from "data/notifications";
 import { NotificationType } from "enums/moomedEnums";
+import ISignalRConnectionProvider from "modules/common/Helper/Interface/ISignalRConnectionProvider";
 
 export default class NotificationService extends ModuleService implements INotificationService {
 
 	private _hubConnection: signalR.HubConnection
 
-	public async start() {
-		this._hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl("/notificationHub")
-			.configureLogging(signalR.LogLevel.Debug)
-			.build();
+	public constructor(connectionProvider: ISignalRConnectionProvider) {
+		super();
 
-		await this._hubConnection.start();
+		this._hubConnection = connectionProvider.getSignalRConnection();
 	}
+
+	public async start() { }
 
 	public subscribe<T>(notificationType: NotificationType,	onNotify: (notification: SignalRNotification<T>) => void) {		
 		const notificationName = this.getNotificationTypeName(notificationType);

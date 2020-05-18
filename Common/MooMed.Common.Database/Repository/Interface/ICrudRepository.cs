@@ -11,7 +11,7 @@ namespace MooMed.Common.Database.Repository.Interface
 	public interface ICrudRepository<TEntity, in TKeyType> where TEntity: IEntity<TKeyType>
 	{
 		// Basic
-		Task<bool> Create([NotNull] TEntity entity);
+		Task<TEntity> Create([NotNull] TEntity entity);
 
 		Task<List<TEntity>> Read([NotNull] Expression<Func<TEntity, bool>> predicate);
 

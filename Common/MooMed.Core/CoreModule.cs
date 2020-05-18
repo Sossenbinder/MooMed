@@ -17,19 +17,23 @@ namespace MooMed.Core
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterType<EnvironmentVariableConfigSettingsAccessor>()
-                .As<IConfigSettingsAccessor>()
+	        builder.RegisterType<Config>()
+                .As<IConfig>()
                 .SingleInstance();
 
-            builder.RegisterType<MainConfigSettingsProvider>()
-                .As<IConfigSettingsProvider>()
-                .SingleInstance();
+	        builder.RegisterType<MainConfigSettingsProvider>()
+		        .As<IConfigSettingsProvider>()
+		        .SingleInstance();
 
             builder.RegisterType<SettingsCertificateCrypto>()
                 .As<ISettingsCrypto>()
                 .SingleInstance();
 
-            builder.RegisterType<MainTableStorageLogger>()
+            builder.RegisterType<CertificateEncryption>()
+	            .As<ICertificateEncryption>()
+	            .SingleInstance();
+
+            builder.RegisterType<MainLogger>()
                 .As<IMainLogger>()
                 .SingleInstance();
 

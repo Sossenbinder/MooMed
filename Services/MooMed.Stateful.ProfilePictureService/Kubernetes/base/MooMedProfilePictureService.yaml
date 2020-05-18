@@ -11,13 +11,12 @@ spec:
       port: 16422
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: moomed-profilepictureservice
   labels:
     name: moomed-profilepictureservice
 spec:
-  serviceName: moomed-profilepictureservice
   replicas: 3
   selector:  
     matchLabels:

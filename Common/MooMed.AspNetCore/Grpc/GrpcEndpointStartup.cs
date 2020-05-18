@@ -43,6 +43,9 @@ namespace MooMed.AspNetCore.Grpc
 			containerBuilder.RegisterModule(new EventingModule());
 		}
 
-		protected abstract void RegisterServices([NotNull] IEndpointRouteBuilder endpointRouteBuilder);
+		protected void RegisterServices([NotNull] IEndpointRouteBuilder endpointRouteBuilder)
+		{
+			endpointRouteBuilder.MapGrpcService<T>();
+		}
 	}
 }

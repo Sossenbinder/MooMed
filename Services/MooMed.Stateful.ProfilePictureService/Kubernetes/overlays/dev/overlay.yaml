@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: moomed-profilepictureservice
 spec:
@@ -7,5 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - image: 127.0.0.1:5000/profilepictureservice
+      - image: moomed.azurecr.io/profilepictureservice:dev
         name: moomed-profilepictureservice
+      imagePullSecrets:
+      - name: acrimgpullsecret

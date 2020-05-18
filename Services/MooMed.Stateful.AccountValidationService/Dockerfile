@@ -13,6 +13,7 @@ ENV MooMed_Logging_TableStorageConnectionString="DefaultEndpointsProtocol=https;
 ENV MooMed_Database_Account="Server=tcp:moomeddbserver.database.windows.net,1433;Initial Catalog=Main;Persist Security Info=False;User ID=moomedadmin;Password=bRlJ+y2DiUBAEnxADvaUbxVuLB7N7ASdnYbmzBtFHsQ=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 ENV MooMed_Email_Name="MooMedFinance@gmail.com"
 ENV MooMed_Email_Password="yUZp917ExPWz2vZiMqpdBQ=="
+ENV MooMed.CertKey="xfvesXTs1fFhm5yKsb9H"
 
 COPY "Certs/moomed.pfx" /usr/local/share/ca-certificates/moomed.pfx
 

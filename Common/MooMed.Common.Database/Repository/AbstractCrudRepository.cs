@@ -31,8 +31,18 @@ namespace MooMed.Common.Database.Repository
 		}
 
 		[NotNull]
-		public Task<bool> Create(TEntity entity)
-			=> RunInContextAndCommit(async set => await set.AddAsync(entity));
+		public async Task<TEntity> Create(TEntity entity)
+		{
+			var creationResult = await RunInContextAndCommitWithResult(async set =>
+			{
+				var thing = await set.AddAsync(entity);
+
+				return thing.Entity;
+			});
+
+			return creationResult;
+		}
+
 
 		[NotNull]
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate)
@@ -49,12 +59,7 @@ namespace MooMed.Common.Database.Repository
 				var query = dbSet
 					.Where(predicate);
 
-				//query = foreignIncludes.Aggregate(query, (current, include) => include(current));
-
-				if (foreignIncludes.Length != 0)
-				{
-					query = foreignIncludes[0](query);
-				}
+				query = foreignIncludes.Aggregate(query, (current, include) => include(current));
 
 				return query.ToListAsync();
 			});
@@ -110,6 +115,13 @@ namespace MooMed.Common.Database.Repository
 			}
 		}
 
+		private async Task<TEntity> RunInContextWithResult([NotNull] Func<DbSet<TEntity>, Task<TEntity>> dbFunc)
+		{
+			await using var ctx = GetContext();
+
+			return await dbFunc(ctx.Set<TEntity>());
+		}
+
 		private async Task<List<TEntity>> RunInContextWithResult([NotNull] Func<DbSet<TEntity>, Task<List<TEntity>>> dbFunc)
 		{
 			await using var ctx = GetContext();
@@ -127,12 +139,14 @@ namespace MooMed.Common.Database.Repository
 			return affectedRows != 0;
 		}
 
-		private async Task RunInContextAndCommitWithResult([NotNull] Func<DbSet<TEntity>, Task> contextFunc)
+		private async Task<TEntity> RunInContextAndCommitWithResult([NotNull] Func<DbSet<TEntity>, Task<TEntity>> contextFunc)
 		{
 			await using var ctx = GetContext();
 
-			await contextFunc(ctx.Set<TEntity>());
+			var entity = await contextFunc(ctx.Set<TEntity>());
 			await ctx.SaveChangesAsync();
+
+			return entity;
 		}
 
 		private TDbContext GetContext() => _contextFactory.CreateContext();

@@ -4,26 +4,20 @@ using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
-using MooMed.IPC.EndpointResolution.Interface;
+using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
-using MooMed.IPC.ProxyInvocation.Interface;
 
 namespace MooMed.Stateful.SearchService.Remoting
 {
-	public class SearchServiceProxy : AbstractProxy<ISearchService>, ISearchService
+	public class SearchServiceProxy : AbstractDeploymentProxy<ISearchService>, ISearchService
 	{
-		public SearchServiceProxy(
-			[NotNull] IStatefulCollectionInfoProvider statefulCollectionInfoProvider,
-			[NotNull] IGrpcClientProvider grpcClientProvider,
-			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper)
-			: base(statefulCollectionInfoProvider,
-				grpcClientProvider,
-				deterministicPartitionSelectorHelper,
-				StatefulSet.SearchService)
+		public SearchServiceProxy([NotNull] IGrpcClientProvider grpcClientProvider)
+			: base(grpcClientProvider,
+				MooMedService.SearchService)
 		{
 		}
 
-			public Task<ServiceResponse<SearchResult>> Search(string query)
-			=> InvokeOnRandomReplica(service => service.Search(query));
+		public Task<ServiceResponse<SearchResult>> Search(string query)
+			=> InvokeWithResult(service => service.Search(query));
 	}
 }

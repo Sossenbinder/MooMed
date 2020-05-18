@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using MooMed.AspNetCore.Modules;
+using MooMed.ChatService.Remoting;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.DependencyInjection.Extensions;
 using MooMed.Stateful.AccountService.Remoting;
@@ -16,6 +17,7 @@ namespace MooMed.Web.Modules
 		{
 			base.Load(builder);
 
+			builder.RegisterGrpcService<IChatService, ChatServiceProxy>();
 			builder.RegisterGrpcService<IAccountService, AccountServiceProxy>();
 			builder.RegisterGrpcService<IAccountValidationService, AccountValidationServiceProxy>();
 			builder.RegisterGrpcService<IProfilePictureService, ProfilePictureServiceProxy>();

@@ -1,3 +1,9 @@
+param (
+	[string] $configuration
+)
+
+[string[]] $availableConfigs = "dev", "testing", "prod"
+
 class ImageInfo {
     [string]$Path
     [string]$Name
@@ -43,11 +49,18 @@ $imageInfos += [ImageInfo]@{
 az acr login --name moomed
 
 cd ..
+cd ..
 
 foreach ($imageInfo in $imageInfos) {
     
-    $imgName = "moomed.azurecr.io/" + $imageInfo.Name
+	Write-Host "Building $imageInfo.Path"
+
+    $imgName = "moomed.azurecr.io/" + $imageInfo.Name + ":" + $configuration
     docker build -t $imgName -f $imageInfo.Path .
+	
+	Write-Host "Built $imageInfo.Path"
 
     docker push $imgName
+
+	Write-Host "Pushed $imageInfo.Path"
 }

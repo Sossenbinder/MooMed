@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 // Components
-import Flex from "views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 import FriendsListEntry from "./FriendsListEntry";
 
 // Functionality
@@ -23,7 +23,8 @@ export const FriendsList: React.FC<Props> = ({ friends }) => {
 			return (
 				<Flex 
 					direction={"Column"}
-					key={friend.id}>
+					key={friend.id}
+					style={{width: "100%"}}>
 					<FriendsListEntry
 						friend={friend}/>
 				</Flex>
@@ -32,7 +33,9 @@ export const FriendsList: React.FC<Props> = ({ friends }) => {
 	}, [friends]);
 
 	return (
-		<Flex className={"FriendsList"}>
+		<Flex 
+			className={"FriendsList"}
+			direction={"Column"}>
 			{friendsRendered}
 		</Flex>
 	);

@@ -2,7 +2,7 @@
 {
 	public class ClusterChangeEvent
 	{
-		public StatefulSet StatefulSet { get; set; }
+		public StatefulSetService StatefulSetService { get; set; }
 
 		public int NewReplicaAmount { get; set; }
 	}

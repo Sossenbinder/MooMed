@@ -155,4 +155,13 @@ http://{{0}}/AccountValidation?token={{1}}</value>
   <data name="AccountLoginModelInvalid" xml:space="preserve">
     <value>Login information were not correct.</value>
   </data>
+  <data name="AddAsFriend" xml:space="preserve">
+    <value>Add as friend</value>
+  </data>
+  <data name="AlreadyFriendsWith" xml:space="preserve">
+    <value>You're already friends with {0}</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
 </root>

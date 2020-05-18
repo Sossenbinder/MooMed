@@ -20,7 +20,7 @@ namespace KubeWatcher
 		private readonly IMassTransitEventingService _massTransitEventingService;
 
 		[NotNull]
-		private readonly Dictionary<StatefulSet, int> _replicaMap;
+		private readonly Dictionary<StatefulSetService, int> _replicaMap;
 
 		[NotNull]
 		private readonly Kubernetes _kubernetesClient;
@@ -31,7 +31,7 @@ namespace KubeWatcher
 		{
 			_mainLogger = mainLogger;
 			_massTransitEventingService = massTransitEventingService;
-			_replicaMap = new Dictionary<StatefulSet, int>();
+			_replicaMap = new Dictionary<StatefulSetService, int>();
 
 			var config = KubernetesClientConfiguration.InClusterConfig();
 
@@ -56,7 +56,7 @@ namespace KubeWatcher
 			{
 				var statefulSetName = statefulSet.Metadata.Name.ToLower().Split('-')[1];
 
-				if (Enum.TryParse(statefulSetName, true, out StatefulSet deployedService))
+				if (Enum.TryParse(statefulSetName, true, out StatefulSetService deployedService))
 				{
 					var replicas = statefulSet.Spec.Replicas;
 
@@ -71,34 +71,34 @@ namespace KubeWatcher
 				}
 				else
 				{
-					_mainLogger.Error($"Failed to resolve {statefulSet.Metadata.Name} to a corresponding StatefulSet");
+					_mainLogger.Error($"Failed to resolve {statefulSet.Metadata.Name} to a corresponding StatefulSetService");
 				}
 			}
 		}
 
-		private async Task HandleNewStatefulSetInfo(StatefulSet statefulSet, int replicas)
+		private async Task HandleNewStatefulSetInfo(StatefulSetService statefulSetService, int replicas)
 		{
-			if (!_replicaMap.ContainsKey(statefulSet))
+			if (!_replicaMap.ContainsKey(statefulSetService))
 			{
-				_replicaMap.Add(statefulSet, replicas);
+				_replicaMap.Add(statefulSetService, replicas);
 			}
 			else
 			{
-				var existingReplicasForService = _replicaMap[statefulSet];
+				var existingReplicasForService = _replicaMap[statefulSetService];
 
 				if (existingReplicasForService != replicas)
 				{
-					_mainLogger.Error($"Replicas for {statefulSet.ToString()} changed from {existingReplicasForService} to {replicas}. Emitting event.");
+					_mainLogger.Error($"Replicas for {statefulSetService.ToString()} changed from {existingReplicasForService} to {replicas}. Emitting event.");
 
 					await _massTransitEventingService.RaiseEvent(new ClusterChangeEvent
 					{
-						StatefulSet = statefulSet,
+						StatefulSetService = statefulSetService,
 						NewReplicaAmount = replicas
 					});
 
 				}
 
-				_replicaMap[statefulSet] = replicas;
+				_replicaMap[statefulSetService] = replicas;
 			}
 		}
 	}

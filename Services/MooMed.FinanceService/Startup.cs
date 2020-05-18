@@ -1,6 +1,4 @@
 using Autofac;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
@@ -19,12 +17,7 @@ namespace MooMed.FinanceService
 
 			services.AddHttpClient();
 		}
-
-		protected override void RegisterServices(IEndpointRouteBuilder endpointRouteBuilder)
-		{
-			endpointRouteBuilder.MapGrpcService<Service.FinanceService>();
-		}
-
+		
 		protected override void RegisterModules(ContainerBuilder containerBuilder)
 		{
 			base.RegisterModules(containerBuilder);

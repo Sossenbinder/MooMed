@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MooMed.SignalR\MooMed.SignalR.csproj" />
     <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\MooMed.Dns\MooMed.Dns.csproj" />
+    <ProjectReference Include="..\MooMed.SignalR\MooMed.SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

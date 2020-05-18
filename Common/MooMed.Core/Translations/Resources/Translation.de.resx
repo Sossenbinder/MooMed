@@ -141,4 +141,7 @@
   <data name="AccountLoginModelInvalid" xml:space="preserve">
     <value>Ihre Login-Informationen waren nicht korrekt.</value>
   </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
 </root>

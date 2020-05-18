@@ -26,7 +26,7 @@ namespace FrontendEnumGenerator
 
 			_outputFile = Path.Combine(outputDirectory, "moomedEnums.ts");
 
-			_wwwRootPath = $"{solutionDir}\\\\Services\\MooMed\\wwwroot\\dist\\Enums";
+			_wwwRootPath = $"{solutionDir}\\Services\\MooMed\\wwwroot\\dist\\Enums";
 		}
 
 		public void GenerateEnums()

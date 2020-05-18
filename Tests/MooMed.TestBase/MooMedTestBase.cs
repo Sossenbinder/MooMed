@@ -1,8 +1,11 @@
 ﻿using System.IO;
 using System.Reflection;
 using Autofac;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using MooMed.Core;
 using MooMed.Core.Code.Configuration.Interface;
+using MooMed.Core.Code.Helper.Crypto.Interface;
 using MooMed.TestBase.Config;
 using NUnit.Framework;
 
@@ -59,12 +62,23 @@ namespace MooMed.TestBase
 
             builder.RegisterModule(new CoreModule());
 
+            var config = new ConfigurationBuilder()
+	            .Add(new JsonConfigurationSource()
+	            {
+                    Path = "UnitTestSettings.json"
+                })
+	            .Build();
+
             builder
-                .RegisterType<UnitTestSettingsAccessor>()
-                .As<IConfigSettingsAccessor>()
+	            .Register(x => new Core.Code.Configuration.Config(config))
+                .As<IConfig>()
                 .SingleInstance();
 
-            UnitTestContainer = builder.Build();
+            builder.RegisterType<UnitTestCertificateEncryption>()
+	            .As<ICertificateEncryption>()
+	            .SingleInstance();
+
+	        UnitTestContainer = builder.Build();
         }
     }
 }

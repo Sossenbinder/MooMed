@@ -29,8 +29,8 @@ spec:
     spec:
       containers:
       - name: moomed-sessionservice
-        image: moomed-sessionservice:latest
-        imagePullPolicy: IfNotPresent
+        image: moomed-sessionservice:dev
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
       imagePullSecrets:

@@ -1,7 +1,5 @@
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using MooMed.AspNetCore.Extensions;
+using MooMed.AspNetCore.Helper;
 
 namespace MooMed.Stateful.AccountValidationService
 {
@@ -9,15 +7,7 @@ namespace MooMed.Stateful.AccountValidationService
 	{
 		public static void Main(string[] args)
 		{
-			var host = Host.CreateDefaultBuilder(args)
-				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureWebHostDefaults(webHostBuilder =>
-				{
-					webHostBuilder
-						.ConfigureGrpc()
-						.UseStartup<Startup>();
-				})
-				.Build();
+			var host = MooMedHostBuilder.BuildDefaultGrpcServiceHost<Startup>(args);
 
 			host.Run();
 		}

@@ -16,14 +16,14 @@ namespace MooMed.Eventing.Helper
 			[NotNull] IServiceProvider provider,
 			[CanBeNull] Action<IRabbitMqBusFactoryConfigurator> configFunc = null)
 		{
-			var dnsResolutionService = (IDnsResolutionService)provider.GetService(typeof(IDnsResolutionService));
+			var endpointDiscoveryService = (IEndpointDiscoveryService)provider.GetService(typeof(IEndpointDiscoveryService));
 			var logger = (IMainLogger)provider.GetService(typeof(IMainLogger));
 
-			return CreateBus(dnsResolutionService, logger, configFunc);
+			return CreateBus(endpointDiscoveryService, logger, configFunc);
 		}
 
 		public static IBusControl CreateBus(
-			[NotNull] IDnsResolutionService dnsResolutionService,
+			[NotNull] IEndpointDiscoveryService endpointDiscoveryService,
 			[NotNull] IMainLogger logger,
 			[CanBeNull] Action<IRabbitMqBusFactoryConfigurator> configFunc = null)
 		{
@@ -31,9 +31,9 @@ namespace MooMed.Eventing.Helper
 			{
 				config.PurgeOnStartup = true;
 
-				await RetryStrategy.DoRetryExponential(async () =>
+				await RetryStrategy.DoRetryExponential(() =>
 				{
-					var deploymentIp = await dnsResolutionService.ResolveDeploymentToIp(Deployment.RabbitMqManagement);
+					var deploymentIp = endpointDiscoveryService.GetDeploymentEndpoint(DeploymentService.RabbitMq).IpAddress;
 
 					if (deploymentIp == null)
 					{

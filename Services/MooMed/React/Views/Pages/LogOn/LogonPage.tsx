@@ -5,7 +5,7 @@ import * as React from "react";
 import SignIn from "views/Components/Account/SignIn";
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
 import LanguagePicker from "views/Components/General/LanguagePicker";
-import Flex from "views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 import "Views/Pages/LogOn/Styles/LogOnMain.less";
 

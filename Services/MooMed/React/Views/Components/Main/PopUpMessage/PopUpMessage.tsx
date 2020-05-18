@@ -5,7 +5,7 @@ import classnames from "classnames";
 
 //Components
 import { PopUpMessageLevel, PopUpNotification } from "definitions/PopUpNotificationDefinitions";
-import Flex from "Views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 import { deletePopUpNotification } from "data/reducers/popUpNotificationReducer";

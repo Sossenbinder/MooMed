@@ -14,7 +14,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: moomed-rabbitmq-management
+  name: moomed-rabbitmqmanagement
 spec:  
   type: NodePort
   selector:

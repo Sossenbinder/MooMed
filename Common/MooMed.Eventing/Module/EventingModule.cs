@@ -11,7 +11,12 @@ namespace MooMed.Eventing.Module
 			base.Load(builder);
 
 			builder.RegisterType<MassTransitEventingService>()
-				.As<IStartable, IMassTransitEventingService>()
+				.As<IMassTransitEventingService>()
+				.SingleInstance()
+				.AutoActivate();
+
+			builder.RegisterType<MassTransitSignalRBackplaneService>()
+				.As<IMassTransitSignalRBackplaneService>()
 				.SingleInstance();
 		}
 	}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
@@ -11,6 +10,7 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
     [Table("Account")]
     public class AccountEntity : IEntity<int>
     {
+        // Fields
         public int Id { get; set; }
 
         [NotNull]
@@ -31,6 +31,7 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
         [Column("LastAccessedAt")]
         public DateTime LastAccessedAt { get; set; }
 
+        // Relations
         [CanBeNull]
         [InverseProperty("Account")]
         public AccountOnlineStateEntity AccountOnlineStateEntity { get; set; }

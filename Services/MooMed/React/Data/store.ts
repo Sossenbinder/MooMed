@@ -11,10 +11,14 @@ import { popUpNotificationReducer, IPopUpNotificationReducerState } from "./redu
 import { reducer as friendsReducer } from "modules/Friends/Reducer/FriendsReducer";
 import { Friend } from "modules/Friends/types";
 
+import { reducer as chatRoomsReducer } from "modules/Chat/Reducer/ChatRoomsReducer";
+import { ChatRoom } from "modules/Chat/types";
+
 export type ReduxStore = redux.Store & {
 	accountReducer: ReducerState<Account>;
 	popUpNotificationReducer: IPopUpNotificationReducerState;
 	friendsReducer: ReducerState<Friend>;
+	chatRoomsReducer: ReducerState<ChatRoom>;
 }
 
 export const store: ReduxStore = redux.createStore(
@@ -22,6 +26,7 @@ export const store: ReduxStore = redux.createStore(
         accountReducer: accountReducer.reducer,
 		popUpNotificationReducer: popUpNotificationReducer,
 		friendsReducer: friendsReducer.reducer,
+		chatRoomsReducer: chatRoomsReducer.reducer,
 	}),
 );
 

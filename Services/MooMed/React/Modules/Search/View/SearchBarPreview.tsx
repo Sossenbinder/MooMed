@@ -3,7 +3,7 @@ import * as React from "react";
 
 // Components
 import SearchBarPreviewUserEntry from "./SearchBarPreviewEntry";
-import Flex from "Views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 // Functionality
 import { Account } from "modules/Account/types";
@@ -45,7 +45,7 @@ export const SearchBarPreview: React.FC<Props> = ({ previewAccounts, visibility,
     return (
         <div ref={searchBarPreviewRef}>
             <Flex
-                styles={{ visibility: visibility ? 'visible' : 'hidden' }} 
+                style={{ visibility: visibility ? 'visible' : 'hidden' }} 
                 className={"Container"}>
                 <Flex className={"PreviewContent"}>
                     <p>

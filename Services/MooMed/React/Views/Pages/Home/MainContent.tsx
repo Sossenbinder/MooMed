@@ -6,9 +6,9 @@ import { Route } from "react-router";
 // Components
 import AboutDialog from "views/Pages/AboutDialog";
 import Profile from "modules/Account/Components/Profile/Profile";
-import ChatWidget from "views/Components/Friends/ChatWidget";
+import ChatWidget from "modules/Chat/Components/ChatWidget";
 import FriendsList from "modules/Friends/Components/FriendsList/FriendsList";
-import Flex from "Views/Components/General/Flex";
+import Flex from "Common/Components/Flex";
 
 import "./Styles/Home.less";
 
