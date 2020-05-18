@@ -11,10 +11,10 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '60dd9907-4d5e-4b36-b3f6-c02e5669b842'
-  imageRepository: 'frontendserviceprod'
+  imageRepository: 'frontendservice'
   containerRegistry: 'moomed.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/MooMed/Dockerfile'
-  tag: '$(Build.BuildId)'
+  dockerfilePath: '$(Build.SourcesDirectory)/Services/MooMed/Dockerfile'
+  tag: 'prod'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
