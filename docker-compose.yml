@@ -9,6 +9,8 @@ services:
     ports:
     - "1337:80"
     - "1338:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
   moomed.stateful.sessionservice:
     image: ${DOCKER_REGISTRY-}moomedstatefulsessionservice

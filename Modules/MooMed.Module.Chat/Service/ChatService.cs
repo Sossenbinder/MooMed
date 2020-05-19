@@ -6,6 +6,7 @@ using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Module.Chat.DataTypes.SignalR;
+using MooMed.Module.Chat.Repository.Interface;
 
 namespace MooMed.Module.Chat.Service
 {
@@ -14,12 +15,17 @@ namespace MooMed.Module.Chat.Service
 		[NotNull]
 		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
 
+		[NotNull]
+		private readonly IChatMessageRepository _chatMessageRepository;
+
 		public ChatService(
 			[NotNull] IMainLogger logger,
-			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService) 
+			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
+			[NotNull] IChatMessageRepository chatMessageRepository) 
 			: base(logger)
 		{
 			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
+			_chatMessageRepository = chatMessageRepository;
 		}
 
 		public async Task SendMessage(SendMessageModel sendMessageModel)

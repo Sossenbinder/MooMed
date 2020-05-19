@@ -11,16 +11,15 @@ using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Database.Repository
 {
-	public abstract class AbstractCrudRepository<TContextFactory, TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType> 
+	public abstract class AbstractCrudRepository<TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType> 
 		where TEntity : class, IEntity<TKeyType>
-		where TContextFactory : AbstractDbContextFactory<TDbContext>
 		where TDbContext : AbstractDbContext
 	{
 		[NotNull]
-		private readonly TContextFactory _contextFactory;
+		private readonly AbstractDbContextFactory<TDbContext> _contextFactory;
 
 		protected AbstractCrudRepository(
-			[NotNull] TContextFactory contextFactory)
+			[NotNull] AbstractDbContextFactory<TDbContext> contextFactory)
 		{
 			_contextFactory = contextFactory;
 		}

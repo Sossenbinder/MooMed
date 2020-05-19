@@ -25,12 +25,12 @@ namespace MooMed.Core
 		        .As<IConfigSettingsProvider>()
 		        .SingleInstance();
 
-            builder.RegisterType<SettingsCertificateCrypto>()
+            builder.RegisterType<SettingsCrypto>()
                 .As<ISettingsCrypto>()
                 .SingleInstance();
 
-            builder.RegisterType<CertificateEncryption>()
-	            .As<ICertificateEncryption>()
+            builder.RegisterType<SettingsCryptoProvider>()
+	            .As<ICryptoProvider>()
 	            .SingleInstance();
 
             builder.RegisterType<MainLogger>()

@@ -4,21 +4,21 @@ using MooMed.Core.Code.Helper.Crypto.Interface;
 
 namespace MooMed.Core.Code.Helper.Crypto
 {
-    internal class SettingsCertificateCrypto : ISettingsCrypto
+    internal class SettingsCrypto : ISettingsCrypto
     {
 	    [NotNull]
-        private readonly ICertificateEncryption _certificateEncryption;
+        private readonly ICryptoProvider _cryptoProvider;
 
-        public SettingsCertificateCrypto([NotNull] ICertificateEncryption certificateEncryption)
+        public SettingsCrypto([NotNull] ICryptoProvider cryptoProvider)
         {
-	        _certificateEncryption = certificateEncryption;
+	        _cryptoProvider = cryptoProvider;
         }
         
         public string EncryptSetting(string setting, string parameterToEncrypt)
         {
 	        var cryptoParam = GetParameterToPerformCrypto(setting, parameterToEncrypt);
 
-            var encrypted = _certificateEncryption.Encrypt(Convert.FromBase64String(cryptoParam));
+            var encrypted = _cryptoProvider.Encrypt(Convert.FromBase64String(cryptoParam));
 
             return ReplaceCryptedParamInSetting(setting, parameterToEncrypt, encrypted);
         }
@@ -29,13 +29,13 @@ namespace MooMed.Core.Code.Helper.Crypto
             {
                 var cryptoParam = GetParameterToPerformCrypto(setting, parameterToDecrypt);
 
-                var decrypted = _certificateEncryption.Decrypt(Convert.FromBase64String(cryptoParam));
+                var decrypted = _cryptoProvider.Decrypt(Convert.FromBase64String(cryptoParam));
 
                 return ReplaceCryptedParamInSetting(setting, parameterToDecrypt, decrypted);
             }
             else
             {
-                var decrypted = _certificateEncryption.Decrypt(Convert.FromBase64String(setting));
+                var decrypted = _cryptoProvider.Decrypt(Convert.FromBase64String(setting));
 
                 return Convert.ToBase64String(decrypted);
             }

@@ -74,8 +74,8 @@ namespace MooMed.TestBase
                 .As<IConfig>()
                 .SingleInstance();
 
-            builder.RegisterType<UnitTestCertificateEncryption>()
-	            .As<ICertificateEncryption>()
+            builder.RegisterType<UnitTestCryptoProvider>()
+	            .As<ICryptoProvider>()
 	            .SingleInstance();
 
 	        UnitTestContainer = builder.Build();

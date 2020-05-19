@@ -12,6 +12,7 @@
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 
@@ -23,6 +24,10 @@
     <ProjectReference Include="..\..\Common\MooMed.Grpc\MooMed.Grpc.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

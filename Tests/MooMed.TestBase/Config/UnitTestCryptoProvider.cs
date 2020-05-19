@@ -11,12 +11,12 @@ using MooMed.Core.Code.Helper.Crypto.Interface;
 
 namespace MooMed.TestBase.Config
 {
-	public class UnitTestCertificateEncryption : ICertificateEncryption
+	public class UnitTestCryptoProvider : ICryptoProvider
 	{
 		[NotNull]
 		private readonly AESHelper _aesHelper;
 
-		public UnitTestCertificateEncryption([NotNull] IConfig configuration)
+		public UnitTestCryptoProvider([NotNull] IConfig configuration)
 		{
 			_aesHelper = InitCryptoData(configuration);
 		}

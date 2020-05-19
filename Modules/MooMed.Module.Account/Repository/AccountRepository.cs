@@ -16,7 +16,7 @@ using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-    public class AccountRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountEntity, int>, IAccountRepository
+    public class AccountRepository : AbstractCrudRepository<AccountDbContext, AccountEntity, int>, IAccountRepository
     {
 	    [NotNull]
 	    private readonly IEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;

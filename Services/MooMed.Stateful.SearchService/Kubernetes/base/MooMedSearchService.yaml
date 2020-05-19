@@ -31,5 +31,11 @@ spec:
         image: moomed.azurecr.io/searchservice
         ports:
         - containerPort: 80
+        env:
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: akv
+                key: client_secret
       imagePullSecrets:
         - name: acrimgpullsecret

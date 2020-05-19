@@ -12,7 +12,7 @@ using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-    public class AccountValidationRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountValidationEntity, int>, IAccountValidationRepository
+    public class AccountValidationRepository : AbstractCrudRepository<AccountDbContext, AccountValidationEntity, int>, IAccountValidationRepository
     {
 	    [NotNull]
 	    private readonly AccountDbContextFactory _accountDbContextFactory;

@@ -6,7 +6,7 @@ using MooMed.Module.Accounts.Repository.Interface;
 
 namespace MooMed.Module.Accounts.Repository
 {
-	public class AccountOnlineStateRepository : AbstractCrudRepository<AccountDbContextFactory, AccountDbContext, AccountOnlineStateEntity, int>, IAccountOnlineStateRepository
+	public class AccountOnlineStateRepository : AbstractCrudRepository<AccountDbContext, AccountOnlineStateEntity, int>, IAccountOnlineStateRepository
 	{
 		public AccountOnlineStateRepository([NotNull] AccountDbContextFactory contextFactory) 
 			: base(contextFactory)

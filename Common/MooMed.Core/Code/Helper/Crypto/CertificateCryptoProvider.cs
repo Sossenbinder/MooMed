@@ -8,12 +8,12 @@ using MooMed.Core.Code.Helper.Crypto.Interface;
 
 namespace MooMed.Core.Code.Helper.Crypto
 {
-	public class CertificateEncryption : ICertificateEncryption
+	public class CertificateCryptoProvider : ICryptoProvider
 	{
 		[NotNull]
 		private readonly AESHelper _aesHelper;
 
-		public CertificateEncryption([NotNull] IConfig configuration)
+		public CertificateCryptoProvider([NotNull] IConfig configuration)
 		{
 			_aesHelper = InitCryptoData(configuration);
 		}
@@ -22,6 +22,7 @@ namespace MooMed.Core.Code.Helper.Crypto
 		{
 			try
 			{
+				var test = configuration["MooMedIV"];
 				var certPath = "/usr/local/share/ca-certificates/moomed.pfx";
 
 				var cert = new X509Certificate2(File.ReadAllBytes(certPath), configuration["MooMed.CertKey"]);
