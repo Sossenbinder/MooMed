@@ -10,8 +10,4 @@
     <PackageReference Include="protobuf-net" Version="2.4.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\Entities\" />
-  </ItemGroup>
-
 </Project>

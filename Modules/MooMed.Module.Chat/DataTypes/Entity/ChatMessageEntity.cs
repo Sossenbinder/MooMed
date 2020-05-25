@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
-using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Chat.DataTypes.Entity
 {
+	[Table("Messages")]
 	public class ChatMessageEntity : IEntity<Guid>
 	{
 		public Guid Id { get; set; }
@@ -19,14 +19,8 @@ namespace MooMed.Module.Chat.DataTypes.Entity
 		
 		[Column("ReceiverId")]
 		public int ReceiverId { get; set; }
-		
 
-		[NotNull]
-		[ForeignKey("SenderId")]
-		public AccountEntity Sender { get; set; }
-
-		[NotNull]
-		[ForeignKey("Receiver")]
-		public AccountEntity Receiver { get; set; }
+		[Column("Timestamp")]
+		public DateTime Timestamp { get; set; }
 	}
 }

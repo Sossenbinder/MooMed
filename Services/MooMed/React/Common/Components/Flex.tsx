@@ -5,68 +5,70 @@ import classNames from "classnames";
 import "views/Components/General/Styles/Flex.less";
 
 enum FlexDirections {
-    Column,
-    Row,
-    RowReverse
+	Column,
+	Row,
+	RowReverse
 }
 
 enum FlexWrap {
-    NoWrap,
-    Wrap,
-    WrapReverse
+	NoWrap,
+	Wrap,
+	WrapReverse
 }
 
 enum FlexAlign {
-    Center,
-    Start,
-    End
+	Center,
+	Start,
+	End
 }
 
 enum FlexSpace {
-    Around,
-    Between
+	Around,
+	Between
 }
 
 export type FlexProps = {
-    className?: string;
-    style?: React.CSSProperties;
-    direction?: keyof typeof FlexDirections;
-    wrap?: keyof typeof FlexWrap;
-    mainAlign?: keyof typeof FlexAlign;
-    crossAlign?: keyof typeof FlexAlign;
-    space?: keyof typeof FlexSpace;
-    children?: React.ReactNode;
-    onClick?: () => void;
+	className?: string;
+	style?: React.CSSProperties;
+	direction?: keyof typeof FlexDirections;
+	wrap?: keyof typeof FlexWrap;
+	mainAlign?: keyof typeof FlexAlign;
+	crossAlign?: keyof typeof FlexAlign;
+	space?: keyof typeof FlexSpace;
+	children?: React.ReactNode;
+	onClick?: () => void;
+	ref?: React.Ref<any>;
 }
 
-export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => {}}) => {
+export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => {}, ref}) => {
 
-    const classes = classNames({
-        "flex": true,
-        "flexColumn": direction === "Column",
-        "flexRow": direction === "Row",
-        "flexRowReverse": direction === "RowReverse",
-        "flexNoWrap": wrap === "NoWrap",
-        "flexWrap": wrap === "Wrap",
-        "flexWrapReverse": wrap === "WrapReverse",
-        "flexMainCenter": mainAlign === "Center",
-        "flexMainStart": mainAlign === "Start",
-        "flexMainEnd": mainAlign === "End",
-        "flexAround": space === "Around",
-        "flexBetween": space === "Between",
-        "flexCrossCenter": crossAlign === "Center",
-        "flexCrossStart": crossAlign === "Start",
-        "flexCrossEnd": crossAlign === "End",
-    });
+	const classes = classNames({
+		"flex": true,
+		"flexColumn": direction === "Column",
+		"flexRow": direction === "Row",
+		"flexRowReverse": direction === "RowReverse",
+		"flexNoWrap": wrap === "NoWrap",
+		"flexWrap": wrap === "Wrap",
+		"flexWrapReverse": wrap === "WrapReverse",
+		"flexMainCenter": mainAlign === "Center",
+		"flexMainStart": mainAlign === "Start",
+		"flexMainEnd": mainAlign === "End",
+		"flexAround": space === "Around",
+		"flexBetween": space === "Between",
+		"flexCrossCenter": crossAlign === "Center",
+		"flexCrossStart": crossAlign === "Start",
+		"flexCrossEnd": crossAlign === "End",
+	});
 
-    return (
-        <div 
-            className={`${classes} ${className}`}
-            style={style}
-            onClick={onClick}>
-            { children }
-        </div>
-    )
+	return (
+		<div 
+			className={`${classes} ${className}`}
+			style={style}
+			onClick={onClick}
+			ref={ref}>
+			{ children }
+		</div>
+	)
 }
 
 export default Flex;

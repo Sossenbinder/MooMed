@@ -9,6 +9,7 @@ import Flex from "Common/Components/Flex";
 import useServices from "hooks/useServices";
 import { ReduxStore } from "data/store";
 import { Friend } from "modules/friends/types";
+import { formatTranslation } from "helper/translationHelper";
 
 type Props = {
 	targetAccountId: number;
@@ -20,7 +21,17 @@ export const FriendshipButton: React.FC<Props> = ({ targetAccountId, friends  })
 
 	const { FriendsService } = useServices();
 
-	const isAlreadyFriend = React.useMemo(() => friends.some(x => x.id === targetAccountId), [targetAccountId, friends]);
+	const friend = React.useMemo(() => {
+		const possibleFriends = friends.filter(x => x.id === targetAccountId);
+
+		if (possibleFriends.length === 0) {
+			return undefined;
+		} else {
+			return possibleFriends[0];
+		}		
+	}, [targetAccountId, friends]);
+
+	const isAlreadyFriend = React.useMemo(() => typeof friend !== "undefined", [targetAccountId, friends]);
 
 	return (
 		<Flex>
@@ -30,7 +41,7 @@ export const FriendshipButton: React.FC<Props> = ({ targetAccountId, friends  })
 				</button>
 			</If>
 			<If condition={isAlreadyFriend}>
-				{Translation.AlreadyFriendsWith}
+				{formatTranslation(Translation.AlreadyFriendsWith, friend.userName)}
 			</If>
 		</Flex>
 	);

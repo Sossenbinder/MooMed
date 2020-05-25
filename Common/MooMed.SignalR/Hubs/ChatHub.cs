@@ -21,16 +21,19 @@ namespace MooMed.SignalR.Hubs
 		}
 
 		[UsedImplicitly]
-		public async Task SendMessage([NotNull] SendMessageUiModel sendMessageModel)
+		public async Task<bool> SendMessage([NotNull] SendMessageUiModel sendMessageModel)
 		{
 			var sessionContext = await GetSessionContextOrFail();
 
-			await _chatService.SendMessage(new SendMessageModel()
+			var response = await _chatService.SendMessage(new SendMessageModel()
 			{
 				Message = sendMessageModel.Message,
 				ReceiverId = sendMessageModel.ReceiverId,
+				Timestamp = sendMessageModel.TimeStamp,
 				SessionContext = sessionContext
 			});
+
+			return response.IsSuccess;
 		}
 	}
 }

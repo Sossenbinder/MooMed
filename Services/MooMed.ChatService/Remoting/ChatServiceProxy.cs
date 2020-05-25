@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.ServiceBase.Interface;
+using MooMed.Core.DataTypes;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
 
@@ -16,7 +18,10 @@ namespace MooMed.ChatService.Remoting
 				MooMedService.ChatService)
 		{ }
 
-		public Task SendMessage(SendMessageModel sendMessageModel)
-			=> Invoke(service => service.SendMessage(sendMessageModel));
+		public Task<ServiceResponse<RetrievedMessagesModel>> GetMessages(GetMessagesModel getMessagesModel)
+			=> InvokeWithResult(service => service.GetMessages(getMessagesModel));
+
+		public Task<ServiceResponse> SendMessage(SendMessageModel sendMessageModel)
+			=> InvokeWithResult(service => service.SendMessage(sendMessageModel));
 	}
 }

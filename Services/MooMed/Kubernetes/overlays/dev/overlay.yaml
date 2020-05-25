@@ -9,9 +9,3 @@ spec:
       containers:
       - image: moomed.azurecr.io/frontendservice:dev
         name: moomed-frontendservice
-        env:
-          - name: AZURE_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: akv
-                key: client_secret

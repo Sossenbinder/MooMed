@@ -1,6 +1,7 @@
 ﻿// Framework
 import * as React from "react";
 import { connect } from "react-redux";
+import classNames from "classnames";
 
 // Components
 import Flex from "Common/Components/Flex";
@@ -38,9 +39,14 @@ export const ChatWidget: React.FC<Props> = ({ friends, chatRooms }) => {
 		});
 	}, []);
 
+	const classes = classNames({
+		"ChatWidget": true,
+		"maximized": maximized,
+	});
+
 	return (
 		<Flex 
-			className={"ChatWidget"}
+			className={classes}
 			direction={"Column"}>
 			<ChatWidgetTopBar
 				onClick={() => setMaximized(!maximized)} />

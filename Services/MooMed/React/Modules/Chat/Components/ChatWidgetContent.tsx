@@ -33,12 +33,13 @@ export const ChatWidgetContent: React.FC<Props> = ({ activeChatId, friends, setA
 	return (
 		<Flex
 			className={"ChatWidgetContent"}
-			direction={"Column"}>
+			direction={"Column"}
+			space={"Between"}>
 			<If condition={activeChatId !== 0}>
 				<ChatRoom 
 					friend={friends.find(x => x.id === activeChatId)}
 					setActiveChatPartnerId={setActiveChatPartnerId}
-					chatRoom={chatRooms.find(x => x.partnerId == activeChatId)}/>
+					chatRoom={chatRooms.find(x => x.roomId == activeChatId)}/>
 			</If>
 			<If condition={activeChatId === 0}>
 				<Flex 

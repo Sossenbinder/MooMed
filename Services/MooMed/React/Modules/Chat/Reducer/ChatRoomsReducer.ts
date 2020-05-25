@@ -3,7 +3,7 @@ import { ChatRoom } from "modules/Chat/types";
 
 export const reducer = createReducer<ChatRoom>({
 	actionIdentifier: "CHATROOM",
-	key: "partnerId"
+	key: "roomId"
 });
 
 export default reducer;

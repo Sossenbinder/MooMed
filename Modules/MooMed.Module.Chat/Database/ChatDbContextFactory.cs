@@ -5,8 +5,8 @@ namespace MooMed.Module.Chat.Database
 {
 	public class ChatDbContextFactory : AbstractDbContextFactory<ChatDbContext>
 	{
-		public ChatDbContextFactory(IConfigSettingsProvider configSettingsProvider, string key) 
-			: base(configSettingsProvider, key)
+		public ChatDbContextFactory(IConfigSettingsProvider configSettingsProvider) 
+			: base(configSettingsProvider, "MooMed_Database_Chat")
 		{
 		}
 

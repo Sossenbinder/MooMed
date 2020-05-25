@@ -16,6 +16,7 @@ type Props = {
 export const ChatRoomInput: React.FC<Props> = ({ receiverId }) => {
 
 	const [message, setMessage] = React.useState("");
+	const [isSending, setIsSending] = React.useState(false);
 
 	const { ChatService } = useServices();
 
@@ -25,11 +26,16 @@ export const ChatRoomInput: React.FC<Props> = ({ receiverId }) => {
 			direction={"Row"}>
 			<input 
 				className={"Input"}
-				onInput={event => setMessage(event.currentTarget.value)}>
+				onInput={event => setMessage(event.currentTarget.value)}
+				disabled={isSending}>
 			</input>
 			<Flex 
 				className={"SendButton"}
-				onClick={async () => await ChatService.sendMessage(message, receiverId)}>
+				onClick={async () => {
+					setIsSending(true);
+					await ChatService.sendMessage(message, receiverId);
+					setIsSending(false);
+					}}>
 				<Flex
 					className={"SendText"}
 					crossAlign={"Center"}

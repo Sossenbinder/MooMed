@@ -9,13 +9,7 @@ namespace MooMed.Web.Views
 {
     public static class MooMedHtmlHelper
     {
-        [NotNull]
-        public static HtmlString AddReactRouterRoute([NotNull] string route)
-        {
-            return AttachToWindowObject("reactRoute", route);
-        }
-
-        [NotNull]
+	    [NotNull]
         public static HtmlString TranslationFile(Language lang)
         {
             string langString;
@@ -30,7 +24,7 @@ namespace MooMed.Web.Views
                 langString = currentThreadCulture.Name;
             }
 
-            return new HtmlString($"<script type=\"text/javascript\" src=\"dist/Translations/translation.{langString}.js\"></script>");
+            return new HtmlString($"<script type=\"text/javascript\" src=\"/dist/Translations/translation.{langString}.js\"></script>");
         }
 
         [NotNull]

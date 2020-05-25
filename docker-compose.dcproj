@@ -23,7 +23,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>aaa8c1ad-c0a4-4f14-a34e-5beb81974e2d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:1337</DockerServiceUrl>
     <DockerServiceName>moomed.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

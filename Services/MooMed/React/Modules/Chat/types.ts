@@ -1,19 +1,30 @@
 export type ChatRoom = {
-	partnerId: number;
+	roomId: number;
 	messages?: Array<ChatMessage>;
-}
+	messageContinuationToken?: string;
+};
 
 export type ChatMessage = {
-	content: string;
+	message: string;
 	senderId: number;
-}
+	timestamp: Date;
+};
 
 export type SendMessageUiModel = {
 	receiverId: number;
 	message: string;
-}
+	timestamp: Date;
+};
 
-export type ReceivedChatMessageNotification = {
-	senderId: number;
-	message: string;
+export namespace Network {
+
+	export type GetMessagesRequest = {
+		receiverId: number;
+		continuationToken?: string;
+	};
+
+	export type GetMessagesResponse = {
+		messages: Array<ChatMessage>;
+		continuationToken: string;
+	};
 }

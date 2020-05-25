@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
+using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.Definitions.Models.User;
 
 namespace MooMed.Module.Accounts.Datatypes.Entity

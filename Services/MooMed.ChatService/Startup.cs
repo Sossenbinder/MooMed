@@ -8,7 +8,7 @@ using MooMed.IPC.Module;
 
 namespace MooMed.ChatService
 {
-	public class Startup : GrpcEndpointStartup<MooMed.Module.Chat.Service.ChatService>
+	public class Startup : GrpcEndpointStartup<Service.ChatService>
 	{
 		protected override void RegisterModules(ContainerBuilder containerBuilder)
 		{

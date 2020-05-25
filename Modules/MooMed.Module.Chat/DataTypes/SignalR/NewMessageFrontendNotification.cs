@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MooMed.Module.Chat.DataTypes.SignalR
 {
@@ -9,10 +10,13 @@ namespace MooMed.Module.Chat.DataTypes.SignalR
 		[NotNull]
 		public string Message { get; }
 
-		public NewMessageFrontendNotification(int senderId, [NotNull] string message)
+		public DateTime Timestamp { get; }
+
+		public NewMessageFrontendNotification(int senderId, [NotNull] string message, DateTime timestamp)
 		{
 			SenderId = senderId;
 			Message = message;
+			Timestamp = timestamp;
 		}
 	}
 }

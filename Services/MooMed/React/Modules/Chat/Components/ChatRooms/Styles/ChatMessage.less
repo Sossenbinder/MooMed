@@ -1,0 +1,35 @@
+.ChatMessageFlex {	
+
+	&:hover .Timestamp{
+		visibility: visible;
+	}
+
+	.ChatMessageContainer {
+		border: 1px solid;
+		border-radius: 5px;
+
+		max-width: 75%;
+
+		margin: 2px 0px 2px 0px;
+
+		.ChatMessage {
+			margin: 0px 2px 0px 2px;
+			word-break: break-word;
+		}
+
+		&.Mine {
+			background-color: grey;
+		}
+
+		&.Theirs {
+			background-color: lightskyblue;
+		}
+	}
+
+	.Timestamp {
+		margin: 5px 5px 0px 5px;
+		font-size: small;
+
+		visibility: hidden;
+	}
+}

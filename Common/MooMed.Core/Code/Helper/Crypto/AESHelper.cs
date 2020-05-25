@@ -57,7 +57,7 @@ namespace MooMed.Core.Code.Helper.Crypto
             {
                 IV = _iv,
                 Key = _key,
-                Padding = PaddingMode.PKCS7
+                Padding = PaddingMode.PKCS7,
             };
 
             return aesManaged;
