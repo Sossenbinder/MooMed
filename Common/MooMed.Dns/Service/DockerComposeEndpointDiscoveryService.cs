@@ -9,7 +9,7 @@ namespace MooMed.Dns.Service
 	{
 		public Endpoint GetDeploymentEndpoint(DeploymentService deploymentService)
 		{
-			var ipAddress = $"moomed.deployment.{deploymentService.ToString().ToLower()}";
+			var ipAddress = $"moomed.{deploymentService.ToString().ToLower()}";
 
 			return new Endpoint()
 			{

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.Hosting;
 using MooMed.AspNetCore.Extensions;
 
@@ -15,38 +11,58 @@ namespace MooMed.AspNetCore.Helper
 {
 	public static class MooMedHostBuilder
 	{
-		public static IHost BuildDefaultKestrelHost<TStartUp>([NotNull] string[] args) 
-			where TStartUp : class
+		public static IHost BuildDefaultKestrelHost<TStartup>(
+			string[] args, 
+			Action<IHostBuilder>? hostBuilderEnricher = null,
+			Action<IWebHostBuilder>? webHostBuilderEnricher = null) 
+			where TStartup : class
+		{
+			var hostBuilder = CreateSharedHost<TStartup>(args, webHostBuilder =>
+			{
+				webHostBuilder
+					.UseContentRoot(Directory.GetCurrentDirectory())
+					.UseKestrel();
+
+				webHostBuilderEnricher?.Invoke(webHostBuilder);
+			});
+
+			hostBuilderEnricher?.Invoke(hostBuilder);
+
+			return hostBuilder.Build();
+		}
+
+		public static IHost BuildDefaultGrpcServiceHost<TStartup>(
+			string[] args)
+			where TStartup : class
+		{
+			var hostBuilder = CreateSharedHost<TStartup>(args, webHostBuilder =>
+			{
+				webHostBuilder
+					.ConfigureGrpc();
+			});
+
+			return hostBuilder.Build();
+		}
+
+		private static IHostBuilder CreateSharedHost<TStartup>(
+			string[] args,
+			Action<IWebHostBuilder> webHostBuilderEnricher = null)
+			where TStartup : class
 		{
 			return Host
 				.CreateDefaultBuilder(args)
 				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureWebHostDefaults(webHostBuilder => {
+				.ConfigureWebHostDefaults(webHostBuilder =>
+				{
 					webHostBuilder
 						.UseConfiguration(CreateConfig(args))
-						.UseContentRoot(Directory.GetCurrentDirectory())
-						.UseKestrel()
-						.UseStartup<TStartUp>();
-				})
-				.Build();
+						.UseStartup<TStartup>();
+
+					webHostBuilderEnricher(webHostBuilder);
+				});
 		}
 
-		public static IHost BuildDefaultGrpcServiceHost<TStartUp>([NotNull] string[] args) 
-			where TStartUp : class
-		{
-			return Host
-				.CreateDefaultBuilder(args)
-				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureWebHostDefaults(webHostBuilder => {
-					webHostBuilder
-						.UseConfiguration(CreateConfig(args))
-						.ConfigureGrpc()
-						.UseStartup<TStartUp>();
-				})
-				.Build();
-		}
-
-		private static IConfiguration CreateConfig([NotNull] string[] args)
+		private static IConfiguration CreateConfig([System.Diagnostics.CodeAnalysis.NotNull] string[] args)
 		{
 			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -76,7 +92,7 @@ namespace MooMed.AspNetCore.Helper
 			return configBuilder.Build();
 		}
 
-		private static void AddKeyVault([NotNull] IConfigurationBuilder configBuilder, [NotNull] IConfiguration config)
+		private static void AddKeyVault([System.Diagnostics.CodeAnalysis.NotNull] IConfigurationBuilder configBuilder, [System.Diagnostics.CodeAnalysis.NotNull] IConfiguration config)
 		{
 			var keyVaultEndpoint = "https://moomed.vault.azure.net/";
 

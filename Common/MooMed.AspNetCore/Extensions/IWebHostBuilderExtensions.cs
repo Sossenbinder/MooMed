@@ -13,7 +13,7 @@ namespace MooMed.AspNetCore.Extensions
 				.UseKestrel()
 				.ConfigureKestrel(options =>
 				{
-					options.ListenAnyIP(10042, listenOptions =>
+					options.ListenAnyIP(port, listenOptions =>
 					{
 						listenOptions.Protocols = HttpProtocols.Http2; 
 					});

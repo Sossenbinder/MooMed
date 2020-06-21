@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics" Version="4.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Core" Version="4.1.0" />
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
@@ -20,11 +22,6 @@
     <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Module\" />
-    <Folder Include="Remoting\" />
   </ItemGroup>
 
   <ItemGroup>

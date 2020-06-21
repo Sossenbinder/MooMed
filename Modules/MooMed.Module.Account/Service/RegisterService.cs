@@ -23,22 +23,22 @@ namespace MooMed.Module.Accounts.Service
 		private readonly IAccountRepository _accountRepository;
 
 		[NotNull]
-		private readonly IModelConverter<Account, AccountEntity, int> _accountModelConverter;
+		private readonly IEntityToModelConverter<AccountEntity, Account, int> _accountEntityToModelConverter;
 
 		[NotNull]
-		private readonly IEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
+		private readonly IModelToEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
 
 		public RegisterService(
 			[NotNull] IAccountSignInValidator accountSignInValidator,
 			[NotNull] IMainLogger mainLogger,
 			[NotNull] IAccountRepository accountRepository,
-			[NotNull] IModelConverter<Account, AccountEntity, int> accountModelConverter,
-			[NotNull] IEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter)
+			[NotNull] IEntityToModelConverter<AccountEntity, Account, int> accountEntityToModelConverter,
+			[NotNull] IModelToEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter)
 		{
 			_accountSignInValidator = accountSignInValidator;
 			_mainLogger = mainLogger;
 			_accountRepository = accountRepository;
-			_accountModelConverter = accountModelConverter;
+			_accountEntityToModelConverter = accountEntityToModelConverter;
 			_registerModelToAccountConverter = registerModelToAccountConverter;
 		}
 
@@ -67,7 +67,7 @@ namespace MooMed.Module.Accounts.Service
 			var accountEntity = _registerModelToAccountConverter.ToEntity(registerModel);
 
 			// Actually Create the account
-			var account = _accountModelConverter.ToModel(await _accountRepository.Create(accountEntity));
+			var account = _accountEntityToModelConverter.ToModel(await _accountRepository.Create(accountEntity));
 
 			_mainLogger.Info($"Registered {registerModel.Email} as accountId {account.Id}");
 

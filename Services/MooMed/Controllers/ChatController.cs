@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.Models.Chat;
+using MooMed.Common.Definitions.UiModels.Chat;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
@@ -26,13 +27,13 @@ namespace MooMed.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GetMessages(int receiverId, [CanBeNull] string continuationToken = null)
+        public async Task<ActionResult> GetMessages([NotNull] [FromBody] GetMessagesUiModel model)
         {
 	        var messages = await _chatService.GetMessages(new GetMessagesModel()
 	        {
-		        ReceiverId = receiverId,
+		        ReceiverId = model.ReceiverId,
 		        SessionContext = CurrentSessionOrFail,
-				ContinuationToken = continuationToken,
+				ContinuationToken = model.ContinuationToken,
 	        });
 
 	        return messages.ToJsonResponse();

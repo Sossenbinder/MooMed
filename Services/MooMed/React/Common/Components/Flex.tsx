@@ -2,10 +2,11 @@
 import * as React from "react";
 import classNames from "classnames";
 
-import "views/Components/General/Styles/Flex.less";
+import "./Styles/Flex.less";
 
 enum FlexDirections {
 	Column,
+	ColumnReverse,
 	Row,
 	RowReverse
 }
@@ -37,14 +38,16 @@ export type FlexProps = {
 	space?: keyof typeof FlexSpace;
 	children?: React.ReactNode;
 	onClick?: () => void;
+	onScroll?: (event: React.UIEvent<HTMLDivElement>) => void;
 	ref?: React.Ref<any>;
 }
 
-export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => {}, ref}) => {
+export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => {}, onScroll = () => {}, ref}) => {
 
 	const classes = classNames({
 		"flex": true,
 		"flexColumn": direction === "Column",
+		"flexColumnReverse": direction === "ColumnReverse",
 		"flexRow": direction === "Row",
 		"flexRowReverse": direction === "RowReverse",
 		"flexNoWrap": wrap === "NoWrap",
@@ -65,6 +68,7 @@ export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row",
 			className={`${classes} ${className}`}
 			style={style}
 			onClick={onClick}
+			onScroll={onScroll}
 			ref={ref}>
 			{ children }
 		</div>

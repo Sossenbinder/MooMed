@@ -4,7 +4,7 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Converters
 {
-	public class FriendsMappingDbConverter : IModelConverter<Friend, AccountEntity, int>
+	public class FriendsMappingDbConverter : IEntityToModelConverter<AccountEntity, Friend, int>
 	{
 		public Friend ToModel(AccountEntity entity)
 		{

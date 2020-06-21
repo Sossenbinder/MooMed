@@ -4,10 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Database.Context;
 using MooMed.Common.Database.Repository.Interface;
 using MooMed.Common.Definitions.Interface;
+using MooMed.Core.Code.Extensions;
 
 namespace MooMed.Common.Database.Repository
 {
@@ -42,10 +44,34 @@ namespace MooMed.Common.Database.Repository
 			return creationResult;
 		}
 
+		[NotNull]
+		public Task<List<TEntity>> Read()
+			=> RunInContextWithResult(dbSet => dbSet.ToListAsync());
 
 		[NotNull]
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate)
 			=> RunInContextWithResult(dbSet => dbSet.Where(predicate).ToListAsync());
+
+		[NotNull]
+		public Task<List<TEntity>> Read(params Expression<Func<TEntity, bool>>[] filters)
+			=> Read(filters.AsEnumerable());
+
+		[NotNull]
+		public async Task<List<TEntity>> Read([CanBeNull] IEnumerable<Expression<Func<TEntity, bool>>> filters)
+		{
+			var predicateList = filters?.ToList();
+
+			if (predicateList.IsNullOrEmpty())
+			{
+				return await RunInContextWithResult(dbSet => dbSet.ToListAsync());
+			}
+
+			var predicate = PredicateBuilder.New<TEntity>(x => true);
+
+			predicate = predicateList.Aggregate(predicate, (current, filter) => current.And(filter));
+
+			return await RunInContextWithResult(dbSet => dbSet.Where(predicate).ToListAsync());
+		}
 
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes)
 			=> Read(predicate, queryable => foreignIncludes.Aggregate(queryable, (current, include) => current.Include(include)));

@@ -13,7 +13,13 @@ namespace MooMed.Common.Database.Repository.Interface
 		// Basic
 		Task<TEntity> Create([NotNull] TEntity entity);
 
+		Task<List<TEntity>> Read();
+
 		Task<List<TEntity>> Read([NotNull] Expression<Func<TEntity, bool>> predicate);
+
+		Task<List<TEntity>> Read(params Expression<Func<TEntity, bool>>[] filters);
+
+		Task<List<TEntity>> Read([NotNull] IEnumerable<Expression<Func<TEntity, bool>>> predicate);
 
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes);
 

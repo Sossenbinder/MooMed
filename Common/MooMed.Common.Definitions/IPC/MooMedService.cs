@@ -8,5 +8,7 @@
 		SearchService,
 		SessionService,
 		ChatService,
+		FinanceService,
+		MonitoringService,
 	}
 }

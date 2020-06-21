@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
     <ProjectReference Include="..\MooMed.ChatService\MooMed.ChatService.csproj" />
+    <ProjectReference Include="..\MooMed.FinanceService\MooMed.FinanceService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj" />
@@ -36,9 +37,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
+    <TypeScriptCompile Include="React\Enums\moomedEnums.ts" />
+    <Content Include="React\Views\Components\Main\NavBar.tsx" />
+    <Content Include="React\Modules\Stocks\Components\StocksDialog.tsx" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="./runPostBuild.bat" />
   </Target>
-  
 </Project>

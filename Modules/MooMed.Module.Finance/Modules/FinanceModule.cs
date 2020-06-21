@@ -1,8 +1,11 @@
-﻿using Autofac;
-using MooMed.Module.Finance.Helper;
-using MooMed.Module.Finance.Helper.Interface;
-using MooMed.Module.Finance.Service;
-using MooMed.Module.Finance.Service.Interface;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Autofac;
+using MooMed.Common.Database.Converter;
+using MooMed.Common.Definitions.Models.Finance;
+using MooMed.Common.Definitions.UiModels.Finance;
+using MooMed.Module.Finance.Converters;
 
 namespace MooMed.Module.Finance.Modules
 {
@@ -12,19 +15,13 @@ namespace MooMed.Module.Finance.Modules
 		{
 			base.Load(builder);
 
-			builder.RegisterType<IexCloudClientFactory>()
-				.AsSelf()
+			builder.RegisterType<ExchangeTradedModelToUiModelConverter>()
+				.As<IModelToUiModelConverter<ExchangeTradedModel, ExchangeTradedUiModel>>()
 				.SingleInstance();
 
-			builder.RegisterType<EtfDbQuerier>()
-				.As<IEtfQuerier>()
+			builder.RegisterType<GetExchangeTradedsUiModelToModelConverter>()
+				.As<IUiModelToModelConverter<GetExchangeTradedsUiModel, GetExchangeTradedsModel>>()
 				.SingleInstance();
-
-			builder.RegisterType<EtfDataService>()
-				.As<IEtfDataService, IStartable>()
-				.SingleInstance();
-
-
 		}
 	}
 }

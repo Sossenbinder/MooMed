@@ -6,8 +6,8 @@ namespace MooMed.Module.Finance.Database
 {
 	internal class FinanceDbContextFactory : AbstractDbContextFactory<FinanceDbContext>
 	{
-		protected FinanceDbContextFactory([NotNull] IConfigSettingsProvider configSettingsProvider, [NotNull] string key) 
-			: base(configSettingsProvider, key)
+		public FinanceDbContextFactory([NotNull] IConfigSettingsProvider configSettingsProvider) 
+			: base(configSettingsProvider, "MooMed_Db_Finance")
 		{
 
 		}

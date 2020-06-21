@@ -18,11 +18,11 @@ namespace MooMed.Module.Accounts.Service
 		private readonly IFriendsMappingRepository _friendsMappingRepository;
 
 		[NotNull]
-		private readonly IModelConverter<Friend, AccountEntity, int> _accountFriendConverter;
+		private readonly IEntityToModelConverter<AccountEntity, Friend, int> _accountFriendConverter;
 
 		public FriendsService(
 			[NotNull] IFriendsMappingRepository friendsMappingRepository,
-			[NotNull] IModelConverter<Friend, AccountEntity, int> accountFriendConverter)
+			[NotNull] IEntityToModelConverter<AccountEntity, Friend, int> accountFriendConverter)
 		{
 			_friendsMappingRepository = friendsMappingRepository;
 			_accountFriendConverter = accountFriendConverter;

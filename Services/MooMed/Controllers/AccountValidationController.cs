@@ -32,7 +32,7 @@ namespace MooMed.Web.Controllers
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<ActionResult> Index([CanBeNull] string token)
+        public async Task<ActionResult> Index([CanBeNull] [FromBody] string token)
         {
             string jsonString;
 
@@ -76,7 +76,7 @@ namespace MooMed.Web.Controllers
         /// <returns></returns>
         [ItemNotNull]
         [AllowAnonymous]
-        public async Task<JsonResponse> ValidateRegistration([NotNull] AccountValidationModel accountValidationModel)
+        public async Task<JsonResponse> ValidateRegistration([NotNull] [FromBody] AccountValidationModel accountValidationModel)
         {
             var result = await _accountValidationService.ValidateRegistration(accountValidationModel.AccountValidationTokenData);
 

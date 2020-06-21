@@ -19,11 +19,11 @@ namespace MooMed.Module.Accounts.Repository
     public class AccountRepository : AbstractCrudRepository<AccountDbContext, AccountEntity, int>, IAccountRepository
     {
 	    [NotNull]
-	    private readonly IEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
+	    private readonly IModelToEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
 
         public AccountRepository(
 		    [NotNull] AccountDbContextFactory contextFactory,
-		    [NotNull] IEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter) 
+		    [NotNull] IModelToEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter) 
 		    : base(contextFactory)
 	    {
 		    _registerModelToAccountConverter = registerModelToAccountConverter;

@@ -12,6 +12,10 @@ export interface IFriendsService {
     addFriend(friendId: number): Promise<void>;
 }
 
+export interface IStocksService {
+
+}
+
 export interface IChatService {
 	openChat(partnerId: number): void;
 	registerForActiveChatChange(handler: (partnerId: number) => void): void;
@@ -34,4 +38,5 @@ export type ServiceContext = {
 	SearchService: ISearchService;
 	NotificationService: INotificationService;
 	ChatService: IChatService;
+	StocksService: IStocksService;
 }

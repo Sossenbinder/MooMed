@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Remoting\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Dns\MooMed.Dns.csproj" />

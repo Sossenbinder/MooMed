@@ -19,14 +19,14 @@ services:
       dockerfile: Services/MooMed.Stateful.SessionService/Dockerfile
 
 
-  moomed.deployment.searchservice:
+  moomed.searchservice:
     image: ${DOCKER_REGISTRY-}moomedstatefulsearchservice
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.SearchService/Dockerfile
 
 
-  moomed.deployment.profilepictureservice:
+  moomed.profilepictureservice:
     image: ${DOCKER_REGISTRY-}moomedstatefulprofilepictureservicekub
     build:
       context: .
@@ -53,22 +53,23 @@ services:
       context: .
       dockerfile: Services/MooMed.FinanceService/Dockerfile
 
-  moomed.deployment.rabbitmq:
+  moomed.rabbitmq:
     container_name: rabbitmq
     image: docker.io/library/rabbitmq:3-management
     ports:
     - "12643:15672"
 
-  moomed.deployment.chatservice:
+  moomed.chatservice:
     image: ${DOCKER_REGISTRY-}moomedchatservice
     build:
       context: .
       dockerfile: Services/MooMed.ChatService/Dockerfile
 
 
-  moomed.monitoring:
+  moomed.monitoringservice:
     image: ${DOCKER_REGISTRY-}moomedmonitoring
     build:
       context: .
       dockerfile: Services/MooMed.Monitoring/Dockerfile
-
+    ports:
+    - "4122:80"

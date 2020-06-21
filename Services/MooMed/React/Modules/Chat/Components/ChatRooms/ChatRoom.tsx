@@ -3,6 +3,7 @@ import * as React from "react";
 
 // Components
 import Flex from "common/Components/Flex";
+import Icon from "common/Components/Icon";
 import FriendListImage from "modules/Friends/Components/FriendsList/FriendListImage";
 import ChatRoomInput from "./ChatRoomInput";
 import ChatMessage from "./ChatMessage";
@@ -13,6 +14,12 @@ import { ChatRoom as Room, ChatMessage as Message} from "modules/Chat/types";
 
 import "./Styles/ChatRoom.less";
 
+type MessageNode = {
+	ref: React.RefObject<HTMLDivElement>;
+	message: Message;
+	node: JSX.Element;
+}
+
 type Props = {
 	friend: Friend;
 	setActiveChatPartnerId: React.Dispatch<number>;
@@ -22,7 +29,7 @@ type Props = {
 
 export const ChatRoom: React.FC<Props> = ({ friend, setActiveChatPartnerId, chatRoom }) => {
 
-	const messages = React.useMemo(() => {
+	const messages = React.useMemo((): Array<MessageNode> => {
 
 		if (typeof chatRoom.messages !== "undefined") {
 
@@ -37,26 +44,43 @@ export const ChatRoom: React.FC<Props> = ({ friend, setActiveChatPartnerId, chat
 				}
 
 				timestampMap.get(dateString).push(msg);
-			});		
+			});
+
+			const ref = React.createRef<HTMLDivElement>();
 			
-			const elements = new Array<JSX.Element>();
+			const elements = new Array<MessageNode>();
 
 			let index = 0;
 			timestampMap.forEach((messages, date) => {
 				elements.push(
-					<Flex
-						className={"DateHeader"}
-						mainAlign={"Center"}
-						key={date}>
-						{date}
-					</Flex>);
+					{
+						ref: undefined,
+						node: (
+							<Flex
+								className={"DateHeader"}
+								mainAlign={"Center"}
+								key={date}>
+								{date}
+							</Flex>
+						),
+						message: undefined,
+					}
+				);
 
 				messages.forEach((msg, i) => {
-					elements.push(<ChatMessage 
-							message={msg.message}
-							sentByMe={msg.senderId != friend.id}
-							timestamp={msg.timestamp}
-							key={`${msg.senderId}_${index}`}/>);
+					elements.push(
+						{
+							ref: undefined,
+							node: (
+								<ChatMessage 
+									message={msg.message}
+									sentByMe={msg.senderId != friend.id}
+									timestamp={msg.timestamp}
+									key={`${msg.senderId}_${index}`}/>
+							),
+							message: null,							
+						}
+					);
 
 					index++;
 				})
@@ -70,7 +94,11 @@ export const ChatRoom: React.FC<Props> = ({ friend, setActiveChatPartnerId, chat
 
 	const bottomScrollDivRef = React.useRef<any>();
 
-	React.useEffect(() => {
+	const onScroll = React.useCallback(() => {
+
+	}, []);
+
+	React.useEffect(() => {		
 		bottomScrollDivRef.current?.scrollIntoView()
 	}, [])
 
@@ -86,11 +114,11 @@ export const ChatRoom: React.FC<Props> = ({ friend, setActiveChatPartnerId, chat
 				className={"Header"}
 				direction={"Row"}
 				mainAlign={"Start"}>
-				<Flex 
+				<Icon
 					className={"BackButton"}
-					onClick={() => setActiveChatPartnerId(0)}>
-					<img src={"Resources/Icons/BackButton.png"} />
-				</Flex>
+					iconName={"BackButton"}
+					size={24}
+					onClick={() => setActiveChatPartnerId(0)}/>
 				<Flex
 					className={"Receiver"}
 					direction={"Row"}>
@@ -106,7 +134,7 @@ export const ChatRoom: React.FC<Props> = ({ friend, setActiveChatPartnerId, chat
 			<Flex
 				className={"Messages"}
 				direction={"Column"}>
-				{messages}
+				{messages?.map(msg => msg.node)}
 				<div ref={bottomScrollDivRef}></div>
 			</Flex>
 			<Flex

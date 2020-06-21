@@ -11,8 +11,8 @@ import { Account } from "modules/Account/types";
 import "modules/Search/Styles/SearchBarPreviewEntry.less";
 
 type Props = {
-    account: Account;
-    onClick: () => void;
+	account: Account;
+	onClick: () => void;
 }
 
 export const SearchBarPreviewUserEntry: React.FC<Props> = ({account, onClick}) => 
@@ -24,8 +24,8 @@ export const SearchBarPreviewUserEntry: React.FC<Props> = ({account, onClick}) =
 			alt="Profile picture" 
 			className="entryProfilePicture"/>
 		<Link 
-            to={`/profileDetails/${account.id}`}
-            onClick={onClick}
+			to={`/profileDetails/${account.id}`}
+			onClick={onClick}
 			className="entryProfileLink">
 				{account.userName}
 		</Link>

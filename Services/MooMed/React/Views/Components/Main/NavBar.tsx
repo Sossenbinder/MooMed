@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 
 // Components
+import Flex from "common/Components/Flex";
 import SearchBar from "modules/Search/View/SearchBar"
 import SmallAccountManager from "views/Components/Account/SmallAccountManager";
 
@@ -11,32 +12,41 @@ import SmallAccountManager from "views/Components/Account/SmallAccountManager";
 import { Account } from "modules/Account/types";
 import { ReduxStore } from "data/store";
 
+import "./Styles/NavBar.less";
+
 interface Props {
 	account: Account;
 }
 
-export const NavBar: React.FC<Props> = () => 
-(
-	<div id="navBar" className="mainNavBar navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top">
-		<Link to="/" className="navbar-brand">MooMed - Finance done right</Link>
-		<div className="navBarDiv collapse navbar-collapse">
-			<ul className="navbar-nav mr-auto">
-				<li className="nav-item">
-					<Link to="/" className="nav-link">Home</Link>
-				</li>
-				<li className="nav-item">
-					<Link to="/About" className="nav-link">About</Link>
-				</li>
-				<li className="nav-item">
-					<Link to="/Contact" className="nav-link">Contact</Link>
-				</li>
-			</ul>
-			<div className="searchBar nav navbar-nav ml-auto">
-				<SearchBar />
-			</div>
+export const NavBar: React.FC<Props> = () => (
+	<Flex 
+		className={"MainNavBar navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top"}
+		direction={"Row"}>
+		<Link 
+			to={"/"}
+			className={"Heading"}>
+			MooMed - Finance done right
+		</Link>
+		<Link 
+			to={"/"}
+			className={"SubItem"}>
+			Home
+		</Link>
+		<Link 
+			to={"/Stocks"}
+			className={"SubItem"}>
+			Stocks
+		</Link>
+		<Link 
+			to={"/Contact"}
+			className={"SubItem"}>
+			Contact
+		</Link>
+		<div className="searchBar nav navbar-nav ml-auto">
+			<SearchBar />
 		</div>
 		<SmallAccountManager />
-	</div>
+	</Flex>
 );
 
 

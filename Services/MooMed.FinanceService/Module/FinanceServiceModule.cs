@@ -9,7 +9,7 @@ namespace MooMed.FinanceService.Module
 		{
 			base.Load(builder);
 
-			builder.RegisterModule(new FinanceModule());
+			builder.RegisterModule(new InternalFinanceModule());
 		}
 	}
 }

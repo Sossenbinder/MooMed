@@ -1,13 +1,16 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 
-import ErrorAttachedTextInput from "views/Components/General/Form/ErrorAttached/ErrorAttachedTextInput";
+// Components
+import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
+import Button from "common/components/general/Input/Buttons/Button";
 
+// Functionality
 import PostRequest from "helper/requests/PostRequest";
 import requestUrls from "helper/requestUrls";
 
 import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
 import { createPopUpMessage } from "helper/popUpMessageHelper";
-import Button from "views/components/general/form/Buttons/Button";
 
 import { IFormElement } from "definitions/Forms";
 
@@ -56,7 +59,7 @@ export const RegisterDialog: React.FC = () => {
 			}
 
 			const request = new PostRequest<IRegisterModel, any>(requestUrls.logOn.register);
-			const response = await request.send(registerModel);
+			const response = await request.post(registerModel);
 
 			if (response.success) {
 				location.reload();

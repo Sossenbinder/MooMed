@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using JetBrains.Annotations;
 using MassTransit;
 using MassTransit.SignalR;
@@ -10,12 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Caching.Module;
 using MooMed.Core;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Dns.Module;
-using MooMed.Dns.Service.Interface;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
 using MooMed.IPC.Module;
+using MooMed.Module.Finance.Modules;
 using MooMed.SignalR.Hubs;
 using MooMed.Web.Modules;
 
@@ -29,7 +27,9 @@ namespace MooMed.Web.Startup
 	        ConfigureMassTransit(services);
 
 	        services.AddMvc();
+
 	        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Logon/Login");
+	        services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
         }
 
         private void ConfigureMassTransit([NotNull] IServiceCollection services)
@@ -57,6 +57,7 @@ namespace MooMed.Web.Startup
             builder.RegisterModule(new KubernetesModule());
             builder.RegisterModule(new DnsModule());
 			builder.RegisterModule(new EventingModule());
+			builder.RegisterModule<FinanceModule>();
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -41,8 +41,8 @@ namespace MooMed.Module.Chat.Module
 				.AsSelf()
 				.SingleInstance();
 
-			builder.RegisterType<ChatMessageUiConverter>()
-				.As<IUiModelConverter<ChatMessageUiModel, ChatMessageModel>>()
+			builder.RegisterType<ChatMessageModelToUiConverter>()
+				.As<IModelToUiModelConverter<ChatMessageModel, ChatMessageUiModel>>()
 				.SingleInstance();
 		}
 	}

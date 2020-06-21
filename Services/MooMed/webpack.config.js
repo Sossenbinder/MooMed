@@ -1,6 +1,6 @@
 ﻿var path = require("path");
 const statements = require('tsx-control-statements').default;
-const { CheckerPlugin } = require('awesome-typescript-loader');
+const keysTransformer = require('ts-transformer-keys/transformer').default;
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
@@ -18,27 +18,44 @@ module.exports = {
 	devtool: "eval-source-map",
 	module: {
 		rules: [
+			// {
+			// 	test: /\.less/,
+			// 	use: [
+			// 		{
+			// 			loader: "style-loader"
+			// 		},
+			// 		{
+			// 			loader: "css-loader",
+			// 		},
+			// 		{
+			// 			loader: "less-loader",
+			// 		},
+			// 	],
+			// },
 			{
-				test: /\.less/,
+				test: /\.less$/,
 				use: [
-					"style-loader",
+					"style-loader",// : MiniCssExtractPlugin.loader,
 					"css-loader",
+					"postcss-loader",
 					"less-loader",
-				],
+				]
 			},
 			{
 				test: /\.tsx?$/,
 				loader: "awesome-typescript-loader",
 				exclude: /node_modules/,
 				options: {
-					getCustomTransformers: () => ({ before: [statements()] })
+					getCustomTransformers: program => ({ 
+						before: [
+							statements(),
+							keysTransformer(program)
+						], 
+					})
 				}
 			}
 		]
-    },
-    plugins: [
-        //new CheckerPlugin()
-    ],
+	},
 	resolve: {
 		extensions: [".tsx", ".ts", ".js", ".jsx"],
 		plugins: [new TsconfigPathsPlugin({configFile: "./tsconfig.json"})],

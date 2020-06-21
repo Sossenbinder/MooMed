@@ -6,5 +6,7 @@
 		SearchService,
 		ChatService,
 		ProfilePictureService,
+		FinanceService,
+		MonitoringService,
 	}
 }

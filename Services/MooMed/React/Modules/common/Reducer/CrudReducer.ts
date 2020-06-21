@@ -3,7 +3,7 @@ import * as Redux from "redux";
 
 // Functionality
 import { CouldBeArray } from "data/commonTypes";
-import { ensureArray } from "helper/arrayUtils";
+import { ensureArray, removeAt } from "helper/arrayUtils";
 
 type ReducerParams<T> = {
 	actionIdentifier: string;
@@ -64,8 +64,21 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 					data: updatedData
 				};
 			case DELETE_IDENTIFIER:
+
+				const deletePayloadAsArray = ensureArray(action.payload);
+				const dataToDelete = [ ...state.data ];
+
+				deletePayloadAsArray.forEach(val => {
+					const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
+
+					if (indexToDelete > -1) {
+						removeAt(dataToDelete, indexToDelete);
+					}
+				});
+
 				return {
 					...state,
+					data: dataToDelete
 				};
 			case REPLACE_IDENTIFIER:
 				return {

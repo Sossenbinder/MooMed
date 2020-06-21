@@ -8,7 +8,7 @@ namespace MooMed.Web.Startup
     {
         public static void RegisterRoutes([NotNull] IEndpointRouteBuilder endpoints)
         {
-            endpoints.MapControllerRoute(
+	        endpoints.MapControllerRoute(
                 "default",
 	            "{controller=Home}/{action=Index}/{id?}");
 

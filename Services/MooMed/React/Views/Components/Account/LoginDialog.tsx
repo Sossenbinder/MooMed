@@ -3,9 +3,9 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import ErrorAttachedTextInput from "views/Components/General/Form/ErrorAttached/ErrorAttachedTextInput";
-import { CheckBoxToggle } from "views/Components/General/Form/CheckBoxToggle";
-import Button from "views/components/general/form/Buttons/Button";
+import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
+import { CheckBoxToggle } from "common/components/General/Input/CheckBoxToggle";
+import Button from "common/components/General/Input/Buttons/Button";
 
 // Functionality
 import requestUrls from "helper/requestUrls";
@@ -64,7 +64,7 @@ export const LoginDialog: React.FC = () => {
 			}
 
 			const request = new PostRequest<ILoginModel, ILoginResponsePayload>(requestUrls.logOn.login);
-			const response = await request.send(loginModel);
+			const response = await request.post(loginModel);
 
 			if (response.success) {
 				location.href = "/";

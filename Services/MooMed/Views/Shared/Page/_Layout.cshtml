@@ -10,7 +10,9 @@
         {
             @Html.AntiForgeryToken()
         }
-        <div style="height: 100%">
+	    <div 
+		    id="content" 
+		    class="content">
             @RenderBody()
         </div>
         <script type="text/javascript" src="../../dist/bundle.js"></script>

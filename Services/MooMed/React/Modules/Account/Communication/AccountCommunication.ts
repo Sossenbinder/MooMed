@@ -17,7 +17,7 @@ export async function getOwnAccount() {
 export async function getAccount(accountId: number) {
 	const request = new PostRequest<Network.GetAccountRequest, Account>(accountRequests.getAccount);
 
-	return await request.send({
+	return await request.post({
 		accountId
 	});
 }

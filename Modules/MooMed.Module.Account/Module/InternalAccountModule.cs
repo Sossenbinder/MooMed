@@ -61,15 +61,15 @@ namespace MooMed.Module.Accounts.Module
 			// Converters
 
 			builder.RegisterType<AccountDbConverter>()
-				.As<IModelConverter<Account, AccountEntity, int>, IBiDirectionalDbConverter<Account, AccountEntity, int>>()
+				.As<IEntityToModelConverter<AccountEntity, Account, int>, IBiDirectionalDbConverter<Account, AccountEntity, int>>()
 				.SingleInstance();
 
 			builder.RegisterType<FriendsMappingDbConverter>()
-				.As<IModelConverter<Friend, AccountEntity, int>>()
+				.As<IEntityToModelConverter<AccountEntity, Friend, int>>()
 				.SingleInstance();
 
 			builder.RegisterType<RegisterModelAccountDbConverter>()
-				.As<IEntityConverter<RegisterModel, AccountEntity, int>>()
+				.As<IModelToEntityConverter<RegisterModel, AccountEntity, int>>()
 				.SingleInstance();
 
 			builder.RegisterType<FriendsService>()

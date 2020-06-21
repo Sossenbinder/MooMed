@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 
-import ErrorAttachedTextInput from "views/Components/General/Form/ErrorAttached/ErrorAttachedTextInput";
+import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
 
 import { IFormElement } from "definitions/Forms";
 

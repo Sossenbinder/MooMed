@@ -6,39 +6,42 @@ import { Route } from "react-router";
 // Components
 import AboutDialog from "views/Pages/AboutDialog";
 import Profile from "modules/Account/Components/Profile/Profile";
-import ChatWidget from "modules/Chat/Components/ChatWidget";
 import FriendsList from "modules/Friends/Components/FriendsList/FriendsList";
+import StocksDialog from "modules/Stocks/Components/StocksDialog";
 import Flex from "Common/Components/Flex";
 
-import "./Styles/Home.less";
+import "./Styles/MainContent.less";
 
-const MainContent: React.FC = () => (
-	<Flex 
-		className={"contentContainerHolder"}
-		direction={"Row"}>
+const MainContent: React.FC = () => {
+	return (
 		<Flex 
-			direction={"Column"}
-			className={"contentContainer"}>
-			<Flex className={"bodyContent"}>
-				<Route 
-					path={"/about" }
-					render={() => <AboutDialog />} />
-				<Route 
-					path={"/profileDetails"}
-					render={routeProps => {
-							const url = routeProps.location.pathname;
-							const accountId = parseInt(url.substring(url.lastIndexOf('/') + 1));
-							return <Profile
-								accountId={accountId} />;
-						}
-					} />
+			className={"ContentContainerHolder"}
+			direction={"Row"}>
+			<Flex 
+				direction={"Column"}
+				className={"ContentContainer"}>
+				<Flex
+					className={"BodyContent"}>
+					<Route
+						path={"/about" }
+						render={() => <AboutDialog />} />
+					<Route
+						path={"/Stocks"}
+						render={() => <StocksDialog />}/>
+					<Route
+						path={"/profileDetails"}
+						render={routeProps => {
+								const url = routeProps.location.pathname;
+								const accountId = parseInt(url.substring(url.lastIndexOf('/') + 1));
+								return <Profile
+									accountId={accountId} />;
+							}
+						} />
+				</Flex>
 			</Flex>
-		</Flex>
-		<Flex mainAlign={"End"}>
 			<FriendsList />
 		</Flex>
-		<ChatWidget />
-	</Flex>
-);
+	);
+}
 
 export default MainContent;

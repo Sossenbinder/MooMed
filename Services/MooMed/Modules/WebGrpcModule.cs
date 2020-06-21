@@ -3,6 +3,7 @@ using MooMed.AspNetCore.Modules;
 using MooMed.ChatService.Remoting;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.DependencyInjection.Extensions;
+using MooMed.FinanceService.Remoting;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;
@@ -23,6 +24,7 @@ namespace MooMed.Web.Modules
 			builder.RegisterGrpcService<IProfilePictureService, ProfilePictureServiceProxy>();
 			builder.RegisterGrpcService<ISearchService, SearchServiceProxy>();
 			builder.RegisterGrpcService<ISessionService, SessionServiceProxy>();
+			builder.RegisterGrpcService<IFinanceService, FinanceServiceProxy>();
 		}
 	}
 }

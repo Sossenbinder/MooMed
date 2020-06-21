@@ -1,15 +1,17 @@
 using Autofac;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
 using MooMed.Core;
 using MooMed.Dns.Module;
 using MooMed.IPC.Module;
 using MooMed.Module.Monitoring.Module;
-using MooMed.Module.Monitoring.Service;
 
 namespace MooMed.Monitoring
 {
-	public class Startup : GrpcEndpointStartup<MonitoringService>
+	public class Startup : GrpcEndpointStartup<Service.MonitoringService>
 	{
 		protected override void RegisterModules(ContainerBuilder containerBuilder)
 		{
@@ -20,6 +22,7 @@ namespace MooMed.Monitoring
 			containerBuilder.RegisterModule(new KubernetesModule());
 			containerBuilder.RegisterModule(new DnsModule());
 			containerBuilder.RegisterModule<MonitoringModule>();
+			containerBuilder.RegisterModule<Module.MonitoringModule>();
 		}
 	}
 }

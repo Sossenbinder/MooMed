@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Grpc.Core;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Grpc.Definitions.Interface;
@@ -38,9 +39,17 @@ namespace MooMed.IPC.ProxyInvocation
 
 		public async Task<TResult> InvokeWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
+			try
+			{
+				var proxy = _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
 
-			return await invocationFunc(proxy);
+				return await invocationFunc(proxy);
+
+			}
+			catch (RpcException e)
+			{
+				throw;
+			}
 		}
 	}
 }

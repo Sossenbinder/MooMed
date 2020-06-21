@@ -15,6 +15,7 @@ namespace MooMed.IPC.Helper
 			{ MooMedService.SessionService, ServiceType.StatefulSet },
 			{ MooMedService.ChatService, ServiceType.Deployment },
 			{ MooMedService.ProfilePictureService, ServiceType.Deployment },
+			{ MooMedService.FinanceService, ServiceType.Deployment },
 		};
 		
 		public static ServiceType GetServiceTypeForService(MooMedService moomedService)

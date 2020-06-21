@@ -27,3 +27,10 @@ export enum NotificationType {
 	FriendOnlineStateChange = 1,
 	NewChatMessage = 2,
 }
+
+export enum ExchangeTradedType {
+	Etf = 0,
+	Etc = 1,
+	Etn = 2,
+	ActiveEtf = 3,
+}

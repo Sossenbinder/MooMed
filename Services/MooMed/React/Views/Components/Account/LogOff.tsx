@@ -7,7 +7,7 @@ export const LogOff: React.FC = () => {
 
     const handleLogOff = async () => {
 		const request = new PostRequest<any, any>(requestUrls.logOn.logOff);
-		const response = await request.send();
+		const response = await request.post();
 
 		if (response.success) {
 			location.href = "/";

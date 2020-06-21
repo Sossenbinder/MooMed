@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Route } from "react-router";
 
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
-import LanguagePicker from "views/Components/General/LanguagePicker";
+import LanguagePicker from "common/components/General/LanguagePicker";
 import AccountValidationDialog from "views/Pages/Other/AccountValidationDialog";
 import AccountValidationSuccess from "views/Pages/Other/AccountValidationSuccess";
 import AccountValidationFailure from "views/Pages/Other/AccountValidationFailure";

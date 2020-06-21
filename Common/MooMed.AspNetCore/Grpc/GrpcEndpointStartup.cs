@@ -29,7 +29,7 @@ namespace MooMed.AspNetCore.Grpc
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseRouting();
 			app.UseEndpoints(RegisterServices);

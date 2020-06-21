@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.UiModels.Search;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Extensions;
 using MooMed.Web.Controllers.Base;
@@ -21,9 +24,12 @@ namespace MooMed.Web.Controllers
 	    }
 
         [ItemNotNull]
-        public async Task<JsonResponse> SearchForQuery(string query)
+        [Authorize]
+        public async Task<JsonResponse> SearchForQuery([NotNull] [FromBody] SearchUiModel searchUiModel)
         {
-	        if (query.IsNullOrEmpty())
+	        var query = searchUiModel.Query;
+            
+            if (query.IsNullOrEmpty())
 	        {
                 return JsonResponse.Success(new SearchResult()
                 {

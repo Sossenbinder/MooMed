@@ -5,7 +5,7 @@ export enum RequestMethods {
 	POST = "POST"
 }
 
-export default abstract class AjaxRequest<TRequest, TResponse> {
+export default class AjaxRequest<TRequest, TResponse> {
 
 	private m_url: string;
 
@@ -18,35 +18,37 @@ export default abstract class AjaxRequest<TRequest, TResponse> {
 		this.m_requestMethod = requestMethod;
 	}
 
-	public async send(requestData?: TRequest): Promise<NetworkResponse<TResponse>> {
+	public async send(requestData?: TRequest, verificationToken?: string): Promise<NetworkResponse<TResponse>> {
 
 		const requestInit: RequestInit = {
 			method: this.m_requestMethod,
 			cache: "no-cache",
 			headers: {
 				'Accept': 'application/json, text/javascript, */*',
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/json'
 			},
 			credentials: 'include'
 		}
 
-		if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
-
-            const params = Object
-                .keys(requestData)
-                .map((key) => {
-                    return encodeURIComponent(key) + '=' + encodeURIComponent(requestData[key]);
-                })
-                .join('&');
-
-            requestInit.body = params;
+		if (verificationToken) {
+			requestInit.headers["AntiForgery"] = verificationToken;
 		}
 
-        const response = await fetch(this.m_url, requestInit);
+		if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
 
-        const jsonResponse = response.ok ? await response.json() : undefined;
+			const params = Object
+				.keys(requestData)
+				.map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(requestData[key]))
+				.join('&');
 
-        const payload: TResponse = typeof jsonResponse !== "undefined" ? jsonResponse?.data as TResponse : undefined;
+			requestInit.body = JSON.stringify(requestData);
+		}
+
+		const response = await fetch(this.m_url, requestInit);
+
+		const jsonResponse = response.ok ? await response.json() : undefined;
+
+		const payload: TResponse = typeof jsonResponse !== "undefined" ? jsonResponse?.data as TResponse : undefined;
 		
 		return {
 			success: jsonResponse.success,

@@ -6,7 +6,7 @@ import { Network, SendMessageUiModel } from "modules/Chat/types";
 import PostRequest from "helper/requests/PostRequest";
 
 const chatRequests = {
-	getMessages: "Chat/GetMessages",
+	getMessages: "/Chat/GetMessages",
 };
 
 export const getMessages = async (receiverId: number, continuationToken?: string) => {
@@ -20,7 +20,7 @@ export const getMessages = async (receiverId: number, continuationToken?: string
 		requestData.continuationToken = continuationToken;
 	}
 
-	return await request.send(requestData);	
+	return await request.post(requestData);	
 }
 
 export const sendMessage = async (message: string, receiverId: number, timestamp: Date, signalRConnection: signalR.HubConnection): Promise<boolean> => {

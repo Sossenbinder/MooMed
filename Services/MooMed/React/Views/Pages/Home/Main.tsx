@@ -11,16 +11,18 @@ import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageH
 import GlobalClickCapturer from "views/Components/Helper/GlobalClickCapturer";
 import Flex from "Common/Components/Flex";
 import MainContent from "./MainContent";
+import ChatWidget from "modules/Chat/Components/ChatWidget";
 
 import "./Styles/Home.less";
 
 const Main: React.FC = () => (
 	<Flex
 		direction={"Column"}
-		className={"mainContentContainer"}>
+		className={"pageContainer"}>
 		<NavBar />
 		<PopUpMessageHolder />
 		<MainContent />
+		<ChatWidget />
 	</Flex>
 );
 

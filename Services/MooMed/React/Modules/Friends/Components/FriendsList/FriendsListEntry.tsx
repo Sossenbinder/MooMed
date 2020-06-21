@@ -21,7 +21,7 @@ export const FriendsListEntry: React.FC<Props> = ({ friend }) => {
 	const { ChatService } = useServices();
 
 	return (
-		<Flex 
+		<Flex
 			className={"FriendListEntry"}>
 			<FriendListHover 
 				friend={friend}/>

@@ -3,6 +3,7 @@ import * as React from "react";
 
 // Components
 import Flex from "Common/Components/Flex";
+import Icon from "Common/Components/Icon";
 
 // Functionality
 import { AccountOnlineState } from "enums/moomedEnums";

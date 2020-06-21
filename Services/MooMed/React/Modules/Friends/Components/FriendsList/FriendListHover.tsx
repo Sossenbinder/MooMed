@@ -1,8 +1,11 @@
 // Framework
 import * as React from "react";
+import { useHistory  } from "react-router-dom";
+import classNames from "classnames";
 
 // Components
 import Flex from "Common/Components/Flex";
+import Icon from "Common/Components/Icon";
 import FriendListImage from "./FriendListImage";
 
 // Functionality
@@ -16,13 +19,40 @@ type Props = {
 
 export const FriendListHover: React.FC<Props> = ({ friend }) => {
 
+	const history = useHistory();
+
 	return (
-		<Flex className={"FriendListHover"}>
-			<FriendListImage 
-				onlineState={friend.onlineState}
-				profilePicturePath={friend.profilePicturePath} 
-				size={64} />
-			{ friend.userName }
+		<Flex
+			direction={"Column"}
+			className={"FriendListHover"}>
+			<Flex
+				direction={"Row"}
+				className={"TopSection"}>
+				<FriendListImage
+					onlineState={friend.onlineState}
+					profilePicturePath={friend.profilePicturePath}
+					size={64} />
+				<Flex
+					className={"ProfileLink"}
+					direction={"Row"}
+					mainAlign={"End"}
+					crossAlign={"Start"}>
+					<Icon
+						iconName={"GotoLink"}
+						size={32} 
+						onClick={() => {
+							history.push(`/profileDetails/${friend.id}`);
+						}} />
+				</Flex>
+			</Flex>
+			<Flex
+				direction={"Row"}>
+			</Flex>
+			<Flex
+				direction={"Row"}
+				className={"Name"}>
+				{friend.userName}
+			</Flex>
 		</Flex>
 	);
 }
