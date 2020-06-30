@@ -18,10 +18,10 @@ namespace MooMed.ChatService.Remoting
 				MooMedService.ChatService)
 		{ }
 
-		public Task<ServiceResponse<RetrievedMessagesModel>> GetMessages(GetMessagesModel getMessagesModel)
-			=> InvokeWithResult(service => service.GetMessages(getMessagesModel));
+		public Task<ServiceResponse<RetrievedMessages>> GetMessages(GetMessages getMessages)
+			=> InvokeWithResult(service => service.GetMessages(getMessages));
 
-		public Task<ServiceResponse> SendMessage(SendMessageModel sendMessageModel)
-			=> InvokeWithResult(service => service.SendMessage(sendMessageModel));
+		public Task<ServiceResponse> SendMessage(SendMessage sendMessage)
+			=> InvokeWithResult(service => service.SendMessage(sendMessage));
 	}
 }

@@ -25,3 +25,5 @@ export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TReque
 		return super.send(postData, token);
 	}
 }
+
+export class VoidPostRequest<TRequest> extends PostRequest<TRequest, void> {}

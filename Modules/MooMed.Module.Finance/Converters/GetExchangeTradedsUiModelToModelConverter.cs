@@ -5,11 +5,11 @@ using MooMed.Common.Definitions.UiModels.Finance;
 
 namespace MooMed.Module.Finance.Converters
 {
-	public class GetExchangeTradedsUiModelToModelConverter : IUiModelToModelConverter<GetExchangeTradedsUiModel, GetExchangeTradedsModel>
+	public class GetExchangeTradedsUiModelToModelConverter : IUiModelToModelConverter<GetExchangeTradedsUiModel, GetExchangeTradeds>
 	{
-		public GetExchangeTradedsModel ToModel(GetExchangeTradedsUiModel uiModel)
+		public GetExchangeTradeds ToModel(GetExchangeTradedsUiModel uiModel)
 		{
-			return new GetExchangeTradedsModel()
+			return new GetExchangeTradeds()
 			{
 				ExchangeTradedType = uiModel.ExchangeTradedType,
 			};

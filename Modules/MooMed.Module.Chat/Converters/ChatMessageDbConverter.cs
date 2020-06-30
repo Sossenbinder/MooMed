@@ -7,7 +7,7 @@ using MooMed.Module.Chat.Helper;
 
 namespace MooMed.Module.Chat.Converters
 {
-	public class ChatMessageDbConverter : IBiDirectionalDbConverter<ChatMessageModel, ChatMessageEntity, Guid>
+	public class ChatMessageDbConverter : IBiDirectionalDbConverter<ChatMessage, ChatMessageEntity, Guid>
 	{
 		[NotNull]
 		private readonly ChatMessageEncodingHelper _chatMessageEncodingHelper;
@@ -17,11 +17,11 @@ namespace MooMed.Module.Chat.Converters
 			_chatMessageEncodingHelper = chatMessageEncodingHelper;
 		}
 
-		public ChatMessageModel ToModel(ChatMessageEntity entity)
+		public ChatMessage ToModel(ChatMessageEntity entity)
 		{
 			var timestamp = entity.Timestamp.ToLocalTime();
 
-			return new ChatMessageModel()
+			return new ChatMessage()
 			{
 				Id = entity.Id,
 				Message = _chatMessageEncodingHelper.Decode(entity.Message),
@@ -31,7 +31,7 @@ namespace MooMed.Module.Chat.Converters
 			};
 		}
 
-		public ChatMessageEntity ToEntity(ChatMessageModel model)
+		public ChatMessageEntity ToEntity(ChatMessage model)
 		{
 			var timestamp = model.Timestamp.ToUniversalTime();
 

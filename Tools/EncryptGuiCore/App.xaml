@@ -1,0 +1,17 @@
+﻿<Application x:Class="EncryptGuiCore.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:EncryptGuiCore"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             StartupUri="MainWindow.xaml">
+	<Application.Resources>
+		<system:String x:Key="CertificateStorageTypesTitle">Cert Store</system:String>
+		<system:String x:Key="StoreTitle">Store</system:String>
+		<system:String x:Key="CertListTitle">Certificates</system:String>
+
+		<x:Array x:Key="CertificateStorageTypes" Type="system:String">
+			<system:String>User</system:String>
+			<system:String>Computer</system:String>
+		</x:Array>
+	</Application.Resources>
+</Application>

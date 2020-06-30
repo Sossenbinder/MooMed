@@ -4,7 +4,10 @@ import { Action } from "redux";
 // Functionality
 import { store, ReduxStore } from "data/store";
 
-export default abstract class ModuleService {
+// Types
+import { IModuleService } from "definitions/Service";
+
+export default abstract class ModuleService implements IModuleService {
 	
 	public abstract async start()
 

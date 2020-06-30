@@ -8,6 +8,6 @@ namespace MooMed.Module.Finance.Service.Interface
 {
 	public interface IExchangeTradedsService
 	{
-		Task<ServiceResponse<IEnumerable<ExchangeTradedModel>>> GetExchangeTradeds();
+		Task<ServiceResponse<IEnumerable<ExchangeTraded>>> GetExchangeTradeds();
 	}
 }

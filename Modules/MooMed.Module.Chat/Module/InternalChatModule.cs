@@ -34,7 +34,7 @@ namespace MooMed.Module.Chat.Module
 				.SingleInstance();
 
 			builder.RegisterType<ChatMessageDbConverter>()
-				.As<IBiDirectionalDbConverter<ChatMessageModel, ChatMessageEntity, Guid>>()
+				.As<IBiDirectionalDbConverter<ChatMessage, ChatMessageEntity, Guid>>()
 				.SingleInstance();
 
 			builder.RegisterType<ChatMessageEncodingHelper>()
@@ -42,7 +42,7 @@ namespace MooMed.Module.Chat.Module
 				.SingleInstance();
 
 			builder.RegisterType<ChatMessageModelToUiConverter>()
-				.As<IModelToUiModelConverter<ChatMessageModel, ChatMessageUiModel>>()
+				.As<IModelToUiModelConverter<ChatMessage, ChatMessageUiModel>>()
 				.SingleInstance();
 		}
 	}

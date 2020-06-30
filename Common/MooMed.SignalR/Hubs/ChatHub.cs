@@ -25,7 +25,7 @@ namespace MooMed.SignalR.Hubs
 		{
 			var sessionContext = await GetSessionContextOrFail();
 
-			var response = await _chatService.SendMessage(new SendMessageModel()
+			var response = await _chatService.SendMessage(new SendMessage()
 			{
 				Message = sendMessageModel.Message,
 				ReceiverId = sendMessageModel.ReceiverId,

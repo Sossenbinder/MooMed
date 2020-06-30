@@ -16,11 +16,11 @@ namespace MooMed.Module.Finance.Modules
 			base.Load(builder);
 
 			builder.RegisterType<ExchangeTradedModelToUiModelConverter>()
-				.As<IModelToUiModelConverter<ExchangeTradedModel, ExchangeTradedUiModel>>()
+				.As<IModelToUiModelConverter<ExchangeTraded, ExchangeTradedUiModel>>()
 				.SingleInstance();
 
 			builder.RegisterType<GetExchangeTradedsUiModelToModelConverter>()
-				.As<IUiModelToModelConverter<GetExchangeTradedsUiModel, GetExchangeTradedsModel>>()
+				.As<IUiModelToModelConverter<GetExchangeTradedsUiModel, GetExchangeTradeds>>()
 				.SingleInstance();
 		}
 	}

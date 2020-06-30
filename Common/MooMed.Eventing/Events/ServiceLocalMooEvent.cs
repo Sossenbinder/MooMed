@@ -19,7 +19,7 @@ namespace MooMed.Eventing.Events
         }
 
         [ItemNotNull]
-        public async Task<AccumulatedMooEventExceptions> Raise([NotNull] TEventArgs eventArgs)
+        public async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
         {
 			var accumulatedExceptions = new AccumulatedMooEventExceptions();
 
@@ -38,7 +38,7 @@ namespace MooMed.Eventing.Events
             return accumulatedExceptions;
         }
 
-        public void Register([NotNull] Action<TEventArgs> handler)
+        public void Register(Action<TEventArgs> handler)
         {
 			_registeredActions.Add(args =>
 			{
@@ -48,12 +48,12 @@ namespace MooMed.Eventing.Events
 			});
         }
 
-		public void Register([NotNull] Func<TEventArgs, Task> handler)
+		public void Register(Func<TEventArgs, Task> handler)
         {
             _registeredActions.Add(handler);
         }
 
-        public void UnRegister([NotNull] Func<TEventArgs, Task> handler)
+        public void UnRegister(Func<TEventArgs, Task> handler)
         {
             _registeredActions.Remove(handler);
         }

@@ -4,6 +4,7 @@ import * as React from "react";
 // Components
 import { Flex } from "common/components/Flex";
 import { ExchangeTradedListFilters } from "./ExchangeTradedListFilters";
+import { ActionCell } from "./Cells/ActionCell";
 import DataGrid from "common/Components/DataGrid/DataGrid";
 
 // Functionality
@@ -80,6 +81,14 @@ export const ExchangeTradedList: React.FC<Props> = ({ exchangeTradeds }) => {
 					key: "fundCurrency",
 				},
 			},
+			{
+				cellconfig: {
+					customCell: x => (
+						<ActionCell 
+							rowData={x}/>
+					),
+				}
+			}
 		],
 		idField: "isin",
 		pagingInfo: {

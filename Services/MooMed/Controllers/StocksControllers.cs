@@ -17,11 +17,11 @@ namespace MooMed.Web.Controllers
 		private readonly IFinanceService _financeService;
 
 		[NotNull]
-		private readonly IModelToUiModelConverter<ExchangeTradedModel, ExchangeTradedUiModel> _exchangeTradedModelToUiModelConverter;
+		private readonly IModelToUiModelConverter<ExchangeTraded, ExchangeTradedUiModel> _exchangeTradedModelToUiModelConverter;
 
 		public StocksController(
 			[NotNull] IFinanceService financeService,
-			[NotNull] IModelToUiModelConverter<ExchangeTradedModel, ExchangeTradedUiModel> exchangeTradedModelToUiModelConverter)
+			[NotNull] IModelToUiModelConverter<ExchangeTraded, ExchangeTradedUiModel> exchangeTradedModelToUiModelConverter)
 		{
 			_financeService = financeService;
 			_exchangeTradedModelToUiModelConverter = exchangeTradedModelToUiModelConverter;

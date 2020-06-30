@@ -1,7 +1,8 @@
 ﻿export async function asyncForEach<T>(array: Array<T>, callback: (x: T) => Promise<void>) {
-	array.forEach(async (item) => {
-		await callback(item);
-	});
+	for (let i = 0; i < array.length; ++i)
+	{
+		await callback(array[i]);
+	}
 }
 
 export function asyncForEachParallel<T>(array: Array<T>, callback: (x: T) => Promise<void>): Promise<void[]> {

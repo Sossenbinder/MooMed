@@ -7,9 +7,9 @@ using MooMed.Common.Definitions.UiModels.Finance;
 
 namespace MooMed.Module.Finance.Converters
 {
-	public class ExchangeTradedModelToUiModelConverter : IModelToUiModelConverter<ExchangeTradedModel, ExchangeTradedUiModel>
+	public class ExchangeTradedModelToUiModelConverter : IModelToUiModelConverter<ExchangeTraded, ExchangeTradedUiModel>
 	{
-		public ExchangeTradedUiModel ToUiModel(ExchangeTradedModel model)
+		public ExchangeTradedUiModel ToUiModel(ExchangeTraded model)
 		{
 			return new ExchangeTradedUiModel()
 			{

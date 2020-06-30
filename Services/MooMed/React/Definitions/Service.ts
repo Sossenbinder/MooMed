@@ -3,33 +3,41 @@ import { SearchResult } from "modules/Search/types";
 import { NotificationType } from "enums/moomedEnums";
 import { SignalRNotification } from "data/notifications";
 
-export interface IAccountService {
+export interface IModuleService {
+	start(): Promise<void>;
+}
+
+export interface IAccountService extends IModuleService{
     getAccount(accountId: number): Promise<Account>;
     getOwnAccount(): Promise<Account>;
 }
 
-export interface IFriendsService {
+export interface IFriendsService extends IModuleService{
     addFriend(friendId: number): Promise<void>;
 }
 
-export interface IStocksService {
+export interface IStocksService extends IModuleService{
 
 }
 
-export interface IChatService {
+export interface IChatService extends IModuleService{
 	openChat(partnerId: number): void;
 	registerForActiveChatChange(handler: (partnerId: number) => void): void;
 
 	sendMessage(message: string, receiverId: number): Promise<void>;
 }
 
-export interface ISearchService {
+export interface ISearchService extends IModuleService{
     search(query: string): Promise<SearchResult>;
 }
 
-export interface INotificationService {
+export interface INotificationService extends IModuleService{
 	subscribe<T>(notificationType: NotificationType, onNotify: (notification: SignalRNotification<T>) => void): void;
 	unsubscribe(notificationType: NotificationType): void;
+}
+
+export interface IPortfolioService extends IModuleService{
+	addToPortfolio(isin: string, amount: number): Promise<void>;
 }
 
 export type ServiceContext = {
@@ -39,4 +47,5 @@ export type ServiceContext = {
 	NotificationService: INotificationService;
 	ChatService: IChatService;
 	StocksService: IStocksService;
+	PortfolioService: IPortfolioService;
 }

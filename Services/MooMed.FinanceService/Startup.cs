@@ -6,6 +6,7 @@ using MooMed.Core;
 using MooMed.Dns.Module;
 using MooMed.FinanceService.Module;
 using MooMed.IPC.Module;
+using MooMed.Module.Portfolio.Module;
 
 namespace MooMed.FinanceService
 {

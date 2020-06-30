@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using MooMed.Module.Finance.Modules;
+using MooMed.Module.Portfolio.Module;
 
 namespace MooMed.FinanceService.Module
 {
@@ -10,6 +11,7 @@ namespace MooMed.FinanceService.Module
 			base.Load(builder);
 
 			builder.RegisterModule(new InternalFinanceModule());
+			builder.RegisterModule<PortfolioModule>();
 		}
 	}
 }

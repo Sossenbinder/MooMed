@@ -25,7 +25,7 @@ namespace MooMed.Module.Finance.Modules
 				.SingleInstance();
 
 			builder.RegisterType<ExchangeTradedEntityToModelConverter>()
-				.As<IEntityToModelConverter<ExchangeTradedEntity, ExchangeTradedModel, string>>()
+				.As<IEntityToModelConverter<ExchangeTradedEntity, ExchangeTraded, string>>()
 				.SingleInstance();
 
 			builder.RegisterType<ExchangeTradedRepository>()

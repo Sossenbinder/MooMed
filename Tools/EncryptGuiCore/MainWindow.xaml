@@ -1,0 +1,92 @@
+﻿<Window x:Class="EncryptGuiCore.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="EncryptGui" 
+        Height="600" 
+        Width="900">
+	<WrapPanel>
+		<Border BorderBrush="Black" BorderThickness="1" Width="350" Margin="0,0,0,0">
+			<StackPanel>
+				<WrapPanel>
+					<Label 
+						Content="{StaticResource CertificateStorageTypesTitle}" />
+					<ComboBox 
+						SelectedValue="{Binding Path=Model.SelectedCertStore}" 
+						Name="SelectedCertStoreComboBox" 
+						Width="150px" 
+						SelectionChanged="CertStoreComboBox_SelectionChanged" />
+				</WrapPanel>
+				<WrapPanel>
+					<Label 
+						Content="{StaticResource StoreTitle}" 
+						Margin="0,0,26,0" />
+					<ComboBox 
+						SelectedValue="{Binding Path=Model.SelectedStoreName}" 
+						Name="SelectedStoreComboBox" 
+						ItemsSource="{StaticResource CertificateStorageTypes}" 
+						Margin="0,0,0,0"
+						Width="150px" 
+						SelectionChanged="StoreComboBox_SelectionChanged" />
+				</WrapPanel>
+				<Separator/>
+				<Label 
+					Content="{StaticResource CertListTitle}" />
+				<ListBox 
+					x:Name="CertificateListBox" 
+					SelectedValue="{Binding Path=Model.SelectedCertificate}"
+					Height="486"
+					SelectionChanged="CertificateListBox_SelectionChanged">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<WrapPanel 
+									Margin="0,5,0,0">
+									<TextBlock>
+										<Bold>
+											Name: 
+										</Bold>
+									</TextBlock>
+									<TextBlock 
+										Text="{Binding Subject}" />
+								</WrapPanel>
+								<WrapPanel 
+									Margin="0,5">
+									<TextBlock>
+										<Bold>
+											Thumbprint: 
+										</Bold>
+									</TextBlock>
+									<TextBlock 
+										Text="{Binding Thumbprint}" />
+								</WrapPanel>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</StackPanel>
+		</Border>
+		<Border 
+			BorderBrush="Black" 
+			BorderThickness="1" 
+			Width="542">
+			<StackPanel>
+				<StackPanel>
+					<WrapPanel>
+						<Label 
+							Content="_Thumbprint" 
+							Target="{Binding ElementName=ThumbPrintTextBox}" />
+						<TextBox 
+							Name="ThumbPrintTextBox" 
+							Text="{Binding Model.SelectedCertificate.Thumbprint}" 
+							Width="420" 
+							IsEnabled="False" />
+					</WrapPanel>
+				</StackPanel>
+				<Separator />
+			</StackPanel>
+		</Border>
+	</WrapPanel>
+</Window>

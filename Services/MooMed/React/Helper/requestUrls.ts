@@ -14,9 +14,9 @@
         uploadProfilePicture: "Profile/UploadProfilePicture",
     },
     logOn: {
-        login: "Logon/Login",
-        logOff: "Logon/LogOff",
-        register: "Logon/Register",
+        login: "/Logon/Login",
+        logOff: "/Logon/LogOff",
+        register: "/Logon/Register",
     },
 }
 

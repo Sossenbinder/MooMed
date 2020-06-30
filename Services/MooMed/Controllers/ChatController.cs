@@ -29,7 +29,7 @@ namespace MooMed.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GetMessages([NotNull] [FromBody] GetMessagesUiModel model)
         {
-	        var messages = await _chatService.GetMessages(new GetMessagesModel()
+	        var messages = await _chatService.GetMessages(new GetMessages()
 	        {
 		        ReceiverId = model.ReceiverId,
 		        SessionContext = CurrentSessionOrFail,

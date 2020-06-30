@@ -31,6 +31,7 @@ namespace MooMed.Web.Controllers
 
         [ItemNotNull]
         [Authorize]
+        [HttpPost]
         public async Task<ActionResult> UploadProfilePicture([NotNull] IFormCollection form)
         {
             if (form.Files?[0] == null || form.Files[0].Length == 0)

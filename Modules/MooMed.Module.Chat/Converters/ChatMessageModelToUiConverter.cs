@@ -4,9 +4,9 @@ using MooMed.Common.Definitions.UiModels.Chat;
 
 namespace MooMed.Module.Chat.Converters
 {
-	public class ChatMessageModelToUiConverter : IModelToUiModelConverter<ChatMessageModel, ChatMessageUiModel>
+	public class ChatMessageModelToUiConverter : IModelToUiModelConverter<ChatMessage, ChatMessageUiModel>
 	{
-		public ChatMessageUiModel ToUiModel(ChatMessageModel model)
+		public ChatMessageUiModel ToUiModel(ChatMessage model)
 		{
 			return new ChatMessageUiModel()
 			{

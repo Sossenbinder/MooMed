@@ -18,17 +18,17 @@ namespace MooMed.Module.Chat.Service
 		private readonly IChatMessageRepository _chatMessageRepository;
 
 		[NotNull]
-		private readonly IBiDirectionalDbConverter<ChatMessageModel, ChatMessageEntity, Guid> _chatMessageConverter;
+		private readonly IBiDirectionalDbConverter<ChatMessage, ChatMessageEntity, Guid> _chatMessageConverter;
 
 		public MessageService(
 			[NotNull] IChatMessageRepository chatMessageRepository,
-			[NotNull] IBiDirectionalDbConverter<ChatMessageModel, ChatMessageEntity, Guid> chatMessageConverter)
+			[NotNull] IBiDirectionalDbConverter<ChatMessage, ChatMessageEntity, Guid> chatMessageConverter)
 		{
 			_chatMessageRepository = chatMessageRepository;
 			_chatMessageConverter = chatMessageConverter;
 		}
 
-		public async Task<IEnumerable<ChatMessageModel>> GetMessages(ISessionContext sessionContext, int receiverId, int? continuationToken = null)
+		public async Task<IEnumerable<ChatMessage>> GetMessages(ISessionContext sessionContext, int receiverId, int? continuationToken = null)
 		{
 			var accountId = sessionContext.Account.Id;
 
@@ -42,9 +42,9 @@ namespace MooMed.Module.Chat.Service
 			return chatMessageModels;
 		}
 
-		public async Task StoreMessage(ISessionContext sessionContext, ChatMessageModel messageModel)
+		public async Task StoreMessage(ISessionContext sessionContext, ChatMessage message)
 		{
-			await _chatMessageRepository.Create(_chatMessageConverter.ToEntity(messageModel));
+			await _chatMessageRepository.Create(_chatMessageConverter.ToEntity(message));
 		}
 	}
 }

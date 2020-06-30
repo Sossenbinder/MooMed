@@ -32,11 +32,14 @@ namespace MooMed.Core.DataTypes
 	[ProtoContract]
 	public class ServiceResponse : ServiceResponseBase
 	{
+		// Implicitly used by protobuf-net, so the lib can use this instead of having to fallback onto the non-parameterless constructor
+		[UsedImplicitly]
 		private ServiceResponse()
 		{
+
 		}
 
-		private ServiceResponse(bool isSuccess, [CanBeNull] string errorMessage)
+		public ServiceResponse(bool isSuccess, [CanBeNull] string errorMessage = null)
 			: base(isSuccess, errorMessage)
 		{
 		}

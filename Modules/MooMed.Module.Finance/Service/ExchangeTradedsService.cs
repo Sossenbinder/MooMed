@@ -21,33 +21,33 @@ namespace MooMed.Module.Finance.Service
 		private readonly IExchangeTradedRepository _exchangeTradedRepository;
 
 		[NotNull]
-		private readonly IEntityToModelConverter<ExchangeTradedEntity, ExchangeTradedModel, string> _exchangeTradedEntityToModelConverter;
+		private readonly IEntityToModelConverter<ExchangeTradedEntity, ExchangeTraded, string> _exchangeTradedEntityToModelConverter;
 
 		[NotNull]
-		private readonly AsyncLazy<List<ExchangeTradedModel>> _exchangeTradedsCache;
+		private readonly AsyncLazy<List<ExchangeTraded>> _exchangeTradedsCache;
 
 		public ExchangeTradedsService(
 			[NotNull] IExchangeTradedRepository exchangeTradedRepository,
-			[NotNull] IEntityToModelConverter<ExchangeTradedEntity, ExchangeTradedModel, string> exchangeTradedEntityToModelConverter)
+			[NotNull] IEntityToModelConverter<ExchangeTradedEntity, ExchangeTraded, string> exchangeTradedEntityToModelConverter)
 		{
 			_exchangeTradedRepository = exchangeTradedRepository;
 			_exchangeTradedEntityToModelConverter = exchangeTradedEntityToModelConverter;
 
-			_exchangeTradedsCache = new AsyncLazy<List<ExchangeTradedModel>>(InitializeExchangeTradedModels);
+			_exchangeTradedsCache = new AsyncLazy<List<ExchangeTraded>>(InitializeExchangeTradedModels);
 		}
 
-		private async Task<List<ExchangeTradedModel>> InitializeExchangeTradedModels()
+		private async Task<List<ExchangeTraded>> InitializeExchangeTradedModels()
 		{
 			var exchangeTradedEntities = await _exchangeTradedRepository.Read();
 
 			return exchangeTradedEntities.ConvertAll(x => _exchangeTradedEntityToModelConverter.ToModel(x));
 		}
 
-		public async Task<ServiceResponse<IEnumerable<ExchangeTradedModel>>> GetExchangeTradeds()
+		public async Task<ServiceResponse<IEnumerable<ExchangeTraded>>> GetExchangeTradeds()
 		{
 			var models = await _exchangeTradedsCache.Value;
 
-			return ServiceResponse<IEnumerable<ExchangeTradedModel>>.Success(models);
+			return ServiceResponse<IEnumerable<ExchangeTraded>>.Success(models);
 		}
 	}
 }

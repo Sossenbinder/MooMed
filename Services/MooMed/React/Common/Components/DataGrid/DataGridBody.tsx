@@ -21,7 +21,16 @@ export const DataGridBody = <T extends {}>({ entries, cellConfigs, idField, }: P
 			
 			const tableCells = cellConfigs.map((cellConfig, i) => {
 
-				const { key, cellValueIfNull, customValueGenerator } = cellConfig;
+				const { key, cellValueIfNull, customValueGenerator, customCell } = cellConfig;
+
+				if (customCell) {
+					return (
+						<td
+							key={`customCell_${i}`}>
+							{ customCell(entry) }
+						</td>
+					);
+				}
 
 				let value: string = undefined;
 

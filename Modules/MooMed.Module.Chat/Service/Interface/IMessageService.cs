@@ -8,8 +8,8 @@ namespace MooMed.Module.Chat.Service.Interface
 {
 	public interface IMessageService
 	{
-		public Task<IEnumerable<ChatMessageModel>> GetMessages([NotNull] ISessionContext sessionContext, int receiverId, int? continuationToken = null);
+		public Task<IEnumerable<ChatMessage>> GetMessages([NotNull] ISessionContext sessionContext, int receiverId, int? continuationToken = null);
 
-		public Task StoreMessage([NotNull] ISessionContext sessionContext, [NotNull] ChatMessageModel messageModel);
+		public Task StoreMessage([NotNull] ISessionContext sessionContext, [NotNull] ChatMessage message);
 	}
 }

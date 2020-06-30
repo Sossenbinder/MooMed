@@ -1,15 +1,20 @@
+export type GridCellProps<T> = {
+	rowData: T;
+}
+
 export interface GridEntry {
 	[key: string]: any;
 }
 
 export type GridCellConfig<T extends GridEntry> = {
+	customCell?(val: T): JSX.Element;
 	key?: keyof T;
 	customValueGenerator?(val: T): string;
 	cellValueIfNull?: string;
 }
 
 export type GridColumn<T extends GridEntry> = {
-	headerText: string;
+	headerText?: string;
 	cellconfig: GridCellConfig<T>;
 }
 

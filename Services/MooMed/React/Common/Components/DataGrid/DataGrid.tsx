@@ -55,13 +55,13 @@ export const DataGrid = <T extends any>({
 						cellConfigs={cellConfigs}
 						idField={gridConfig.idField} />
 				</tbody>
+			</table>
 				<If condition={typeof gridConfig.pagingInfo !== "undefined"}>
 					<DataGridPageSelector
 						currentPage={page}
 						pageCount={pageCount}
 						setPage={setPage} />
 				</If>
-			</table>
 		</Flex>
 	);
 }

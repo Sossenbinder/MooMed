@@ -12,9 +12,9 @@ namespace MooMed.Common.ServiceBase.Interface
 	public interface IChatService : IGrpcService
 	{
 		[OperationContract]
-		Task<ServiceResponse<RetrievedMessagesModel>> GetMessages([NotNull] GetMessagesModel getMessagesModel);
+		Task<ServiceResponse<RetrievedMessages>> GetMessages([NotNull] GetMessages getMessages);
 
 		[OperationContract]
-		Task<ServiceResponse> SendMessage([NotNull] SendMessageModel sendMessageModel);
+		Task<ServiceResponse> SendMessage([NotNull] SendMessage sendMessage);
 	}
 }

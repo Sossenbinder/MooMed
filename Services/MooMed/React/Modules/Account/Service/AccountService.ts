@@ -1,9 +1,19 @@
 // Functionality
 import { Account } from "modules/Account/types";
 import { IAccountService } from "Definitions/Service";
+import ModuleService from "modules/common/Service/ModuleService";
 import * as accountCommunication from "modules/Account/Communication/AccountCommunication";
 
-export default class AccountService implements IAccountService {
+export default class AccountService extends ModuleService implements IAccountService {
+
+	public constructor()
+	{
+		super();
+	}
+
+	public async start() {
+		
+	}
 
     public async getAccount(accountId: number): Promise<Account> {
         const response = await accountCommunication.getAccount(accountId);

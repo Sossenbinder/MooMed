@@ -3,12 +3,17 @@ import * as dataLoader from "helper/dataLoader";
 
 // Functionality
 import { services } from "helper/serviceRegistry";
+import * as asyncUtils from "helper/utils/asyncUtils";
+
+// Types
+import { IModuleService } from "definitions/Service";
 import SearchService from "modules/Search/Service/SearchService";
 import AccountService from "modules/Account/Service/AccountService";
 import FriendsService from "modules/Friends/Service/FriendsService";
 import StocksService from "modules/Stocks/Service/StocksService";
 import NotificationService from "modules/common/Notifications/NotificationService";
 import ChatService from "modules/Chat/Service/ChatService";
+import PortfolioService from "modules/Portfolio/Service/PortfolioService";
 import SignalRConnectionProvider from "modules/common/Helper/SignalRConnectionProvider";
 
 window.onload = async () => {
@@ -30,30 +35,36 @@ const initServices = async () => {
 
 const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProvider) => {
 
+	const modules: Array<IModuleService> = [];
+
 	// Core services
-	services.SearchService = new SearchService();	
+	services.SearchService = new SearchService();
+	modules.push(services.SearchService);
+
 	services.AccountService = new AccountService();
+	modules.push(services.AccountService);
 
-	const notificationService = new NotificationService(signalRConnectionProvider);
-	await notificationService.start();
-	services.NotificationService = notificationService;
+	services.NotificationService = new NotificationService(signalRConnectionProvider);
+	modules.push(services.NotificationService);
 
-	const chatService = new ChatService(signalRConnectionProvider);
-	await chatService.start();
-	services.ChatService = chatService;
+	services.FriendsService = new FriendsService();	
+	modules.push(services.FriendsService);
+
+	services.ChatService = new ChatService(signalRConnectionProvider);
+	modules.push(services.ChatService);
+
+	await asyncUtils.asyncForEach(modules, x => x.start());
 }
 
 const initAdditionalServices = async (signalRConnectionProvider: SignalRConnectionProvider) => {
-
-	const parallelServiceInits: Array<Promise<void>> = [];
 	
-	const friendsService = new FriendsService();
-	parallelServiceInits.push(friendsService.start());
-	services.FriendsService = friendsService;
+	const modules: Array<IModuleService> = [];
 
-	const stocksService = new StocksService();
-	parallelServiceInits.push(stocksService.start());
-	services.StocksService = stocksService;
+	services.StocksService = new StocksService();
+	modules.push(services.StocksService);
+	
+	services.PortfolioService = new PortfolioService();
+	modules.push(services.PortfolioService);
 
-	await Promise.all(parallelServiceInits);
+	await Promise.all(modules.map(x => x.start()));
 }

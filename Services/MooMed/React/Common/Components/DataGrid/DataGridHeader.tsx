@@ -10,8 +10,8 @@ type Props = {
 export const DataGridHeader: React.FC<Props> = ({ headers }) => {
 	
 	const tableHeaders = React.useMemo(() => {		
-		return headers.map(h => (
-			<th key={h}>
+		return headers.map((h, i) => (
+			<th key={`${h}_${i}`}>
 				{h}
 			</th>
 		));

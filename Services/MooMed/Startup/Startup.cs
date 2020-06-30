@@ -26,9 +26,13 @@ namespace MooMed.Web.Startup
         {
 	        ConfigureMassTransit(services);
 
-	        services.AddMvc();
+	        services
+				.AddMvc();
 
-	        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Logon/Login");
+	        services
+		        .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+		        .AddCookie(options => options.LoginPath = "/Logon/Login");
+
 	        services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
         }
 
@@ -49,18 +53,20 @@ namespace MooMed.Web.Startup
 	        });
 		}
 
+        [UsedImplicitly]
         public void ConfigureContainer([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule(new CoreModule());
-            builder.RegisterModule(new CachingModule());
-            builder.RegisterModule(new WebGrpcModule());
-            builder.RegisterModule(new KubernetesModule());
-            builder.RegisterModule(new DnsModule());
-			builder.RegisterModule(new EventingModule());
+			builder.RegisterModule<CoreModule>();
+			builder.RegisterModule<CachingModule>();
+			builder.RegisterModule<WebGrpcModule>();
+			builder.RegisterModule<KubernetesModule>();
+			builder.RegisterModule<DnsModule>();
+			builder.RegisterModule<EventingModule>();
 			builder.RegisterModule<FinanceModule>();
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		[UsedImplicitly]
 		public void Configure([NotNull] IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())

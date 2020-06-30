@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Module\" />
-    <Folder Include="Service\" />
+    <PackageReference Include="Autofac" Version="5.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
+    <ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
+    <ProjectReference Include="..\MooMed.Module.Finance\MooMed.Module.Finance.csproj" />
   </ItemGroup>
 
 </Project>

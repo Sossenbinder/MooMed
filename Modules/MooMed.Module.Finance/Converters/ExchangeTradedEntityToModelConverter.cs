@@ -7,11 +7,11 @@ using MooMed.Module.Finance.Database.Entities;
 
 namespace MooMed.Module.Finance.Converters
 {
-	public class ExchangeTradedEntityToModelConverter : IEntityToModelConverter<ExchangeTradedEntity, ExchangeTradedModel, string>
+	public class ExchangeTradedEntityToModelConverter : IEntityToModelConverter<ExchangeTradedEntity, ExchangeTraded, string>
 	{
-		public ExchangeTradedModel ToModel(ExchangeTradedEntity entity)
+		public ExchangeTraded ToModel(ExchangeTradedEntity entity)
 		{
-			return new ExchangeTradedModel()
+			return new ExchangeTraded()
 			{
 				XetraSymbol = entity.XetraSymbol,
 				Type = entity.Type,

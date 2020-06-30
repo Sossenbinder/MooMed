@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Autofac;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.ServiceBase;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.Code.Extensions;
-using MooMed.Core.DataTypes;
+using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Grpc.Definitions.Interface;
 using ProtoBuf.Meta;
 
@@ -19,42 +17,22 @@ namespace MooMed.AspNetCore.Grpc
 	public class SerializationModelBinderService : IStartable
 	{
 		[NotNull]
-		private readonly IEnumerable<Type> _grpcServices;
+		private readonly IMainLogger _logger;
 
-		private readonly Dictionary<Type, int> _protoIndexDict;
+		[NotNull]
+		private readonly IEnumerable<IGrpcService> _services;
 
 		private int _protoIndex = 50;
 
-		public SerializationModelBinderService([NotNull] IEnumerable<IGrpcService> services)
+		public SerializationModelBinderService(
+			[NotNull] IMainLogger logger,
+			[NotNull] IEnumerable<IGrpcService> services)
 		{
-			var grpcServices = services.Select(x => x.GetType()).ToList();
-
-			var ownServiceType = Assembly
-				.GetEntryAssembly()
-				?.GetTypes()
-				.SingleOrDefault(x => x.BaseType == typeof(MooMedServiceBase));
-
-			if (ownServiceType != null)
-			{
-				grpcServices.Add(ownServiceType);
-			}
-
-			_grpcServices = grpcServices.Select(service =>
-				service.GetInterfaces().First(i =>
-					i.FullName != null && i.FullName.StartsWith("MooMed.Common.ServiceBase.Interface")));
-
-			var allGrpcServices = Assembly
-				.GetAssembly(typeof(MooMedServiceBase))
-				.GetTypes()
-				.Where(x => x.GetInterface("IGrpcService") != null)
-				.Select(x => x);
-
-			var baseProtoIndex = 50;
-			
-			_protoIndexDict = allGrpcServices.ToDictionary(x => x, x => baseProtoIndex += 50);
+			_logger = logger;
+			_services = services;
 		}
 
-		private void InitializeBindingsForGrpcService([NotNull] Type grpcService)
+		private void InitializeBindingsForGrpcService([NotNull] Dictionary<Type, int> protoIndexDict, [NotNull] Type grpcService)
 		{
 			foreach (var method in grpcService.GetMethods())
 			{
@@ -69,7 +47,7 @@ namespace MooMed.AspNetCore.Grpc
 				
 				foreach (var genericType in genericTypes)
 				{
-					RegisterBaseChain(genericType, grpcService);
+					RegisterBaseChain(protoIndexDict, genericType, grpcService);
 				}
 				
 				var nonGenerics = cleanTypes.Where(x => !x.IsGenericType);
@@ -83,21 +61,7 @@ namespace MooMed.AspNetCore.Grpc
 			}
 		}
 
-		private int GetAndIncrementIndex([CanBeNull] Type type)
-		{
-			if (type == null)
-			{
-				return _protoIndex++;
-			}
-
-			var index = _protoIndexDict[type];
-
-			_protoIndexDict[type] = index + 1;
-
-			return index;
-		}
-
-		private void RegisterBaseChain([NotNull] Type type, [NotNull] Type serviceType)
+		private void RegisterBaseChain([NotNull] Dictionary<Type, int> protoIndexDict, [NotNull] Type type, [NotNull] Type serviceType)
 		{
 			var baseType = type.BaseType;
 
@@ -108,9 +72,23 @@ namespace MooMed.AspNetCore.Grpc
 
 			var baseMetaData = RuntimeTypeModel.Default.Add(baseType);
 
-			baseMetaData.AddSubType(GetAndIncrementIndex(serviceType), type);
+			baseMetaData.AddSubType(GetAndIncrementIndex(protoIndexDict, serviceType), type);
 
-			RegisterBaseChain(baseType, serviceType);
+			RegisterBaseChain(protoIndexDict, baseType, serviceType);
+		}
+
+		private int GetAndIncrementIndex([NotNull] Dictionary<Type, int> protoIndexDict, [CanBeNull] Type type)
+		{
+			if (type == null)
+			{
+				return _protoIndex++;
+			}
+
+			var index = protoIndexDict[type];
+
+			protoIndexDict[type] = index + 1;
+
+			return index;
 		}
 
 		private void BindSessionContextAttachedContainers()
@@ -139,12 +117,43 @@ namespace MooMed.AspNetCore.Grpc
 
 		public void Start()
 		{
-			foreach (var grpcService in _grpcServices)
+			var stopWatch = Stopwatch.StartNew();
+
+			var serviceTypes = _services.Select(x => x.GetType()).ToList();
+
+			var ownServiceType = Assembly
+				.GetEntryAssembly()
+				?.GetTypes()
+				.SingleOrDefault(x => x.BaseType == typeof(MooMedServiceBase));
+
+			if (ownServiceType != null)
 			{
-				InitializeBindingsForGrpcService(grpcService);
+				serviceTypes.Add(ownServiceType);
+			}
+
+			var grpcServices = serviceTypes.Select(service =>
+				service.GetInterfaces().First(i =>
+					i.FullName != null && i.FullName.StartsWith("MooMed.Common.ServiceBase.Interface")));
+
+			var allGrpcServices = Assembly
+				.GetAssembly(typeof(MooMedServiceBase))
+				?.GetTypes()
+				.Where(x => x.GetInterface("IGrpcService") != null)
+				.Select(x => x);
+
+			var baseProtoIndex = 50;
+
+			var protoIndexDict = allGrpcServices.ToDictionary(x => x, x => baseProtoIndex += 50);
+
+			foreach (var grpcService in grpcServices)
+			{
+				InitializeBindingsForGrpcService(protoIndexDict, grpcService);
 			}
 
 			BindSessionContextAttachedContainers();
+
+			stopWatch.Stop();
+			_logger.Info($"Initialization of serialization model service took {stopWatch.Elapsed}");
 		}
 	}
 }
