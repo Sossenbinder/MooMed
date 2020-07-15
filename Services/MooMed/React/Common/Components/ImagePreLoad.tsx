@@ -3,28 +3,30 @@ import * as React from "react";
 
 // Component
 import Flex from "./Flex";
+import LoadingBubbles from "./LoadingBubbles";
 
 import "./Styles/ImagePreLoad.less";
 
 type Props = {
 	imagePath: string;
-	className?: string;
+	containerClassName?: string;
+	imageClassName?: string;
 	altName?: string;
 }
 
-export const ImagePreLoad: React.FC<Props> = ({ imagePath, className, altName }) => {
+export const ImagePreLoad: React.FC<Props> = ({ imagePath, containerClassName, imageClassName, altName }) => {
 	
 	const [imageLoaded, setImageLoaded] = React.useState(false);
 
 	return (
-		<Flex className={`${className} ImagePreLoad`}>
+		<Flex className={containerClassName}>
 			<If condition={!imageLoaded}>
 				<Flex className="PlaceHolder">
-					
+					<LoadingBubbles />
 				</Flex>
 			</If>
 			<img 
-				className="Image"
+				className={imageClassName}
 				src={imagePath} 
 				alt={altName ?? "image"}				
 				onLoad={() => setImageLoaded(true)}

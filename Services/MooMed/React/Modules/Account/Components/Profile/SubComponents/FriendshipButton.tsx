@@ -10,6 +10,7 @@ import useServices from "hooks/useServices";
 import { ReduxStore } from "data/store";
 import { Friend } from "modules/friends/types";
 import { formatTranslation } from "helper/translationHelper";
+import { useTranslations } from "hooks/useTranslations";
 
 type Props = {
 	targetAccountId: number;
@@ -20,6 +21,8 @@ type Props = {
 export const FriendshipButton: React.FC<Props> = ({ targetAccountId, friends  }) => {
 
 	const { FriendsService } = useServices();
+
+	const Translation = useTranslations();
 
 	const friend = React.useMemo(() => {
 		const possibleFriends = friends.filter(x => x.id === targetAccountId);

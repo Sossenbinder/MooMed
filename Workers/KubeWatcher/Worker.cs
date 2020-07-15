@@ -6,15 +6,15 @@ using JetBrains.Annotations;
 using k8s;
 using Microsoft.Extensions.Hosting;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Loggers.Interface;
 
 namespace KubeWatcher
 {
 	public class Worker : BackgroundService
 	{
 		[NotNull]
-		private readonly IMainLogger _mainLogger;
+		private readonly IMooMedLogger _logger;
 
 		[NotNull]
 		private readonly IMassTransitEventingService _massTransitEventingService;
@@ -26,10 +26,10 @@ namespace KubeWatcher
 		private readonly Kubernetes _kubernetesClient;
 		
 		public Worker(
-			[NotNull] IMainLogger mainLogger,
+			[NotNull] IMooMedLogger logger,
 			[NotNull] IMassTransitEventingService massTransitEventingService)
 		{
-			_mainLogger = mainLogger;
+			_logger = logger;
 			_massTransitEventingService = massTransitEventingService;
 			_replicaMap = new Dictionary<StatefulSetService, int>();
 
@@ -66,12 +66,12 @@ namespace KubeWatcher
 					}
 					else
 					{
-						_mainLogger.Error($"Statefulset {statefulSet.Metadata.Name} has no replica information attached.");
+						_logger.Error($"Statefulset {statefulSet.Metadata.Name} has no replica information attached.");
 					}
 				}
 				else
 				{
-					_mainLogger.Error($"Failed to resolve {statefulSet.Metadata.Name} to a corresponding StatefulSetService");
+					_logger.Error($"Failed to resolve {statefulSet.Metadata.Name} to a corresponding StatefulSetService");
 				}
 			}
 		}
@@ -88,7 +88,7 @@ namespace KubeWatcher
 
 				if (existingReplicasForService != replicas)
 				{
-					_mainLogger.Error($"Replicas for {statefulSetService.ToString()} changed from {existingReplicasForService} to {replicas}. Emitting event.");
+					_logger.Error($"Replicas for {statefulSetService.ToString()} changed from {existingReplicasForService} to {replicas}. Emitting event.");
 
 					await _massTransitEventingService.RaiseEvent(new ClusterChangeEvent
 					{

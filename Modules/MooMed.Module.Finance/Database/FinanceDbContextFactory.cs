@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using MooMed.Common.Database.Context;
-using MooMed.Core.Code.Configuration.Interface;
+using MooMed.Common.Definitions.Configuration;
+using MooMed.Configuration.Interface;
 
 namespace MooMed.Module.Finance.Database
 {

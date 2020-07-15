@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Configuration\MooMed.Configuration.csproj" />
     <ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
     <ProjectReference Include="..\MooMed.Module.Finance\MooMed.Module.Finance.csproj" />
   </ItemGroup>

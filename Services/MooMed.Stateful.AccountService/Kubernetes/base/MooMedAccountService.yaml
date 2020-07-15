@@ -5,7 +5,9 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - port: 23523
+  - name: http2
+    port: 10042
+    targetPort: 10042
     protocol: TCP
   selector:
     name: moomed-accountservice
@@ -27,10 +29,11 @@ spec:
     spec:
       containers:
       - image: moomed.azurecr.io/accountservice
-        imagePullPolicy: Always
         name: moomed-accountservice
+        imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - name: http2
+          containerPort: 10042
         env:
           - name: AZURE_CLIENT_SECRET
             valueFrom:

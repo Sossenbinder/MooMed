@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Core.Code.Configuration.Interface;
+using MooMed.Common.Definitions.Configuration;
+using MooMed.Configuration.Interface;
 
 namespace MooMed.Caching.Cache.CacheInformation
 {

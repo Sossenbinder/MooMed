@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MooMed.Configuration\MooMed.Configuration.csproj" />
     <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
   </ItemGroup>
 

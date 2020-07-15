@@ -14,7 +14,6 @@ namespace MooMed.ChatService
 		{
 			base.RegisterModules(containerBuilder);
 
-			containerBuilder.RegisterModule(new CoreModule());
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
 			containerBuilder.RegisterModule(new DnsModule());

@@ -5,70 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="EncryptGui" 
-        Height="600" 
-        Width="900">
+        Height="402" 
+        Width="534">
 	<WrapPanel>
-		<Border BorderBrush="Black" BorderThickness="1" Width="350" Margin="0,0,0,0">
-			<StackPanel>
-				<WrapPanel>
-					<Label 
-						Content="{StaticResource CertificateStorageTypesTitle}"
-						Width="70"/>
-					<ComboBox 
-						SelectedValue="{Binding CertModel.SelectedCertStore}" 
-						x:Name="SelectedCertStoreComboBox" 
-						Width="150px" 
-						SelectionChanged="CertStoreComboBox_SelectionChanged" />
-				</WrapPanel>
-				<WrapPanel>
-					<Label 
-						Content="{StaticResource StoreTitle}" 
-						Width="70" />
-					<ComboBox 
-						SelectedValue="{Binding Path=CertModel.SelectedStoreName}" 
-						Name="SelectedStoreComboBox" 
-						ItemsSource="{StaticResource CertificateStorageTypes}" 
-						Margin="0,0,0,0"
-						Width="150px" 
-						SelectionChanged="StoreComboBox_SelectionChanged" />
-				</WrapPanel>
-				<Separator/>
-				<Label 
-					Content="{StaticResource CertListTitle}" />
-				<ListBox 
-					x:Name="CertificateListBox" 
-					SelectedValue="{Binding Path=CertModel.SelectedCertificate}"
-					Height="486"
-					SelectionChanged="CertificateListBox_SelectionChanged">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<StackPanel>
-								<WrapPanel 
-									Margin="0,5,0,0">
-									<TextBlock>
-										<Bold>
-											Name: 
-										</Bold>
-									</TextBlock>
-									<TextBlock 
-										Text="{Binding Subject}" />
-								</WrapPanel>
-								<WrapPanel 
-									Margin="0,5">
-									<TextBlock>
-										<Bold>
-											Thumbprint: 
-										</Bold>
-									</TextBlock>
-									<TextBlock 
-										Text="{Binding Thumbprint}" />
-								</WrapPanel>
-							</StackPanel>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</StackPanel>
-		</Border>
 		<Border 
 			BorderBrush="Black" 
 			BorderThickness="1" 
@@ -76,64 +15,18 @@
 			<StackPanel>
 				<WrapPanel>
 					<Label 
-						Content="Thumbprint" 
+						Content="KeyVault Secret"
 						Width="100"
-						Target="{Binding ElementName=ThumbPrintTextBox}" />
+						Target="{Binding ElementName=KeyVaultSecretTextBox}" />
 					<TextBox 
-						Name="ThumbPrintTextBox" 
-						Text="{Binding CertModel.SelectedCertificate.Thumbprint, Mode=OneWay}" 
-						Width="420" 
-						IsEnabled="False" />
+						Name="KeyVaultSecretTextBox" 
+						Width="320" 
+						Text="{Binding Model.KeyVaultSecret, Mode=TwoWay}" />
+					<Button 
+						Width="98"
+						Margin="5,0,5,0"
+						Content="Submit" Click="Button_Click"/>
 				</WrapPanel>
-				<Separator />
-				<StackPanel>
-					<WrapPanel>
-						<Label 
-							Content="Decrypted Key"
-							Width="100"
-							Target="{Binding ElementName=DecryptedKeyTextBox}" />
-						<TextBox 
-							Name="DecryptedKeyTextBox" 
-							Width="420" 
-							Text="{Binding CryptoModel.DecryptedKey, Mode=OneWay}" 
-							IsEnabled="False"/>
-					</WrapPanel>
-					<WrapPanel>
-						<Label 
-							Content="Decrypted IV" 
-							Width="100"
-							Target="{Binding ElementName=DecryptedIvTextBox}" />
-						<TextBox 
-							Name="DecryptedIvTextBox" 
-							Width="420" 
-							Text="{Binding CryptoModel.DecryptedInitializationVector, Mode=OneWay}" 
-							IsEnabled="False"/>
-					</WrapPanel>
-					<WrapPanel>
-						<Label 
-							Content="Encrypted Key"
-							Width="100"
-							Target="{Binding ElementName=EncryptedKeyTextBox}" />
-						<TextBox 
-							Name="EncryptedKeyTextBox" 
-							Text="{Binding CryptoModel.EncryptedKey, Mode=OneWay}" 
-							Width="420" 
-							IsEnabled="False" 
-							TextChanged="EncryptedKeyTextBox_TextChanged"/>
-					</WrapPanel>
-					<WrapPanel>
-						<Label 
-							Content="Encrypted IV" 
-							Width="100"
-							Target="{Binding ElementName=EncryptedIvTextBox}" />
-						<TextBox 
-							Name="EncryptedIvTextBox" 
-							Text="{Binding CryptoModel.EncryptedInitializationVector, Mode=OneWay}" 
-							Width="420" 
-							IsEnabled="False" 
-							TextChanged="EncryptedIvTextBox_TextChanged" />
-					</WrapPanel>
-				</StackPanel>
 				<Separator />
 				<StackPanel>
 					<WrapPanel
@@ -144,7 +37,7 @@
 							Target="{Binding ElementName=EncryptedIvTextBox}" />
 						<TextBox 
 							Name="EncryptedData" 
-							Text="{Binding CryptoModel.EncryptedData, Mode=OneWay}" 
+							Text="{Binding Model.EncryptedData, Mode=OneWay}" 
 							Width="420"
 							Height="100"
 							IsEnabled="False" />
@@ -156,7 +49,7 @@
 							Target="{Binding ElementName=ClearTextData}" />
 						<TextBox 
 							Name="ClearTextData" 
-							Text="{Binding CryptoModel.ClearTextData, Mode=TwoWay}" 
+							Text="{Binding Model.ClearTextData, Mode=TwoWay}" 
 							Width="420"
 							Height="100"
 							IsEnabled="False" TextChanged="ClearTextData_TextChanged" />

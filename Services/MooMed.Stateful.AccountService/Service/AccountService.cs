@@ -9,10 +9,10 @@ using MooMed.Common.Definitions.Messages.Account;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Extensions;
-using MooMed.Core.Code.Logging.Loggers.Interface;
-using MooMed.Core.Code.Tasks;
 using MooMed.Core.DataTypes;
+using MooMed.DotNet.Extensions;
+using MooMed.DotNet.Utils.Tasks;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
@@ -46,7 +46,7 @@ namespace MooMed.Stateful.AccountService.Service
         private readonly IFriendsService _friendsService;
 
         public AccountService(
-            [NotNull] IMainLogger logger,
+            [NotNull] IMooMedLogger logger,
             [NotNull] IRegisterService registerService,
             [NotNull] ILoginService loginService,
             [NotNull] IAccountEventHub accountEventHub,
@@ -136,7 +136,7 @@ namespace MooMed.Stateful.AccountService.Service
 
             if (registrationResult.IsSuccess)
             {
-                BackgroundTask.Run(() =>
+                FireAndForgetTask.Run(() =>
 	                _accountValidationService.SendAccountValidationMail(new AccountValidationMailData()
 	                {
 		                Account = registrationResult.Account,
@@ -212,7 +212,7 @@ namespace MooMed.Stateful.AccountService.Service
         {
             var friends = await _friendsService.GetFriends(sessionContext);
 
-            await friends.ForEachAsync(async friend =>
+            await friends.ParallelAsync(async friend =>
             {
 	            var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(friend.Id);
 

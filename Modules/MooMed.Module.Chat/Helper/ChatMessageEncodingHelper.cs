@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Helper.Crypto.Interface;
+using MooMed.Encryption.Interface;
 
 namespace MooMed.Module.Chat.Helper
 {

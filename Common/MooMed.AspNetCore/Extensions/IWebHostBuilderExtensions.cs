@@ -6,13 +6,14 @@ namespace MooMed.AspNetCore.Extensions
 {
 	public static class WebHostBuilderExtensions
 	{
-		[NotNull]
-		public static IWebHostBuilder ConfigureGrpc([NotNull] this IWebHostBuilder webHostBuilder, int port = 10042)
+		public static IWebHostBuilder ConfigureGrpc(this IWebHostBuilder webHostBuilder, int port = 10042)
 		{
 			webHostBuilder
 				.UseKestrel()
 				.ConfigureKestrel(options =>
 				{
+					options.ListenAnyIP(80);
+					options.ListenAnyIP(443);
 					options.ListenAnyIP(port, listenOptions =>
 					{
 						listenOptions.Protocols = HttpProtocols.Http2; 

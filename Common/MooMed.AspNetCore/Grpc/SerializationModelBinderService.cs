@@ -4,35 +4,32 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Autofac;
-using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.ServiceBase;
-using MooMed.Core.Code.Extensions;
-using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.DotNet.Extensions;
 using MooMed.Grpc.Definitions.Interface;
+using MooMed.Logging.Loggers.Interface;
 using ProtoBuf.Meta;
 
 namespace MooMed.AspNetCore.Grpc
 {
 	public class SerializationModelBinderService : IStartable
 	{
-		[NotNull]
-		private readonly IMainLogger _logger;
+		private readonly IMooMedLogger _logger;
 
-		[NotNull]
 		private readonly IEnumerable<IGrpcService> _services;
 
 		private int _protoIndex = 50;
 
 		public SerializationModelBinderService(
-			[NotNull] IMainLogger logger,
-			[NotNull] IEnumerable<IGrpcService> services)
+			IMooMedLogger logger,
+			IEnumerable<IGrpcService> services)
 		{
 			_logger = logger;
 			_services = services;
 		}
 
-		private void InitializeBindingsForGrpcService([NotNull] Dictionary<Type, int> protoIndexDict, [NotNull] Type grpcService)
+		private void InitializeBindingsForGrpcService(Dictionary<Type, int> protoIndexDict, Type grpcService)
 		{
 			foreach (var method in grpcService.GetMethods())
 			{
@@ -53,31 +50,34 @@ namespace MooMed.AspNetCore.Grpc
 				var nonGenerics = cleanTypes.Where(x => !x.IsGenericType);
 				foreach (var type in nonGenerics)
 				{
-					if (!type.Namespace.StartsWith("System"))
+					if (!type.Namespace?.StartsWith("System") ?? false)
 					{
-						RuntimeTypeModel.Default.Add(type, true);
+						RuntimeTypeModel.Default.Add(type);
 					}
 				}
 			}
 		}
 
-		private void RegisterBaseChain([NotNull] Dictionary<Type, int> protoIndexDict, [NotNull] Type type, [NotNull] Type serviceType)
+		private void RegisterBaseChain(Dictionary<Type, int> protoIndexDict, Type type, Type serviceType)
 		{
-			var baseType = type.BaseType;
-
-			if (baseType == null || baseType == typeof(object))
+			while (true)
 			{
-				return;
+				var baseType = type.BaseType;
+
+				if (baseType == null || baseType == typeof(object))
+				{
+					return;
+				}
+
+				var baseMetaData = RuntimeTypeModel.Default.Add(baseType);
+
+				baseMetaData.AddSubType(GetAndIncrementIndex(protoIndexDict, serviceType), type);
+
+				type = baseType;
 			}
-
-			var baseMetaData = RuntimeTypeModel.Default.Add(baseType);
-
-			baseMetaData.AddSubType(GetAndIncrementIndex(protoIndexDict, serviceType), type);
-
-			RegisterBaseChain(protoIndexDict, baseType, serviceType);
 		}
 
-		private int GetAndIncrementIndex([NotNull] Dictionary<Type, int> protoIndexDict, [CanBeNull] Type type)
+		private int GetAndIncrementIndex(Dictionary<Type, int> protoIndexDict, Type type)
 		{
 			if (type == null)
 			{
@@ -143,11 +143,14 @@ namespace MooMed.AspNetCore.Grpc
 
 			var baseProtoIndex = 50;
 
-			var protoIndexDict = allGrpcServices.ToDictionary(x => x, x => baseProtoIndex += 50);
+			var protoIndexDict = allGrpcServices?.ToDictionary(x => x, x => baseProtoIndex += 50);
 
-			foreach (var grpcService in grpcServices)
+			if (protoIndexDict != null)
 			{
-				InitializeBindingsForGrpcService(protoIndexDict, grpcService);
+				foreach (var grpcService in grpcServices)
+				{
+					InitializeBindingsForGrpcService(protoIndexDict, grpcService);
+				}
 			}
 
 			BindSessionContextAttachedContainers();

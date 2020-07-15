@@ -1,4 +1,4 @@
-﻿declare var Translation: Translation;
+﻿declare var Translation: any;
 
 declare function Choose(): any;
 declare function When(props: { condition: boolean; }): any;

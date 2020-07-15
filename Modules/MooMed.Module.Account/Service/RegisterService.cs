@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
@@ -17,7 +17,7 @@ namespace MooMed.Module.Accounts.Service
 		private readonly IAccountSignInValidator _accountSignInValidator;
 
 		[NotNull]
-		private readonly IMainLogger _mainLogger;
+		private readonly IMooMedLogger _logger;
 
 		[NotNull]
 		private readonly IAccountRepository _accountRepository;
@@ -30,13 +30,13 @@ namespace MooMed.Module.Accounts.Service
 
 		public RegisterService(
 			[NotNull] IAccountSignInValidator accountSignInValidator,
-			[NotNull] IMainLogger mainLogger,
+			[NotNull] IMooMedLogger logger,
 			[NotNull] IAccountRepository accountRepository,
 			[NotNull] IEntityToModelConverter<AccountEntity, Account, int> accountEntityToModelConverter,
 			[NotNull] IModelToEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter)
 		{
 			_accountSignInValidator = accountSignInValidator;
-			_mainLogger = mainLogger;
+			_logger = logger;
 			_accountRepository = accountRepository;
 			_accountEntityToModelConverter = accountEntityToModelConverter;
 			_registerModelToAccountConverter = registerModelToAccountConverter;
@@ -69,7 +69,7 @@ namespace MooMed.Module.Accounts.Service
 			// Actually Create the account
 			var account = _accountEntityToModelConverter.ToModel(await _accountRepository.Create(accountEntity));
 
-			_mainLogger.Info($"Registered {registerModel.Email} as accountId {account.Id}");
+			_logger.Info($"Registered {registerModel.Email} as accountId {account.Id}");
 
 			return RegistrationResult.Success(account);
 		}

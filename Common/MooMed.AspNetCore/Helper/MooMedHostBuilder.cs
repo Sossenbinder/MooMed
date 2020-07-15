@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using MooMed.AspNetCore.Extensions;
+using MooMed.Logging.Loggers;
 
 namespace MooMed.AspNetCore.Helper
 {
@@ -19,9 +20,7 @@ namespace MooMed.AspNetCore.Helper
 		{
 			var hostBuilder = CreateSharedHost<TStartup>(args, webHostBuilder =>
 			{
-				webHostBuilder
-					.UseContentRoot(Directory.GetCurrentDirectory())
-					.UseKestrel();
+				webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
 
 				webHostBuilderEnricher?.Invoke(webHostBuilder);
 			});
@@ -37,8 +36,7 @@ namespace MooMed.AspNetCore.Helper
 		{
 			var hostBuilder = CreateSharedHost<TStartup>(args, webHostBuilder =>
 			{
-				webHostBuilder
-					.ConfigureGrpc();
+				webHostBuilder.ConfigureGrpc();
 			});
 
 			return hostBuilder.Build();
@@ -62,14 +60,15 @@ namespace MooMed.AspNetCore.Helper
 				});
 		}
 
-		private static IConfiguration CreateConfig([System.Diagnostics.CodeAnalysis.NotNull] string[] args)
+		private static IConfiguration CreateConfig(string[] args)
 		{
 			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 			var configBuilder = new ConfigurationBuilder()
 				.AddEnvironmentVariables()
 				.AddJsonFile("appsettings.json", true, true)
-				.AddJsonFile($"appsettings.{environment}.json", true, true);
+				.AddJsonFile($"appsettings.{environment}.json", true, true)
+				.AddInMemoryCollection(LoggerConstants.GetConstantsAsInMemoryDict());
 			
 			if (args != null)
 			{
@@ -92,7 +91,7 @@ namespace MooMed.AspNetCore.Helper
 			return configBuilder.Build();
 		}
 
-		private static void AddKeyVault([System.Diagnostics.CodeAnalysis.NotNull] IConfigurationBuilder configBuilder, [System.Diagnostics.CodeAnalysis.NotNull] IConfiguration config)
+		private static void AddKeyVault(IConfigurationBuilder configBuilder, IConfiguration config)
 		{
 			var keyVaultEndpoint = "https://moomed.vault.azure.net/";
 

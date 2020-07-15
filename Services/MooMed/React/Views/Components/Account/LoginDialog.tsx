@@ -14,6 +14,7 @@ import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
 import { createPopUpMessage } from "helper/popUpMessageHelper";
 import { IFormElement } from "definitions/Forms";
 import { LoginResponseCode } from "enums/moomedEnums";
+import { useTranslations } from "hooks/useTranslations";
 
 interface ILoginModel {
     Email: string;
@@ -31,6 +32,8 @@ export const LoginDialog: React.FC = () => {
 	const [email, setEmail] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
 	const [password, setPassword] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
 	const [rememberMe, setRememberMe] = React.useState<IFormElement<boolean>>({ Value: false, IsValid: true});
+
+	const Translation = useTranslations();
 
 	const onChangeUpdate = React.useCallback(<T extends {}>(newVal: T, currentVal: IFormElement<T>, setFunc: React.Dispatch<React.SetStateAction<IFormElement<T>>>, isValid?: boolean) => {
 

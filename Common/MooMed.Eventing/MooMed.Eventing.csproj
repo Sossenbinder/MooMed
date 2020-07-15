@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\MooMed.Dns\MooMed.Dns.csproj" />
+    <ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
     <ProjectReference Include="..\MooMed.SignalR\MooMed.SignalR.csproj" />
   </ItemGroup>
 

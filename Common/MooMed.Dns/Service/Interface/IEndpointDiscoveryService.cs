@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.IPC.DataType;
 
 namespace MooMed.Dns.Service.Interface
 {

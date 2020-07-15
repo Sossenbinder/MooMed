@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+using System.IO;
 using System.Windows;
-using EncryptGui.Code;
-using EncryptGui.Code.Interface;
 using EncryptGuiCore.Model;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Helper.Crypto;
+using Microsoft.Extensions.Configuration;
+using MooMed.Configuration;
+using MooMed.Encryption;
 
 namespace EncryptGuiCore
 {
@@ -16,103 +15,51 @@ namespace EncryptGuiCore
 	public partial class MainWindow : Window
 	{
 		[UsedImplicitly]
-		public CertificateModel CertModel { get; }
+		public ViewModel Model { get; }
 
-		[UsedImplicitly]
-		public EncryptDecryptModel CryptoModel { get; }
+		private IConfigurationSection _keyVaultConfigSection;
 
-		private ICertificateHelper _certificateHelper { get; }
+		private SettingsCryptoProvider _settingsCryptoProvider;
 
 		public MainWindow()
 		{
-			_certificateHelper = new CertificateHelper();
-			CertModel = new CertificateModel();
-			CryptoModel = new EncryptDecryptModel();
+			Model = new ViewModel();
 
 			InitializeComponent();
-			InitializeModel();
-			InitializeControls();
+			InitializeConfiguration();
 
 			DataContext = this;
 		}
 
-		private void InitializeModel()
+		private void InitializeConfiguration()
 		{
-			CertModel.SelectedCertStore = StoreLocation.LocalMachine;
-			CertModel.SelectedStoreName = StoreName.My;
-			CertModel.Certificates = new List<X509Certificate2>();
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json", false, true);
+
+			_keyVaultConfigSection = builder.Build().GetSection("KeyVault");
 		}
 
-		private void InitializeControls()
+		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			SelectedCertStoreComboBox.ItemsSource = Enum.GetValues(typeof(StoreLocation));
-			SelectedStoreComboBox.ItemsSource = Enum.GetValues(typeof(StoreName));
-		}
+			var token = KeyVaultSecretTextBox.Text;
 
-		private void CertStoreComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-		{
-			UpdateCertificatesList();
-		}
+			var config = new ConfigurationBuilder()
+				.AddAzureKeyVault(_keyVaultConfigSection["Uri"], "82259ded-f445-4db4-80d4-1c07f13c50b7", token);
 
-		private void StoreComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-		{
-			UpdateCertificatesList();
-		}
+			_settingsCryptoProvider = new SettingsCryptoProvider(new Config(config.Build()));
 
-		private void UpdateCertificatesList()
-		{
-			CertificateListBox.Items.Clear();
-
-			var certificates = _certificateHelper.GetAllCertificatesInStore(CertModel.SelectedStoreName, CertModel.SelectedCertStore);
-
-			foreach (var cert in certificates)
-			{
-				CertificateListBox.Items.Add(cert);
-			}
-		}
-
-		private void CertificateListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-		{
-			var selectedCert = CertificateListBox.SelectedItem as X509Certificate2;
-
-			if (selectedCert != null)
-			{
-				CertModel.SelectedCertificate = selectedCert;
-			}
-
-			EncryptedKeyTextBox.IsEnabled = selectedCert != null;
-			EncryptedIvTextBox.IsEnabled = selectedCert != null;
-		}
-
-		private void EncryptedKeyTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-		{
-			var encryptedKey = EncryptedKeyTextBox.Text;
-
-			if (encryptedKey.EndsWith('='))
-			{
-				var decryptedKey = RSAHelper.DecryptWithCert(CertModel.SelectedCertificate, Convert.FromBase64String(encryptedKey));
-
-				CryptoModel.DecryptedKey = Convert.ToBase64String(decryptedKey);
-			}
-		}
-
-		private void EncryptedIvTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-		{
-			var encryptedIv = EncryptedIvTextBox.Text;
-
-			if (encryptedIv.EndsWith('=')) 
-			{
-				var decryptedIv = RSAHelper.DecryptWithCert(CertModel.SelectedCertificate, Convert.FromBase64String(encryptedIv));
-
-				CryptoModel.DecryptedInitializationVector = Convert.ToBase64String(decryptedIv);
-			}
+			EncryptedData.IsEnabled = true;
+			ClearTextData.IsEnabled = true;
 		}
 
 		private void ClearTextData_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
 		{
 			var clearTextData = ClearTextData.Text;
 
-			//if (clearTextData)
+			var encrypted = Convert.ToBase64String(_settingsCryptoProvider.Encrypt(Convert.FromBase64String(clearTextData)));
+
+			Model.EncryptedData = encrypted;
 		}
 	}
 }

@@ -9,7 +9,7 @@ using MooMed.Common.Database.Converter;
 using MooMed.Common.Database.Repository;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Core.Code.Helper.Crypto;
+using MooMed.Encryption;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Repository.Interface;

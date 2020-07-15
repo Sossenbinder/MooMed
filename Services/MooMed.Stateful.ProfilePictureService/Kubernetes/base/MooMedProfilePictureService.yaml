@@ -4,11 +4,13 @@ metadata:
   name: moomed-profilepictureservice
 spec:
   clusterIP: None
+  ports:
+  - name: http2
+    port: 10042
+    targetPort: 10042
+    protocol: TCP
   selector:
     name: moomed-profilepictureservice
-  ports:
-    - protocol: TCP
-      port: 16422
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,8 +31,9 @@ spec:
       containers:
       - name: moomed-profilepictureservice
         image: moomed.azurecr.io/profilepictureservice
+        imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 10042
         env:
           - name: AZURE_CLIENT_SECRET
             valueFrom:

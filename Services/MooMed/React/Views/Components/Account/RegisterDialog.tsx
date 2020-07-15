@@ -13,6 +13,7 @@ import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
 import { createPopUpMessage } from "helper/popUpMessageHelper";
 
 import { IFormElement } from "definitions/Forms";
+import useTranslations from "hooks/useTranslations";
 
 interface IRegisterModel {
     Email: string;
@@ -27,6 +28,8 @@ export const RegisterDialog: React.FC = () => {
 	const [userName, setUserName] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
 	const [password, setPassword] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
 	const [confirmPassword, setConfirmPassword] = React.useState<IFormElement<string>>({ Value: "", IsValid: false});
+
+	const Translation = useTranslations();
 	
 
 	const onChangeUpdate = (newVal: string, currentVal: IFormElement<string>, setFunc: React.Dispatch<React.SetStateAction<IFormElement<string>>>, isValid?: boolean) => {

@@ -8,8 +8,8 @@ using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Session.Cache.Interface;
 
@@ -21,10 +21,10 @@ namespace MooMed.Stateful.SessionService.Service
 	    private readonly ISessionContextCache _sessionContextCache;
         
 	    public SessionService(
-		    [NotNull] IMainLogger mainLogger,
+		    [NotNull] IMooMedLogger logger,
 		    [NotNull] ISessionContextCache sessionContextCache,
 		    [NotNull] IAccountEventHub accountEventHub)
-		    : base(mainLogger)
+		    : base(logger)
 	    {
 		    _sessionContextCache = sessionContextCache;
 

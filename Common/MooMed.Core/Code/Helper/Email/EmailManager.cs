@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Configuration.Interface;
+using MooMed.Common.Definitions.Configuration;
 using MooMed.Core.Code.Helper.Email.Interface;
 
 namespace MooMed.Core.Code.Helper.Email

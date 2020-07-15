@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Grpc.Net.Client;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.IPC.DataType;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.Helper;

@@ -1,7 +1,7 @@
 ﻿// Framework
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { store } from "data/store";
 import { BrowserRouter } from "react-router-dom";
 

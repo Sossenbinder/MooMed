@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Extensions;
+using MooMed.DotNet.Extensions;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
 using ProtoBuf.Grpc;

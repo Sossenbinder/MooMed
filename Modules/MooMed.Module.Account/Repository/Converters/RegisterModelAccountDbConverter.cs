@@ -1,6 +1,6 @@
 ﻿using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Core.Code.Helper.Crypto;
+using MooMed.Encryption;
 using MooMed.Module.Accounts.Datatypes.Entity;
 
 namespace MooMed.Module.Accounts.Repository.Converters

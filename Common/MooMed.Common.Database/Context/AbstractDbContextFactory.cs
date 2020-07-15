@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using MooMed.Common.Database.Context.Interface;
-using MooMed.Core.Code.Configuration.Interface;
+using MooMed.Common.Definitions.Configuration;
+using MooMed.Configuration.Interface;
 
 namespace MooMed.Common.Database.Context
 {

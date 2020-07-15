@@ -4,11 +4,13 @@ metadata:
   name: moomed-accountvalidationservice
 spec:
   clusterIP: None
+  ports:
+  - name: http2
+    port: 10042
+    targetPort: 10042
+    protocol: TCP
   selector:
     name: moomed-accountvalidationservice
-  ports:
-    - protocol: TCP
-      port: 16756
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -30,8 +32,9 @@ spec:
       containers:
       - name: moomed-accountvalidationservice
         image: moomed.azurecr.io/accountvalidationservice
+        imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 10042
         env:
           - name: AZURE_CLIENT_SECRET
             valueFrom:

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
-using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.Definitions.Models.User;
 
 namespace MooMed.Module.Accounts.Datatypes.Entity
@@ -38,9 +37,11 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
         public AccountOnlineStateEntity AccountOnlineStateEntity { get; set; }
 
         [NotNull]
+        [InverseProperty("Account")]
         public List<FriendsMappingEntity> FriendsTo { get; set; }
 
         [NotNull]
+        [InverseProperty("Friend")]
         public List<FriendsMappingEntity> FriendsFrom { get; set; }
 
         [UsedImplicitly]

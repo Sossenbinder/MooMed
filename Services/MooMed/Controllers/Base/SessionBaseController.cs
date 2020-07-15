@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers;
+using MooMed.Logging.Loggers;
 
 namespace MooMed.Web.Controllers.Base
 {

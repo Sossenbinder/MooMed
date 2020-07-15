@@ -22,16 +22,6 @@ namespace MooMed.Module.Accounts.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 	        base.OnModelCreating(modelBuilder);
-
-	        modelBuilder.Entity<FriendsMappingEntity>()
-		        .HasOne(fs => fs.Account)
-		        .WithMany(acc => acc.FriendsFrom)
-		        .HasForeignKey(fs => fs.Id);
-
-	        modelBuilder.Entity<FriendsMappingEntity>()
-		        .HasOne(fs => fs.Friend)
-		        .WithMany(acc => acc.FriendsTo)
-		        .HasForeignKey(fs => fs.FriendId);
         }
     }
 }

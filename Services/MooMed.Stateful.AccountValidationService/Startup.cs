@@ -16,7 +16,6 @@ namespace MooMed.Stateful.AccountValidationService
 			base.RegisterModules(containerBuilder);
 
 			containerBuilder.RegisterModule<AccountValidationModule>();
-			containerBuilder.RegisterModule<CoreModule>();
 			containerBuilder.RegisterModule<AccountValidationServiceModule>();
 			containerBuilder.RegisterModule<CachingModule>();
 			containerBuilder.RegisterModule<KubernetesModule>();

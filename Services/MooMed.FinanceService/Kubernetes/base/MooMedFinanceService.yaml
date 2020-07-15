@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moomed-financeservice
+spec:
+  clusterIP: None
+  ports:
+  - name: http2
+    port: 10042
+    targetPort: 10042
+    protocol: TCP
+  selector:
+    name: moomed-financeservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-financeservice
+  labels:
+    name: moomed-financeservice
+spec:
+  replicas: 2
+  selector:  
+    matchLabels:
+      name: moomed-financeservice
+  template:
+    metadata:
+      labels:
+        name: moomed-financeservice
+    spec:
+      containers:
+      - name: moomed-financeservice
+        image: moomed.azurecr.io/financeservice
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 10042
+        env:
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: akv
+                key: client_secret
+      imagePullSecrets:
+        - name: acrimgpullsecret

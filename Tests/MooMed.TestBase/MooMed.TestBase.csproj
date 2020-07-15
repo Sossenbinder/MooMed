@@ -14,7 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\MooMed.Configuration\MooMed.Configuration.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Logging\MooMed.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

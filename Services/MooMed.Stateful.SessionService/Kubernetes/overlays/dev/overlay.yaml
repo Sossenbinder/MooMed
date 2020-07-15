@@ -3,6 +3,8 @@ kind: StatefulSet
 metadata:
   name: moomed-sessionservice
 spec:
+  replicas: 3
+  serviceName: moomed-sessionservice
   template:
     spec:
       containers:

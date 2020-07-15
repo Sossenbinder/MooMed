@@ -4,16 +4,16 @@ using GreenPipes;
 using JetBrains.Annotations;
 using MassTransit;
 using MooMed.Core.Code.Helper.Retry;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Dns.Service.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Eventing.Events.MassTransit
 {
 	public class MassTransitEventingService : IMassTransitEventingService
 	{
 		[NotNull]
-		private readonly IMainLogger _logger;
+		private readonly IMooMedLogger _mooMedLogger;
 
 		[NotNull]
 		private readonly IBusControl _busControl;
@@ -22,11 +22,11 @@ namespace MooMed.Eventing.Events.MassTransit
 		private readonly IDnsResolutionService _dnsResolutionService;
 
 		public MassTransitEventingService(
-			[NotNull] IMainLogger logger,
+			[NotNull] IMooMedLogger mooMedLogger,
 			[NotNull] IDnsResolutionService dnsResolutionService,
 			[NotNull] IBusControl busControl)
 		{
-			_logger = logger;
+			_mooMedLogger = mooMedLogger;
 			_dnsResolutionService = dnsResolutionService;
 			_busControl = busControl;
 
@@ -41,10 +41,10 @@ namespace MooMed.Eventing.Events.MassTransit
 			{
 				_busControl.Start();
 
-				_logger.Info("Successfully initiated RabbitMQ EventBus.");
+				_mooMedLogger.Info("Successfully initiated RabbitMQ EventBus.");
 			}, retryCount =>
 			{
-				_logger.Info($"Retrying rabbitMQ start for the {retryCount}# time");
+				_mooMedLogger.Info($"Retrying rabbitMQ start for the {retryCount}# time");
 				return Task.CompletedTask;
 			}, timeBetween.Seconds);
 		}

@@ -3,11 +3,10 @@ using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Dns.Service.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
-using MooMed.IPC.DataType;
 using MooMed.IPC.EndpointResolution.Interface;
+using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.IPC.EndpointResolution
 {
@@ -20,7 +19,7 @@ namespace MooMed.IPC.EndpointResolution
 		private readonly IEndpointDiscoveryService _endpointDiscoveryService;
 
 		[NotNull]
-		private readonly IMainLogger _mainLogger;
+		private readonly IMooMedLogger _logger;
 
 		[NotNull]
 		private readonly ICache<DeploymentService, Endpoint> _deploymentEndpointCache;
@@ -32,10 +31,10 @@ namespace MooMed.IPC.EndpointResolution
 			[NotNull] IEndpointDiscoveryService endpointDiscoveryService,
 			[NotNull] IDefaultCacheFactory cacheFactory,
 			[NotNull] IMassTransitEventingService massTransitEventingService,
-			[NotNull] IMainLogger mainLogger)
+			[NotNull] IMooMedLogger logger)
 		{
 			_endpointDiscoveryService = endpointDiscoveryService;
-			_mainLogger = mainLogger;
+			_logger = logger;
 
 			_deploymentEndpointCache = cacheFactory.CreateCache<DeploymentService, Endpoint>();
 			_statefulServiceReplicaCache = cacheFactory.CreateCache<StatefulSetService, StatefulEndpointCollection>();
@@ -45,14 +44,14 @@ namespace MooMed.IPC.EndpointResolution
 
 		private void OnClusterChange([NotNull] ClusterChangeEvent changeEvent)
 		{
-			_mainLogger.Info("Received cluster change event");
+			_logger.Info("Received cluster change event");
 			var statefulSet = changeEvent.StatefulSetService;
 
 			var statefulSetInfo = _endpointDiscoveryService.GetStatefulEndpoints(statefulSet, changeEvent.NewReplicaAmount);
 
 			_statefulServiceReplicaCache.PutItem(statefulSet, statefulSetInfo);
 
-			_mainLogger.Info($"Updated internal stateful info provider to {changeEvent.NewReplicaAmount} instances of {statefulSet} on setService {Assembly.GetExecutingAssembly()}");
+			_logger.Info($"Updated internal stateful info provider to {changeEvent.NewReplicaAmount} instances of {statefulSet} on setService {Assembly.GetExecutingAssembly()}");
 		}
 		
 		public Endpoint GetDeploymentEndpoint(DeploymentService deploymentService)

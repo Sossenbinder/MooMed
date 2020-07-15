@@ -1,0 +1,2 @@
+2020-07-05 20:36:26.357 +00:00 [INF] Initialization of serialization model service took 00:00:00.2248527
+2020-07-05 20:36:28.448 +00:00 [INF] Successfully initiated RabbitMQ EventBus.

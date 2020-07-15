@@ -11,6 +11,8 @@ import { Account } from "modules/Account/types";
 import useServices from "hooks/useServices";
 import { ReduxStore } from "data/store";
 
+import "./Styles/Profile.less";
+
 type Props = {
 	accountId: number;
 
@@ -23,19 +25,20 @@ export const Profile: React.FC<Props> = ({ accountId, account }) => {
 
 	const { AccountService } = useServices();
 
-	const isSelf = React.useCallback(() => account.id === accountId, [account, accountId])
+	const isSelf = React.useCallback(() => !accountId || account.id === accountId, [account, accountId])
 
-	React.useEffect(() => {
-		const otherAccountFetcher = async (accountId: number) => {
+	const fetchOtherAccount = React.useCallback(async (accountId: number) => {
 			const account = await AccountService.getAccount(accountId);
 			setDisplayAccount(account);
-		};
+	}, []);
 
-		isSelf() ? setDisplayAccount(account) : otherAccountFetcher(accountId);
+	React.useEffect(() => {
+		isSelf() ? setDisplayAccount(account) : fetchOtherAccount(accountId);
 	}, [accountId, account]);
 
 	return (
-		<Flex>
+		<Flex 
+			className="Profile">
 			<If condition={displayAccount != null}>
 				<ProfileFull 
 					account={displayAccount}

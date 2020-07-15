@@ -41,8 +41,4 @@
     <Content Include="React\Views\Components\Main\NavBar.tsx" />
     <Content Include="React\Modules\Stocks\Components\StocksDialog.tsx" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="./runPostBuild.bat" />
-  </Target>
 </Project>

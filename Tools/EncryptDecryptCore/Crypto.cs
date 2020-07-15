@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Helper.Crypto;
+using MooMed.Encryption;
 
 namespace EncryptDecryptCore
 {

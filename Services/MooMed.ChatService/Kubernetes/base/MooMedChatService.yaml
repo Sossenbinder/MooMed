@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moomed-chatservice
+spec:
+  clusterIP: None
+  ports:
+  - name: http2
+    port: 10042
+    targetPort: 10042
+    protocol: TCP
+  selector:
+    name: moomed-chatservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-chatservice
+  labels:
+    name: moomed-chatservice
+spec:
+  replicas: 2
+  selector:  
+    matchLabels:
+      name: moomed-chatservice
+  template:
+    metadata:
+      labels:
+        name: moomed-chatservice
+    spec:
+      containers:
+      - name: moomed-chatservice
+        image: moomed.azurecr.io/chatservice
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 10042
+        env:
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: akv
+                key: client_secret
+      imagePullSecrets:
+        - name: acrimgpullsecret

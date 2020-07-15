@@ -24,7 +24,7 @@ COPY ["Common/MooMed.Azure/MooMed.Azure.csproj", "Common/MooMed.Azure/"]
 COPY ["Common/MooMed.IPC/MooMed.IPC.csproj", "Common/MooMed.IPC/"]
 COPY ["Common/MooMed.AspNetCore/MooMed.AspNetCore.csproj", "Common/MooMed.AspNetCore/"]
 COPY ["Common/MooMed.Common.ServiceBase/MooMed.Common.ServiceBase.csproj", "Common/MooMed.Common.ServiceBase/"]
-COPY ["../MooMed.Module.Finance/MooMed.Module.Finance.csproj", "../MooMed.Module.Finance/"]
+COPY ["Modules/MooMed.Module.Finance/MooMed.Module.Finance.csproj", "Modules/MooMed.Module.Finance/"]
 RUN dotnet restore "Services/MooMed.FinanceService/MooMed.FinanceService.csproj"
 COPY . .
 WORKDIR "/src/Services/MooMed.FinanceService"

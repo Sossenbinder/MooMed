@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Database.Context;
 using MooMed.Common.Database.Repository.Interface;
 using MooMed.Common.Definitions.Interface;
-using MooMed.Core.Code.Extensions;
+using MooMed.DotNet.Extensions;
 
 namespace MooMed.Common.Database.Repository
 {

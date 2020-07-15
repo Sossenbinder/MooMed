@@ -2,7 +2,6 @@
 using MooMed.Caching.Cache.CacheImplementations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.CacheInformation;
-using MooMed.Core.Code.Configuration.Interface;
 
 namespace MooMed.Caching.Cache.Factory
 {

@@ -3,17 +3,17 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Dns.Service.Interface;
+using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Dns.Service
 {
 	public class DnsResolutionService : IDnsResolutionService
 	{
 		[NotNull]
-		private readonly IMainLogger _logger;
+		private readonly IMooMedLogger _logger;
 
-		public DnsResolutionService([NotNull] IMainLogger logger)
+		public DnsResolutionService([NotNull] IMooMedLogger logger)
 		{
 			_logger = logger;
 		}

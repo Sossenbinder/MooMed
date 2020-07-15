@@ -3,9 +3,13 @@ using System.Reflection;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using MooMed.Common.Definitions.Configuration;
+using MooMed.Configuration.Interface;
+using MooMed.Configuration.Module;
 using MooMed.Core;
-using MooMed.Core.Code.Configuration.Interface;
-using MooMed.Core.Code.Helper.Crypto.Interface;
+using MooMed.Encryption.Interface;
+using MooMed.Encryption.Module;
+using MooMed.Logging.Module;
 using MooMed.TestBase.Config;
 using NUnit.Framework;
 
@@ -60,7 +64,10 @@ namespace MooMed.TestBase
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterModule(new CoreModule());
+            builder.RegisterModule<CoreModule>();
+            builder.RegisterModule<EncryptionModule>();
+            builder.RegisterModule<ConfigurationModule>();
+            builder.RegisterModule<LoggingModule>();
 
             var config = new ConfigurationBuilder()
 	            .Add(new JsonConfigurationSource()
@@ -70,7 +77,7 @@ namespace MooMed.TestBase
 	            .Build();
 
             builder
-	            .Register(x => new Core.Code.Configuration.Config(config))
+	            .Register(x => new Configuration.Config(config))
                 .As<IConfig>()
                 .SingleInstance();
 

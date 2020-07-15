@@ -4,6 +4,9 @@ import * as React from "react";
 // Components
 import Flex from "Common/Components/Flex";
 
+// Functionality
+import { useTranslations } from "hooks/useTranslations";
+
 import "./Styles/ChatWidgetTopBar.less";
 
 type Props = {
@@ -11,6 +14,9 @@ type Props = {
 }
 
 export const ChatWidgetTopBar: React.FC<Props> = ({ onClick }) => {
+
+	const Translation = useTranslations();
+
 	return (
 		<Flex
 			className={"ChatWidgetTopBar"} 

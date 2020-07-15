@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MooMed.Caching.Cache.UnderlyingCache;
 using MooMed.Caching.Cache.UnderlyingCache.Interface;
-using MooMed.Core.Code.Extensions;
+using MooMed.DotNet.Extensions;
 using MooMed.TestBase;
 using NUnit.Framework;
 

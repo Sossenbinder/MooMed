@@ -3,9 +3,12 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MooMed.Configuration.Module;
 using MooMed.Core;
 using MooMed.Dns.Module;
+using MooMed.Encryption.Module;
 using MooMed.Eventing.Module;
+using MooMed.Logging.Module;
 
 namespace KubeWatcher
 {
@@ -20,6 +23,9 @@ namespace KubeWatcher
 				.ConfigureContainer<ContainerBuilder>(builder => {
 
 					builder.RegisterModule<CoreModule>();
+					builder.RegisterModule<EncryptionModule>();
+					builder.RegisterModule<ConfigurationModule>();
+					builder.RegisterModule<LoggingModule>();
 					builder.RegisterModule<DnsModule>();
 					builder.RegisterModule<EventingModule>();
 				})

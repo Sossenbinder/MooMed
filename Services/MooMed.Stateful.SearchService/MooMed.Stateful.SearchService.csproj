@@ -5,7 +5,9 @@
     <UserSecretsId>3cac4851-6e69-44a9-9dc9-3d0f3ac19681</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileContext>..\..</DockerfileContext>	
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

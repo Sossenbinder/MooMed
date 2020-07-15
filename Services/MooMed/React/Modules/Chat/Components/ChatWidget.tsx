@@ -27,6 +27,7 @@ export const ChatWidget: React.FC<Props> = ({ friends, chatRooms }) => {
 	const { ChatService } = useServices();
 
 	const [maximized, setMaximized] = React.useState(false);
+	const [initiallyRendered, setInitiallyRendered] = React.useState(false);
 	const [activeChatPartnerId, setActiveChatPartnerId] = React.useState(0);
 
 	React.useEffect(() => {
@@ -42,6 +43,7 @@ export const ChatWidget: React.FC<Props> = ({ friends, chatRooms }) => {
 	const classes = classNames({
 		"ChatWidget": true,
 		"maximized": maximized,
+		"minimized": !maximized && initiallyRendered,
 	});
 
 	return (
@@ -49,7 +51,10 @@ export const ChatWidget: React.FC<Props> = ({ friends, chatRooms }) => {
 			className={classes}
 			direction={"Column"}>
 			<ChatWidgetTopBar
-				onClick={() => setMaximized(!maximized)} />
+				onClick={() => {
+					setMaximized(!maximized);
+					setInitiallyRendered(true);
+				}} />
 			<If condition={maximized}>
 				<ChatWidgetContent 
 					activeChatId={activeChatPartnerId}

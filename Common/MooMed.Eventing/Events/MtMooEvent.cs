@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Logging.Loggers;
+using MooMed.DotNet.Extensions;
 using MooMed.Eventing.Events.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Loggers;
 
 namespace MooMed.Eventing.Events
 {
@@ -32,9 +33,7 @@ namespace MooMed.Eventing.Events
 		{
 			try
 			{
-				var tasks = _handlers.Select(handler => handler(eventArgs));
-
-				await Task.WhenAll(tasks);
+				await _handlers.ParallelAsync(handler => handler(eventArgs));
 			}
 			catch (Exception e)
 			{

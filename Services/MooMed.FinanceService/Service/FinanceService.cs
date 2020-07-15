@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Common.Definitions.Models.Portfolio;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Finance.Service.Interface;
 using MooMed.Module.Portfolio.Service.Interface;
 
@@ -21,7 +22,7 @@ namespace MooMed.FinanceService.Service
 		private readonly IPortfolioService _portfolioService;
 
 		public FinanceService(
-			[NotNull] IMainLogger logger,
+			[NotNull] IMooMedLogger logger,
 			[NotNull] IExchangeTradedsService exchangeTradedsService,
 			[NotNull] IPortfolioService portfolioService)
 			: base(logger)

@@ -7,7 +7,7 @@ using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.Search;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Extensions;
+using MooMed.DotNet.Extensions;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
 

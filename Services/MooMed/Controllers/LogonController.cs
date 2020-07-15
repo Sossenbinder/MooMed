@@ -9,10 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers;
 using MooMed.Web.Controllers.Base;
 using MooMed.Web.Controllers.Result;
-using Serilog;
 
 namespace MooMed.Web.Controllers
 {

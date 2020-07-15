@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Core.Code.API.Interface;
 using MooMed.Core.Code.API.Types;
-using MooMed.Core.Code.Extensions;
+using MooMed.DotNet.Extensions;
 using Newtonsoft.Json;
 
 namespace MooMed.Core.Code.API

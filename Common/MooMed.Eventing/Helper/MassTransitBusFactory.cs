@@ -5,8 +5,8 @@ using MassTransit;
 using MassTransit.RabbitMqTransport;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Core.Code.Helper.Retry;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Dns.Service.Interface;
+using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Eventing.Helper
 {
@@ -17,14 +17,14 @@ namespace MooMed.Eventing.Helper
 			[CanBeNull] Action<IRabbitMqBusFactoryConfigurator> configFunc = null)
 		{
 			var endpointDiscoveryService = (IEndpointDiscoveryService)provider.GetService(typeof(IEndpointDiscoveryService));
-			var logger = (IMainLogger)provider.GetService(typeof(IMainLogger));
+			var logger = (IMooMedLogger)provider.GetService(typeof(IMooMedLogger));
 
 			return CreateBus(endpointDiscoveryService, logger, configFunc);
 		}
 
 		public static IBusControl CreateBus(
 			[NotNull] IEndpointDiscoveryService endpointDiscoveryService,
-			[NotNull] IMainLogger logger,
+			[NotNull] IMooMedLogger logger,
 			[CanBeNull] Action<IRabbitMqBusFactoryConfigurator> configFunc = null)
 		{
 			return Bus.Factory.CreateUsingRabbitMq(async config =>

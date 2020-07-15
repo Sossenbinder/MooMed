@@ -1,4 +1,4 @@
-﻿namespace MooMed.IPC.DataType
+﻿namespace MooMed.Common.Definitions.IPC
 {
 	public class Endpoint
 	{

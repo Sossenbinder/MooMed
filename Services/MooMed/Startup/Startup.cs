@@ -8,11 +8,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Caching.Module;
+using MooMed.Configuration.Module;
 using MooMed.Core;
 using MooMed.Dns.Module;
+using MooMed.Encryption.Module;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
 using MooMed.IPC.Module;
+using MooMed.Logging.Module;
 using MooMed.Module.Finance.Modules;
 using MooMed.SignalR.Hubs;
 using MooMed.Web.Modules;
@@ -57,6 +60,9 @@ namespace MooMed.Web.Startup
         public void ConfigureContainer([NotNull] ContainerBuilder builder)
         {
 			builder.RegisterModule<CoreModule>();
+			builder.RegisterModule<EncryptionModule>();
+			builder.RegisterModule<ConfigurationModule>();
+			builder.RegisterModule<LoggingModule>();
 			builder.RegisterModule<CachingModule>();
 			builder.RegisterModule<WebGrpcModule>();
 			builder.RegisterModule<KubernetesModule>();

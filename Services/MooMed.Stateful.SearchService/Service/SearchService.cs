@@ -3,8 +3,8 @@ using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.ServiceBase;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Stateful.SearchService.Service
 {
@@ -14,7 +14,7 @@ namespace MooMed.Stateful.SearchService.Service
 	    private readonly IAccountService _accountService;
 
 	    public SearchService(
-            [NotNull] IMainLogger logger,
+            [NotNull] IMooMedLogger logger,
             [NotNull] IAccountService accountService)
             : base(logger)
         {

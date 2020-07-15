@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Core.Code.Extensions;
+using MooMed.DotNet.Extensions;
 using MooMed.Module.Accounts.Helper.Interface;
 
 namespace MooMed.Module.Accounts.Helper

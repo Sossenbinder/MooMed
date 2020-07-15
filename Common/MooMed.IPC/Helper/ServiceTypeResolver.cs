@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MooMed.Common.Definitions.IPC;
-using MooMed.IPC.DataType;
 
 namespace MooMed.IPC.Helper
 {

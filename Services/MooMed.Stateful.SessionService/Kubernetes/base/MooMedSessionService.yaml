@@ -4,11 +4,13 @@ metadata:
   name: moomed-sessionservice
 spec:
   clusterIP: None
+  ports:
+  - name: http2
+    port: 10042
+    targetPort: 10042
+    protocol: TCP
   selector:
     name: moomed-sessionservice
-  ports:
-    - protocol: TCP
-      port: 12532
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -29,10 +31,10 @@ spec:
     spec:
       containers:
       - name: moomed-sessionservice
-        image: moomed-sessionservice:dev
+        image: moomed.azurecr.io/sessionservice
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 10042
         env:
           - name: AZURE_CLIENT_SECRET
             valueFrom:

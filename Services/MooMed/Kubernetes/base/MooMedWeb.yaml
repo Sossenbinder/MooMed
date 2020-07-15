@@ -1,16 +1,44 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: moomedgateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: moomedvservice
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - moomedgateway
+  http:
+    - route:
+      - destination:
+          host: moomed-frontendservice
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: moomed-frontendservice
 spec:
-  type: LoadBalancer
   selector:
     name: moomed-frontendservice
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30522
 ---
 apiVersion: apps/v1
 kind: Deployment

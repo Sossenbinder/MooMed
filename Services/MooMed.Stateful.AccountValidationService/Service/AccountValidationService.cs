@@ -7,9 +7,9 @@ using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Common.ServiceBase;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.Core.Translations.Resources;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
@@ -31,7 +31,7 @@ namespace MooMed.Stateful.AccountValidationService.Service
         private readonly IAccountValidationEmailHelper _accountValidationEmailHelper;
         
         public AccountValidationService(
-            [NotNull] IMainLogger logger,
+            [NotNull] IMooMedLogger logger,
             [NotNull] IAccountValidationRepository accountValidationRepository,
             [NotNull] IAccountValidationEmailHelper accountValidationEmailHelper,
             [NotNull] IAccountValidationTokenHelper accountValidationTokenHelper,

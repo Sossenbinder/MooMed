@@ -22,8 +22,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\MooMed.Configuration\MooMed.Configuration.csproj" />
     <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\MooMed.Encryption\MooMed.Encryption.csproj" />
     <ProjectReference Include="..\MooMed.Eventing\MooMed.Eventing.csproj" />
+    <ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
   </ItemGroup>
 
 </Project>

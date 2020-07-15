@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using JetBrains.Annotations;
-using MooMed.Core.Code.Configuration.Interface;
-using MooMed.Core.Code.Helper.Crypto;
-using MooMed.Core.Code.Helper.Crypto.Interface;
+using MooMed.Configuration.Interface;
+using MooMed.Encryption;
+using MooMed.Encryption.Interface;
 
 namespace MooMed.TestBase.Config
 {

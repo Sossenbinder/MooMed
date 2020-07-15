@@ -13,7 +13,11 @@ type Props = {
 export const LoadingBubbles: React.FC<Props> = ({ amountOfBubbles = 3 }) => {
 
 	const bubbles = React.useMemo(() => {
-		return [...Array(amountOfBubbles).keys()].map(x => <Flex className="LoadingButtonBubble" />);
+		return [...Array(amountOfBubbles).keys()].map((x, i) => (
+		<Flex 
+			className="LoadingButtonBubble"
+			key={`loadingBubble_${i}`}
+		/>));
 	}, [ amountOfBubbles ])
 
 	return (

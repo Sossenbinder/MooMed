@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-chatservice
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - image: moomed.azurecr.io/chatservice:dev
+        name: moomed-chatservice
+      imagePullSecrets:
+      - name: acrimgpullsecret

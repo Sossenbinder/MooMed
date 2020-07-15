@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Dns.Service.Interface;
-using MooMed.IPC.DataType;
 
 namespace MooMed.Dns.Service
 {

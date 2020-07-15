@@ -11,12 +11,21 @@ services:
     - "1338:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+    volumes:
+      - ./Logs:/hostlogs
 
   moomed.stateful.sessionservice:
     image: ${DOCKER_REGISTRY-}moomedstatefulsessionservice
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.SessionService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
 
   moomed.searchservice:
@@ -24,6 +33,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.SearchService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
 
   moomed.profilepictureservice:
@@ -31,6 +47,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.ProfilePictureService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
 
   moomed.stateful.accountvalidationservice:
@@ -38,6 +61,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.AccountValidationService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
 
   moomed.stateful.accountservice:
@@ -45,6 +75,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Stateful.AccountService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
 
   moomed.financeservice:
@@ -52,6 +89,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.FinanceService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
   moomed.rabbitmq:
     container_name: rabbitmq
@@ -64,6 +108,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.ChatService/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./Logs:/hostlogs
 
 
   moomed.monitoringservice:
@@ -71,5 +122,12 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Monitoring/Dockerfile
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
     - "4122:80"
+    volumes:
+      - ./Logs:/hostlogs

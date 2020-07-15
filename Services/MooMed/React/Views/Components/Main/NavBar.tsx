@@ -23,23 +23,23 @@ export const NavBar: React.FC<Props> = () => (
 		className={"MainNavBar navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top"}
 		direction={"Row"}>
 		<Link 
-			to={"/"}
-			className={"Heading"}>
+			to="/"
+			className="Heading">
 			MooMed - Finance done right
 		</Link>
 		<Link 
-			to={"/"}
-			className={"SubItem"}>
+			to="/"
+			className="SubItem">
 			Home
 		</Link>
 		<Link 
-			to={"/Stocks"}
-			className={"SubItem"}>
+			to="/Stocks"
+			className="SubItem">
 			Stocks
 		</Link>
 		<Link 
-			to={"/Contact"}
-			className={"SubItem"}>
+			to="/Contact"
+			className="SubItem">
 			Contact
 		</Link>
 		<div className="searchBar nav navbar-nav ml-auto">

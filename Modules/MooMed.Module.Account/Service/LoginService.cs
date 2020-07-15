@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Core.Code.Helper.Crypto;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
-using MooMed.Module.Accounts.Datatypes.Entity;
+using MooMed.Encryption;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
@@ -23,18 +19,18 @@ namespace MooMed.Module.Accounts.Service
 		private readonly IAccountSignInValidator _accountSignInValidator;
 
 		[NotNull]
-		private readonly IMainLogger _mainLogger;
+		private readonly IMooMedLogger _logger;
 
 		[NotNull]
 		private readonly IAccountRepository _accountRepository;
 
 		public LoginService(
 			[NotNull] IAccountSignInValidator accountSignInValidator,
-			[NotNull] IMainLogger mainLogger,
+			[NotNull] IMooMedLogger logger,
 			[NotNull] IAccountRepository accountRepository)
 		{
 			_accountSignInValidator = accountSignInValidator;
-			_mainLogger = mainLogger;
+			_logger = logger;
 			_accountRepository = accountRepository;
 		}
 
@@ -77,7 +73,7 @@ namespace MooMed.Module.Accounts.Service
 
 		public async Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
 		{
-			_mainLogger.Info("Refreshing login for account", sessionContext);
+			_logger.Info("Refreshing login for account", sessionContext);
 			return await _accountRepository.RefreshLastAccessedAt(sessionContext);
 		}
     }

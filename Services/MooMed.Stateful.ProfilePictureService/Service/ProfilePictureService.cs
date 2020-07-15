@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MooMed.Azure;
+using MooMed.Common.Definitions.Configuration;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.ServiceBase;
-using MooMed.Core.Code.Configuration.Interface;
-using MooMed.Core.Code.Logging.Loggers.Interface;
+using MooMed.Configuration.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Stateful.ProfilePictureService.Utils;
 using ProtoBuf.Grpc;
 using SixLabors.ImageSharp;
@@ -34,7 +33,7 @@ namespace MooMed.Stateful.ProfilePictureService.Service
         private readonly CloudStorageAccessor _cloudStorageAccessor;
 
         public ProfilePictureService(
-	        [NotNull] IMainLogger logger,
+	        [NotNull] IMooMedLogger logger,
 	        [NotNull] IConfigSettingsProvider settingsProvider)
 			:base(logger)
         {
@@ -47,7 +46,7 @@ namespace MooMed.Stateful.ProfilePictureService.Service
             => GetProfilePictureForAccountById(sessionContext.Account.Id);
 
         [ItemNotNull]
-        public async Task<ServiceResponse<string>> GetProfilePictureForAccountById(Primitive<int> accountId)
+        public async Task<ServiceResponse<string?>> GetProfilePictureForAccountById(Primitive<int> accountId)
         {
             if (accountId <= 0)
             {

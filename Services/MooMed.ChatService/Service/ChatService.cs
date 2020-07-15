@@ -6,9 +6,9 @@ using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.Definitions.Notifications;
 using MooMed.Common.Definitions.UiModels.Chat;
 using MooMed.Common.ServiceBase.Interface;
-using MooMed.Core.Code.Logging.Loggers.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Chat.DataTypes.SignalR;
 using MooMed.Module.Chat.Service.Interface;
 
@@ -23,7 +23,7 @@ namespace MooMed.ChatService.Service
 		private readonly IMessageService _messageService;
 
 		public ChatService(
-			[NotNull] IMainLogger logger,
+			[NotNull] IMooMedLogger logger,
 			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
 			[NotNull] IMessageService messageService) 
 			: base(logger)
