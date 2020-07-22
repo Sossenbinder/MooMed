@@ -5,6 +5,9 @@ using MassTransit.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Caching.Module;
@@ -18,47 +21,53 @@ using MooMed.IPC.Module;
 using MooMed.Logging.Module;
 using MooMed.Module.Finance.Modules;
 using MooMed.SignalR.Hubs;
+using MooMed.Web.Areas.Identity.Data;
 using MooMed.Web.Modules;
 
 namespace MooMed.Web.Startup
 {
-    public class Startup
-    {
-	    // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-	        ConfigureMassTransit(services);
+	public class Startup
+	{
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			ConfigureMassTransit(services);
 
-	        services
-				.AddMvc();
+			services.AddMvc();
 
-	        services
-		        .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-		        .AddCookie(options => options.LoginPath = "/Logon/Login");
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options => options.LoginPath = "/Logon/Login");
 
-	        services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
-        }
+			services.AddDbContext<ApplicationDbContext>(options =>
+				options.UseSqlServer("Server=tcp:moomeddbserver.database.windows.net,1433;Initial Catalog=Main;Persist Security Info=False;User ID=moomedadmin;Password=8fC2XaAB1JPPwTL05SoFbdNRvKAH2bHy;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+					x => x.MigrationsAssembly("MooMed.Web")));
 
-        private void ConfigureMassTransit([NotNull] IServiceCollection services)
-        {
-	        services.AddSignalR().AddMassTransitBackplane();
+			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+				.AddEntityFrameworkStores<ApplicationDbContext>();
 
-	        // creating the bus config
-	        services.AddMassTransit(x =>
-	        {
-		        // Add this for each Hub you have
-		        x.AddSignalRHubConsumers<SignalRHub>();
-
-		        x.AddBus(provider => MassTransitBusFactory.CreateBus(provider, cfg =>
-		        {
-			        cfg.AddSignalRHubEndpoints<SignalRHub>(provider);
-		        }));
-	        });
+			services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
 		}
 
-        [UsedImplicitly]
-        public void ConfigureContainer([NotNull] ContainerBuilder builder)
-        {
+		private void ConfigureMassTransit([NotNull] IServiceCollection services)
+		{
+			services.AddSignalR().AddMassTransitBackplane();
+
+			// creating the bus config
+			services.AddMassTransit(x =>
+			{
+				// Add this for each Hub you have
+				x.AddSignalRHubConsumers<SignalRHub>();
+
+				x.AddBus(provider => MassTransitBusFactory.CreateBus(provider, cfg =>
+				{
+					cfg.AddSignalRHubEndpoints<SignalRHub>(provider);
+				}));
+			});
+		}
+
+		[UsedImplicitly]
+		public void ConfigureContainer([NotNull] ContainerBuilder builder)
+		{
 			builder.RegisterModule<CoreModule>();
 			builder.RegisterModule<EncryptionModule>();
 			builder.RegisterModule<ConfigurationModule>();
@@ -69,7 +78,7 @@ namespace MooMed.Web.Startup
 			builder.RegisterModule<DnsModule>();
 			builder.RegisterModule<EventingModule>();
 			builder.RegisterModule<FinanceModule>();
-        }
+		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		[UsedImplicitly]
@@ -101,5 +110,5 @@ namespace MooMed.Web.Startup
 				endpointRouteBuilder.MapHub<SignalRHub>("/signalRHub");
 			});
 		}
-    }
+	}
 }

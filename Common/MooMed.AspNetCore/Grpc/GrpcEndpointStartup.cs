@@ -34,6 +34,8 @@ namespace MooMed.AspNetCore.Grpc
 			services.AddControllers()
 				.AddApplicationPart(Assembly.GetExecutingAssembly())
 				.AddControllersAsServices();
+			
+			services.AddDataProtection();
 
 			services.AddMassTransit(x => x.AddBus(provider => MassTransitBusFactory.CreateBus(provider)));
 		}

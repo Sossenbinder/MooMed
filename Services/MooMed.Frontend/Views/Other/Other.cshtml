@@ -1,0 +1,17 @@
+﻿@using MooMed.Frontend.Views
+@model MooMed.Frontend.Models.ControllerMetaData
+
+@{
+    Layout = "~/Views/Shared/Other/_OtherLayout.cshtml";
+}
+
+<script>
+    @if (Model.DataModel != null)
+    {
+        @:window.dataModel = JSON.parse('@Html.Raw(Model.DataModel)');
+    }
+</script>
+
+<div id="otherPageHolder" class="otherPageHolder"></div>
+
+@MooMedHtmlHelper.TranslationFile(Model.UiLanguage);

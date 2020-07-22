@@ -21,6 +21,12 @@ namespace MooMed.Common.Definitions.Models.User.ErrorCodes
 		EmailNotValidated,
 
 		[EnumMember]
-		AccountNotFound
+		AccountNotFound,
+
+		[EnumMember]
+		PasswordWrong,
+
+		[EnumMember]
+		UnknownFailure,
     }
 }

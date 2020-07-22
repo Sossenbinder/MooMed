@@ -1,0 +1,13 @@
+﻿@using MooMed.Frontend.Views
+@model MooMed.Frontend.Models.ControllerMetaData
+
+@{
+    Layout = "~/Views/Shared/Landing/_LandingLayout.cshtml";
+}
+
+<div 
+	id="logonPageHolder"
+	class="logonPageHolder">
+</div>
+
+@MooMedHtmlHelper.TranslationFile(Model.UiLanguage)

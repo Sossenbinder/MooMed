@@ -18,7 +18,7 @@ namespace MooMed.Common.Definitions.Models.User
 
         }
 
-        public LoginResult(LoginResponseCode loginResponseCode, [CanBeNull] Account account)
+        public LoginResult(LoginResponseCode loginResponseCode, [CanBeNull] Account account = null)
         {
             LoginResponseCode = loginResponseCode;
             Account = account;

@@ -51,6 +51,14 @@ namespace MooMed.Core.DataTypes
 		[NotNull]
 		public static ServiceResponse Failure([CanBeNull] string errorMessage = null)
 			=> new ServiceResponse(false, errorMessage);
+
+		[NotNull]
+		public static ServiceResponse<TPayload> Success<TPayload>([NotNull] TPayload payload, [CanBeNull] string errorMessage = null)
+			=> new ServiceResponse<TPayload>(true, payload, errorMessage);
+
+		[NotNull]
+		public static ServiceResponse<TPayload> Failure<TPayload>([NotNull] TPayload payload, [CanBeNull] string errorMessage = null)
+			=> new ServiceResponse<TPayload>(false, payload, errorMessage);
 	}
 
 	[ProtoContract]
@@ -81,7 +89,7 @@ namespace MooMed.Core.DataTypes
 		{
 		}
 
-		private ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload, [CanBeNull] string errorMessage)
+		public ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload, [CanBeNull] string errorMessage)
 			: base(isSuccess, errorMessage)
 		{
 			_payload = payload;

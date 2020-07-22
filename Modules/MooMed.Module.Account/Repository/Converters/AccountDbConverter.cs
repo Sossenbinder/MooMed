@@ -20,7 +20,7 @@ namespace MooMed.Module.Accounts.Repository.Converters
 			return new Account()
 			{
 				Email = entity.Email,
-				EmailValidated = entity.EmailValidated,
+				EmailConfirmed = entity.EmailValidated,
 				Id = entity.Id,
 				LastAccessedAt = entity.LastAccessedAt,
 				UserName = entity.UserName,

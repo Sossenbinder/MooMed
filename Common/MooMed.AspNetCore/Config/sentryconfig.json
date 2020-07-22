@@ -1,0 +1,12 @@
+{
+	"Sentry": {
+		"Dsn": "https://a2fedb6e23114d17a0ef6eab036612a5@o421429.ingest.sentry.io/5341171",
+		"IncludeRequestPayload": true,
+		"SendDefaultPii": true,
+		"MinimumBreadcrumbLevel": "Debug",
+		"MinimumEventLevel": "Warning",
+		"AttachStackTrace": true,
+		"Debug": true,
+		"DiagnosticsLevel": "Error"
+	}
+}

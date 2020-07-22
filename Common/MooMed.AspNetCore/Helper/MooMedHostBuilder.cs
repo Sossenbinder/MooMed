@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using MooMed.AspNetCore.Config;
 using MooMed.AspNetCore.Extensions;
-using MooMed.Logging.Loggers;
 
 namespace MooMed.AspNetCore.Helper
 {
@@ -53,53 +51,13 @@ namespace MooMed.AspNetCore.Helper
 				.ConfigureWebHostDefaults(webHostBuilder =>
 				{
 					webHostBuilder
-						.UseConfiguration(CreateConfig(args))
-						.UseStartup<TStartup>();
+						.UseStartup<TStartup>()
+						.UseConfiguration(ConfigHelper.CreateConfiguration(args));
+
+					webHostBuilder.UseSentry();
 
 					webHostBuilderEnricher(webHostBuilder);
 				});
-		}
-
-		private static IConfiguration CreateConfig(string[] args)
-		{
-			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-			var configBuilder = new ConfigurationBuilder()
-				.AddEnvironmentVariables()
-				.AddJsonFile("appsettings.json", true, true)
-				.AddJsonFile($"appsettings.{environment}.json", true, true)
-				.AddInMemoryCollection(LoggerConstants.GetConstantsAsInMemoryDict());
-			
-			if (args != null)
-			{
-				configBuilder.AddCommandLine(args);
-			}
-
-			if (environment?.Equals(Environments.Development) ?? false)
-			{
-				var appAssembly = Assembly.GetEntryAssembly();
-				if (appAssembly != null)
-				{
-					configBuilder.AddUserSecrets(appAssembly);
-				}
-			}
-
-			var intermediateBuild = configBuilder.Build();
-
-			AddKeyVault(configBuilder, intermediateBuild);
-
-			return configBuilder.Build();
-		}
-
-		private static void AddKeyVault(IConfigurationBuilder configBuilder, IConfiguration config)
-		{
-			var keyVaultEndpoint = "https://moomed.vault.azure.net/";
-
-			var keyVaultClient = config["AZURE_CLIENT_ID"];
-
-			var keyVaultSecret = config["AZURE_CLIENT_SECRET"];
-
-			configBuilder.AddAzureKeyVault(keyVaultEndpoint, keyVaultClient, keyVaultSecret);
 		}
 	}
 }

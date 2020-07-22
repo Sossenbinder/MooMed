@@ -1,11 +1,12 @@
 version: '3.4'
 
 services:
-  moomed.web:
-    image: ${DOCKER_REGISTRY-}moomedweb
+
+  moomed.frontend:
+    image: ${DOCKER_REGISTRY-}moomedfrontend
     build:
       context: .
-      dockerfile: Services/MooMed/Dockerfile
+      dockerfile: Services/MooMed.Frontend/Dockerfile
     ports:
     - "1337:80"
     - "1338:443"
@@ -13,7 +14,7 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
     volumes:
       - ./Logs:/hostlogs
-
+ 
   moomed.stateful.sessionservice:
     image: ${DOCKER_REGISTRY-}moomedstatefulsessionservice
     build:
@@ -131,3 +132,4 @@ services:
     - "4122:80"
     volumes:
       - ./Logs:/hostlogs
+

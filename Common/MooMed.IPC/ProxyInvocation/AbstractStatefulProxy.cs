@@ -46,22 +46,22 @@ namespace MooMed.IPC.ProxyInvocation
 		}
 
 		// Random invocation
-		public async Task InvokeRandom(Func<TServiceType, Task> invocationFunc)
+		public Task InvokeRandom(Func<TServiceType, Task> invocationFunc)
 		{
 			var proxy = _clientProvider.GetGrpcClient<TServiceType>(
 				_moomedService,
 				GetRandomReplicaNumber());
 
-			await invocationFunc(proxy);
+			return invocationFunc(proxy);
 		}
 
-		public async Task<TResult> InvokeRandomWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
+		public Task<TResult> InvokeRandomWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
 		{
 			var proxy = _clientProvider.GetGrpcClient<TServiceType>(
 				_moomedService,
 				GetRandomReplicaNumber());
 
-			return await invocationFunc(proxy);
+			return invocationFunc(proxy);
 		}
 
 		// Specific invocation
@@ -85,7 +85,7 @@ namespace MooMed.IPC.ProxyInvocation
 			[NotNull] Func<TServiceType, Task<TResult>> invocationFunc)
 			=> InvokeSpecificWithResult(hashableIdentifier.SessionContext.HashableIdentifier, invocationFunc);
 
-		protected async Task InvokeSpecific(
+		protected Task InvokeSpecific(
 			int hashableIdentifier,
 			[NotNull] Func<TServiceType, Task> invocationFunc)
 		{
@@ -93,10 +93,10 @@ namespace MooMed.IPC.ProxyInvocation
 				_moomedService,
 				ResolveToReplicaNumber(hashableIdentifier));
 
-			await invocationFunc(proxy);
+			return invocationFunc(proxy);
 		}
 
-		protected async Task<TResult> InvokeSpecificWithResult<TResult>(
+		protected Task<TResult> InvokeSpecificWithResult<TResult>(
 			int hashableIdentifier,
 			[NotNull] Func<TServiceType, Task<TResult>> invocationFunc)
 		{
@@ -104,13 +104,9 @@ namespace MooMed.IPC.ProxyInvocation
 				_moomedService,
 				ResolveToReplicaNumber(hashableIdentifier));
 
-			return await invocationFunc(proxy);
+			return invocationFunc(proxy);
 		}
 
-		[NotNull]
-		private int ResolveToPartitionKey([NotNull] IEndpointSelector sessionContext)
-			=> ResolveToReplicaNumber(sessionContext.HashableIdentifier);
-		
 		private int ResolveToReplicaNumber(int hashableIdentifier)
 		{
 			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_statefulSetService);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Web.Controllers.Base;
@@ -15,7 +16,8 @@ namespace MooMed.Web.Controllers
 
 	    public HomeController(
 	        [NotNull] ISessionService sessionService,
-	        [NotNull] IAccountService accountService) 
+	        [NotNull] IAccountService accountService,
+		    [NotNull] UserManager<IdentityUser> usersrvc) 
             : base(sessionService)
 	    {
 		    _accountService = accountService;

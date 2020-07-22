@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
@@ -24,57 +25,70 @@ namespace MooMed.Module.Accounts.Service
 		[NotNull]
 		private readonly IAccountRepository _accountRepository;
 
+		[NotNull]
+		private readonly SignInManager<Account> _signInManager;
+
+		[NotNull]
+		private readonly UserManager<Account> _userManager;
+
 		public LoginService(
 			[NotNull] IAccountSignInValidator accountSignInValidator,
 			[NotNull] IMooMedLogger logger,
-			[NotNull] IAccountRepository accountRepository)
+			[NotNull] IAccountRepository accountRepository,
+			[NotNull] SignInManager<Account> signInManager,
+			[NotNull] UserManager<Account> userManager)
 		{
 			_accountSignInValidator = accountSignInValidator;
 			_logger = logger;
 			_accountRepository = accountRepository;
+			_signInManager = signInManager;
+			_userManager = userManager;
 		}
 
 		[ItemNotNull]
-		public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
+		public async Task<LoginResult> Login(LoginModel loginModel)
 		{
 			// Validate the login data we got
 			var loginValidationResult = _accountSignInValidator.ValidateLoginModel(loginModel);
 
 			if (loginValidationResult != LoginResponseCode.Success)
 			{
-				return ServiceResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
+				return new LoginResult(loginValidationResult);
 			}
 
-			string hashedPassword;
-			try
-			{
-				hashedPassword = Sha256Helper.Hash(loginModel.Password);
-			}
-			catch (ArgumentException)
-			{
-				return ServiceResponse<LoginResult>.Failure(new LoginResult(loginValidationResult, null));
-			}
-
-			var account = (await _accountRepository.FindAccount(accDbModel => accDbModel.Email.Equals(loginModel.Email)
-			                                                                  && accDbModel.PasswordHash.Equals(hashedPassword)))?.ToModel();
+			var account = await _userManager.FindByEmailAsync(loginModel.Email);
 
 			if (account == null)
 			{
-				return ServiceResponse<LoginResult>.Failure(new LoginResult(LoginResponseCode.AccountNotFound, null));
+				return new LoginResult(LoginResponseCode.AccountNotFound);
 			}
 
-			if (!account.EmailValidated)
+			var validator = await _userManager.CheckPasswordAsync(account, loginModel.Password);
+
+			if (validator == false)
 			{
-				return ServiceResponse<LoginResult>.Failure(new LoginResult(LoginResponseCode.EmailNotValidated, null));
+				return new LoginResult(LoginResponseCode.PasswordWrong);
 			}
 
-			return ServiceResponse<LoginResult>.Success(new LoginResult(LoginResponseCode.Success, account));
+			var result = await _signInManager.PasswordSignInAsync(account.UserName, loginModel.Password, loginModel.RememberMe, false);
+
+			if (result.Succeeded)
+			{
+				return new LoginResult(LoginResponseCode.Success, account);
+			}
+
+			if (!account.EmailConfirmed)
+			{
+				return new LoginResult(LoginResponseCode.EmailNotValidated);
+			}
+
+			return new LoginResult(LoginResponseCode.UnknownFailure);
 		}
 
-		public async Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
+		public Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
 		{
 			_logger.Info("Refreshing login for account", sessionContext);
-			return await _accountRepository.RefreshLastAccessedAt(sessionContext);
+			return _accountRepository.RefreshLastAccessedAt(sessionContext);
 		}
     }
 }

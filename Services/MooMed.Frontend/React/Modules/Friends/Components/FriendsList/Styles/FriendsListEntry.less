@@ -1,0 +1,24 @@
+.FriendListEntry {
+
+	display: block;
+
+	height: 42px;
+
+	padding: 5px;
+	position: relative;
+
+	.FriendProfileLabel {
+		margin-left: 5px;
+	}
+
+	&:hover {
+		.FriendListHover {
+			display: inline-flex !important;
+		}
+
+		background: lightgrey;
+		cursor: pointer;
+
+		transition: 0.2s;
+	}
+}

@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using Docker.DotNet.Models;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Messages.Account;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
 using MooMed.DotNet.Extensions;
@@ -16,6 +18,7 @@ using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
+using ProtoBuf.Meta;
 
 namespace MooMed.Stateful.AccountService.Service
 {
@@ -77,24 +80,22 @@ namespace MooMed.Stateful.AccountService.Service
             // Do the actual login in the AccountManager
             var loginResult = await _loginService.Login(loginModel);
             
-            if (!loginResult.IsSuccess)
+            if (loginResult.LoginResponseCode != LoginResponseCode.Success)
             {
-                return loginResult;
+                return ServiceResponse.Failure(loginResult);
             }
-			
-            var payload = loginResult.PayloadOrFail;
             
-            var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(payload.Account.Id);
+            var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(loginResult.Account.Id);
 
-            payload.Account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
+            loginResult.Account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
 
-            var sessionContext = await _sessionService.LoginAccount(payload.Account);
+            var sessionContext = await _sessionService.LoginAccount(loginResult.Account);
 
             Logger.Info("Login happened", sessionContext);
 
-            await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
+            //await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
 
-            return loginResult;
+            return ServiceResponse.Success(loginResult);
         }
 
         /// <summary>

@@ -82,7 +82,7 @@ namespace MooMed.Module.Accounts.Repository
         public async Task<bool> RefreshLastAccessedAt(ISessionContext sessionContext)
         {
             int rowsAffected;
-            using (var ctx = CreateContext())
+            await using (var ctx = CreateContext())
             {
                 var account = await ctx.Account.FirstAsync(acc => acc.Id.Equals(sessionContext.Account.Id));
                 account.LastAccessedAt = DateTime.Now;

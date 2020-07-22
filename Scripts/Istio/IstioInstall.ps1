@@ -1,0 +1,1 @@
+istioctl install demo

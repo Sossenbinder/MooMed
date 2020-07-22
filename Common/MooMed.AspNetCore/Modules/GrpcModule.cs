@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using MooMed.AspNetCore.Grpc;
+using MooMed.AspNetCore.Grpc.Serialization;
 
 namespace MooMed.AspNetCore.Modules
 {

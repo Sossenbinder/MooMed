@@ -57,7 +57,7 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
 		        Id = Id,
 		        Email = Email,
 		        UserName = UserName,
-		        EmailValidated = EmailValidated,
+                EmailConfirmed = EmailValidated,
 		        LastAccessedAt = LastAccessedAt
 	        };
         }

@@ -1,30 +1,16 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Definitions.Interface;
 using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.User
 {
     [ProtoContract]
-    public class Account : IModel
+    public class Account : IdentityUser<int>, IModel
     {
-        [ProtoMember(1)]
-        public int Id { get; set; }
-
-        [ProtoMember(2)]
-        public string UserName { get; set; }
-
-        [ProtoMember(3)]
-        public string Email { get; set; }
-
-        [ProtoMember(4)]
-        public bool EmailValidated { get; set; }
-
-        [ProtoMember(5)]
         public DateTime LastAccessedAt { get; set; }
 
-        [ProtoMember(6)]
         public string ProfilePicturePath { get; set; }
     }
 
@@ -35,5 +21,35 @@ namespace MooMed.Common.Definitions.Models.User
         {
             return $"a-{account.Id}";
         }
+    }
+
+    [ProtoContract]
+    public class DateTimeOffsetSurrogate
+    {
+	    [ProtoMember(1)]
+	    public string DateTimeString { get; set; }
+
+	    public static implicit operator DateTimeOffsetSurrogate(DateTimeOffset? value)
+	    {
+		    if (!value.HasValue)
+		    {
+			    return null;
+		    }
+
+		    return new DateTimeOffsetSurrogate
+		    {
+			    DateTimeString = value.Value.ToString("u")
+		    };
+	    }
+
+	    public static implicit operator DateTimeOffset?(DateTimeOffsetSurrogate value)
+	    {
+		    if (value.DateTimeString == null)
+		    {
+			    return null;
+		    }
+
+		    return DateTimeOffset.Parse(value.DateTimeString);
+	    }
     }
 }

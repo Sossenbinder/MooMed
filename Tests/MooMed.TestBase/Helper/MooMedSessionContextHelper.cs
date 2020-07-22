@@ -17,7 +17,7 @@ namespace MooMed.TestBase.Helper
                     Id = 123123123,
                     Email = "blablabla@test.de",
                     UserName = "Tester1234",
-                    EmailValidated = true,
+                    EmailConfirmed = true,
                     LastAccessedAt = DateTime.Now
                 }
             };

@@ -24,7 +24,7 @@
     <ProjectGuid>aaa8c1ad-c0a4-4f14-a34e-5beb81974e2d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:1337</DockerServiceUrl>
-    <DockerServiceName>moomed.web</DockerServiceName>
+    <DockerServiceName>moomed.frontend</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
