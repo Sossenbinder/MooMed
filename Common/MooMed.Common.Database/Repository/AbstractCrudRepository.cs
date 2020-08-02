@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using MooMed.Common.Database.Context;
+using MooMed.Common.Database.Context.Interface;
 using MooMed.Common.Database.Repository.Interface;
 using MooMed.Common.Definitions.Interface;
 using MooMed.DotNet.Extensions;
@@ -15,13 +15,13 @@ namespace MooMed.Common.Database.Repository
 {
 	public abstract class AbstractCrudRepository<TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType> 
 		where TEntity : class, IEntity<TKeyType>
-		where TDbContext : AbstractDbContext
+		where TDbContext : DbContext
 	{
 		[NotNull]
-		private readonly AbstractDbContextFactory<TDbContext> _contextFactory;
+		private readonly IDbContextFactory<TDbContext> _contextFactory;
 
 		protected AbstractCrudRepository(
-			[NotNull] AbstractDbContextFactory<TDbContext> contextFactory)
+			[NotNull] IDbContextFactory<TDbContext> contextFactory)
 		{
 			_contextFactory = contextFactory;
 		}

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 // Components
-import LogOff from "views/Components/Account/LogOff";
+import LogOff from "modules/Logon/Components/LogOff";
 
 // Functionality
 import { ReduxStore } from "data/store";

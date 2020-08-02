@@ -13,9 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Caching.Module;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.ServiceBase.Module;
 using MooMed.Configuration.Module;
 using MooMed.Core;
-using MooMed.Dns.Module;
+using MooMed.Identity.Module;
 using MooMed.Encryption.Module;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
@@ -23,6 +24,7 @@ using MooMed.Frontend.Modules;
 using MooMed.IPC.Module;
 using MooMed.Logging.Module;
 using MooMed.Module.Accounts.Database;
+using MooMed.Module.AccountValidation.Module;
 using MooMed.Module.Finance.Modules;
 using MooMed.SignalR.Hubs;
 
@@ -68,11 +70,13 @@ namespace MooMed.Frontend.StartupConfigs
 			builder.RegisterModule<ConfigurationModule>();
 			builder.RegisterModule<LoggingModule>();
 			builder.RegisterModule<CachingModule>();
-			builder.RegisterModule<FrontendGrpcModule>();
+			builder.RegisterModule<FrontendMooMedAspNetCoreModule>();
 			builder.RegisterModule<KubernetesModule>();
-			builder.RegisterModule<DnsModule>();
+			builder.RegisterModule<IdentityModule>();
 			builder.RegisterModule<EventingModule>();
 			builder.RegisterModule<FinanceModule>();
+			builder.RegisterModule<ServiceBaseModule>();
+			builder.RegisterModule<AccountValidationModule>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

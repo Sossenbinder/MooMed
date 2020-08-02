@@ -5,13 +5,9 @@
     Layout = "~/Views/Shared/Other/_OtherLayout.cshtml";
 }
 
-<script>
-    @if (Model.DataModel != null)
-    {
-        @:window.dataModel = JSON.parse('@Html.Raw(Model.DataModel)');
-    }
-</script>
+<div
+	id="landingContainer"
+	class="landingContainer">
+</div>
 
-<div id="otherPageHolder" class="otherPageHolder"></div>
-
-@MooMedHtmlHelper.TranslationFile(Model.UiLanguage);
+@MooMedHtmlHelper.TranslationFile(Model.UiLanguage)

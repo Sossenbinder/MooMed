@@ -1,41 +1,34 @@
-﻿import * as React from "react";
-import { Redirect } from "react-router-dom";
+﻿// Framework
+import * as React from "react";
 import { Route } from "react-router";
 
-import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
-import LanguagePicker from "common/components/General/LanguagePicker";
+// Components
 import AccountValidationDialog from "views/Pages/Other/AccountValidationDialog";
 import AccountValidationSuccess from "views/Pages/Other/AccountValidationSuccess";
 import AccountValidationFailure from "views/Pages/Other/AccountValidationFailure";
+import CommonLandingPage from "Views/Pages/Common/CommonLandingPage";
 
-import "Views/Pages/Other/Styles/OtherPage.less";
+export const OtherMain: React.FC = () => (
+	<CommonLandingPage>
+		<Route
+			exact={true}
+			path="/AccountValidation"
+			render={props => {
+				const params = new URLSearchParams(props.location.search);
 
-export const OtherMain: React.FC = () => {
-
-    const redirectRoute = window["reactRoute"];
-
-    if (typeof redirectRoute !== "undefined") {
-        window["reactRoute"] = undefined;
-        return <Redirect to={redirectRoute}/>;
-    }
-
-    return (
-        <div className="otherContentContainer">
-            <PopUpMessageHolder />
-            <LanguagePicker />
-            <div className="mooMedLogoContainer">
-                <div className="mooMedLogo">
-                    MooMed
-                </div>
-            </div>
-            <div>
-                MooMed - Finance done right
-            </div>
-            <Route exact path="/AccountValidation" render={() => <AccountValidationDialog />} />
-            <Route path="/AccountValidation/Success" render={props => <AccountValidationSuccess />} />
-            <Route path="/AccountValidation/Failure" render={props => <AccountValidationFailure />} />
-        </div>
-    );
-}
+				const accountId: number = parseInt(params.get("accountId"));
+				const token: string = params.get("token");
+				
+				return <AccountValidationDialog
+					accountValidationData={{
+						accountId,
+						token,
+					}} />
+			}}
+		/>
+		<Route path="/AccountValidation/Success" render={() => <AccountValidationSuccess />} />
+		<Route path="/AccountValidation/Failure" render={() => <AccountValidationFailure />} />
+	</CommonLandingPage>
+);
 
 export default OtherMain;

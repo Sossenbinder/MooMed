@@ -12,7 +12,7 @@ namespace MooMed.Module.Accounts.Repository.Converters
 			return new AccountEntity()
 			{
 				Email = model.Email,
-				EmailValidated = false,
+				EmailConfirmed = false,
 				PasswordHash = Sha256Helper.Hash(model.Password),
 				UserName = model.UserName
 			};

@@ -9,7 +9,7 @@ module.exports = {
 	entry: {
 		bundle: "./React/index.ts",
 		logonBundle: "./React/logonIndex.tsx",
-		//otherBundle: "./React/otherEntryPoint.tsx",
+		otherBundle: "./React/otherEntryPoint.tsx",
 	},
 	output: {
 		filename: "[name].js",

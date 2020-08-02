@@ -8,32 +8,32 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.User;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
+using MooMed.Grpc.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {
-    [Authorize]
-    public class LogonController : SessionBaseController
+	[Authorize]
+	public class LogonController : SessionBaseController
 	{
 		[NotNull]
 		private readonly IAccountService _accountService;
 
 		public LogonController(
-	        [NotNull] ISessionService sessionService,
-	        [NotNull] IAccountService accountService) 
-            : base(sessionService)
+			[NotNull] ISessionService sessionService,
+			[NotNull] IAccountService accountService)
+			: base(sessionService)
 		{
 			_accountService = accountService;
 		}
 
-        // POST: /Logon/Login
-        [ItemNotNull]
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login([NotNull] [FromBody] LoginModel loginModel)
+		// POST: /Logon/Login
+		[ItemNotNull]
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Login([NotNull][FromBody] LoginModel loginModel)
 		{
 			var serviceResponse = await _accountService.Login(loginModel);
 
@@ -44,48 +44,48 @@ namespace MooMed.Frontend.Controllers
 
 			var account = serviceResponse.PayloadOrFail.Account;
 
-	        var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-	        identity.AddClaim(new Claim(ClaimTypes.Name, account.Id.ToString()));
+			var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+			identity.AddClaim(new Claim(ClaimTypes.Name, account.Id.ToString()));
 
-	        var principal = new ClaimsPrincipal(identity);
+			var principal = new ClaimsPrincipal(identity);
 
-	        await HttpContext.SignInAsync(
-		        CookieAuthenticationDefaults.AuthenticationScheme,
-		        principal,
-		        new AuthenticationProperties()
-		        {
-			        IsPersistent = loginModel.RememberMe
-		        }
-	        );
+			await HttpContext.SignInAsync(
+				CookieAuthenticationDefaults.AuthenticationScheme,
+				principal,
+				new AuthenticationProperties()
+				{
+					IsPersistent = loginModel.RememberMe
+				}
+			);
 
-	        return serviceResponse.ToJsonResponse();
-        }
+			return serviceResponse.ToJsonResponse();
+		}
 
-        [ItemNotNull]
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register([NotNull] [FromBody] RegisterUiModel registerModel)
-        {
-	        var model = registerModel.ToModel();
-	        model.Language = CurrentUiLanguage;
+		[ItemNotNull]
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Register([NotNull][FromBody] RegisterUiModel registerModel)
+		{
+			var model = registerModel.ToModel();
+			model.Language = CurrentUiLanguage;
 
-            var result = await _accountService.Register(model);
+			var registrationResult = await _accountService.Register(model);
 
-            return result.IsSuccess ? JsonResponse.Success() : JsonResponse.Error(result.PayloadOrNull);
-        }
+			return registrationResult.ToJsonResponse();
+		}
 
-        [ItemNotNull]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<ActionResult> LogOff()
-        {
-            await _accountService.LogOff(CurrentSessionOrFail);
+		[ItemNotNull]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize]
+		public async Task<ActionResult> LogOff()
+		{
+			await _accountService.LogOff(CurrentSessionOrFail);
 
-            await HttpContext.SignOutAsync();
+			await HttpContext.SignOutAsync();
 
-            return JsonResponse.Success();
-        }
-    }
+			return JsonResponse.Success();
+		}
+	}
 }

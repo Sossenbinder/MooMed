@@ -1,49 +1,42 @@
-﻿import * as React from "react";
+﻿// Framework
+import * as React from "react";
 
-interface IProps {
-    name: string;
+// Components
+import Flex from "common/Components/Flex";
+
+import "./Styles/CheckBoxToggle.less";
+
+type Props = {
+	text: string;
 	initialToggle: boolean;
 	onChange: (currentVal: boolean) => void;
-	errorMessage?: string;
 }
 
-interface IState {
-    payload: boolean;
-    touched: boolean;
+export const CheckBoxToggle: React.FC<Props> = ({ text, initialToggle, onChange}) => {
+
+	const [state, setState] = React.useState<boolean>(initialToggle);
+
+	const onSwitchClick = React.useCallback(() => {
+		const newValue = !state;
+
+		setState(newValue);
+
+		onChange(newValue)
+	}, [state]);
+
+	return (
+		<Flex className="form-group">
+			<Flex className="CheckBoxToggle">
+				<label className="SwitchContainer">
+					<input type="checkbox" className="Switch" onClick={onSwitchClick}/>
+					<span className="SwitchSlider"></span>
+				</label>
+				<p className="Label">
+					{text}
+				</p>
+			</Flex>
+		</Flex>
+	);
 }
 
-export class CheckBoxToggle extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            payload: this.props.initialToggle,
-            touched: false
-        }
-    }
-
-    render() {
-        return (
-            <div className="form-group">
-                <div className="toggleCheckBoxContainer">
-                    <label className="toggleCheckBoxSwitchContainer">
-                        <input type="checkbox" className="toggleCheckBoxSwitch" onClick={this._onSwitchClick}/>
-                        <span className="toggleCheckBoxSwitchSlider"></span>
-                    </label>
-                    <p className="toggleCheckBoxLabel">{this.props.name}</p>
-                </div>
-            </div>
-        );
-    }
-
-    _onSwitchClick = () => {
-        this.setState({
-            payload: !this.state.payload
-		});
-
-        this.props.onChange(this.state.payload);
-    }
-
-    public _getPayload = () => this.state.payload;
-}
+export default CheckBoxToggle;

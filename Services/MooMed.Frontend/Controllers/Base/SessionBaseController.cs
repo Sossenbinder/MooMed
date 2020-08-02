@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers;
 
 namespace MooMed.Frontend.Controllers.Base

@@ -1,8 +1,15 @@
-﻿import { PopUpMessageLevel, PopUpNotification } from "definitions/PopUpNotificationDefinitions";
+﻿// Functionality
 import { addPopUpNotification } from "data/reducers/popUpNotificationReducer";
 import { store } from "data/store";
 
-export function createPopUpMessage(message: string, messageLevel: PopUpMessageLevel, heading: string, timeToLive: number = 0) {
+// Types
+import { PopUpMessageLevel, PopUpNotification } from "definitions/PopUpNotificationDefinitions";
+
+export function createPopUpMessage(
+	message: string, 
+	messageLevel: PopUpMessageLevel, 
+	heading?: string, 
+	timeToLive?: number) {
     const popUpNotification: PopUpNotification = {
         heading,
         message,
@@ -12,3 +19,5 @@ export function createPopUpMessage(message: string, messageLevel: PopUpMessageLe
 
     store.dispatch(addPopUpNotification(popUpNotification));
 };
+
+export default createPopUpMessage;

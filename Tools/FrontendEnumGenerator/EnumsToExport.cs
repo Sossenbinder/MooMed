@@ -16,6 +16,7 @@ namespace FrontendEnumGenerator
 			typeof(AccountOnlineState),
 			typeof(NotificationType),
 			typeof(ExchangeTradedType),
+			typeof(IdentityErrorCode)
 		};
 	}
 }

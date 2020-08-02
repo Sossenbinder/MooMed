@@ -7,6 +7,7 @@ import * as asyncUtils from "helper/utils/asyncUtils";
 
 // Types
 import { IModuleService } from "definitions/Service";
+import LogonService from "modules/Logon/Service/LogonService";
 import SearchService from "modules/Search/Service/SearchService";
 import AccountService from "modules/Account/Service/AccountService";
 import FriendsService from "modules/Friends/Service/FriendsService";
@@ -43,6 +44,9 @@ const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProv
 
 	services.AccountService = new AccountService();
 	modules.push(services.AccountService);
+
+	services.LogonService = new LogonService();
+	modules.push(services.LogonService);
 
 	services.NotificationService = new NotificationService(signalRConnectionProvider);
 	modules.push(services.NotificationService);

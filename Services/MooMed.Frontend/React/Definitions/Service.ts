@@ -12,6 +12,11 @@ export interface IAccountService extends IModuleService{
     getOwnAccount(): Promise<Account>;
 }
 
+export interface ILogonService extends IModuleService {
+	login(email: string, password: string, rememberMe: boolean): Promise<void>;
+	register(email: string, userName: string, password: string, confirmPassword: string): Promise<void>;
+}
+
 export interface IFriendsService extends IModuleService{
     addFriend(friendId: number): Promise<void>;
 }
@@ -40,8 +45,10 @@ export interface IPortfolioService extends IModuleService{
 	addToPortfolio(isin: string, amount: number): Promise<void>;
 }
 
+// Contexts
 export type ServiceContext = {
     AccountService: IAccountService;
+	LogonService: ILogonService;
     FriendsService: IFriendsService;
 	SearchService: ISearchService;
 	NotificationService: INotificationService;

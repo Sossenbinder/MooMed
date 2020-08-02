@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Dns.Service.Interface;
+using MooMed.Identity.Service.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.Logging.Loggers.Interface;

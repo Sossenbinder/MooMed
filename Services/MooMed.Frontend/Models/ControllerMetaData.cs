@@ -15,6 +15,12 @@ namespace MooMed.Frontend.Models
 
         }
 
+        public ControllerMetaData(string title, Language uiLanguage)
+        {
+	        Title = title;
+	        UiLanguage = uiLanguage;
+        }
+
         public ControllerMetaData(string title, Language uiLanguage, object dataModel)
         {
             Title = title;

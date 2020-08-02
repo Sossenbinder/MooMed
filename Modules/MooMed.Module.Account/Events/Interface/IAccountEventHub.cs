@@ -11,5 +11,8 @@ namespace MooMed.Module.Accounts.Events.Interface
 
         [NotNull]
         MtMooEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
+
+        [NotNull] 
+        MtMooEvent<AccountRegisteredEvent> AccountRegistered { get; }
     }
 }

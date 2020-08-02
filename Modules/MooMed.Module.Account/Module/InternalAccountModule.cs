@@ -27,8 +27,8 @@ namespace MooMed.Module.Accounts.Module
 				.SingleInstance()
 				.AutoActivate();
 
-			builder.RegisterType<AccountSignInValidator>()
-				.As<IAccountSignInValidator>()
+			builder.RegisterType<LogonModelValidator>()
+				.As<ILogonModelValidator>()
 				.SingleInstance();
 
 			builder.RegisterType<LoginService>()
@@ -39,8 +39,11 @@ namespace MooMed.Module.Accounts.Module
 				.As<IRegisterService>()
 				.SingleInstance();
 
-			// Repositories
+			builder.RegisterType<UserService>()
+				.As<IUserService>()
+				.SingleInstance();
 
+			// Repositories
 			builder.RegisterType<AccountDbContextFactory>()
 				.AsSelf()
 				.SingleInstance()
@@ -59,7 +62,6 @@ namespace MooMed.Module.Accounts.Module
 				.SingleInstance();
 
 			// Converters
-
 			builder.RegisterType<AccountDbConverter>()
 				.As<IEntityToModelConverter<AccountEntity, Account, int>, IBiDirectionalDbConverter<Account, AccountEntity, int>>()
 				.SingleInstance();

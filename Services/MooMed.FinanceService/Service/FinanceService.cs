@@ -5,15 +5,16 @@ using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Common.Definitions.Models.Portfolio;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
+using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Finance.Service.Interface;
 using MooMed.Module.Portfolio.Service.Interface;
 
 namespace MooMed.FinanceService.Service
 {
-	public class FinanceService : Common.ServiceBase.MooMedServiceBase, IFinanceService
+	public class FinanceService : MooMedServiceBaseWithLogger, IFinanceService
 	{
 		[NotNull]
 		private readonly IExchangeTradedsService _exchangeTradedsService;

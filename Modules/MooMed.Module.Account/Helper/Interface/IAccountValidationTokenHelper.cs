@@ -1,12 +1,11 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Core.DataTypes;
 
 namespace MooMed.Module.Accounts.Helper.Interface
 {
-    public interface IAccountValidationTokenHelper
-    {
-        string Serialize([NotNull] AccountValidationTokenData validationTokenData);
+	public interface IAccountValidationTokenHelper
+	{
+		string Serialize([NotNull] string rawToken);
 
-        AccountValidationTokenData Deserialize(string tokenRaw);
-    }
+		string Deserialize(string encodedToken);
+	}
 }

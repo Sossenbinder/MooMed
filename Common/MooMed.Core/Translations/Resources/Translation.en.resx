@@ -120,7 +120,7 @@
   <data name="AccountEmailValidationBody" xml:space="preserve">
     <value>Hello!
 Thank you for registering your account to MooMed! Please click the following link to complete your registration:
-http://{{0}}/AccountValidation?token={{1}}</value>
+http://{{0}}/AccountValidation?accountId={{1}}&amp;token={{2}}</value>
   </data>
   <data name="AccountEmailValidationSubject" xml:space="preserve">
     <value>Please validate your MooMed account</value>
@@ -163,5 +163,74 @@ http://{{0}}/AccountValidation?token={{1}}</value>
   </data>
   <data name="Chat" xml:space="preserve">
     <value>Chat</value>
+  </data>
+  <data name="IdentityError_DefaultError" xml:space="preserve">
+    <value>An error has occured.</value>
+  </data>
+  <data name="IdentityError_ConcurrencyFailure" xml:space="preserve">
+    <value>A problem occured due to a concurrently occuring operation.</value>
+  </data>
+  <data name="IdentityError_PasswordMismatch" xml:space="preserve">
+    <value>Incorrect password.</value>
+  </data>
+  <data name="IdentityError_LoginAlreadyAssociated" xml:space="preserve">
+    <value>Login is already associated with another login.</value>
+  </data>
+  <data name="IdentityError_InvalidUserName" xml:space="preserve">
+    <value>Invalid username.</value>
+  </data>
+  <data name="IdentityError_InvalidEmail" xml:space="preserve">
+    <value>Invalid email.</value>
+  </data>
+  <data name="IdentityError_EmailMissing" xml:space="preserve">
+    <value>Email missing.</value>
+  </data>
+  <data name="IdentityError_DuplicateUserName" xml:space="preserve">
+    <value>Username already exists.</value>
+  </data>
+  <data name="IdentityError_DuplicateEmail" xml:space="preserve">
+    <value>Email already exists.</value>
+  </data>
+  <data name="IdentityError_InvalidRoleName" xml:space="preserve">
+    <value>Role name invalid.</value>
+  </data>
+  <data name="IdentityError_DuplicateRoleName" xml:space="preserve">
+    <value>Duplicate role name.</value>
+  </data>
+  <data name="IdentityError_UserAlreadyHasPassword" xml:space="preserve">
+    <value>User already has password.</value>
+  </data>
+  <data name="IdentityError_UserLockoutNotEnabled" xml:space="preserve">
+    <value>Lockout is not enabled.</value>
+  </data>
+  <data name="IdentityError_UserAlreadyInRole" xml:space="preserve">
+    <value>User is already assigned that role.</value>
+  </data>
+  <data name="IdentityError_UserNameNullOrEmpty" xml:space="preserve">
+    <value>Invalid username.</value>
+  </data>
+  <data name="IdentityError_UserNotInRole" xml:space="preserve">
+    <value>User is not in a role.</value>
+  </data>
+  <data name="IdentityError_PasswordTooShort" xml:space="preserve">
+    <value>Password too short.</value>
+  </data>
+  <data name="IdentityError_PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>Password requires non-alphanumeric characters.</value>
+  </data>
+  <data name="IdentityError_PasswordRequiresDigit" xml:space="preserve">
+    <value>Password requires at least one digit.</value>
+  </data>
+  <data name="IdentityError_PasswordRequiresLower" xml:space="preserve">
+    <value>Password requires lowercase character.</value>
+  </data>
+  <data name="IdentityError_PasswordRequiresUpper" xml:space="preserve">
+    <value>Password requires uppercase character.</value>
+  </data>
+  <data name="IdentityError_PasswordMissing" xml:space="preserve">
+    <value>Missing password.</value>
+  </data>
+  <data name="IdentityError_EmailNotConfirmed" xml:space="preserve">
+    <value>Email not confirmed yet.</value>
   </data>
 </root>

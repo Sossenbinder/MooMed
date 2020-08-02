@@ -1,8 +1,7 @@
 using Autofac;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
-using MooMed.Core;
-using MooMed.Dns.Module;
+using MooMed.Identity.Module;
 using MooMed.IPC.Module;
 using MooMed.Module.Accounts.Module;
 using MooMed.Stateful.SessionService.Module;
@@ -18,7 +17,7 @@ namespace MooMed.Stateful.SessionService
 			containerBuilder.RegisterModule(new SessionServiceModule());
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
-			containerBuilder.RegisterModule(new DnsModule());
+			containerBuilder.RegisterModule(new IdentityModule());
 			containerBuilder.RegisterModule(new AccountModule());
 		}
 	}

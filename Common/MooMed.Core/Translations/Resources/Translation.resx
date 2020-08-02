@@ -166,7 +166,95 @@
     <value />
     <comment>{Frontend}</comment>
   </data>
-  <data name="Chat" xml:space="preserve">
+  <data name="IdentityError_DefaultError" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_ConcurrencyFailure" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordMismatch" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_LoginAlreadyAssociated" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_InvalidUserName" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_InvalidEmail" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_EmailMissing" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_DuplicateUserName" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_DuplicateEmail" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_InvalidRoleName" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_DuplicateRoleName" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_UserAlreadyHasPassword" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_UserLockoutNotEnabled" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_UserAlreadyInRole" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_UserNameNullOrEmpty" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_UserNotInRole" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordTooShort" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordRequiresDigit" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordRequiresLower" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordRequiresUpper" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_PasswordMissing" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
+  <data name="IdentityError_EmailNotConfirmed" xml:space="preserve">
     <value />
     <comment>{Frontend}</comment>
   </data>

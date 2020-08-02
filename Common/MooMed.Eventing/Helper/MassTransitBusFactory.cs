@@ -5,7 +5,7 @@ using MassTransit;
 using MassTransit.RabbitMqTransport;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Core.Code.Helper.Retry;
-using MooMed.Dns.Service.Interface;
+using MooMed.Identity.Service.Interface;
 using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Eventing.Helper

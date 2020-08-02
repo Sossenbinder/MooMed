@@ -5,41 +5,35 @@ import * as React from "react";
 import LoadingBubbles from "common/Components/LoadingBubbles";
 
 //Functionality
-import * as hookUtils from "helper/Utils/hookUtils";
+import useBackendCallWrapper from "hooks/useBackendCallWrapper";
 
 import "./Styles/Controls.less";
 
-type IProps = {
+type Props = {
 	title: string;
-	handleClick: () => Promise<void>;
-	customStyles?: string;
+	onClick: () => Promise<void>;
+	classname?: string;
 	disabled: boolean;
 }
 
-export const Button: React.FC<IProps> = (props) => {
-
-	const [loading, setLoading] = React.useState(false);
-
-	const onClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		event.preventDefault();
-		
-		await hookUtils.usingBoolAsync(setLoading, props.handleClick);
-	}
+export const Button: React.FC<Props> = ({ title, onClick, classname, disabled}) => {
+	
+	const [loading, callBackend] = useBackendCallWrapper(onClick);
 
 	return (
 		<button
-			className={"MooMedButton" + (props.customStyles !== undefined ? (" " + props.customStyles) : "")}
-			onClick={onClick}
-			disabled={props.disabled}>
+		className={"MooMedButton " + (classname ?? "")}
+			onClick={async _ => await callBackend()}
+			disabled={disabled}>
 			<Choose>
 				<When condition={loading}>
 					<LoadingBubbles />
 				</When>
-				<When condition={!loading}>
-					<div>
-						<p className="ButtonParagraph">{props.title}</p>
-					</div>
-				</When>
+				<Otherwise>
+					<p className="ButtonParagraph">
+						{title}
+					</p>
+				</Otherwise>
 			</Choose>
 		</button>
 	);

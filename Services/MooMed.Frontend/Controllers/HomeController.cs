@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Models;
+using MooMed.Grpc.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {

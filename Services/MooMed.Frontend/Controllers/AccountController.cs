@@ -3,9 +3,9 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Definitions.UiModels.User;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
+using MooMed.Grpc.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {

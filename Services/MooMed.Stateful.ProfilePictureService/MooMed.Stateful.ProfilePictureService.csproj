@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Azure\MooMed.Azure.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Dns\MooMed.Dns.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
   </ItemGroup>
 

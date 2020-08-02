@@ -2,29 +2,29 @@
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
 using MooMed.Frontend.Models;
-using Newtonsoft.Json;
+using MooMed.Grpc.Services.Interface;
+using MooMed.Module.AccountValidation.Converters;
 
 namespace MooMed.Frontend.Controllers
 {
     public class AccountValidationController : BaseController
     {
 	    [NotNull]
-	    private readonly IAccountService _accountService;
-
-	    [NotNull]
 	    private readonly IAccountValidationService _accountValidationService;
 
+	    [NotNull]
+	    private readonly AccountValidationUiModelConverter _accountValidationUiModelConverter;
+
 	    public AccountValidationController(
-		    [NotNull] IAccountService accountService,
-		    [NotNull] IAccountValidationService accountValidationService)
+		    [NotNull] IAccountValidationService accountValidationService,
+		    [NotNull] AccountValidationUiModelConverter accountValidationUiModelConverter)
 	    {
-		    _accountService = accountService;
 		    _accountValidationService = accountValidationService;
+		    _accountValidationUiModelConverter = accountValidationUiModelConverter;
 	    }
 
         /// <summary>
@@ -32,53 +32,23 @@ namespace MooMed.Frontend.Controllers
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<ActionResult> Index([CanBeNull] [FromBody] string token)
+        public ViewResult Index()
         {
-            string jsonString;
-
-            if (token != null)
-            {
-                var deserializedToken = await _accountValidationService.DeserializeRawToken(token);
-                var account = await _accountService.FindById(deserializedToken.AccountId);
-
-                if (account.IsFailure)
-                {
-                    jsonString = JsonConvert.SerializeObject(new
-                    {
-                        AccountValidationResult = AccountValidationResult.AccountNotFound
-                    });
-                }
-                else
-                {
-                    var accountValidationModel = new AccountValidationModel
-                    {
-                        AccountName = account.PayloadOrFail.UserName,
-                        AccountValidationTokenData = deserializedToken
-                    };
-                    jsonString = JsonConvert.SerializeObject(accountValidationModel); 
-                }
-            }
-            else
-            {
-                jsonString = JsonConvert.SerializeObject(new
-                {
-                    AccountValidationResult = AccountValidationResult.TokenInvalid
-                });
-            }
-
-            return View("~/Views/Other/Other.cshtml", new ControllerMetaData("MooMed - AccountValidation", CurrentUiLanguage, jsonString));
+	        return View("~/Views/Other/Other.cshtml", new ControllerMetaData("MooMed - AccountValidation", CurrentUiLanguage));
         }
 
         /// <summary>
         /// Validate registration of an account
         /// </summary>
-        /// <param name="accountValidationModel"></param>
+        /// <param name="accountValidationUiModel"></param>
         /// <returns></returns>
         [ItemNotNull]
         [AllowAnonymous]
-        public async Task<JsonResponse> ValidateRegistration([NotNull] [FromBody] AccountValidationModel accountValidationModel)
+        public async Task<JsonResponse> ValidateRegistration([NotNull] [FromBody] AccountValidationUiModel accountValidationUiModel)
         {
-            var result = await _accountValidationService.ValidateRegistration(accountValidationModel.AccountValidationTokenData);
+	        var model = _accountValidationUiModelConverter.ToModel(accountValidationUiModel);
+
+            var result = await _accountValidationService.ValidateRegistration(model);
 
             return result.ToJsonResponse();
         }

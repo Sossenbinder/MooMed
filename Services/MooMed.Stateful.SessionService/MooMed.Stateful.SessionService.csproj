@@ -20,7 +20,7 @@
     <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Dns\MooMed.Dns.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Grpc\MooMed.Grpc.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />

@@ -2,13 +2,14 @@
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Search;
 using MooMed.Common.ServiceBase;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
+using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Stateful.SearchService.Service
 {
-    public class SearchService : MooMedServiceBase, ISearchService
+    public class SearchService : MooMedServiceBaseWithLogger, ISearchService
     {
 	    [NotNull]
 	    private readonly IAccountService _accountService;

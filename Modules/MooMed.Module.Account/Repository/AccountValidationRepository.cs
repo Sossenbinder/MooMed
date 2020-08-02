@@ -44,7 +44,7 @@ namespace MooMed.Module.Accounts.Repository
 	        }
 
 	        // If we find a candidate but it is already validated, we should remove it from here
-	        if (candidate.AccountEntity.EmailValidated)
+	        if (candidate.AccountEntity.EmailConfirmed)
 	        {
 		        return AccountValidationResult.AlreadyValidated;
 	        }
@@ -56,7 +56,7 @@ namespace MooMed.Module.Accounts.Repository
 	        }
 
 	        // Update validation status
-	        candidate.AccountEntity.EmailValidated = true;
+	        candidate.AccountEntity.EmailConfirmed = true;
 	        await ctx.SaveChangesAsync();
 
 	        return AccountValidationResult.Success;

@@ -1,7 +1,0 @@
-2020-07-05 20:36:30.414 +00:00 [INF] Initialization of serialization model service took 00:00:00.1223399
-2020-07-05 20:36:31.428 +00:00 [INF] Successfully initiated RabbitMQ EventBus.
-2020-07-05 20:38:47.294 +00:00 [FTL] Couldn't retrieve SessionContext.
-2020-07-05 20:38:51.063 +00:00 [INF] Retrieved SessionContext..
-2020-07-05 20:38:51.533 +00:00 [INF] Retrieved SessionContext..
-2020-07-05 20:38:51.820 +00:00 [INF] Retrieved SessionContext..
-2020-07-05 20:38:51.895 +00:00 [INF] Retrieved SessionContext..

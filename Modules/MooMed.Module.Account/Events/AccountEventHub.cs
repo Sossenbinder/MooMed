@@ -12,10 +12,13 @@ namespace MooMed.Module.Accounts.Events
 
 		public MtMooEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
 
+		public MtMooEvent<AccountRegisteredEvent> AccountRegistered { get; }
+
 		public AccountEventHub([NotNull] IMassTransitEventingService massTransitEventingService)
 	    {
-			AccountLoggedIn = new MtMooEvent<AccountLoggedInEvent>("AccountLoggedIn", massTransitEventingService);
-			AccountLoggedOut = new MtMooEvent<AccountLoggedOutEvent>("AccountLoggedOut", massTransitEventingService);
+			AccountLoggedIn = new MtMooEvent<AccountLoggedInEvent>(nameof(AccountLoggedIn), massTransitEventingService);
+			AccountLoggedOut = new MtMooEvent<AccountLoggedOutEvent>(nameof(AccountLoggedOut), massTransitEventingService);
+			AccountRegistered = new MtMooEvent<AccountRegisteredEvent>(nameof(AccountRegistered), massTransitEventingService);
 		}
     }
 }

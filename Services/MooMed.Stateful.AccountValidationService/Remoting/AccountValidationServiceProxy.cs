@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
@@ -25,13 +24,7 @@ namespace MooMed.Stateful.AccountValidationService.Remoting
 		{
 		}
 
-		public Task SendAccountValidationMail(AccountValidationMailData accountValidationMailData)
-			=> InvokeRandom(service => service.SendAccountValidationMail(accountValidationMailData));
-
-		public Task<AccountValidationTokenData> DeserializeRawToken(string token)
-			=> InvokeRandomWithResult(service => service.DeserializeRawToken(token));
-
-		public Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
-			=> InvokeRandomWithResult(service => service.ValidateRegistration(tokenData));
+		public Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationModel accountValidationModel)
+			=> InvokeRandomWithResult(service => service.ValidateRegistration(accountValidationModel));
 	}
 }

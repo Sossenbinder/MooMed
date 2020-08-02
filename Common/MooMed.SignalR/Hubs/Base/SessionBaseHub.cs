@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Grpc.Services.Interface;
 
 namespace MooMed.SignalR.Hubs.Base
 {

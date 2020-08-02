@@ -1,0 +1,31 @@
+﻿namespace MooMed.Common.Definitions.Models.User.ErrorCodes
+{
+	public enum IdentityErrorCode
+	{
+		None,
+		DefaultError,
+		ConcurrencyFailure,
+		PasswordMismatch,
+		InvalidToken,
+		LoginAlreadyAssociated,
+		InvalidUserName,
+		InvalidEmail,
+		EmailMissing,
+		DuplicateUserName,
+		DuplicateEmail,
+		InvalidRoleName,
+		DuplicateRoleName,
+		UserAlreadyHasPassword,
+		UserLockoutNotEnabled,
+		UserAlreadyInRole,
+		UserNameNullOrEmpty,
+		UserNotInRole,
+		PasswordTooShort,
+		PasswordRequiresNonAlphanumeric,
+		PasswordRequiresDigit,
+		PasswordRequiresLower,
+		PasswordRequiresUpper,
+		PasswordMissing,
+		EmailNotConfirmed,
+	}
+}

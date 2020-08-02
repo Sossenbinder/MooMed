@@ -44,7 +44,7 @@ namespace MooMed.Module.Accounts.Repository
             await using var ctx = CreateContext();
 
             // Don't try-catch here, if there's an error resolving this accountId, that is catastrophic failure
-            var account = await ctx.Account.Where(acc => acc.Id == accountEntity.Id).FirstAsync();
+            var account = await ctx.Users.Where(acc => acc.Id == accountEntity.Id).FirstAsync();
 
             account.LastAccessedAt = DateTime.Now;
 
@@ -55,7 +55,7 @@ namespace MooMed.Module.Accounts.Repository
         {
 	        await using var ctx = CreateContext();
             
-            var suitableAccount = ctx.Account.Where(predicateFunc);
+            var suitableAccount = ctx.Users.Where(predicateFunc);
 
             if (await suitableAccount.AnyAsync())
             {
@@ -69,7 +69,7 @@ namespace MooMed.Module.Accounts.Repository
         {
 	        await using var ctx = CreateContext();
 
-            var accList = ctx.Account.Where(predicateFunc);
+            var accList = ctx.Users.Where(predicateFunc);
 
             if (accList.Any())
             {
@@ -84,7 +84,7 @@ namespace MooMed.Module.Accounts.Repository
             int rowsAffected;
             await using (var ctx = CreateContext())
             {
-                var account = await ctx.Account.FirstAsync(acc => acc.Id.Equals(sessionContext.Account.Id));
+                var account = await ctx.Users.FirstAsync(acc => acc.Id.Equals(sessionContext.Account.Id));
                 account.LastAccessedAt = DateTime.Now;
 
                 rowsAffected = await ctx.SaveChangesAsync();

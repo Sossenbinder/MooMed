@@ -1,6 +1,5 @@
 ﻿// Framework
 import * as React from "react";
-import { setTimeout } from "timers";
 
 // Components
 import Flex from "Common/Components/Flex";
@@ -17,7 +16,7 @@ type Props = {
 
 export const ErrorAttachedTextInput: React.FC<Props> = ({ name, inputType, payload: propPayload, onChangeFunc, errorFunc, errorMessage, onEnterPress }) => {
 
-	let touchTimeout: NodeJS.Timer;
+	let touchTimeout: number;
 
 	const [touched, setTouched] = React.useState(false);
 	const [payload, setPayload] = React.useState(propPayload);
@@ -53,14 +52,13 @@ export const ErrorAttachedTextInput: React.FC<Props> = ({ name, inputType, paylo
 				clearTimeout(touchTimeout)
 			}
 
-			touchTimeout = setTimeout(() => {
+			touchTimeout = window.setTimeout(() => {
 				setTouched(true);
 			}, 500);
 		}
 	}, [touched]);
 
 	const handleKeyPress = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-
 		if (event.charCode === 13 && typeof onEnterPress !== "undefined") {
 			onEnterPress();
 		}

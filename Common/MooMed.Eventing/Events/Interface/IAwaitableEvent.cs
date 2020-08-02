@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.DotNet.Utils.Disposable;
 
 namespace MooMed.Eventing.Events.Interface
 {
@@ -8,9 +9,9 @@ namespace MooMed.Eventing.Events.Interface
 	{
 		Task<AccumulatedMooEventExceptions> Raise([NotNull] TEventArgs eventArgs);
 
-		void Register([NotNull] Action<TEventArgs> handler);
+		DisposableAction Register([NotNull] Action<TEventArgs> handler);
 
-		void Register([NotNull] Func<TEventArgs, Task> handler);
+		DisposableAction Register([NotNull] Func<TEventArgs, Task> handler);
 
 		void UnRegister([NotNull] Func<TEventArgs, Task> handler);
 	}

@@ -10,8 +10,10 @@ using MooMed.Common.Definitions.Configuration;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.ServiceBase;
+using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Configuration.Interface;
 using MooMed.Core.DataTypes;
+using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers.Interface;
 using MooMed.Stateful.ProfilePictureService.Utils;
 using ProtoBuf.Grpc;
@@ -19,7 +21,7 @@ using SixLabors.ImageSharp;
 
 namespace MooMed.Stateful.ProfilePictureService.Service
 {
-	public class ProfilePictureService : MooMedServiceBase, Common.ServiceBase.Interface.IProfilePictureService
+	public class ProfilePictureService : MooMedServiceBaseWithLogger, IProfilePictureService
     {
         [NotNull]
         private readonly List<string> _possibleImageExtensions;

@@ -3,7 +3,7 @@ using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
 using MooMed.ChatService.Module;
 using MooMed.Core;
-using MooMed.Dns.Module;
+using MooMed.Identity.Module;
 using MooMed.IPC.Module;
 
 namespace MooMed.ChatService
@@ -16,7 +16,7 @@ namespace MooMed.ChatService
 
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
-			containerBuilder.RegisterModule(new DnsModule());
+			containerBuilder.RegisterModule(new IdentityModule());
 			containerBuilder.RegisterModule(new ChatServiceModule());
 		}
 	}

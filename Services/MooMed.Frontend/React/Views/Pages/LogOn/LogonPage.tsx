@@ -1,42 +1,34 @@
 ﻿// Framework
+import * as ReactDOM from "react-dom";
 import * as React from "react";
+import { Router  } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "data/store";
+import { createBrowserHistory } from 'history';
 
 // Components
-import SignIn from "views/Components/Account/SignIn";
-import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
-import LanguagePicker from "common/components/General/LanguagePicker";
+import SignIn from "modules/Logon/Components/SignIn";
 import Flex from "Common/Components/Flex";
+import CommonLandingPage from "Views/Pages/Common/CommonLandingPage";
 
-import "Views/Pages/LogOn/Styles/LogOnMain.less";
+const LogonPage: React.FC = () => (
+	<CommonLandingPage>
+		<Flex
+			direction={"Row"}
+			mainAlign={"End"}>
+			<Flex className={"signUpLoginContainer"}>
+				<SignIn />
+			</Flex>
+		</Flex>
+	</CommonLandingPage>
+);
 
-export default class LogonPage extends React.Component {
-
-    render() {
-        return (
-            <Flex 
-                space={"Between"}
-                direction={"Column"}
-                className={"logOnContentContainer"}>
-                <PopUpMessageHolder />
-                <Flex className={"mooMedLogoContainer"}>
-                    <Flex className={"mooMedLogo"}>
-                        MooMed
-                    </Flex>
-                </Flex>
-                <Flex
-                    direction={"Row"}
-                    mainAlign={"End"}>
-                    <Flex className={"signUpLoginContainer"}>
-                        <SignIn />
-                    </Flex>
-                </Flex>
-                <Flex
-                    direction={"Row"}
-                    mainAlign={"End"}
-                    className={"languagePicker"}>
-                    <LanguagePicker />
-                </Flex>
-            </Flex>
-        );
-    }
-}
+export default function renderLogonView() {
+	ReactDOM.render(
+		<Provider store={store}>
+			<Router history={createBrowserHistory()}>
+				<LogonPage />
+			</Router >
+		</Provider>,
+		document.getElementById("landingContainer"));
+};

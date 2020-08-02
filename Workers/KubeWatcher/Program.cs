@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MooMed.Configuration.Module;
 using MooMed.Core;
-using MooMed.Dns.Module;
+using MooMed.Identity.Module;
 using MooMed.Encryption.Module;
 using MooMed.Eventing.Module;
 using MooMed.Logging.Module;
@@ -26,7 +26,7 @@ namespace KubeWatcher
 					builder.RegisterModule<EncryptionModule>();
 					builder.RegisterModule<ConfigurationModule>();
 					builder.RegisterModule<LoggingModule>();
-					builder.RegisterModule<DnsModule>();
+					builder.RegisterModule<IdentityModule>();
 					builder.RegisterModule<EventingModule>();
 				})
 				.ConfigureServices((hostContext, services) =>

@@ -1,10 +1,10 @@
 using Autofac;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.Core;
 using MooMed.DependencyInjection.Extensions;
-using MooMed.Dns.Module;
+using MooMed.Identity.Module;
+using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.Module;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.SearchService.Module;
@@ -19,7 +19,7 @@ namespace MooMed.Stateful.SearchService
 
 			containerBuilder.RegisterModule(new CachingModule());
 			containerBuilder.RegisterModule(new KubernetesModule());
-			containerBuilder.RegisterModule(new DnsModule());
+			containerBuilder.RegisterModule(new IdentityModule());
 			containerBuilder.RegisterModule(new SearchModule());
 
 			containerBuilder.RegisterGrpcService<IAccountService, AccountServiceProxy>();

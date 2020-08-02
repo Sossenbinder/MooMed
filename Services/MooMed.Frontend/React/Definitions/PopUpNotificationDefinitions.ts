@@ -4,9 +4,9 @@
     Error,
 };
 
-export interface PopUpNotification {
+export type PopUpNotification = {
     message: string;
     messageLevel: PopUpMessageLevel;
-    heading: string;
-    timeToLive: number;
+    heading?: string;
+    timeToLive?: number;
 }

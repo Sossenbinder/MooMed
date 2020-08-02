@@ -2,107 +2,77 @@
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Core.Translations.Resources;
+using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers.Interface;
-using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
+using MooMed.Module.AccountValidation.Service.Interface;
 
 namespace MooMed.Stateful.AccountValidationService.Service
 {
-    public class AccountValidationService : MooMedServiceBase, IAccountValidationService
-    {
-        [NotNull]
-        private readonly IAccountValidationRepository _accountValidationRepository;
+	public class AccountValidationService : MooMedServiceBaseWithLogger, IAccountValidationService
+	{
+		[NotNull]
+		private readonly IAccountValidationRepository _accountValidationRepository;
 
-        [NotNull]
-        private readonly IAccountValidationTokenHelper _accountValidationTokenHelper;
+		[NotNull]
+		private readonly IAccountValidationTokenHelper _accountValidationTokenHelper;
 
-        [NotNull]
-        private readonly IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int> _accountValidationConverter;
+		[NotNull]
+		private readonly IEmailValidationService _emailValidationService;
 
-        [NotNull]
-        private readonly IAccountValidationEmailHelper _accountValidationEmailHelper;
-        
-        public AccountValidationService(
-            [NotNull] IMooMedLogger logger,
-            [NotNull] IAccountValidationRepository accountValidationRepository,
-            [NotNull] IAccountValidationEmailHelper accountValidationEmailHelper,
-            [NotNull] IAccountValidationTokenHelper accountValidationTokenHelper,
-            [NotNull] IBiDirectionalDbConverter<AccountValidation, AccountValidationEntity, int> accountValidationConverter)
-            : base(logger)
-        {
-            _accountValidationRepository = accountValidationRepository;
-            _accountValidationEmailHelper = accountValidationEmailHelper;
-            _accountValidationTokenHelper = accountValidationTokenHelper;
-            _accountValidationConverter = accountValidationConverter;
-        }
+		public AccountValidationService(
+			[NotNull] IMooMedLogger logger,
+			[NotNull] IAccountValidationRepository accountValidationRepository,
+			[NotNull] IAccountValidationTokenHelper accountValidationTokenHelper,
+			[NotNull] IEmailValidationService emailValidationService)
+			: base(logger)
+		{
+			_accountValidationRepository = accountValidationRepository;
+			_accountValidationTokenHelper = accountValidationTokenHelper;
+			_emailValidationService = emailValidationService;
+		}
 
-        public async Task SendAccountValidationMail(AccountValidationMailData accountValidationMailData)
-        {
-	        var account = accountValidationMailData.Account;
+		/// <summary>
+		/// Takes care of the validation of an account
+		/// </summary>
+		/// <param name="accountValidationModel">Object containing accountId and token</param>
+		/// <returns></returns>
+		[ItemNotNull]
+		public async Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationModel accountValidationModel)
+		{
+			await _emailValidationService.ValidateAccount(accountValidationModel);
+			var resultCode = AccountValidationResult.None;
 
-	        var accountValidation = new AccountValidation()
-	        {
-		        AccountId = account.Id,
-		        ValidationGuid = Guid.NewGuid()
-	        };
+			if (resultCode == AccountValidationResult.Success)
+			{
+				var validationEntity = await _accountValidationRepository.Read(x => x.Id == accountValidationModel.AccountId);
 
-            await _accountValidationRepository.Create(_accountValidationConverter.ToEntity(accountValidation));
-            
-            var accountValidationEmailToken = _accountValidationTokenHelper.Serialize(new AccountValidationTokenData()
-            {
-                AccountId = account.Id,
-                ValidationGuid = accountValidation.ValidationGuid
-            });
+				// Validation went smoothly or already happened, we can get rid of the validation entry for this account
+				await _accountValidationRepository.Delete(validationEntity.First());
 
-            await _accountValidationEmailHelper.SendAccountValidationEmail(accountValidationMailData.Language, account.Email, accountValidationEmailToken);
-        }
+				return ServiceResponse<bool>.Success(true);
+			}
 
-        public Task<AccountValidationTokenData> DeserializeRawToken(string token)
-        {
-            return Task.FromResult(_accountValidationTokenHelper.Deserialize(token));
-        }
+			string errorMessage = null;
 
-        /// <summary>
-        /// Takes care of the validation of an account
-        /// </summary>
-        /// <param name="tokenData">Object containing accountId and token</param>
-        /// <returns></returns>
-        [ItemNotNull]
-        public async Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationTokenData tokenData)
-        {
-            var resultCode = await _accountValidationRepository.CheckAndUpdateValidation(tokenData);
+			switch (resultCode)
+			{
+				case AccountValidationResult.AlreadyValidated:
+					errorMessage = Translation.AccountValidationAlreadyValidated;
+					break;
 
-            if (resultCode == AccountValidationResult.Success)
-            {
-	            var validationEntity = await _accountValidationRepository.Read(x => x.Id == tokenData.AccountId);
+				case AccountValidationResult.ValidationGuidInvalid:
+					errorMessage = Translation.AccountValidationInvalidGuid;
+					break;
+			}
 
-                // Validation went smoothly or already happened, we can get rid of the validation entry for this account
-                await _accountValidationRepository.Delete(validationEntity.First());
-
-                return ServiceResponse<bool>.Success(true);
-            }
-
-            string errorMessage = null;
-
-            switch (resultCode)
-            {
-                case AccountValidationResult.AlreadyValidated:
-                    errorMessage = Translation.AccountValidationAlreadyValidated;
-                    break;
-                case AccountValidationResult.ValidationGuidInvalid:
-                    errorMessage = Translation.AccountValidationInvalidGuid;
-                    break;
-            }
-
-            return ServiceResponse<bool>.Failure(errorMessage: errorMessage);
-        }
-    }
+			return ServiceResponse<bool>.Failure(errorMessage: errorMessage);
+		}
+	}
 }

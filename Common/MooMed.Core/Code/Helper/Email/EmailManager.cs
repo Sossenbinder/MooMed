@@ -28,10 +28,10 @@ namespace MooMed.Core.Code.Helper.Email
 	        var smtpClient = new SmtpClient
 	        {
 		        Host = "smtp.gmail.com",
-                Port = 587,
+		        Port = 587,
 		        EnableSsl = true,
 		        DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
+		        UseDefaultCredentials = true,
 		        Credentials = new NetworkCredential(_smtpClientUserName, _smtpClientPassword),
 	        };
 

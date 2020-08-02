@@ -1,36 +1,29 @@
 ﻿using System;
 using System.Text;
 using JetBrains.Annotations;
-using MooMed.Core.DataTypes;
 using MooMed.Module.Accounts.Helper.Interface;
 
 namespace MooMed.Module.Accounts.Helper
 {
-    public class AccountValidationTokenHelper : IAccountValidationTokenHelper
-    {
-        [NotNull]
-        public string Serialize(AccountValidationTokenData validationTokenData)
-        {
-            var combinedParams = $"{validationTokenData.AccountId}|{validationTokenData.ValidationGuid.ToString()}";
+	public class AccountValidationTokenHelper : IAccountValidationTokenHelper
+	{
+		private readonly Encoding _encoding;
 
-            var serializedData = Convert.ToBase64String(Encoding.UTF8.GetBytes(combinedParams));
+		public AccountValidationTokenHelper(Encoding defaultEncoding)
+		{
+			_encoding = defaultEncoding;
+		}
 
-            return serializedData;
-        }
+		[NotNull]
+		public string Serialize(string rawToken)
+		{
+			return Convert.ToBase64String(_encoding.GetBytes(rawToken));
+		}
 
-        [NotNull]
-        public AccountValidationTokenData Deserialize([NotNull] string tokenRaw)
-        {
-            var dataFromToken = new AccountValidationTokenData();
-
-            var deserializedToken = Encoding.UTF8.GetString(Convert.FromBase64String(tokenRaw));
-
-            var deserializedParamSplit = deserializedToken.Split('|');
-
-            dataFromToken.AccountId = int.Parse(deserializedParamSplit[0]);
-            dataFromToken.ValidationGuid = new Guid(deserializedParamSplit[1]);
-
-            return dataFromToken;
-        }
-    }
+		[NotNull]
+		public string Deserialize([NotNull] string tokenRaw)
+		{
+			return _encoding.GetString(Convert.FromBase64String(tokenRaw));
+		}
+	}
 }

@@ -1,54 +1,47 @@
-﻿import * as React from "react";
-
-import ajaxPost from "helper/ajaxHelper";
-// Framework
-import requestUrl from "helper/requestUrls";
+﻿// Framework
+import * as React from "react";
 
 // Components
 import Flex from "Common/Components/Flex";
 
 // Functionality
-
+import { VoidPostRequest } from "helper/requests/PostRequest";
 
 import "Views/Pages/Other/Styles/AccountValidation.less";
 
-interface IAccountValidationTokenData {
-    AccountId: number;
-    ValidationGuid: string;
+type AccountValidationData = {
+	accountId: number;
+	token: string;
 }
 
-interface IAccountValidationModel {
-    AccountName: string;
-    AccountValidationTokenData: IAccountValidationTokenData;
+type Props = {
+	accountValidationData: AccountValidationData;
 }
 
-export const AccountValidationDialog: React.FC = () => {
+export const AccountValidationDialog: React.FC<Props> = ({ accountValidationData }) => {
 
-    const accountValidationMetaData: IAccountValidationModel = window["dataModel"];
 
-    const onValidationClicked = React.useCallback((event) => {
-        event.preventDefault();
+	const onValidationClicked = React.useCallback(async (event) => {
+		event.preventDefault();
 
-        ajaxPost({
-            actionUrl: requestUrl.accountValidation.validateRegistration,
-            data: accountValidationMetaData,
-        });
-    }, []);
+		var request = new VoidPostRequest<AccountValidationData>("/AccountValidation/ValidateRegistration");
+		await request.send(accountValidationData);
+	}, []);
 
-    return (
-        <div className="validationContainer">
-            <div className="validationContent">
-                <h2>Account validation</h2>
-                Do you want to validate your account?
-                
-                <input type="button" className="btn btn-primary" value="Validate" onClick={onValidationClicked}/>
+	return (
+		<Flex className="validationContainer">
+			<Flex className="validationContent">
+				<h2>Account validation</h2>
+				Do you want to validate your account?
+				
+				<input type="button" className="btn btn-primary" value="Validate" onClick={onValidationClicked}/>
 
-                <div className="validationBackToLoginBtnContainer">
-                    <a className="btn btn-primary validationBackToLoginBtn" href="/">Back to login</a>
-                </div>
-            </div>
-        </div>
-    );
+				<Flex className="validationBackToLoginBtnContainer">
+					<a className="btn btn-primary validationBackToLoginBtn" href="/">Back to login</a>
+				</Flex>
+			</Flex>
+		</Flex>
+	);
 }
 
 export default AccountValidationDialog;

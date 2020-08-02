@@ -4,8 +4,9 @@ using GreenPipes;
 using JetBrains.Annotations;
 using MassTransit;
 using MooMed.Core.Code.Helper.Retry;
-using MooMed.Dns.Service.Interface;
+using MooMed.Identity.Service.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Identity.Service.Identity.Interface;
 using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Eventing.Events.MassTransit
@@ -19,15 +20,15 @@ namespace MooMed.Eventing.Events.MassTransit
 		private readonly IBusControl _busControl;
 
 		[NotNull]
-		private readonly IDnsResolutionService _dnsResolutionService;
+		private readonly IServiceIdentityProvider _serviceIdentityProvider;
 
 		public MassTransitEventingService(
 			[NotNull] IMooMedLogger mooMedLogger,
-			[NotNull] IDnsResolutionService dnsResolutionService,
+			[NotNull] IServiceIdentityProvider serviceIdentityProvider,
 			[NotNull] IBusControl busControl)
 		{
 			_mooMedLogger = mooMedLogger;
-			_dnsResolutionService = dnsResolutionService;
+			_serviceIdentityProvider = serviceIdentityProvider;
 			_busControl = busControl;
 
 			Task.Run(Start);
@@ -58,8 +59,9 @@ namespace MooMed.Eventing.Events.MassTransit
 		private void RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler)
 			where T : class
 		{
-			// To ensure every queue is unique, add the DNS hostname to it
-			queueName = $"{queueName}_{_dnsResolutionService.GetOwnHostName()}";
+			// To ensure every queue is unique, add the DNS hostname to it. Every consumer needs a unique
+			// id
+			queueName = $"{queueName}_{_serviceIdentityProvider.GetServiceIdentity()}";
 
 			_busControl.ConnectReceiveEndpoint(queueName, ep =>
 			{

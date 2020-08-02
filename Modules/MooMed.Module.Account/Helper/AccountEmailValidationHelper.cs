@@ -20,12 +20,12 @@ namespace MooMed.Module.Accounts.Helper
             _emailManager = emailManager;
         }
 
-        public async Task SendAccountValidationEmail(Language lang, string recipient, string accountValidationToken)
+        public async Task SendAccountValidationEmail(Language lang, string recipientMail, int accountId, string accountValidationToken)
         {
             using (new TranslationScope(lang))
             {
-                var emailBody = TranslationFormatter.FormatWithParams(Translation.AccountEmailValidationBody, "http://51.136.126.247", accountValidationToken);
-                await _emailManager.Send(recipient, Translation.AccountEmailValidationSubject, emailBody);
+                var emailBody = TranslationFormatter.FormatWithParams(Translation.AccountEmailValidationBody, "http://51.136.126.247", accountId.ToString(), accountValidationToken);
+                await _emailManager.Send(recipientMail, Translation.AccountEmailValidationSubject, emailBody);
             }
         }
     }

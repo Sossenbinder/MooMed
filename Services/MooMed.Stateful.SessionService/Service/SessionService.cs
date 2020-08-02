@@ -6,16 +6,16 @@ using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Common.ServiceBase;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
+using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Session.Cache.Interface;
 
 namespace MooMed.Stateful.SessionService.Service
 {
-    public class SessionService : MooMedServiceBase, ISessionService
+    public class SessionService : MooMedServiceBaseWithLogger, ISessionService
     {
 	    [NotNull]
 	    private readonly ISessionContextCache _sessionContextCache;
@@ -28,7 +28,7 @@ namespace MooMed.Stateful.SessionService.Service
 	    {
 		    _sessionContextCache = sessionContextCache;
 
-            accountEventHub.AccountLoggedOut.Register(OnAccountLoggedOut);
+		    RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
 	    }
 
 	    private void OnAccountLoggedOut([NotNull] AccountLoggedOutEvent accountLoggedOutEvent)

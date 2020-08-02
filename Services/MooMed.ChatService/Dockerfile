@@ -23,7 +23,7 @@ COPY ["Common/MooMed.Azure/MooMed.Azure.csproj", "Common/MooMed.Azure/"]
 COPY ["Common/MooMed.IPC/MooMed.IPC.csproj", "Common/MooMed.IPC/"]
 COPY ["Common/MooMed.Eventing/MooMed.Eventing.csproj", "Common/MooMed.Eventing/"]
 COPY ["Common/MooMed.SignalR/MooMed.SignalR.csproj", "Common/MooMed.SignalR/"]
-COPY ["Common/MooMed.Dns/MooMed.Dns.csproj", "Common/MooMed.Dns/"]
+COPY ["Common/MooMed.Identity/MooMed.Identity.csproj", "Common/MooMed.Identity/"]
 COPY ["Common/MooMed.AspNetCore/MooMed.AspNetCore.csproj", "Common/MooMed.AspNetCore/"]
 COPY ["Common/MooMed.Common.ServiceBase/MooMed.Common.ServiceBase.csproj", "Common/MooMed.Common.ServiceBase/"]
 RUN dotnet restore "Services/MooMed.ChatService/MooMed.ChatService.csproj"

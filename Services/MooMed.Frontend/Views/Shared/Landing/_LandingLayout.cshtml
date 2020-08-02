@@ -6,7 +6,6 @@
         <link href="/lib/bootstrap.min.css" rel="stylesheet">
     </head>
 	<body>
-		<script type="text/javascript" src="/dist/logonBundle.js"></script>
 		@using (Html.BeginForm(null, null, FormMethod.Post, new {id = "__AjaxAntiForgeryToken"}))
 		{
 			@Html.AntiForgeryToken()
@@ -14,5 +13,6 @@
 		<div class="contentContainer">
 			@RenderBody()
 		</div>
+		<script type="text/javascript" src="/dist/logonBundle.js"></script>
 	</body>
 </html>

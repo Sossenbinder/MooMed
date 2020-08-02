@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MooMed.AspNetCore.Modules;
+using MooMed.Common.ServiceBase.Module;
 using MooMed.Configuration.Module;
 using MooMed.Core;
 using MooMed.Encryption.Module;
@@ -18,8 +19,8 @@ using ProtoBuf.Grpc.Server;
 
 namespace MooMed.AspNetCore.Grpc
 {
-	public abstract class GrpcEndpointStartup<T>
-		where T : class, IGrpcService
+	public abstract class GrpcEndpointStartup<TGrpcService>
+		where TGrpcService : class, IGrpcService
 	{
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -34,7 +35,7 @@ namespace MooMed.AspNetCore.Grpc
 			services.AddControllers()
 				.AddApplicationPart(Assembly.GetExecutingAssembly())
 				.AddControllersAsServices();
-			
+
 			services.AddDataProtection();
 
 			services.AddMassTransit(x => x.AddBus(provider => MassTransitBusFactory.CreateBus(provider)));
@@ -52,21 +53,22 @@ namespace MooMed.AspNetCore.Grpc
 
 		protected virtual void RegisterModules(ContainerBuilder containerBuilder)
 		{
-			containerBuilder.RegisterType<T>()
-				.AsSelf()
+			containerBuilder.RegisterType<TGrpcService>()
+				.As<IGrpcService, TGrpcService>()
 				.SingleInstance();
 
-			containerBuilder.RegisterModule<GrpcModule>();
+			containerBuilder.RegisterModule<MooMedAspNetCoreModule>();
 			containerBuilder.RegisterModule<EventingModule>();
 			containerBuilder.RegisterModule<CoreModule>();
 			containerBuilder.RegisterModule<EncryptionModule>();
 			containerBuilder.RegisterModule<ConfigurationModule>();
 			containerBuilder.RegisterModule<LoggingModule>();
+			containerBuilder.RegisterModule<ServiceBaseModule>();
 		}
 
 		protected void RegisterServices([NotNull] IEndpointRouteBuilder endpointRouteBuilder)
 		{
-			endpointRouteBuilder.MapGrpcService<T>();
+			endpointRouteBuilder.MapGrpcService<TGrpcService>();
 			endpointRouteBuilder.MapControllers();
 		}
 	}

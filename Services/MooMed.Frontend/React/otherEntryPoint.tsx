@@ -15,5 +15,5 @@ window.onload = () => {
 				<OtherMain />
 			</BrowserRouter>
 		</Provider>,
-		document.getElementById("otherPageHolder"));
+		document.getElementById("landingContainer"));
 };

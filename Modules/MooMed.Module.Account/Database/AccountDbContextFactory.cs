@@ -1,21 +1,22 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Common.Database.Context;
-using MooMed.Common.Definitions.Configuration;
-using MooMed.Configuration.Interface;
+using Microsoft.EntityFrameworkCore;
+using MooMed.Common.Database.Context.Interface;
 
 namespace MooMed.Module.Accounts.Database
 {
-	public class AccountDbContextFactory : AbstractDbContextFactory<AccountDbContext>
+	public class AccountDbContextFactory : IDbContextFactory<AccountDbContext>
 	{
-		public AccountDbContextFactory([NotNull] IConfigSettingsProvider configSettingsProvider, [NotNull] string key)
-			: base(configSettingsProvider, key)
-		{
+		[NotNull]
+		private readonly DbContextOptions<AccountDbContext> _options;
 
+		public AccountDbContextFactory([NotNull] DbContextOptions<AccountDbContext> options)
+		{
+			_options = options;
 		}
 
-		public override AccountDbContext CreateContext()
+		public AccountDbContext CreateContext()
 		{
-			return new AccountDbContext(GetConnectionString());
+			return new AccountDbContext(_options);
 		}
 	}
 }

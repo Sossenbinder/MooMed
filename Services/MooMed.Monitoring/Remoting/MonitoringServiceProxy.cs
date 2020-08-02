@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
 

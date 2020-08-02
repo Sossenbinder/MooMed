@@ -3,7 +3,6 @@
 namespace MooMed.Common.Definitions.IPC
 {
 	[ProtoContract]
-	
 	public class Primitive<T>
 	{
 		[ProtoMember(1)]
@@ -15,5 +14,7 @@ namespace MooMed.Common.Definitions.IPC
 		};
 
 		public static implicit operator T(Primitive<T> primitive) => primitive.Value;
+
+		public override string ToString() => Value.ToString();
 	}
 }

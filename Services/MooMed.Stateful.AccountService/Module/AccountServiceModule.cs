@@ -1,5 +1,6 @@
 ﻿using Autofac;
-using MooMed.Common.ServiceBase.Interface;
+using MooMed.Grpc.Services.Interface;
+using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Stateful.ProfilePictureService.Remoting;
 using MooMed.Stateful.SessionService.Remoting;
 
@@ -17,6 +18,10 @@ namespace MooMed.Stateful.AccountService.Module
 
 			builder.RegisterType<SessionServiceProxy>()
 				.As<ISessionService>()
+				.SingleInstance();
+
+			builder.RegisterType<AccountDbConverter>()
+				.AsSelf()
 				.SingleInstance();
 		}
 	}

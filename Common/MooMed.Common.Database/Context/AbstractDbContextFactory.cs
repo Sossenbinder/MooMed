@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Database.Context.Interface;
 using MooMed.Common.Definitions.Configuration;
-using MooMed.Configuration.Interface;
 
 namespace MooMed.Common.Database.Context
 {
 	public abstract class AbstractDbContextFactory<TDbContext> : IDbContextFactory<TDbContext> 
-		where TDbContext : AbstractDbContext
+		where TDbContext : DbContext
 	{
 		[NotNull]
 		private readonly IConfigSettingsProvider _configSettingsProvider;

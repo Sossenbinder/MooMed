@@ -1,20 +1,22 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Notifications;
+using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.DotNet.Extensions;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Datatypes.SignalR;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
-using MooMed.SignalR.Hubs;
 
 namespace MooMed.Module.Accounts.Service
 {
-	public class AccountOnlineStateService : IAccountOnlineStateService
+	public class AccountOnlineStateService : MooMedServiceBase, IAccountOnlineStateService
 	{
 		[NotNull]
 		private readonly IAccountOnlineStateRepository _accountOnlineStateRepository;
@@ -35,8 +37,8 @@ namespace MooMed.Module.Accounts.Service
 			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
 			_friendsService = friendsService;
 
-			accountEventHub.AccountLoggedIn.Register(OnAccountLoggedIn);
-			accountEventHub.AccountLoggedOut.Register(OnAccountLoggedOut);
+			RegisterEventHandler(accountEventHub.AccountLoggedIn, OnAccountLoggedIn);
+			RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
 		}
 
 		private async Task OnAccountLoggedIn(AccountLoggedInEvent loggedInEvent)
@@ -77,9 +79,17 @@ namespace MooMed.Module.Accounts.Service
 			};
 
 			var friendsOfAccount = await _friendsService.GetFriends(sessionContext);
+			var receiverIds = friendsOfAccount.Select(x => x.Id);
 
-			// TODO Try this with user
-			await _massTransitSignalRBackplaneService.RaiseAllSignalREvent(notification);
+			await receiverIds.ParallelAsync(id => _massTransitSignalRBackplaneService.RaiseGroupSignalREvent(id.ToString(), notification));
+		}
+
+		public async Task<AccountOnlineState> GetOnlineStateForAccount(int accountId)
+		{
+			var onlineState = (await _accountOnlineStateRepository.Read(x => x.Id == accountId))
+				.SingleOrDefault();
+
+			return onlineState?.OnlineState ?? AccountOnlineState.Offline;
 		}
 	}
 }

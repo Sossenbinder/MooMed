@@ -1,9 +1,9 @@
-export const usingBoolAsync = async (stateSetter: (x: React.SetStateAction<boolean>) => void, action: () => Promise<void>) => {
+export const usingBoolAsync = async <T = void>(stateSetter: (x: React.SetStateAction<boolean>) => void, action: () => Promise<T>) => {
 
     try {
         stateSetter(true);
 
-        await action();
+        return await action();
     }
     finally {
         stateSetter(false);

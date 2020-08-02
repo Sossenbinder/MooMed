@@ -4,10 +4,10 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MooMed.Common.ServiceBase.Interface;
 using MooMed.DotNet.Extensions;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
+using MooMed.Grpc.Services.Interface;
 using ProtoBuf.Grpc;
 
 namespace MooMed.Frontend.Controllers
