@@ -11,6 +11,6 @@ namespace MooMed.Common.Definitions.Models.Portfolio
 		public string Isin { get; set; }
 
 		[ProtoMember(3)]
-		public int Amount { get; set; }
+		public float Amount { get; set; }
 	}
 }

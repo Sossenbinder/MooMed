@@ -15,7 +15,7 @@ namespace MooMed.Module.Portfolio.DataTypes.Entity
 		public string Isin { get; set; }
 
 		[Column("Amount")]
-		public int Amount { get; set; }
+		public float Amount { get; set; }
 
 		[ForeignKey("Id")]
 		public AccountEntity Account

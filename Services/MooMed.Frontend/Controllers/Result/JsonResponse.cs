@@ -9,7 +9,7 @@ namespace MooMed.Frontend.Controllers.Result
 	{
 		private readonly HttpStatusCode _statusCode;
 
-		private JsonResponse([NotNull] object data, bool success, HttpStatusCode statusCode)
+		private JsonResponse([CanBeNull] object data, bool success, HttpStatusCode statusCode)
 			: base(new
 			{
 				success,
@@ -22,13 +22,13 @@ namespace MooMed.Frontend.Controllers.Result
 		[NotNull]
 		public static JsonResponse Success([CanBeNull] object data = null, bool internalSuccess = true)
 		{
-			return new JsonResponse(data ?? new EmptyResult(), internalSuccess, HttpStatusCode.OK);
+			return new JsonResponse(data, internalSuccess, HttpStatusCode.OK);
 		}
 
 		[NotNull]
 		public static JsonResponse Error([CanBeNull] object data = null)
 		{
-			return new JsonResponse(data ?? new EmptyResult(), false, HttpStatusCode.OK);
+			return new JsonResponse(data, false, HttpStatusCode.OK);
 		}
 
 		public override Task ExecuteResultAsync([NotNull] ActionContext context)

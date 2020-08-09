@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MooMed.Common.Definitions.Interface;
+﻿using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Definitions.UiModels.Finance.Portfolio
 {
@@ -9,6 +6,6 @@ namespace MooMed.Common.Definitions.UiModels.Finance.Portfolio
 	{
 		public string Isin { get; set; }
 
-		public int Amount { get; set; }
+		public float Amount { get; set; }
 	}
 }

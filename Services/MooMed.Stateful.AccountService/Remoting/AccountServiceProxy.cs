@@ -18,12 +18,12 @@ namespace MooMed.Stateful.AccountService.Remoting
 	{
 		public AccountServiceProxy(
 			[NotNull] IEndpointProvider endpointProvider,
-			[NotNull] IGrpcClientProvider grpcClientProvider,
+			[NotNull] ISpecificGrpcClientProvider grpcClientProvider,
 			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper)
 			: base(endpointProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				MooMedService.AccountService)
+				StatefulSetService.AccountService)
 		{
 		}
 
@@ -35,7 +35,7 @@ namespace MooMed.Stateful.AccountService.Remoting
 
 		public Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
 			=> InvokeRandomWithResult(service => service.Register(registerModel));
-		
+
 		public Task<ServiceResponse> LogOff(ISessionContext sessionContext)
 			=> InvokeSpecificWithResult(sessionContext, service => service.LogOff(sessionContext));
 

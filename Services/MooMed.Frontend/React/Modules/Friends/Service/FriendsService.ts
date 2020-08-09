@@ -24,7 +24,7 @@ export default class FriendsService extends ModuleService implements IFriendsSer
 	public async start() {		
 		const friendsResponse = await friendsCommunication.getFriends();
 		
-		if (friendsResponse.success){
+		if (friendsResponse.success && friendsResponse.payload){
 			this.dispatch(friendsReducer.add(friendsResponse.payload));
 		}
 	}

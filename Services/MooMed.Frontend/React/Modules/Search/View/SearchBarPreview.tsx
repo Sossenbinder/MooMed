@@ -53,7 +53,9 @@ export const SearchBarPreview: React.FC<Props> = ({ previewAccounts, visibility,
                             Users:
                         </strong>
                     </p>
-                    <Flex className={"UserEntries"}>
+					<Flex
+						direction="Column"
+						className={"UserEntries"}>
                         {userEntries}
                     </Flex>
                     <Flex className={"CloseButton"} onClick={() => onOpenStateChange(false)}></Flex>

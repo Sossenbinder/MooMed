@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Grpc.Core;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Grpc.Definitions.Interface;
@@ -13,35 +12,35 @@ namespace MooMed.IPC.ProxyInvocation
 	/// Serves as the base for all proxy services, taking care of load balancing for all the implementers
 	/// </summary>
 	/// <typeparam name="TServiceType"></typeparam>
-	public abstract class AbstractDeploymentProxy<TServiceType> : IDeploymentProxy<TServiceType> 
+	public abstract class AbstractDeploymentProxy<TServiceType> : IDeploymentProxy<TServiceType>
 		where TServiceType : class, IGrpcService
 	{
 		[NotNull]
 		private readonly IGrpcClientProvider _clientProvider;
 
-		private readonly MooMedService _moomedService;
+		private readonly DeploymentService _moomedService;
 
 		protected AbstractDeploymentProxy(
 			[NotNull] IGrpcClientProvider clientProvider,
-			MooMedService moomedService)
+			DeploymentService moomedService)
 		{
 			_clientProvider = clientProvider;
 
 			_moomedService = moomedService;
 		}
-		
-		public async Task Invoke(Func<TServiceType, Task> invocationFunc)
+
+		public Task Invoke(Func<TServiceType, Task> invocationFunc)
 		{
 			var proxy = _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
 
-			await invocationFunc(proxy);
+			return invocationFunc(proxy);
 		}
 
-		public async Task<TResult> InvokeWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
+		public Task<TResult> InvokeWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
 		{
 			var proxy = _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
 
-			return await invocationFunc(proxy);
+			return invocationFunc(proxy);
 		}
 	}
 }

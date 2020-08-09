@@ -19,10 +19,6 @@ namespace MooMed.IPC.Module
 				.As<IKubernetesClientFactory>()
 				.SingleInstance();
 
-			builder.RegisterType<GrpcClientProvider>()
-				.As<IGrpcClientProvider>()
-				.SingleInstance();
-
 			builder.RegisterType<EndpointProvider>()
 				.As<IEndpointProvider>()
 				.SingleInstance();
@@ -31,8 +27,22 @@ namespace MooMed.IPC.Module
 				.As<IDeterministicPartitionSelectorHelper>()
 				.SingleInstance();
 
+			// Client / Channel providers
+
+			builder.RegisterType<GrpcClientProvider>()
+				.As<IGrpcClientProvider>()
+				.SingleInstance();
+
 			builder.RegisterType<GrpcChannelProvider>()
 				.As<IGrpcChannelProvider>()
+				.SingleInstance();
+
+			builder.RegisterType<SpecificGrpcClientProvider>()
+				.As<ISpecificGrpcClientProvider>()
+				.SingleInstance();
+
+			builder.RegisterType<SpecificGrpcChannelProvider>()
+				.As<ISpecificGrpcChannelProvider>()
 				.SingleInstance();
 		}
 	}

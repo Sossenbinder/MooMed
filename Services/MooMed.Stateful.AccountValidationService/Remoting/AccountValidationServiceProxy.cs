@@ -15,12 +15,12 @@ namespace MooMed.Stateful.AccountValidationService.Remoting
 	{
 		public AccountValidationServiceProxy(
 			[NotNull] IEndpointProvider endpointProvider,
-			[NotNull] IGrpcClientProvider grpcClientProvider,
+			[NotNull] ISpecificGrpcClientProvider grpcClientProvider,
 			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper)
 			: base(endpointProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				MooMedService.AccountValidationService)
+				StatefulSetService.AccountValidationService)
 		{
 		}
 

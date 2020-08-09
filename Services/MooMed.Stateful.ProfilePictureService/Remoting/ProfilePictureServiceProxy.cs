@@ -16,7 +16,7 @@ namespace MooMed.Stateful.ProfilePictureService.Remoting
 		public ProfilePictureServiceProxy([NotNull] IGrpcClientProvider grpcClientProvider)
 			: base(
 				grpcClientProvider,
-				MooMedService.ProfilePictureService)
+				DeploymentService.ProfilePictureService)
 		{
 		}
 

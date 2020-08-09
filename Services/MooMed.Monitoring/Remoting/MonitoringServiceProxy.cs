@@ -8,8 +8,8 @@ namespace MooMed.Monitoring.Remoting
 {
 	public class MonitoringServiceProxy : AbstractDeploymentProxy<IMonitoringService>, IMonitoringService
 	{
-		public MonitoringServiceProxy([NotNull] IGrpcClientProvider clientProvider) 
-			: base(clientProvider, MooMedService.MonitoringService)
+		public MonitoringServiceProxy([NotNull] IGrpcClientProvider clientProvider)
+			: base(clientProvider, DeploymentService.MonitoringService)
 		{
 		}
 	}

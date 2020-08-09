@@ -12,17 +12,16 @@ using MooMed.IPC.ProxyInvocation.Interface;
 
 namespace MooMed.Stateful.SessionService.Remoting
 {
-
 	public class SessionServiceProxy : AbstractStatefulSetProxy<ISessionService>, ISessionService
 	{
 		public SessionServiceProxy(
 			[NotNull] IEndpointProvider endpointProvider,
-			[NotNull] IGrpcClientProvider grpcClientProvider,
+			[NotNull] ISpecificGrpcClientProvider grpcClientProvider,
 			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper)
 			: base(endpointProvider,
 				grpcClientProvider,
 				deterministicPartitionSelectorHelper,
-				MooMedService.SessionService)
+				StatefulSetService.SessionService)
 		{
 		}
 

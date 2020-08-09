@@ -9,16 +9,15 @@ namespace MooMed.IPC.Grpc.Interface
 	/// Provides grpc clients for combinations of services and channels
 	/// </summary>
 	public interface IGrpcClientProvider
-    {
+	{
 		/// <summary>
-		/// Provides a grpc setService for a given service and possible replica number 
+		/// Provides a grpc setService for a given service and possible replica number
 		/// </summary>
 		/// <typeparam name="TService">Type of GrpcService</typeparam>
 		/// <param name="moomedService">Target service</param>
-		/// <param name="replicaNumber">optional - Number of replica to target</param>
 		/// <returns>Object of TService to communicate through</returns>
 		[NotNull]
-        TService GetGrpcClient<TService>(MooMedService moomedService, int replicaNumber = 0)
-	        where TService : class, IGrpcService;
-    }
+		TService GetGrpcClient<TService>(DeploymentService moomedService)
+			where TService : class, IGrpcService;
+	}
 }

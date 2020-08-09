@@ -13,7 +13,7 @@ using MooMed.DotNet.Extensions;
 
 namespace MooMed.Common.Database.Repository
 {
-	public abstract class AbstractCrudRepository<TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType> 
+	public abstract class AbstractCrudRepository<TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType>
 		where TEntity : class, IEntity<TKeyType>
 		where TDbContext : DbContext
 	{
@@ -36,9 +36,9 @@ namespace MooMed.Common.Database.Repository
 		{
 			var creationResult = await RunInContextAndCommitWithResult(async set =>
 			{
-				var thing = await set.AddAsync(entity);
+				var entityEntry = await set.AddAsync(entity);
 
-				return thing.Entity;
+				return entityEntry.Entity;
 			});
 
 			return creationResult;
@@ -126,7 +126,7 @@ namespace MooMed.Common.Database.Repository
 				set.Remove(existingEntity);
 			});
 
-		public async Task CreateOrUpdate(TEntity entity,  Action<TEntity> updateFunc)
+		public async Task CreateOrUpdate(TEntity entity, Action<TEntity> updateFunc)
 		{
 			var existingItem = (await Read(x => x.Id.Equals(entity.Id))).SingleOrDefault();
 

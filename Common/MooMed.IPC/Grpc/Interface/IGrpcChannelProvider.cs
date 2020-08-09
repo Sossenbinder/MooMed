@@ -10,8 +10,7 @@ namespace MooMed.IPC.Grpc.Interface
 		/// Get a grpc channel for a service, given an optional replica number
 		/// </summary>
 		/// <param name="moomedService">Type of service</param>
-		/// <param name="replicaNumber">Number of replica to target</param>
 		/// <returns>Grpc channel to create clients from</returns>
-		GrpcChannel GetGrpcChannel(MooMedService moomedService, int replicaNumber = 0);
+		GrpcChannel GetGrpcChannel(DeploymentService moomedService);
 	}
 }

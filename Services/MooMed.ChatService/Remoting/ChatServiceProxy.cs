@@ -12,10 +12,10 @@ namespace MooMed.ChatService.Remoting
 {
 	public class ChatServiceProxy : AbstractDeploymentProxy<IChatService>, IChatService
 	{
-		public ChatServiceProxy([NotNull] IGrpcClientProvider clientProvider) 
+		public ChatServiceProxy([NotNull] IGrpcClientProvider clientProvider)
 			: base(
-				clientProvider, 
-				MooMedService.ChatService)
+				clientProvider,
+				DeploymentService.ChatService)
 		{ }
 
 		public Task<ServiceResponse<RetrievedMessages>> GetMessages(GetMessages getMessages)

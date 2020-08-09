@@ -52,6 +52,12 @@ namespace MooMed.Module.Accounts.Service
 				FriendId = accountId
 			});
 
+			await _friendsMappingRepository.Create(new FriendsMappingEntity()
+			{
+				Id = accountId,
+				FriendId = sessionContext.Account.Id
+			});
+
 			return true;
 		}
 	}

@@ -35,12 +35,6 @@ export default class AjaxRequest<TRequest, TResponse> {
 		}
 
 		if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
-
-			const params = Object
-				.keys(requestData)
-				.map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(requestData[key]))
-				.join('&');
-
 			requestInit.body = JSON.stringify(requestData);
 		}
 

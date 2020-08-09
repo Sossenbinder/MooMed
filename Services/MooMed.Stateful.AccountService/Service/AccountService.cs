@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -172,6 +173,11 @@ namespace MooMed.Stateful.AccountService.Service
 		{
 			var friends = await _friendsService.GetFriends(sessionContext);
 
+			if (friends.IsNullOrEmpty())
+			{
+				return ServiceResponse<List<Friend>>.Success(null);
+			}
+
 			await friends.ParallelAsync(async friend =>
 			{
 				var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(friend.Id);
@@ -182,7 +188,7 @@ namespace MooMed.Stateful.AccountService.Service
 				}
 			});
 
-			return ServiceResponse<List<Friend>>.Success(friends);
+			return ServiceResponse.Success(friends);
 		}
 	}
 }

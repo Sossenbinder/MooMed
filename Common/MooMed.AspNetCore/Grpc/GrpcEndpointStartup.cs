@@ -14,6 +14,7 @@ using MooMed.Encryption.Module;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
 using MooMed.Grpc.Definitions.Interface;
+using MooMed.Grpc.Interceptors;
 using MooMed.Logging.Module;
 using ProtoBuf.Grpc.Server;
 
@@ -29,6 +30,7 @@ namespace MooMed.AspNetCore.Grpc
 			services.AddCodeFirstGrpc(grpcOptions =>
 			{
 				grpcOptions.EnableDetailedErrors = true;
+				grpcOptions.Interceptors.Add<ErrorHandlingInterceptor>();
 			});
 
 			services.AddLocalization();

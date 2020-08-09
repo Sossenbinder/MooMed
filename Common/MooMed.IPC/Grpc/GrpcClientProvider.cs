@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Grpc.Definitions.Interface;
@@ -9,43 +8,41 @@ using ProtoBuf.Grpc.Client;
 
 namespace MooMed.IPC.Grpc
 {
-    /// <summary>
-    /// Provides Grpc Clients
-    /// </summary>
-    public class GrpcClientProvider : IGrpcClientProvider
-    {
+	/// <summary>
+	/// Provides Grpc Clients
+	/// </summary>
+	public class GrpcClientProvider : IGrpcClientProvider
+	{
 		[NotNull]
-	    private readonly IGrpcChannelProvider _grpcChannelProvider;
+		private readonly IGrpcChannelProvider _grpcChannelProvider;
 
-        [NotNull]
-        private readonly ConcurrentDictionary<MooMedService, ConcurrentDictionary<int, IGrpcService>> _grpcClientDictionary;
+		[NotNull]
+		private readonly ConcurrentDictionary<DeploymentService, IGrpcService> _grpcClientDictionary;
 
-        public GrpcClientProvider([NotNull] IGrpcChannelProvider grpcChannelProvider)
-        {
-	        GrpcClientFactory.AllowUnencryptedHttp2 = true;
+		public GrpcClientProvider([NotNull] IGrpcChannelProvider grpcChannelProvider)
+		{
+			GrpcClientFactory.AllowUnencryptedHttp2 = true;
 
-            _grpcChannelProvider = grpcChannelProvider;
+			_grpcChannelProvider = grpcChannelProvider;
 
-	        _grpcClientDictionary = new ConcurrentDictionary<MooMedService, ConcurrentDictionary<int, IGrpcService>>();
-        }
-        
-        public TService GetGrpcClient<TService>(MooMedService moomedService, int replicaNumber = 0) where TService : class, IGrpcService
-        {
-	        var grpcServiceDict = _grpcClientDictionary.GetOrAdd(moomedService, 
-		        service => new ConcurrentDictionary<int, IGrpcService>());
+			_grpcClientDictionary = new ConcurrentDictionary<DeploymentService, IGrpcService>();
+		}
 
-	        var grpcService = grpcServiceDict.GetOrAdd(replicaNumber, 
-		        newReplicaNr => CreateNewGrpcService<TService>(moomedService, newReplicaNr));
+		public TService GetGrpcClient<TService>(DeploymentService moomedService) where TService : class, IGrpcService
+		{
+			var grpcService = _grpcClientDictionary.GetOrAdd(
+				moomedService,
+				CreateNewGrpcService<TService>);
 
-	        return grpcService as TService ?? throw new InvalidOperationException();
-        }
+			return grpcService as TService ?? throw new InvalidOperationException();
+		}
 
-        private IGrpcService CreateNewGrpcService<TService>(MooMedService moomedService, int channelNumber)
+		private IGrpcService CreateNewGrpcService<TService>(DeploymentService moomedService)
 			where TService : class, IGrpcService
-        {
-	        var grpcChannel = _grpcChannelProvider.GetGrpcChannel(moomedService, channelNumber);
+		{
+			var grpcChannel = _grpcChannelProvider.GetGrpcChannel(moomedService);
 
-	        return grpcChannel.CreateGrpcService<TService>();
-        }
-    }
+			return grpcChannel.CreateGrpcService<TService>();
+		}
+	}
 }

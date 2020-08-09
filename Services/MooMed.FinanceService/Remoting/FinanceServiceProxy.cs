@@ -14,8 +14,8 @@ namespace MooMed.FinanceService.Remoting
 {
 	public class FinanceServiceProxy : AbstractDeploymentProxy<IFinanceService>, IFinanceService
 	{
-		public FinanceServiceProxy([NotNull] IGrpcClientProvider clientProvider) 
-			: base(clientProvider, MooMedService.FinanceService)
+		public FinanceServiceProxy([NotNull] IGrpcClientProvider clientProvider)
+			: base(clientProvider, DeploymentService.FinanceService)
 		{
 		}
 

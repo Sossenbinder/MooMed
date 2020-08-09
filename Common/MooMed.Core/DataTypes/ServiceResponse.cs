@@ -14,17 +14,15 @@ namespace MooMed.Core.DataTypes
 		[ProtoMember(2)]
 		public bool IsSuccess { get; set; }
 
-		[ProtoMember(3)]
-		public bool IsFailure { get; set; }
+		public bool IsFailure => !IsSuccess;
 
-		protected ServiceResponseBase()
+		public ServiceResponseBase()
 		{
 		}
 
 		protected ServiceResponseBase(bool isSuccess, [CanBeNull] string errorMessage)
 		{
 			IsSuccess = isSuccess;
-			IsFailure = !isSuccess;
 			ErrorMessage = new ServiceErrorMessage(errorMessage);
 		}
 	}
@@ -34,9 +32,8 @@ namespace MooMed.Core.DataTypes
 	{
 		// Implicitly used by protobuf-net, so the lib can use this instead of having to fallback onto the non-parameterless constructor
 		[UsedImplicitly]
-		private ServiceResponse()
+		public ServiceResponse()
 		{
-
 		}
 
 		public ServiceResponse(bool isSuccess, [CanBeNull] string errorMessage = null)
@@ -65,7 +62,7 @@ namespace MooMed.Core.DataTypes
 	// Simple base class to transport the result of a backend task to the frontend and provide a way to check whether call was successful
 	public class ServiceResponse<TPayload> : ServiceResponseBase
 	{
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		private TPayload _payload;
 
 		[NotNull]
@@ -85,11 +82,11 @@ namespace MooMed.Core.DataTypes
 			}
 		}
 
-		private ServiceResponse()
+		public ServiceResponse()
 		{
 		}
 
-		public ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload, [CanBeNull] string errorMessage)
+		public ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload = default, [CanBeNull] string errorMessage = null)
 			: base(isSuccess, errorMessage)
 		{
 			_payload = payload;

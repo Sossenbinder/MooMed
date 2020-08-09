@@ -6,7 +6,6 @@ using MooMed.Common.Definitions.IPC.Interface;
 using MooMed.Grpc.Definitions.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
-using MooMed.IPC.Helper;
 using MooMed.IPC.ProxyInvocation.Interface;
 
 namespace MooMed.IPC.ProxyInvocation
@@ -18,7 +17,7 @@ namespace MooMed.IPC.ProxyInvocation
 		private readonly IEndpointProvider _endpointProvider;
 
 		[NotNull]
-		private readonly IGrpcClientProvider _clientProvider;
+		private readonly ISpecificGrpcClientProvider _clientProvider;
 
 		[NotNull]
 		private readonly IDeterministicPartitionSelectorHelper _deterministicPartitionSelectorHelper;
@@ -26,15 +25,13 @@ namespace MooMed.IPC.ProxyInvocation
 		[NotNull]
 		private readonly Random _random;
 
-		private readonly MooMedService _moomedService;
-
-		private readonly StatefulSetService _statefulSetService;
+		private readonly StatefulSetService _moomedService;
 
 		protected AbstractStatefulSetProxy(
 			[NotNull] IEndpointProvider endpointProvider,
-			[NotNull] IGrpcClientProvider clientProvider,
+			[NotNull] ISpecificGrpcClientProvider clientProvider,
 			[NotNull] IDeterministicPartitionSelectorHelper deterministicPartitionSelectorHelper,
-			MooMedService moomedService)
+			StatefulSetService moomedService)
 		{
 			_endpointProvider = endpointProvider;
 			_clientProvider = clientProvider;
@@ -42,7 +39,6 @@ namespace MooMed.IPC.ProxyInvocation
 			_random = new Random();
 
 			_moomedService = moomedService;
-			_statefulSetService = ServiceTypeResolver.TranslateMooMedServiceToStatefulSetService(_moomedService);
 		}
 
 		// Random invocation
@@ -109,14 +105,14 @@ namespace MooMed.IPC.ProxyInvocation
 
 		private int ResolveToReplicaNumber(int hashableIdentifier)
 		{
-			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_statefulSetService);
+			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_moomedService);
 
 			return _deterministicPartitionSelectorHelper.HashIdentifierToPartitionIntIdentifier(hashableIdentifier, replicas);
 		}
 
 		private int GetRandomReplicaNumber()
 		{
-			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_statefulSetService);
+			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_moomedService);
 			return _random.Next(replicas);
 		}
 	}

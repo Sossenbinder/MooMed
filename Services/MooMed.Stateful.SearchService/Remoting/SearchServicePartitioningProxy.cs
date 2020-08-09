@@ -13,7 +13,7 @@ namespace MooMed.Stateful.SearchService.Remoting
 	{
 		public SearchServiceProxy([NotNull] IGrpcClientProvider grpcClientProvider)
 			: base(grpcClientProvider,
-				MooMedService.SearchService)
+				DeploymentService.SearchService)
 		{
 		}
 
