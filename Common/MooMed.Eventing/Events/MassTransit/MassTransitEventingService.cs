@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using GreenPipes;
 using JetBrains.Annotations;
 using MassTransit;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Core.Code.Helper.Retry;
-using MooMed.Identity.Service.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Identity.Service.Identity.Interface;
-using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Eventing.Events.MassTransit
 {
@@ -66,14 +65,15 @@ namespace MooMed.Eventing.Events.MassTransit
 			_busControl.ConnectReceiveEndpoint(queueName, ep =>
 			{
 				ep.UseMessageRetry(retry => retry.Exponential(
-					10, 
-					TimeSpan.FromSeconds(2), 
-					TimeSpan.FromMinutes(5), 
+					10,
+					TimeSpan.FromSeconds(2),
+					TimeSpan.FromMinutes(5),
 					TimeSpan.FromSeconds(10)));
-				
+
 				ep.Handler<T>(ctx => handler(ctx));
 			});
 		}
+
 		public void RegisterForEvent<T>(string queueName, Action<T> handler) where T : class
 		{
 			RegisterForEvent<T>(queueName, data =>

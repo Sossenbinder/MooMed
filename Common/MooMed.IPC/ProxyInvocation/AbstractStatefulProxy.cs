@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.IPC.Interface;
-using MooMed.Grpc.Definitions.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 
 namespace MooMed.IPC.ProxyInvocation
 {

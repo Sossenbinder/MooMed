@@ -1,11 +1,10 @@
 using Autofac;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
-using MooMed.Core;
 using MooMed.DependencyInjection.Extensions;
 using MooMed.Identity.Module;
-using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.Module;
+using MooMed.ServiceBase.Services.Interface;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.SearchService.Module;
 

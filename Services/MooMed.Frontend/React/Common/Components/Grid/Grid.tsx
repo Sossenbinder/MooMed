@@ -34,16 +34,9 @@ export const Grid: React.FC<GridProps> = ({
 		"inlineGrid": display === GridDisplay.Inline,
 	});
 
-	// const limitInjectedChildren = React.useMemo(() => children?.map(
-	// 	child => React.cloneElement(child, { 
-	// 		columnLimit, 
-	// 		rowLimit }
-	// 	)
-	// ), [children]);
-
 	return (
 		<div 
-			className={`${classes} ${className}`}
+			className={`${classes} ${typeof className !== "undefined" ? className : ""}`}
 			style={gridProperties}>
 			{ children }
 		</div>

@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Common.Definitions.Models.Portfolio;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
-using MooMed.Grpc.Services.Interface;
-using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Finance.Service.Interface;
 using MooMed.Module.Portfolio.Service.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.FinanceService.Service
 {

@@ -15,7 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,5 +29,4 @@
   <ItemGroup>
     <Folder Include="Helper\" />
   </ItemGroup>
-
 </Project>

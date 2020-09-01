@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Grpc.Services.Interface;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {

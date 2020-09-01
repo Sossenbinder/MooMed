@@ -2,7 +2,6 @@ using Autofac;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
 using MooMed.ChatService.Module;
-using MooMed.Core;
 using MooMed.Identity.Module;
 using MooMed.IPC.Module;
 

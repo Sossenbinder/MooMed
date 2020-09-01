@@ -15,23 +15,9 @@ module.exports = {
 		filename: "[name].js",
 		path: path.resolve(__dirname, "wwwroot/dist/")
 	},
-	devtool: "eval-source-map",
+	devtool: "eval-cheap-module-source-map",
 	module: {
 		rules: [
-			// {
-			// 	test: /\.less/,
-			// 	use: [
-			// 		{
-			// 			loader: "style-loader"
-			// 		},
-			// 		{
-			// 			loader: "css-loader",
-			// 		},
-			// 		{
-			// 			loader: "less-loader",
-			// 		},
-			// 	],
-			// },
 			{
 				test: /\.less$/,
 				use: [

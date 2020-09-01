@@ -20,8 +20,8 @@ namespace KubeWatcher
 
 			var host = Host.CreateDefaultBuilder(args)
 				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureContainer<ContainerBuilder>(builder => {
-
+				.ConfigureContainer<ContainerBuilder>(builder =>
+				{
 					builder.RegisterModule<CoreModule>();
 					builder.RegisterModule<EncryptionModule>();
 					builder.RegisterModule<ConfigurationModule>();

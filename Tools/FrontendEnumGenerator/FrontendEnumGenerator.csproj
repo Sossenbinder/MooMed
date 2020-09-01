@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
   </ItemGroup>
 

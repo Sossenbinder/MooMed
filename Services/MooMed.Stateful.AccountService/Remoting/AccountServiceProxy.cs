@@ -2,15 +2,14 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Common.Definitions.Messages.Account;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.DataTypes;
-using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Stateful.AccountService.Remoting
 {
@@ -48,8 +47,8 @@ namespace MooMed.Stateful.AccountService.Remoting
 		public Task<ServiceResponse<Account>> FindByEmail(string email)
 			=> InvokeRandomWithResult(service => service.FindByEmail(email));
 
-		public Task<ServiceResponse> AddAsFriend(AddAsFriendMessage message)
-			=> InvokeSpecificWithResult(message, service => service.AddAsFriend(message));
+		public Task<ServiceResponse> AddAsFriend(AddAsFriendModel model)
+			=> InvokeSpecificWithResult(model, service => service.AddAsFriend(model));
 
 		public Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
 			=> InvokeSpecificWithResult(sessionContext, service => service.GetFriends(sessionContext));

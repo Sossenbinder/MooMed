@@ -36,10 +36,10 @@ namespace MooMed.DotNet.Utils.Tasks
 			_id = Guid.NewGuid();
 
 			_internalCancellationTokenSource = restartingBackgroundTaskOptions.CancellationToken.HasValue
-				? CancellationTokenSource.CreateLinkedTokenSource(restartingBackgroundTaskOptions.CancellationToken.Value) 
+				? CancellationTokenSource.CreateLinkedTokenSource(restartingBackgroundTaskOptions.CancellationToken.Value)
 				: new CancellationTokenSource();
 
-			Task.Factory.StartNew(ExecuteTask,  TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(ExecuteTask, TaskCreationOptions.LongRunning);
 		}
 
 		public static RestartingBackgroundTask Start(

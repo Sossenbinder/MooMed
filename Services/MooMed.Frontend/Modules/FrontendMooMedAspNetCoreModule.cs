@@ -3,7 +3,7 @@ using MooMed.AspNetCore.Modules;
 using MooMed.ChatService.Remoting;
 using MooMed.DependencyInjection.Extensions;
 using MooMed.FinanceService.Remoting;
-using MooMed.Grpc.Services.Interface;
+using MooMed.ServiceBase.Services.Interface;
 using MooMed.Stateful.AccountService.Remoting;
 using MooMed.Stateful.AccountValidationService.Remoting;
 using MooMed.Stateful.ProfilePictureService.Remoting;

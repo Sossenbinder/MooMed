@@ -14,7 +14,7 @@ namespace MooMed.Caching.Module
 				.As<CacheSettingsProvider>()
 				.SingleInstance();
 
-			builder.RegisterType<ObjectCacheFactory>()
+			builder.RegisterType<CacheFactory>()
 				.As<IDefaultCacheFactory>()
 				.SingleInstance();
 		}

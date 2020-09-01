@@ -5,10 +5,10 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.DotNet.Extensions;
-using MooMed.Grpc.Definitions.Interface;
-using MooMed.Logging.Loggers.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Meta;
 
 namespace MooMed.AspNetCore.Grpc.Serialization

@@ -3,7 +3,7 @@ using MooMed.AspNetCore.Grpc.Serialization;
 
 namespace MooMed.AspNetCore.Modules
 {
-	public class MooMedAspNetCoreModule : Module
+	public class MooMedAspNetCoreModule : Autofac.Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{

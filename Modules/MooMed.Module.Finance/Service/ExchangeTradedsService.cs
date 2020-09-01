@@ -9,6 +9,7 @@ using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Core.Code.Helper;
 using MooMed.Core.DataTypes;
+using MooMed.DotNet.Utils.ResetLazy;
 using MooMed.Module.Finance.Database.Entities;
 using MooMed.Module.Finance.Repository.Interface;
 using MooMed.Module.Finance.Service.Interface;
@@ -24,7 +25,7 @@ namespace MooMed.Module.Finance.Service
 		private readonly IEntityToModelConverter<ExchangeTradedEntity, ExchangeTraded, string> _exchangeTradedEntityToModelConverter;
 
 		[NotNull]
-		private readonly AsyncLazy<List<ExchangeTraded>> _exchangeTradedsCache;
+		private readonly AsyncResetLazy<List<ExchangeTraded>> _exchangeTradedsCache;
 
 		public ExchangeTradedsService(
 			[NotNull] IExchangeTradedRepository exchangeTradedRepository,
@@ -33,7 +34,7 @@ namespace MooMed.Module.Finance.Service
 			_exchangeTradedRepository = exchangeTradedRepository;
 			_exchangeTradedEntityToModelConverter = exchangeTradedEntityToModelConverter;
 
-			_exchangeTradedsCache = new AsyncLazy<List<ExchangeTraded>>(InitializeExchangeTradedModels);
+			_exchangeTradedsCache = new AsyncResetLazy<List<ExchangeTraded>>(InitializeExchangeTradedModels);
 		}
 
 		private async Task<List<ExchangeTraded>> InitializeExchangeTradedModels()
@@ -45,7 +46,7 @@ namespace MooMed.Module.Finance.Service
 
 		public async Task<ServiceResponse<IEnumerable<ExchangeTraded>>> GetExchangeTradeds()
 		{
-			var models = await _exchangeTradedsCache.Value;
+			var models = await _exchangeTradedsCache.Value();
 
 			return ServiceResponse<IEnumerable<ExchangeTraded>>.Success(models);
 		}

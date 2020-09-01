@@ -16,11 +16,11 @@ namespace MooMed.Core.DataTypes
 
 		public bool IsFailure => !IsSuccess;
 
-		public ServiceResponseBase()
+		protected ServiceResponseBase()
 		{
 		}
 
-		protected ServiceResponseBase(bool isSuccess, [CanBeNull] string errorMessage)
+		protected ServiceResponseBase(bool isSuccess, string? errorMessage)
 		{
 			IsSuccess = isSuccess;
 			ErrorMessage = new ServiceErrorMessage(errorMessage);
@@ -32,29 +32,29 @@ namespace MooMed.Core.DataTypes
 	{
 		// Implicitly used by protobuf-net, so the lib can use this instead of having to fallback onto the non-parameterless constructor
 		[UsedImplicitly]
-		public ServiceResponse()
+		protected ServiceResponse()
 		{
 		}
 
-		public ServiceResponse(bool isSuccess, [CanBeNull] string errorMessage = null)
+		public ServiceResponse(bool isSuccess, string? errorMessage = null)
 			: base(isSuccess, errorMessage)
 		{
 		}
 
 		[NotNull]
-		public static ServiceResponse Success([CanBeNull] string errorMessage = null)
+		public static ServiceResponse Success(string? errorMessage = null)
 			=> new ServiceResponse(true, errorMessage);
 
 		[NotNull]
-		public static ServiceResponse Failure([CanBeNull] string errorMessage = null)
+		public static ServiceResponse Failure(string? errorMessage = null)
 			=> new ServiceResponse(false, errorMessage);
 
 		[NotNull]
-		public static ServiceResponse<TPayload> Success<TPayload>([NotNull] TPayload payload, [CanBeNull] string errorMessage = null)
+		public static ServiceResponse<TPayload> Success<TPayload>([NotNull] TPayload payload, string? errorMessage = null)
 			=> new ServiceResponse<TPayload>(true, payload, errorMessage);
 
 		[NotNull]
-		public static ServiceResponse<TPayload> Failure<TPayload>([NotNull] TPayload payload, [CanBeNull] string errorMessage = null)
+		public static ServiceResponse<TPayload> Failure<TPayload>([NotNull] TPayload payload, string? errorMessage = null)
 			=> new ServiceResponse<TPayload>(false, payload, errorMessage);
 	}
 
@@ -63,41 +63,39 @@ namespace MooMed.Core.DataTypes
 	public class ServiceResponse<TPayload> : ServiceResponseBase
 	{
 		[ProtoMember(3)]
-		private TPayload _payload;
-
-		[NotNull]
-		public TPayload PayloadOrNull => _payload;
+		public TPayload PayloadOrNull { get; }
 
 		[NotNull]
 		public TPayload PayloadOrFail
 		{
 			get
 			{
-				if (_payload == null)
+				if (PayloadOrNull == null)
 				{
 					throw new NullReferenceException();
 				}
 
-				return _payload;
+				return PayloadOrNull;
 			}
 		}
 
-		public ServiceResponse()
+		[UsedImplicitly]
+		private ServiceResponse()
 		{
 		}
 
-		public ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload = default, [CanBeNull] string errorMessage = null)
+		public ServiceResponse(bool isSuccess, [CanBeNull] TPayload payload = default, string? errorMessage = null)
 			: base(isSuccess, errorMessage)
 		{
-			_payload = payload;
+			PayloadOrNull = payload;
 		}
 
 		[NotNull]
-		public static ServiceResponse<TPayload> Success(TPayload payload, [CanBeNull] string errorMessage = null)
+		public static ServiceResponse<TPayload> Success(TPayload payload, string? errorMessage = null)
 			=> new ServiceResponse<TPayload>(true, payload, errorMessage);
 
 		[NotNull]
-		public static ServiceResponse<TPayload> Failure([CanBeNull] TPayload payload = default, [CanBeNull] string errorMessage = null)
+		public static ServiceResponse<TPayload> Failure([CanBeNull] TPayload payload = default, string? errorMessage = null)
 			=> new ServiceResponse<TPayload>(false, payload, errorMessage);
 	}
 }

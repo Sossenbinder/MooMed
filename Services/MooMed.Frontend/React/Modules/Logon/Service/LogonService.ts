@@ -24,18 +24,18 @@ export default class LogonService extends ModuleService implements ILogonService
 		
 		const response = await logonCommunication.login(email, password, rememberMe);
 		
-		this.handleIdentityResponse(response.success, response.payload?.IdentityErrorCode);
+		this.handleIdentityResponse(response.success, response.payload?.identityErrorCode);
 	}
 	
 	public async register(email: string, userName: string, password: string, confirmPassword: string) {
 
 		const response = await logonCommunication.register(email, userName, password, confirmPassword);
 		
-		this.handleIdentityResponse(response.success, response.payload?.IdentityErrorCode);
+		this.handleIdentityResponse(response.success, response.payload?.identityErrorCode);
 	}
 
 	public async logOff() {
-		const response = await logonCommunication.register(email, userName, password, confirmPassword);
+		const response = await logonCommunication.logOff();
 	}
 
 	private handleIdentityResponse(success: boolean, errorCode?: IdentityErrorCode) {

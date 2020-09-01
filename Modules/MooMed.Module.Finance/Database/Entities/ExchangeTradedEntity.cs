@@ -8,25 +8,25 @@ namespace MooMed.Module.Finance.Database.Entities
 	public class ExchangeTradedEntity : IEntity<string>
 	{
 		[Column("Id")]
-		public string Id { get; set; }
+		public string? Id { get; set; }
 
 		[Column("Type")]
 		public ExchangeTradedType Type { get; set; }
 
 		[Column("Isin")]
-		public string Isin { get; set; }
+		public string? Isin { get; set; }
 
 		[Column("ProductFamily")]
-		public string ProductFamily { get; set; }
+		public string? ProductFamily { get; set; }
 
 		[Column("XetraSymbol")]
-		public string XetraSymbol { get; set; }
+		public string? XetraSymbol { get; set; }
 
 		[Column("ReutersCode")]
-		public string ReutersCode { get; set; }
+		public string? ReutersCode { get; set; }
 
 		[Column("BloombergTicker")]
-		public string BloombergTicker { get; set; }
+		public string? BloombergTicker { get; set; }
 
 		[Column("FeePercentage")]
 		public double? FeePercentage { get; set; }
@@ -35,33 +35,33 @@ namespace MooMed.Module.Finance.Database.Entities
 		public double? OngoingCharges { get; set; }
 
 		[Column("ProfitUse")]
-		public string ProfitUse { get; set; }
+		public string? ProfitUse { get; set; }
 
 		[Column("ReplicationMethod")]
-		public string ReplicationMethod { get; set; }
+		public string? ReplicationMethod { get; set; }
 
 		[Column("FundCurrency")]
-		public string FundCurrency { get; set; }
+		public string? FundCurrency { get; set; }
 
 		[Column("TradingCurrency")]
-		public string TradingCurrency { get; set; }
+		public string? TradingCurrency { get; set; }
 
 		[Column("MQV")]
-		public string MQV { get; set; }
+		public string? MQV { get; set; }
 
 		[Column("MaxSpread")]
 		public double MaxSpread { get; set; }
 
 		[Column("ReutersInav")]
-		public string ReutersInav { get; set; }
+		public string? ReutersInav { get; set; }
 
 		[Column("BloombergInav")]
-		public string BloombergInav { get; set; }
+		public string? BloombergInav { get; set; }
 
 		[Column("Benchmark")]
-		public string Benchmark { get; set; }
+		public string? Benchmark { get; set; }
 
 		[Column("Homepage")]
-		public string Homepage { get; set; }
+		public string? Homepage { get; set; }
 	}
 }

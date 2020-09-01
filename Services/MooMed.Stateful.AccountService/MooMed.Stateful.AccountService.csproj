@@ -1,41 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>b6a7a328-d381-4d50-9ebb-a28432bb3941</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UserSecretsId>b6a7a328-d381-4d50-9ebb-a28432bb3941</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="5.1.2" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
+        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+        <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.DependencyInjection\MooMed.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
-    <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.ProfilePictureService\MooMed.Stateful.ProfilePictureService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.DependencyInjection\MooMed.DependencyInjection.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+        <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
+        <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
+        <ProjectReference Include="..\MooMed.Stateful.ProfilePictureService\MooMed.Stateful.ProfilePictureService.csproj" />
+        <ProjectReference Include="..\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
+    <ItemGroup>
+        <WCFMetadata Include="Connected Services" />
+    </ItemGroup>
 </Project>

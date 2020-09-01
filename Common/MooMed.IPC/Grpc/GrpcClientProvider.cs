@@ -2,8 +2,8 @@
 using System.Collections.Concurrent;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Grpc.Definitions.Interface;
 using MooMed.IPC.Grpc.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Grpc.Client;
 
 namespace MooMed.IPC.Grpc

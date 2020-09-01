@@ -1,7 +1,7 @@
 ﻿using Autofac;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Logging.Loggers;
 using MooMed.Logging.Loggers.Helper;
-using MooMed.Logging.Loggers.Interface;
 using MooMed.Logging.LogManagement;
 using MooMed.Logging.LogManagement.Interface;
 

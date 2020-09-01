@@ -10,9 +10,9 @@ namespace MooMed.Logging.LogManagement
 	{
 		protected string LogFilePath { get; }
 
-		protected AbstractLogFileManager(IConfigSettingsProvider configSettingsProvider)
+		protected AbstractLogFileManager(IConfigProvider configProvider)
 		{
-			LogFilePath = configSettingsProvider.ReadValue("Logging_File_Path", LoggerConstants.Logging_File_Path);
+			LogFilePath = configProvider.ReadValue("Logging_File_Path", LoggerConstants.Logging_File_Path);
 		}
 
 		protected string GetServiceName() => Assembly.GetEntryAssembly()?.GetName().Name ?? Dns.GetHostName();

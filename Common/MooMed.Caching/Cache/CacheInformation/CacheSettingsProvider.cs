@@ -1,23 +1,21 @@
 ﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Configuration;
-using MooMed.Configuration.Interface;
 
 namespace MooMed.Caching.Cache.CacheInformation
 {
 	public class CacheSettingsProvider
 	{
-		private static int s_defaultTtlInSeconds;
-		
-		public CacheSettingsProvider([NotNull] IConfigSettingsProvider settingsProvider)
+		private static int _defaultTtlInSeconds;
+
+		public CacheSettingsProvider([NotNull] IConfigProvider provider)
 		{
-			s_defaultTtlInSeconds = settingsProvider.ReadValueOrFail<int>("MooMed_Cache_BaseTtlInSeconds");
+			_defaultTtlInSeconds = provider.ReadValueOrFail<int>("MooMed_Cache_BaseTtlInSeconds");
 		}
 
-		public CacheSettings DefaultCacheSettings => new CacheSettings(s_defaultTtlInSeconds, "DefaultCache");
+		public CacheSettings DefaultCacheSettings => new CacheSettings(_defaultTtlInSeconds, "DefaultCache");
 
-		public CacheSettings ProxyCacheSettings => new CacheSettings(s_defaultTtlInSeconds, "ProxyCache");
+		public CacheSettings ProxyCacheSettings => new CacheSettings(_defaultTtlInSeconds, "ProxyCache");
 
-		public CacheSettings PartitionInfoCacheSettings => new CacheSettings(s_defaultTtlInSeconds, "PartitionInfoCache");
-
+		public CacheSettings PartitionInfoCacheSettings => new CacheSettings(_defaultTtlInSeconds, "PartitionInfoCache");
 	}
 }

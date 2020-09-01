@@ -20,6 +20,7 @@ using MooMed.IPC.Module;
 using MooMed.Logging.Module;
 using MooMed.Module.AccountValidation.Module;
 using MooMed.Module.Finance.Modules;
+using MooMed.Module.Monitoring.Module;
 using MooMed.SignalR.Hubs;
 
 namespace MooMed.Frontend.StartupConfigs
@@ -71,6 +72,7 @@ namespace MooMed.Frontend.StartupConfigs
 			builder.RegisterModule<FinanceModule>();
 			builder.RegisterModule<ServiceBaseModule>();
 			builder.RegisterModule<AccountValidationModule>();
+			builder.RegisterModule<MonitoringModule>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

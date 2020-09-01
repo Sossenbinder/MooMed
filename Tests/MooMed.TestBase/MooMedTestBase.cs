@@ -15,77 +15,75 @@ using NUnit.Framework;
 
 namespace MooMed.TestBase
 {
-    public class MooMedTestBase
-    {
-        protected string TestDir { get; private set; }
+	public class MooMedTestBase
+	{
+		protected string TestDir { get; private set; }
 
-        protected IConfigSettingsProvider UnitTestSettingsProvider { get; private set; }
+		protected IConfigProvider UnitTestProvider { get; private set; }
 
-        // Can be replaced by deriving classes
-        protected IContainer UnitTestContainer { get; set; }
+		// Can be replaced by deriving classes
+		protected IContainer UnitTestContainer { get; set; }
 
-        public MooMedTestBase()
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            SetupFixture();
-        }
+		public MooMedTestBase()
+		{
+			// ReSharper disable once VirtualMemberCallInConstructor
+			SetupFixture();
+		}
 
-        ~MooMedTestBase()
-        {
-            TearDownFixture();
-        }
+		~MooMedTestBase()
+		{
+			TearDownFixture();
+		}
 
-        protected virtual void SetupFixture()
-        {
-            CreateAutoFacModule();
+		protected virtual void SetupFixture()
+		{
+			CreateAutoFacModule();
 
-            TestDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            UnitTestSettingsProvider = UnitTestContainer.Resolve<IConfigSettingsProvider>();
-        }
+			TestDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+			UnitTestProvider = UnitTestContainer.Resolve<IConfigProvider>();
+		}
 
-        [SetUp]
-        protected virtual void Setup()
-        {
+		[SetUp]
+		protected virtual void Setup()
+		{
+		}
 
-        }
+		[TearDown]
+		protected virtual void TearDown()
+		{
+		}
 
-        [TearDown]
-        protected virtual void TearDown()
-        {
+		protected virtual void TearDownFixture()
+		{
+		}
 
-        }
+		private void CreateAutoFacModule()
+		{
+			var builder = new ContainerBuilder();
 
-        protected virtual void TearDownFixture()
-        {
+			builder.RegisterModule<CoreModule>();
+			builder.RegisterModule<EncryptionModule>();
+			builder.RegisterModule<ConfigurationModule>();
+			builder.RegisterModule<LoggingModule>();
+			builder.RegisterModule<ConfigurationModule>();
 
-        }
+			var config = new ConfigurationBuilder()
+				.Add(new JsonConfigurationSource()
+				{
+					Path = "UnitTestSettings.json"
+				})
+				.Build();
 
-        private void CreateAutoFacModule()
-        {
-            var builder = new ContainerBuilder();
+			builder
+				.Register(x => new Configuration.Config(config))
+				.As<IConfig>()
+				.SingleInstance();
 
-            builder.RegisterModule<CoreModule>();
-            builder.RegisterModule<EncryptionModule>();
-            builder.RegisterModule<ConfigurationModule>();
-            builder.RegisterModule<LoggingModule>();
+			builder.RegisterType<UnitTestCryptoProvider>()
+				.As<ICryptoProvider>()
+				.SingleInstance();
 
-            var config = new ConfigurationBuilder()
-	            .Add(new JsonConfigurationSource()
-	            {
-                    Path = "UnitTestSettings.json"
-                })
-	            .Build();
-
-            builder
-	            .Register(x => new Configuration.Config(config))
-                .As<IConfig>()
-                .SingleInstance();
-
-            builder.RegisterType<UnitTestCryptoProvider>()
-	            .As<ICryptoProvider>()
-	            .SingleInstance();
-
-	        UnitTestContainer = builder.Build();
-        }
-    }
+			UnitTestContainer = builder.Build();
+		}
+	}
 }

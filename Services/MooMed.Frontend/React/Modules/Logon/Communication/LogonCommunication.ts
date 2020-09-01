@@ -32,3 +32,9 @@ export const register = async (email: string, userName: string, password: string
 	const request = new PostRequest<Network.Register.Request, Network.Register.Response>(logonRequests.register);
 	return await request.post(registerModel);
 }
+
+export const logOff = async () => {
+
+	const request = new PostRequest(logonRequests.register);
+	return await request.post();
+}

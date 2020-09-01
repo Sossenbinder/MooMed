@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using MooMed.Caching.Cache.UnderlyingCache.Locking;
 
@@ -8,20 +9,19 @@ namespace MooMed.Caching.Cache.UnderlyingCache
 	{
 		private readonly IMemoryCache _memoryCache;
 
-		private readonly int _baseTTLTimeInSeconds;
+		private readonly int _baseTtlTimeInSeconds;
 
-		public UnderlyingMemoryCache(int baseTTLTimeInSeconds)
-			:base(new SemaphoreCacheLockManager<TKeyType>())
+		public UnderlyingMemoryCache(int baseTtlTimeInSeconds)
+			: base(new SemaphoreCacheLockManager<TKeyType>())
 		{
 			_memoryCache = new MemoryCache(new MemoryCacheOptions());
 
-			_baseTTLTimeInSeconds = baseTTLTimeInSeconds;
+			_baseTtlTimeInSeconds = baseTtlTimeInSeconds;
 		}
 
 		public override void PutItem(TKeyType key, TValueType value, int? secondsToLive = null)
 		{
-			// TODO: Make this lock-safe
-			_memoryCache.Set(key, value, /*DateTimeOffset.Now.AddSeconds(secondsToLive ?? _baseTTLTimeInSeconds)*/ DateTimeOffset.Now.AddSeconds(6000));
+			_memoryCache.Set(key, value, DateTimeOffset.Now.AddSeconds(secondsToLive ?? _baseTtlTimeInSeconds));
 		}
 
 		public override TValueType GetItem(TKeyType key)

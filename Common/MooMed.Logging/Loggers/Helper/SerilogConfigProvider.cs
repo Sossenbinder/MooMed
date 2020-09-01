@@ -10,15 +10,15 @@ namespace MooMed.Logging.Loggers.Helper
 {
 	public class SerilogConfigProvider
 	{
-		private readonly IConfigSettingsProvider _configSettingsProvider;
+		private readonly IConfigProvider _configProvider;
 
 		private readonly ILogFileManager _logfileManager;
 
 		public SerilogConfigProvider(
-			IConfigSettingsProvider configSettingsProvider,
+			IConfigProvider configProvider,
 			ILogFileManager logfileManager)
 		{
-			_configSettingsProvider = configSettingsProvider;
+			_configProvider = configProvider;
 			_logfileManager = logfileManager;
 		}
 
@@ -40,14 +40,14 @@ namespace MooMed.Logging.Loggers.Helper
 
 		private void PrepareTableStorageLogConfig([NotNull] LoggerSinkConfiguration loggerSinkConfig)
 		{
-			var connectionString = _configSettingsProvider.ReadDecryptedValueOrFail<string>("MooMed_Logging_TableStorageConnectionString", "AccountKey");
+			var connectionString = _configProvider.ReadDecryptedValueOrFail<string>("MooMed_Logging_TableStorageConnectionString", "AccountKey");
 			var storage = CloudStorageAccount.Parse(connectionString);
 
-			var storageTableName = _configSettingsProvider.ReadValue("Logging_AzureTableStorage_TableName", LoggerConstants.Logging_AzureTableStorage_TableName);
+			var storageTableName = _configProvider.ReadValue("Logging_AzureTableStorage_TableName", LoggerConstants.Logging_AzureTableStorage_TableName);
 
 			loggerSinkConfig.AzureTableStorage(
-				storage, 
-				storageTableName: storageTableName, 
+				storage,
+				storageTableName: storageTableName,
 				writeInBatches: true);
 		}
 

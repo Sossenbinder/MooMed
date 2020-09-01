@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Common.Definitions.Messages.Account;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.DotNet.Extensions;
-using MooMed.Grpc.Services.Interface;
-using MooMed.Logging.Loggers.Interface;
-using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Events.Interface;
-using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Service.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Stateful.AccountService.Service
 {
@@ -162,9 +157,9 @@ namespace MooMed.Stateful.AccountService.Service
 			return ServiceResponse<Account>.Success(account);
 		}
 
-		public async Task<ServiceResponse> AddAsFriend(AddAsFriendMessage message)
+		public async Task<ServiceResponse> AddAsFriend(AddAsFriendModel model)
 		{
-			var addResult = await _friendsService.AddFriend(message.SessionContext, message.AccountId);
+			var addResult = await _friendsService.AddFriend(model.SessionContext, model.AccountId);
 
 			return addResult ? ServiceResponse.Success() : ServiceResponse.Failure();
 		}

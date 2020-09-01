@@ -3,6 +3,7 @@ using Autofac;
 using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.Eventing.User;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Module.Accounts.Datatypes.Entity;
@@ -13,7 +14,7 @@ using MooMed.Module.AccountValidation.Service.Interface;
 
 namespace MooMed.Module.AccountValidation.Service
 {
-	internal class EmailValidationService : MooMedServiceBase, IEmailValidationService, IStartable
+	internal class EmailValidationService : MooMedServiceBaseWithLogger, IEmailValidationService, IStartable
 	{
 		private readonly IAccountEventHub _accountEventHub;
 
@@ -26,11 +27,13 @@ namespace MooMed.Module.AccountValidation.Service
 		private readonly IAccountValidationTokenHelper _accountValidationTokenHelper;
 
 		public EmailValidationService(
+			IMooMedLogger logger,
 			IAccountEventHub accountEventHub,
 			IAccountValidationEmailHelper accountValidationEmailHelper,
 			UserManager<AccountEntity> userManager,
 			AccountDbConverter accountDbConverter,
 			IAccountValidationTokenHelper accountValidationTokenHelper)
+			: base(logger)
 		{
 			_accountEventHub = accountEventHub;
 			_accountValidationEmailHelper = accountValidationEmailHelper;
@@ -56,7 +59,7 @@ namespace MooMed.Module.AccountValidation.Service
 
 			var deserializedToken = _accountValidationTokenHelper.Deserialize(accountValidationModel.Token);
 
-			var result = await _userManager.ConfirmEmailAsync(account, deserializedToken);
+			await _userManager.ConfirmEmailAsync(account, deserializedToken);
 		}
 
 		public void Start()

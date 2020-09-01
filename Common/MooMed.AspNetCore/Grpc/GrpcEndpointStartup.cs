@@ -13,9 +13,12 @@ using MooMed.Core;
 using MooMed.Encryption.Module;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
-using MooMed.Grpc.Definitions.Interface;
 using MooMed.Grpc.Interceptors;
 using MooMed.Logging.Module;
+using MooMed.Module.Monitoring.Eventing;
+using MooMed.Module.Monitoring.Eventing.Interface;
+using MooMed.Module.Monitoring.Module;
+using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Grpc.Server;
 
 namespace MooMed.AspNetCore.Grpc
@@ -27,10 +30,13 @@ namespace MooMed.AspNetCore.Grpc
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public virtual void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton<IMonitoringEventHub, MonitoringEventHub>();
+
 			services.AddCodeFirstGrpc(grpcOptions =>
 			{
 				grpcOptions.EnableDetailedErrors = true;
-				grpcOptions.Interceptors.Add<ErrorHandlingInterceptor>();
+				grpcOptions.Interceptors.Add<MetricsCounterInterceptor>();
+				grpcOptions.Interceptors.Add<ServiceResponseConversionInterceptor>();
 			});
 
 			services.AddLocalization();
@@ -61,11 +67,12 @@ namespace MooMed.AspNetCore.Grpc
 
 			containerBuilder.RegisterModule<MooMedAspNetCoreModule>();
 			containerBuilder.RegisterModule<EventingModule>();
+			containerBuilder.RegisterModule<ConfigurationModule>();
 			containerBuilder.RegisterModule<CoreModule>();
 			containerBuilder.RegisterModule<EncryptionModule>();
-			containerBuilder.RegisterModule<ConfigurationModule>();
 			containerBuilder.RegisterModule<LoggingModule>();
 			containerBuilder.RegisterModule<ServiceBaseModule>();
+			containerBuilder.RegisterModule<MonitoringModule>();
 		}
 
 		protected void RegisterServices([NotNull] IEndpointRouteBuilder endpointRouteBuilder)

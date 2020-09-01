@@ -1,5 +1,5 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Logging.Loggers.Interface;
+using MooMed.Common.Definitions.Logging;
 
 namespace MooMed.Common.ServiceBase.ServiceBase
 {

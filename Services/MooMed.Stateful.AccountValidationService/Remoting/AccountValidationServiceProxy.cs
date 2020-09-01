@@ -3,11 +3,11 @@ using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Core.DataTypes;
-using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
 using MooMed.IPC.ProxyInvocation.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Stateful.AccountValidationService.Remoting
 {

@@ -10,7 +10,7 @@ using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
-using MooMed.Grpc.Services.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {
@@ -33,7 +33,7 @@ namespace MooMed.Frontend.Controllers
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Login([NotNull][FromBody] LoginModel loginModel)
+		public async Task<ActionResult> Login([FromBody] LoginModel loginModel)
 		{
 			var serviceResponse = await _accountService.Login(loginModel);
 

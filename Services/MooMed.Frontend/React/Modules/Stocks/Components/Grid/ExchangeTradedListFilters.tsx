@@ -22,7 +22,7 @@ export const ExchangeTradedListFilters: React.FC<Props> = ({ filters, setFilters
 	const exchangeTradedDropdownEntries: Array<DropdownItem> = React.useMemo(() => {
 		const exchangeTradedEnum = $enum(ExchangeTradedType);
 		
-		return exchangeTradedEnum
+		const valueFilters = exchangeTradedEnum
 			.getKeys()
 			.map((x): DropdownItem => {
 				const enumVal = exchangeTradedEnum.getValueOrDefault(x);
@@ -32,7 +32,15 @@ export const ExchangeTradedListFilters: React.FC<Props> = ({ filters, setFilters
 					value: enumVal.toString(),
 					selected: filters?.type === enumVal,
 				}
-			});		
+			});
+
+		valueFilters.unshift({
+			selected: true,
+			title: "All",
+			value: "-1",
+		})
+
+		return valueFilters;
 	}, [filters]);
 	
 	return (

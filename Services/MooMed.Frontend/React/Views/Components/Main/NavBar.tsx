@@ -20,7 +20,7 @@ interface Props {
 
 export const NavBar: React.FC<Props> = () => (
 	<Flex 
-		className={"MainNavBar navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top"}
+		className={"MainNavBar navbar navbar-expand-md navbar-dark navbar-fixed-top"}
 		direction={"Row"}>
 		<Link 
 			to="/"

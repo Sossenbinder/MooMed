@@ -7,10 +7,9 @@ namespace MooMed.Module.Portfolio.Database
 {
 	internal class PortfolioDbContextFactory : AbstractDbContextFactory<PortfolioDbContext>
 	{
-		public PortfolioDbContextFactory([NotNull] IConfigSettingsProvider configSettingsProvider)
-			: base(configSettingsProvider, "MooMed_Database_Portfolio")
+		public PortfolioDbContextFactory([NotNull] IConfigProvider configProvider)
+			: base(configProvider, "MooMed_Database_Portfolio")
 		{
-
 		}
 
 		public override PortfolioDbContext CreateContext()

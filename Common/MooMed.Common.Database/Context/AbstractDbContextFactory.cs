@@ -5,24 +5,24 @@ using MooMed.Common.Definitions.Configuration;
 
 namespace MooMed.Common.Database.Context
 {
-	public abstract class AbstractDbContextFactory<TDbContext> : IDbContextFactory<TDbContext> 
+	public abstract class AbstractDbContextFactory<TDbContext> : IDbContextFactory<TDbContext>
 		where TDbContext : DbContext
 	{
 		[NotNull]
-		private readonly IConfigSettingsProvider _configSettingsProvider;
+		private readonly IConfigProvider _configProvider;
 
 		[NotNull]
 		private readonly string _key;
 
-		protected AbstractDbContextFactory([NotNull] IConfigSettingsProvider configSettingsProvider, [NotNull] string key)
+		protected AbstractDbContextFactory([NotNull] IConfigProvider configProvider, [NotNull] string key)
 		{
-			_configSettingsProvider = configSettingsProvider;
+			_configProvider = configProvider;
 			_key = key;
 		}
 
 		protected string GetConnectionString()
 		{
-			return _configSettingsProvider.ReadDecryptedValueOrFail<string>(_key, "Password");
+			return _configProvider.ReadDecryptedValueOrFail<string>(_key, "Password");
 		}
 
 		public abstract TDbContext CreateContext();

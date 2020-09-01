@@ -15,7 +15,7 @@
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="MassTransit.SignalR" Version="6.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
@@ -24,16 +24,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Configuration\MooMed.Configuration.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.DependencyInjection\MooMed.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Logging\MooMed.Logging.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.SignalR\MooMed.SignalR.csproj" />
+    <ProjectReference Include="..\..\Modules\MooMed.Module.AccountValidation\MooMed.Module.AccountValidation.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\Modules\MooMed.Module.Finance\MooMed.Module.Finance.csproj" />
+    <ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
     <ProjectReference Include="..\MooMed.ChatService\MooMed.ChatService.csproj" />
     <ProjectReference Include="..\MooMed.FinanceService\MooMed.FinanceService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj" />
     <ProjectReference Include="..\MooMed.Stateful.ProfilePictureService\MooMed.Stateful.ProfilePictureService.csproj" />
+    <ProjectReference Include="..\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj" />
   </ItemGroup>
 
 </Project>

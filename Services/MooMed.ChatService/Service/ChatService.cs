@@ -2,16 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.Definitions.Notifications;
 using MooMed.Common.Definitions.UiModels.Chat;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Eventing.Events.MassTransit.Interface;
-using MooMed.Grpc.Services.Interface;
-using MooMed.Logging.Loggers.Interface;
-using MooMed.Module.Chat.DataTypes.SignalR;
 using MooMed.Module.Chat.Service.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.ChatService.Service
 {
@@ -26,7 +25,7 @@ namespace MooMed.ChatService.Service
 		public ChatService(
 			[NotNull] IMooMedLogger logger,
 			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
-			[NotNull] IMessageService messageService) 
+			[NotNull] IMessageService messageService)
 			: base(logger)
 		{
 			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;

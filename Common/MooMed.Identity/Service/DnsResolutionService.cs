@@ -3,8 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Identity.Service.Interface;
-using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Identity.Service
 {

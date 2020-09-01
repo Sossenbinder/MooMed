@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using MooMed.Grpc.Services.Interface;
+using MooMed.ServiceBase.Services.Interface;
 using MooMed.Stateful.AccountValidationService.Remoting;
 
 namespace MooMed.Stateful.AccountValidationService.Module

@@ -11,53 +11,65 @@ namespace MooMed.AspNetCore.Helper
 	public static class MooMedHostBuilder
 	{
 		public static IHost BuildDefaultKestrelHost<TStartup>(
-			string[] args, 
+			string[] args,
 			Action<IHostBuilder>? hostBuilderEnricher = null,
-			Action<IWebHostBuilder>? webHostBuilderEnricher = null) 
+			Action<IWebHostBuilder>? webHostBuilderEnricher = null)
 			where TStartup : class
 		{
-			var hostBuilder = CreateSharedHost<TStartup>(args, webHostBuilder =>
-			{
-				webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+			return CreateSharedHost<TStartup>(
+				args,
+				hostBuilderEnricher,
+				webHostBuilder =>
+				{
+					webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
 
-				webHostBuilderEnricher?.Invoke(webHostBuilder);
-			});
-
-			hostBuilderEnricher?.Invoke(hostBuilder);
-
-			return hostBuilder.Build();
+					webHostBuilderEnricher?.Invoke(webHostBuilder);
+				}
+			);
 		}
 
 		public static IHost BuildDefaultGrpcServiceHost<TStartup>(
-			string[] args)
+			string[] args,
+			Action<IHostBuilder>? hostBuilderEnricher = null,
+			Action<IWebHostBuilder>? webHostBuilderEnricher = null)
 			where TStartup : class
 		{
-			var hostBuilder = CreateSharedHost<TStartup>(args, webHostBuilder =>
-			{
-				webHostBuilder.ConfigureGrpc();
-			});
+			return CreateSharedHost<TStartup>(
+				args,
+				hostBuilderEnricher,
+				webHostBuilder =>
+				{
+					webHostBuilder.ConfigureGrpc();
 
-			return hostBuilder.Build();
+					webHostBuilderEnricher?.Invoke(webHostBuilder);
+				});
 		}
 
-		private static IHostBuilder CreateSharedHost<TStartup>(
+		private static IHost CreateSharedHost<TStartup>(
 			string[] args,
+			Action<IHostBuilder>? hostBuilderEnricher = null,
 			Action<IWebHostBuilder> webHostBuilderEnricher = null)
 			where TStartup : class
 		{
-			return Host
+			var hostBuilder = Host
 				.CreateDefaultBuilder(args)
 				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 				.ConfigureWebHostDefaults(webHostBuilder =>
 				{
 					webHostBuilder
 						.UseStartup<TStartup>()
-						.UseConfiguration(ConfigHelper.CreateConfiguration(args));
+						.UseConfiguration(ConfigHelper.CreateConfiguration(args))
+						.AddAppMetricsWithPrometheusSupport();
 
 					webHostBuilder.UseSentry();
 
 					webHostBuilderEnricher(webHostBuilder);
-				});
+				}
+			);
+
+			hostBuilderEnricher?.Invoke(hostBuilder);
+
+			return hostBuilder.Build();
 		}
 	}
 }

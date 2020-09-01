@@ -1,5 +1,6 @@
 // Framework
 import * as React from "react";
+import { Route } from "react-router";
 
 // Components
 import Flex from "Common/Components/Flex";
@@ -8,6 +9,8 @@ import Cell from "Common/Components/Grid/Cell";
 import FriendshipButton from "./SubComponents/FriendshipButton"
 import ImagePreLoad from "common/Components/ImagePreLoad";
 import Navigation from "./SubComponents/Navigation";
+import PersonalData from "./PersonalData/PersonalData";
+import Separator from "common/Components/Separator";
 
 // Type
 import { Account } from "modules/Account/types";
@@ -19,27 +22,35 @@ type Props = {
 	isSelf: boolean;
 }
 
-export const ProfileFull: React.FC<Props> = ({account, isSelf}) => {
+export const ProfileFull: React.FC<Props> = ({ account, isSelf }) => {
 
 	return (
 		<Grid
 			className="ProfileFull"
 			gridProperties={{
-				gridTemplateColumns: "100px 200px 300px"
+				gridTemplateColumns: "10% auto"
 			}}>
-			<Cell>
-				<Flex 
+			<Cell
+				className="LeftSectionContainer">
+				<Flex
 					direction="Column"
-					className="LeftSection">		
-					<ImagePreLoad
-						imagePath={account.profilePicturePath}
-						containerClassName="Picture"
-					/>
-					<h2 className="name">
-						{account.userName}
-					</h2>
+					className="LeftSection">
+					<Flex
+						mainAlign="Center">
+						<ImagePreLoad
+							imagePath={account.profilePicturePath}
+							containerClassName="Picture"
+						/>
+					</Flex>
+					<Flex
+						mainAlign="Center">
+						<h2 className="name">
+							{account.userName}
+						</h2>
+					</Flex>
+					<Separator />
 					<If condition={!isSelf}>
-						<FriendshipButton 
+						<FriendshipButton
 							targetAccountId={account.id} />
 					</If>
 					<Navigation />
@@ -48,7 +59,12 @@ export const ProfileFull: React.FC<Props> = ({account, isSelf}) => {
 			<Cell>
 				<Flex
 					className="MainSection">
-					
+					<Route
+						exact={true}
+						path={"/profileDetails/data"}
+						render={() => <PersonalData
+							account={account} />}
+					/>
 				</Flex>
 			</Cell>
 		</Grid>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using GreenPipes.Internals.Extensions;
 using MooMed.DotNet.Extensions;
-using MooMed.Grpc.Definitions.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Meta;
 
 namespace MooMed.AspNetCore.Grpc.Serialization
@@ -50,7 +50,7 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 						.GetInterfaces()
 						.ToList();
 
-					return interfaces.Any() ? interfaces.SingleOrDefault(x => x.FullName.StartsWith("MooMed.Grpc.Services.Interface")) : null;
+					return interfaces.Any() ? interfaces.SingleOrDefault(x => x.FullName.StartsWith("MooMed.ServiceBase.Services.Interface")) : null;
 				})
 				.Where(x => x != null)
 				.ToList();

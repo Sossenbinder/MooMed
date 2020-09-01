@@ -6,8 +6,8 @@ using JetBrains.Annotations;
 using k8s;
 using Microsoft.Extensions.Hosting;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Eventing.Events.MassTransit.Interface;
-using MooMed.Logging.Loggers.Interface;
 
 namespace KubeWatcher
 {
@@ -24,7 +24,7 @@ namespace KubeWatcher
 
 		[NotNull]
 		private readonly Kubernetes _kubernetesClient;
-		
+
 		public Worker(
 			[NotNull] IMooMedLogger logger,
 			[NotNull] IMassTransitEventingService massTransitEventingService)
@@ -95,7 +95,6 @@ namespace KubeWatcher
 						StatefulSetService = statefulSetService,
 						NewReplicaAmount = replicas
 					});
-
 				}
 
 				_replicaMap[statefulSetService] = replicas;

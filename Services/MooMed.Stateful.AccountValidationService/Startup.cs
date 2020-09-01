@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using MooMed.AspNetCore.Grpc;
 using MooMed.AspNetCore.Identity.Helper;
 using MooMed.Caching.Module;
+using MooMed.Configuration.Module;
 using MooMed.Identity.Module;
 using MooMed.IPC.Module;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Datatypes.Entity;
-using MooMed.Module.Accounts.Helper;
 using MooMed.Module.Accounts.Module;
 using MooMed.Stateful.AccountValidationService.Module;
 
@@ -36,6 +36,7 @@ namespace MooMed.Stateful.AccountValidationService
 		{
 			base.RegisterModules(containerBuilder);
 
+			containerBuilder.RegisterModule<ConfigurationModule>();
 			containerBuilder.RegisterModule<AccountValidationModule>();
 			containerBuilder.RegisterModule<AccountValidationServiceModule>();
 			containerBuilder.RegisterModule<CachingModule>();

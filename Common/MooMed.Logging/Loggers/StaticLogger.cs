@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Logging.Loggers
 {

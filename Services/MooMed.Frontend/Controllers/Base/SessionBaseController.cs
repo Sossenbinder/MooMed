@@ -4,58 +4,58 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Grpc.Services.Interface;
 using MooMed.Logging.Loggers;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Frontend.Controllers.Base
 {
-    public class SessionBaseController : BaseController
-    {
-	    [NotNull]
-	    private readonly ISessionService _sessionService;
+	public class SessionBaseController : BaseController
+	{
+		[NotNull]
+		private readonly ISessionService _sessionService;
 
-	    [CanBeNull]
-	    protected ISessionContext CurrentSession { get; private set; }
-		
-	    [NotNull]
-	    protected ISessionContext CurrentSessionOrFail
-	    {
-		    get
-		    {
-			    if (CurrentSession == null)
-			    {
-				    throw new NullReferenceException();
-			    }
+		[CanBeNull]
+		protected ISessionContext CurrentSession { get; private set; }
 
-			    return CurrentSession;
-		    }
-	    }
+		[NotNull]
+		protected ISessionContext CurrentSessionOrFail
+		{
+			get
+			{
+				if (CurrentSession == null)
+				{
+					throw new NullReferenceException();
+				}
 
-	    [CanBeNull]
-	    protected Account CurrentAccountOrNull => CurrentSession?.Account;
+				return CurrentSession;
+			}
+		}
 
-	    [NotNull]
-	    protected Account CurrentAccountOrFail => CurrentSession?.Account ?? throw new InvalidOperationException();
+		[CanBeNull]
+		protected Account CurrentAccountOrNull => CurrentSession?.Account;
+
+		[NotNull]
+		protected Account CurrentAccountOrFail => CurrentSession?.Account ?? throw new InvalidOperationException();
 
 		public SessionBaseController([NotNull] ISessionService sessionService)
-	    {
-		    _sessionService = sessionService;
-	    }
+		{
+			_sessionService = sessionService;
+		}
 
-	    public override async Task OnActionExecutionAsync(
-		    ActionExecutingContext context,
-		    ActionExecutionDelegate next)
-	    {
-		    await InitUserContext(context);
+		public override async Task OnActionExecutionAsync(
+			ActionExecutingContext context,
+			ActionExecutionDelegate next)
+		{
+			await InitUserContext(context);
 
-		    await base.OnActionExecutionAsync(context, next);
-	    }
+			await base.OnActionExecutionAsync(context, next);
+		}
 
-	    private async Task InitUserContext([NotNull] ActionExecutingContext actionExecutingContext)
-	    {
-		    if (actionExecutingContext.HttpContext.IsAuthenticated())
-		    {
-			    var accountId = Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name);
+		private async Task InitUserContext([NotNull] ActionExecutingContext actionExecutingContext)
+		{
+			if (actionExecutingContext.HttpContext.IsAuthenticated())
+			{
+				var accountId = Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name);
 				var sessionServiceResponse = await _sessionService.GetSessionContext(accountId);
 
 				if (sessionServiceResponse.IsFailure)
@@ -67,7 +67,7 @@ namespace MooMed.Frontend.Controllers.Base
 					StaticLogger.Info("Retrieved SessionContext..", accountId);
 					CurrentSession = sessionServiceResponse.PayloadOrFail;
 				}
-		    }
-	    }
+			}
+		}
 	}
 }

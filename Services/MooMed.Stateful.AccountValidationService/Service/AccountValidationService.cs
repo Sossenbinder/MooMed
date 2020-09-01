@@ -2,16 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Core.Translations.Resources;
-using MooMed.Grpc.Services.Interface;
-using MooMed.Logging.Loggers.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.AccountValidation.Service.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Stateful.AccountValidationService.Service
 {
@@ -59,18 +59,12 @@ namespace MooMed.Stateful.AccountValidationService.Service
 				return ServiceResponse<bool>.Success(true);
 			}
 
-			string errorMessage = null;
-
-			switch (resultCode)
+			var errorMessage = resultCode switch
 			{
-				case AccountValidationResult.AlreadyValidated:
-					errorMessage = Translation.AccountValidationAlreadyValidated;
-					break;
-
-				case AccountValidationResult.ValidationGuidInvalid:
-					errorMessage = Translation.AccountValidationInvalidGuid;
-					break;
-			}
+				AccountValidationResult.AlreadyValidated => Translation.AccountValidationAlreadyValidated,
+				AccountValidationResult.ValidationGuidInvalid => Translation.AccountValidationInvalidGuid,
+				_ => Translation.GenericErrorMessage
+			};
 
 			return ServiceResponse<bool>.Failure(errorMessage: errorMessage);
 		}

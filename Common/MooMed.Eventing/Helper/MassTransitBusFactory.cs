@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Core.Code.Helper.Retry;
 using MooMed.Identity.Service.Interface;
-using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.Eventing.Helper
 {
@@ -41,7 +41,6 @@ namespace MooMed.Eventing.Helper
 					}
 
 					config.Host($"rabbitmq://{deploymentIp}");
-
 				}, retryCount =>
 				{
 					logger.Info($"Retrying RabbitMQ setup for the {retryCount}# time");

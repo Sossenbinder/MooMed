@@ -14,8 +14,8 @@ namespace MooMed.Configuration.Module
 				.As<IConfig>()
 				.SingleInstance();
 
-			builder.RegisterType<MainConfigSettingsProvider>()
-				.As<IConfigSettingsProvider>()
+			builder.RegisterType<ConfigProvider>()
+				.As<IConfigProvider>()
 				.SingleInstance();
 		}
 	}

@@ -9,7 +9,7 @@ import "./Styles/CheckBoxToggle.less";
 type Props = {
 	text: string;
 	initialToggle: boolean;
-	onChange: (currentVal: boolean) => void;
+	onChange: React.Dispatch<boolean>;
 }
 
 export const CheckBoxToggle: React.FC<Props> = ({ text, initialToggle, onChange}) => {

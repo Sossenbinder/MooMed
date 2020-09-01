@@ -1,19 +1,19 @@
-.ProfileFull {
+@import (reference) "~Styles/Colors.less";
 
+.ProfileFull {
 	height: 100%;
 	width: 100%;
 
-	.LeftSection {
+	.LeftSectionContainer {
+		background-color: @darkgrey;
 
-		border: 1px solid red;
+		.LeftSection {
+			margin: 0px 5px 0px 5px;
 
-		.Picture {
-			height: 80px;
-			width: 80px;
-		}			
-	}
-
-	.MainSection {
-		border: 1px solid blue;
+			.Picture {
+				height: 80px;
+				width: 80px;
+			}			
+		}
 	}
 }

@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
     <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+    <ProjectReference Include="..\MooMed.DotNet\MooMed.DotNet.csproj" />
     <ProjectReference Include="..\MooMed.Identity\MooMed.Identity.csproj" />
     <ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
     <ProjectReference Include="..\MooMed.SignalR\MooMed.SignalR.csproj" />

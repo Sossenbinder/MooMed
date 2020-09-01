@@ -15,7 +15,6 @@ import "./Styles/Profile.less";
 
 type Props = {
 	accountId: number;
-
 	account: Account;
 }
 
@@ -25,15 +24,15 @@ export const Profile: React.FC<Props> = ({ accountId, account }) => {
 
 	const { AccountService } = useServices();
 
-	const isSelf = React.useCallback(() => !accountId || account.id === accountId, [account, accountId])
+	const isSelf = !accountId || account.id === accountId;
 
 	const fetchOtherAccount = React.useCallback(async (accountId: number) => {
-			const account = await AccountService.getAccount(accountId);
-			setDisplayAccount(account);
+		const account = await AccountService.getAccount(accountId);
+		setDisplayAccount(account);
 	}, []);
 
 	React.useEffect(() => {
-		isSelf() ? setDisplayAccount(account) : fetchOtherAccount(accountId);
+		isSelf ? setDisplayAccount(account) : fetchOtherAccount(accountId);
 	}, [accountId, account]);
 
 	return (
@@ -42,7 +41,7 @@ export const Profile: React.FC<Props> = ({ accountId, account }) => {
 			<If condition={displayAccount != null}>
 				<ProfileFull 
 					account={displayAccount}
-					isSelf={isSelf()} />        
+					isSelf={isSelf} />        
 			</If>
 		</Flex>
 	);

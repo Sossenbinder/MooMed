@@ -32,7 +32,7 @@ export const Cell: React.FC<CellProps> = ({
 
 	return (
 		<div 
-			className={`${classes} ${className}`}
+			className={`${classes} ${typeof className !== "undefined" ? className : ""}`}
 			style={cellStyles}
 			onClick={onClick}
 			ref={ref}>

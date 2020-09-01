@@ -30,7 +30,7 @@ namespace MooMed.Core.Code.API
 		}
 
 		public async Task<IEnumerable<TOut>> PostWithJsonSequential<TIn, TOut>(
-			PostData<TIn> postData, 
+			PostData<TIn> postData,
 			Func<TOut, bool> retryDeterminerFunc,
 			Action<PostData<TIn>> onSuccessTransformer,
 			TimeSpan? waitTimer = null)

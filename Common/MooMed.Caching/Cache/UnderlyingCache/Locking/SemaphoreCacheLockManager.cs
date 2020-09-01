@@ -5,6 +5,10 @@ using MooMed.Caching.Cache.UnderlyingCache.Locking.Interface;
 
 namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 {
+	/// <summary>
+	/// Manages locks within a given cache
+	/// </summary>
+	/// <typeparam name="TKeyType">Key type of cache</typeparam>
 	public class SemaphoreCacheLockManager<TKeyType> : ICacheLockManager<TKeyType>
 	{
 		// It is possible that there are locks in here which were attached to a LockedCacheItem which was already disposed
@@ -31,7 +35,10 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 		{
 			var semaphoreCacheLock = _cacheLocks.GetOrAdd(key, new SemaphoreCacheLock());
 
-			semaphoreCacheLock.Unlock();
+			if (semaphoreCacheLock.IsLocked())
+			{
+				semaphoreCacheLock.Unlock();
+			}
 
 			return semaphoreCacheLock;
 		}
@@ -43,9 +50,6 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 			return hasCacheLock && cacheLock.IsLocked();
 		}
 
-		public void RemoveLock(TKeyType key)
-		{
-			_cacheLocks.TryRemove(key, out _);
-		}
+		public void RemoveLock(TKeyType key) => _cacheLocks.TryRemove(key, out _);
 	}
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
+﻿using Autofac;
+using MooMed.Module.Monitoring.Service;
+using MooMed.Module.Monitoring.Service.Interface;
 
 namespace MooMed.Module.Monitoring.Module
 {
@@ -9,7 +8,12 @@ namespace MooMed.Module.Monitoring.Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			base.Load(builder);
+			builder.RegisterModule<InternalMonitoringModule>();
+
+			builder.RegisterType<GrpcMetricsService>()
+				.As<IGrpcMetricsService>()
+				.SingleInstance()
+				.AutoActivate();
 		}
 	}
 }

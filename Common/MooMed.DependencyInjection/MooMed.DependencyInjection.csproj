@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MooMed.Grpc\MooMed.Grpc.csproj" />
+    <ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
   </ItemGroup>
 
 </Project>

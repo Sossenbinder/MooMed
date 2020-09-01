@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Grpc.Definitions.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 
 namespace MooMed.IPC.ProxyInvocation
 {

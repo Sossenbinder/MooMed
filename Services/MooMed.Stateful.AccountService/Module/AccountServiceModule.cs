@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using MooMed.Grpc.Services.Interface;
 using MooMed.Module.Accounts.Repository.Converters;
+using MooMed.ServiceBase.Services.Interface;
 using MooMed.Stateful.ProfilePictureService.Remoting;
 using MooMed.Stateful.SessionService.Remoting;
 

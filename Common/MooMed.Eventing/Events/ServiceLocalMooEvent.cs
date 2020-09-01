@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.DotNet.Extensions;
 
-[assembly:InternalsVisibleTo("MooMed.Core.Tests")]
+[assembly: InternalsVisibleTo("MooMed.Core.Tests")]
+
 namespace MooMed.Eventing.Events
 {
-    public class ServiceLocalMooEvent<TEventArgs> : EventBase<TEventArgs>
-    {
-	    [ItemNotNull]
-        public override async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
-        {
+	public class ServiceLocalMooEvent<TEventArgs> : EventBase<TEventArgs>
+	{
+		[ItemNotNull]
+		public override async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
+		{
 			var accumulatedExceptions = new AccumulatedMooEventExceptions();
 
 			await Handlers.ParallelAsync(async handler =>
@@ -26,7 +27,7 @@ namespace MooMed.Eventing.Events
 				}
 			});
 
-            return accumulatedExceptions;
-        }
-    }
+			return accumulatedExceptions;
+		}
+	}
 }

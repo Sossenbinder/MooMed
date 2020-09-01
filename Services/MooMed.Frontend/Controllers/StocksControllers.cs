@@ -6,7 +6,7 @@ using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Common.Definitions.UiModels.Finance;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
-using MooMed.Grpc.Services.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {

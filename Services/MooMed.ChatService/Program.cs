@@ -10,7 +10,7 @@ namespace MooMed.ChatService
 		{
 			var host = MooMedHostBuilder.BuildDefaultGrpcServiceHost<Startup>(args);
 
-			await host.StartAsync();
+			await host.RunAsync();
 		}
 	}
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using MooMed.Grpc.Definitions.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 
 namespace MooMed.IPC.ProxyInvocation.Interface
 {
-	public interface IDeploymentProxy<out TServiceType> 
+	public interface IDeploymentProxy<out TServiceType>
 		where TServiceType : IGrpcService
 	{
 		/// <summary>

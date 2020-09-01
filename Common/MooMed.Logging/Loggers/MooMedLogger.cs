@@ -1,4 +1,5 @@
 ﻿using System;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Logging.Loggers.Helper;
 using Serilog;
@@ -6,7 +7,7 @@ using Serilog.Context;
 
 namespace MooMed.Logging.Loggers
 {
-	public class MooMedLogger : Interface.IMooMedLogger
+	public class MooMedLogger : IMooMedLogger
 	{
 		private readonly ILogger _logger;
 

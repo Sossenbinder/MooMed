@@ -1,7 +1,6 @@
 using Autofac;
 using MooMed.AspNetCore.Grpc;
 using MooMed.Caching.Module;
-using MooMed.Core;
 using MooMed.Identity.Module;
 using MooMed.IPC.Module;
 using MooMed.Stateful.ProfilePictureService.Module;

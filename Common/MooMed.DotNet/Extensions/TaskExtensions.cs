@@ -7,7 +7,7 @@ namespace MooMed.DotNet.Extensions
 	{
 		public static async Task<bool> WaitAsync(this Task task, TimeSpan timeSpan)
 		{
-			await Task.Delay(timeSpan);
+			await task.ContinueWith(async t => await Task.Delay(timeSpan));
 
 			return task.IsCompleted;
 		}

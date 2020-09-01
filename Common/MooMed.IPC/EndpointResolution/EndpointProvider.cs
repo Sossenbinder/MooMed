@@ -3,10 +3,10 @@ using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Identity.Service.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.IPC.EndpointResolution.Interface;
-using MooMed.Logging.Loggers.Interface;
 
 namespace MooMed.IPC.EndpointResolution
 {
@@ -53,7 +53,7 @@ namespace MooMed.IPC.EndpointResolution
 
 			_logger.Info($"Updated internal stateful info provider to {changeEvent.NewReplicaAmount} instances of {statefulSet} on setService {Assembly.GetExecutingAssembly()}");
 		}
-		
+
 		public Endpoint GetDeploymentEndpoint(DeploymentService deploymentService)
 		{
 			var existingDeploymentEndpoint = _deploymentEndpointCache.GetItem(deploymentService);

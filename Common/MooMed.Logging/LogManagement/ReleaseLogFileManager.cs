@@ -5,8 +5,8 @@ namespace MooMed.Logging.LogManagement
 	internal class ReleaseLogFileManager : AbstractLogFileManager
 	{
 		public ReleaseLogFileManager(
-			IConfigSettingsProvider configSettingsProvider)
-			:base(configSettingsProvider)
+			IConfigProvider configProvider)
+			: base(configProvider)
 		{
 		}
 

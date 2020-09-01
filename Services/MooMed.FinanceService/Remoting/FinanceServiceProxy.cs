@@ -6,9 +6,9 @@ using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Common.Definitions.Models.Portfolio;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Core.DataTypes;
-using MooMed.Grpc.Services.Interface;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.ProxyInvocation;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.FinanceService.Remoting
 {

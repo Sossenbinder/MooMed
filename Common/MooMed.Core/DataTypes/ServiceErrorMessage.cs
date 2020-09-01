@@ -1,29 +1,27 @@
-﻿using JetBrains.Annotations;
-using MooMed.Core.Translations.Resources;
+﻿using MooMed.Core.Translations.Resources;
 using ProtoBuf;
 
 namespace MooMed.Core.DataTypes
 {
 	[ProtoContract]
-    public class ServiceErrorMessage
-    {
-        [CanBeNull]
-        private string _errorMessage;
+	public class ServiceErrorMessage
+	{
+		private string? _errorMessage;
 
-        [ProtoMember(1)]
-        public string Message
-        {
-	        get => _errorMessage ?? Translation.GenericErrorMessage;
-	        private set => _errorMessage = value;
-        }
+		[ProtoMember(1)]
+		public string Message
+		{
+			get => _errorMessage ?? Translation.GenericErrorMessage;
+			private set => _errorMessage = value;
+		}
 
-        private ServiceErrorMessage()
-        {
-        }
+		private ServiceErrorMessage()
+		{
+		}
 
-        public ServiceErrorMessage([CanBeNull] string errorMessage = null)
-        {
-            _errorMessage = errorMessage;
-        }
-    }
+		public ServiceErrorMessage(string? errorMessage = null)
+		{
+			_errorMessage = errorMessage;
+		}
+	}
 }

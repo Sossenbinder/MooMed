@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Platforms>x64</Platforms>
+    <Platforms>x64;AnyCPU</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Configuration\MooMed.Configuration.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />

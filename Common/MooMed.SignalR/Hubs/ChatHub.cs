@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.Definitions.UiModels.Chat;
-using MooMed.Grpc.Services.Interface;
+using MooMed.ServiceBase.Services.Interface;
 using MooMed.SignalR.Hubs.Base;
 
 namespace MooMed.SignalR.Hubs

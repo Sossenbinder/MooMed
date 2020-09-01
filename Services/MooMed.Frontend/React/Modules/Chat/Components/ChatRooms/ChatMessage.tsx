@@ -25,11 +25,11 @@ export const ChatMessage: React.FC<Props> = ({ sentByMe, timestamp, message }) =
 		<Flex 
 			className={"ChatMessageFlex"}
 			direction={"Row"}
-			mainAlign={sentByMe ? "Start" : "End"}>
+			mainAlign={sentByMe ? "End" : "Start"}>
 			<Flex 
-				direction={sentByMe ? "Row" : "RowReverse"}>
+				direction={sentByMe ? "RowReverse" : "Row"}>
 				<Flex
-					className={`ChatMessageContainer ${sentByMe ? "Mine" : "Theirs"}`}
+					className={`ChatMessageContainer ${sentByMe ? "Theirs" : "Mine"}`}
 					mainAlign={"End"}>
 					<span
 						className={"ChatMessage"}>

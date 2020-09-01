@@ -13,8 +13,6 @@ using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.AccountValidation.Service;
 using MooMed.Module.AccountValidation.Service.Interface;
-using AccountValidationTokenHelper = MooMed.Module.Accounts.Helper.AccountValidationTokenHelper;
-using IAccountValidationTokenHelper = MooMed.Module.Accounts.Helper.Interface.IAccountValidationTokenHelper;
 
 namespace MooMed.Module.AccountValidation.Module
 {

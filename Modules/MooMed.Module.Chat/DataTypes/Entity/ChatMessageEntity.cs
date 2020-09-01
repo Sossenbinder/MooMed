@@ -12,11 +12,11 @@ namespace MooMed.Module.Chat.DataTypes.Entity
 
 		[NotNull]
 		[Column("Message")]
-		public string Message { get; set; }
+		public string? Message { get; set; }
 
 		[Column("SenderId")]
 		public int SenderId { get; set; }
-		
+
 		[Column("ReceiverId")]
 		public int ReceiverId { get; set; }
 

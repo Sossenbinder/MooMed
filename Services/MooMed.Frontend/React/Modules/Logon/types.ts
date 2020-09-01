@@ -9,7 +9,7 @@ export namespace Network {
 		}
 
 		export type Response = {
-			IdentityErrorCode: IdentityErrorCode;
+			identityErrorCode: IdentityErrorCode;
 		}
 	}
 
@@ -22,7 +22,7 @@ export namespace Network {
 		}
 
 		export type Response = {
-			IdentityErrorCode: IdentityErrorCode;
+			identityErrorCode: IdentityErrorCode;
 		}
 	}
 }

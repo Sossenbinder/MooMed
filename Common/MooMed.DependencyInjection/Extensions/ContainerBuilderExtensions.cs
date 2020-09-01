@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Autofac;
-using MooMed.Grpc.Definitions.Interface;
+using MooMed.ServiceBase.Definitions.Interface;
 
 namespace MooMed.DependencyInjection.Extensions
 {

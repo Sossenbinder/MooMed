@@ -20,8 +20,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Finance\MooMed.Module.Finance.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.Portfolio\MooMed.Module.Portfolio.csproj" />
   </ItemGroup>

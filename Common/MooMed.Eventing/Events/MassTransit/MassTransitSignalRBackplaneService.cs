@@ -31,15 +31,13 @@ namespace MooMed.Eventing.Events.MassTransit
 		{
 			await _busControl.Publish<All<SignalRHub>>(new
 			{
-				Messages = _signalRProtocols.ToProtocolDictionary("Test", new object[] {"blub"}),
+				Messages = _signalRProtocols.ToProtocolDictionary("Test", new object[] { "blub" }),
 			});
 
 			var signalRParams = new
 			{
 				ExcludedConnectionIds = excludedConnectionIds,
-				Messages = _signalRProtocols.ToProtocolDictionary(
-					notification.NotificationType.ToString(),
-					GetPayload(notification)),
+				Messages = CreateProtocolDict(notification)
 			};
 
 			await _busControl.Publish<All<SignalRHub>>(signalRParams);
@@ -50,9 +48,7 @@ namespace MooMed.Eventing.Events.MassTransit
 			var signalRParams = new
 			{
 				ConnectionId = connectionId,
-				Messages = _signalRProtocols.ToProtocolDictionary(
-					notification.NotificationType.ToString(),
-					GetPayload(notification)),
+				Messages = CreateProtocolDict(notification)
 			};
 
 			await _busControl.Publish<Connection<SignalRHub>>(signalRParams);
@@ -64,9 +60,7 @@ namespace MooMed.Eventing.Events.MassTransit
 			{
 				GroupName = groupName,
 				ExcludedConnectionIds = excludedConnectionIds,
-				Messages = _signalRProtocols.ToProtocolDictionary(
-					notification.NotificationType.ToString(),
-					GetPayload(notification)),
+				Messages = CreateProtocolDict(notification)
 			};
 
 			await _busControl.Publish<Group<SignalRHub>>(signalRParams);
@@ -77,15 +71,20 @@ namespace MooMed.Eventing.Events.MassTransit
 			var signalRParams = new
 			{
 				UserId = userId,
-				Messages = _signalRProtocols.ToProtocolDictionary(
-					notification.NotificationType.ToString(),
-					GetPayload(notification)),
+				Messages = CreateProtocolDict(notification)
 			};
 
 			await _busControl.Publish<User<SignalRHub>>(signalRParams);
 		}
 
-		private object[] GetPayload<T>([NotNull] FrontendNotification<T> notification)
+		private IDictionary<string, byte[]> CreateProtocolDict<T>(FrontendNotification<T> notification)
+		{
+			return _signalRProtocols.ToProtocolDictionary(
+				notification.NotificationType.ToString(),
+				GetPayload(notification));
+		}
+
+		private static object[] GetPayload<T>(FrontendNotification<T> notification)
 		{
 			var payload = new object[]
 			{

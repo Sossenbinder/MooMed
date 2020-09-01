@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using MooMed.AspNetCore.Grpc.Serialization;
 using MooMed.Core.DataTypes;
-using MooMed.Grpc.Definitions.Interface;
 using Moq;
 using NUnit.Framework;
 using ProtoBuf.Meta;
+using MooMed.ServiceBase.Definitions.Interface;
 
 namespace MooMed.AspNetCore.Tests.Serialization
 {

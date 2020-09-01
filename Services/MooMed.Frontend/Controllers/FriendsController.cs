@@ -2,11 +2,11 @@
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MooMed.Common.Definitions.Messages.Account;
+using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.Friends;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
-using MooMed.Grpc.Services.Interface;
+using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {
@@ -17,7 +17,7 @@ namespace MooMed.Frontend.Controllers
 
 		public FriendsController(
 			[NotNull] ISessionService sessionService,
-			[NotNull] IAccountService accountService) 
+			[NotNull] IAccountService accountService)
 			: base(sessionService)
 		{
 			_accountService = accountService;
@@ -38,9 +38,9 @@ namespace MooMed.Frontend.Controllers
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> AddFriend([NotNull] [FromBody] AddFriendUiModel addFriendUiModel)
+		public async Task<ActionResult> AddFriend([NotNull][FromBody] AddFriendUiModel addFriendUiModel)
 		{
-			var message = new AddAsFriendMessage()
+			var message = new AddAsFriendModel()
 			{
 				SessionContext = CurrentSession,
 				AccountId = addFriendUiModel.AccountId,

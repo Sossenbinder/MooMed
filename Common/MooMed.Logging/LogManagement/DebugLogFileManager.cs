@@ -6,8 +6,8 @@ namespace MooMed.Logging.LogManagement
 {
 	internal class DebugLogFileManager : AbstractLogFileManager
 	{
-		public DebugLogFileManager(IConfigSettingsProvider configSettingsProvider)
-			: base(configSettingsProvider)
+		public DebugLogFileManager(IConfigProvider configProvider)
+			: base(configProvider)
 		{
 		}
 

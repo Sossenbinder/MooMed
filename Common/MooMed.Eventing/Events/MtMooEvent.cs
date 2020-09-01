@@ -7,7 +7,7 @@ using MooMed.Logging.Loggers;
 
 namespace MooMed.Eventing.Events
 {
-	public class MtMooEvent<TEventArgs> : EventBase<TEventArgs> 
+	public class MtMooEvent<TEventArgs> : EventBase<TEventArgs>
 		where TEventArgs : class
 	{
 		[NotNull]
@@ -36,7 +36,13 @@ namespace MooMed.Eventing.Events
 
 		public override async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
 		{
-			await _massTransitEventingService.RaiseEvent(eventArgs);
+			try
+			{
+				await _massTransitEventingService.RaiseEvent(eventArgs);
+			}
+			catch (OperationCanceledException exc)
+			{
+			}
 
 			return new AccumulatedMooEventExceptions();
 		}
