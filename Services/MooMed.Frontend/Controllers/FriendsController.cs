@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace MooMed.Frontend.Controllers
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> GetFriends()
+		public async Task<JsonDataResponse<List<Friend>>> GetFriends()
 		{
 			var getFriendsResponse = await _accountService.GetFriends(CurrentSessionOrFail);
 
@@ -42,7 +43,7 @@ namespace MooMed.Frontend.Controllers
 		{
 			var message = new AddAsFriendModel()
 			{
-				SessionContext = CurrentSession,
+				SessionContext = CurrentSessionOrFail,
 				AccountId = addFriendUiModel.AccountId,
 			};
 

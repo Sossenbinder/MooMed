@@ -9,7 +9,7 @@ namespace MooMed.Frontend.Controllers.Result
 	{
 		private readonly HttpStatusCode _statusCode;
 
-		private JsonResponse([CanBeNull] object data, bool success, HttpStatusCode statusCode)
+		protected JsonResponse(object? data, bool success, HttpStatusCode statusCode)
 			: base(new
 			{
 				success,
@@ -20,13 +20,19 @@ namespace MooMed.Frontend.Controllers.Result
 		}
 
 		[NotNull]
-		public static JsonResponse Success([CanBeNull] object data = null, bool internalSuccess = true)
+		public static JsonResponse Success(object? data = null, bool internalSuccess = true)
 		{
 			return new JsonResponse(data, internalSuccess, HttpStatusCode.OK);
 		}
 
 		[NotNull]
-		public static JsonResponse Error([CanBeNull] object data = null)
+		public static JsonDataResponse<TPayload> Success<TPayload>(TPayload data = default, bool internalSuccess = true)
+		{
+			return new JsonDataResponse<TPayload>(data, internalSuccess, HttpStatusCode.OK);
+		}
+
+		[NotNull]
+		public static JsonResponse Error(object? data = null)
 		{
 			return new JsonResponse(data, false, HttpStatusCode.OK);
 		}
@@ -35,6 +41,26 @@ namespace MooMed.Frontend.Controllers.Result
 		{
 			context.HttpContext.Response.StatusCode = (int)_statusCode;
 			return base.ExecuteResultAsync(context);
+		}
+	}
+
+	public class JsonDataResponse<T> : JsonResponse
+	{
+		public JsonDataResponse(T data, bool success, HttpStatusCode statusCode)
+			: base(data, success, statusCode)
+		{
+		}
+
+		[NotNull]
+		public static JsonDataResponse<T> Success(T data = default, bool internalSuccess = true)
+		{
+			return new JsonDataResponse<T>(data, internalSuccess, HttpStatusCode.OK);
+		}
+
+		[NotNull]
+		public static JsonDataResponse<T> Error(T data = default)
+		{
+			return new JsonDataResponse<T>(data, false, HttpStatusCode.OK);
 		}
 	}
 }

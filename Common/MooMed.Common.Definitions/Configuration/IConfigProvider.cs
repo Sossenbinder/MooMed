@@ -9,5 +9,10 @@
 		T ReadDecryptedValue<T>(string key, string? parameterToDecrypt = null);
 
 		T ReadDecryptedValueOrFail<T>(string key, string? parameterToDecrypt = null);
+
+		string this[string key]
+		{
+			get;
+		}
 	}
 }

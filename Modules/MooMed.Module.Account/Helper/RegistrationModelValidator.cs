@@ -35,7 +35,7 @@ namespace MooMed.Module.Accounts.Helper
 				return IdentityErrorCode.InvalidEmail;
 			}
 
-			return IdentityErrorCode.None;
+			return IdentityErrorCode.Success;
 		}
 	}
 }

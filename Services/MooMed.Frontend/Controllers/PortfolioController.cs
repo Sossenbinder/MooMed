@@ -27,7 +27,7 @@ namespace MooMed.Frontend.Controllers
 		[HttpGet]
 		[ItemNotNull]
 		[Authorize]
-		public async Task<JsonResponse> GetPortfolio()
+		public async Task<JsonDataResponse<Portfolio>> GetPortfolio()
 		{
 			var response = await _financeService.GetPortfolio(CurrentSessionOrFail);
 
@@ -44,7 +44,7 @@ namespace MooMed.Frontend.Controllers
 			{
 				Amount = portfolioEntryUiModel.Amount,
 				Isin = portfolioEntryUiModel.Isin,
-				SessionContext = CurrentSession,
+				SessionContext = CurrentSessionOrFail,
 			});
 
 			return response.ToJsonResponse();

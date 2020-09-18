@@ -9,6 +9,7 @@ using MooMed.Common.Definitions.UiModels.Chat;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Eventing.Helper;
 using MooMed.Module.Chat.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
 
@@ -56,18 +57,6 @@ namespace MooMed.ChatService.Service
 		{
 			var sessionContext = sendMessage.SessionContext;
 
-			var newMessageNotification = new FrontendNotification<ChatMessageUiModel>()
-			{
-				Data = new ChatMessageUiModel()
-				{
-					SenderId = sessionContext.Account.Id,
-					Message = sendMessage.Message,
-					Timestamp = sendMessage.Timestamp,
-				},
-				NotificationType = NotificationType.NewChatMessage,
-				Operation = Operation.Create
-			};
-
 			await _messageService.StoreMessage(sessionContext, new ChatMessage()
 			{
 				Id = Guid.NewGuid(),
@@ -76,6 +65,13 @@ namespace MooMed.ChatService.Service
 				SenderId = sessionContext.Account.Id,
 				Timestamp = sendMessage.Timestamp,
 			});
+
+			var newMessageNotification = FrontendNotificationFactory.Create(new ChatMessageUiModel()
+			{
+				SenderId = sessionContext.Account.Id,
+				Message = sendMessage.Message,
+				Timestamp = sendMessage.Timestamp,
+			}, NotificationType.NewChatMessage);
 
 			await _massTransitSignalRBackplaneService.RaiseGroupSignalREvent(sendMessage.ReceiverId.ToString(), newMessageNotification);
 

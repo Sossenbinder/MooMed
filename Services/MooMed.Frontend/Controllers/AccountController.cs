@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.UiModels.User;
 using MooMed.Frontend.Controllers.Base;
 using MooMed.Frontend.Controllers.Result;
@@ -39,7 +40,7 @@ namespace MooMed.Frontend.Controllers
 		[NotNull]
 		[Authorize]
 		[HttpPost]
-		public async Task<JsonResponse> GetAccount([NotNull][FromBody] GetAccountUiModel getAccountUiModel)
+		public async Task<JsonDataResponse<Account>> GetAccount([NotNull][FromBody] GetAccountUiModel getAccountUiModel)
 		{
 			var accountResponse = await _accountService.FindById(getAccountUiModel.AccountId);
 			return accountResponse.ToJsonResponse();
@@ -49,7 +50,7 @@ namespace MooMed.Frontend.Controllers
 		[HttpGet]
 		[ItemNotNull]
 		[Authorize]
-		public async Task<JsonResponse> GetProfilePicturePath()
+		public async Task<JsonDataResponse<string>> GetProfilePicturePath()
 		{
 			var profilePicturePath = await _profilePictureService.GetProfilePictureForAccount(CurrentSession);
 

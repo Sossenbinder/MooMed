@@ -33,7 +33,7 @@ export default class ChatService extends ModuleService implements IChatService {
 	}
 
 	public async start() {
-		await this.initChatRooms();
+		this.initChatRooms();
 	}
 
 	public openChat = (partnerId: number) => this._openChatHandler(partnerId);

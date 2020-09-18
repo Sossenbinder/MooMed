@@ -19,7 +19,7 @@ namespace MooMed.Module.Accounts.Helper
 				return IdentityErrorCode.PasswordMissing;
 			}
 
-			return IdentityErrorCode.None;
+			return IdentityErrorCode.Success;
 		}
 	}
 }

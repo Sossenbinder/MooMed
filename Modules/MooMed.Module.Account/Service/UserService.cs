@@ -31,7 +31,7 @@ namespace MooMed.Module.Accounts.Service
 			_accountDbConverter = accountDbConverter;
 		}
 
-		public async Task<Account> FindById(int accountId)
+		public async Task<Account?> FindById(int accountId)
 		{
 			var accountEntity = (await _accountRepository.Read(x => x.Id == accountId)).SingleOrDefault();
 
@@ -64,7 +64,7 @@ namespace MooMed.Module.Accounts.Service
 		}
 
 		[ItemCanBeNull]
-		public async Task<Account> FindByEmail(string email)
+		public async Task<Account?> FindByEmail(string email)
 		{
 			var accountEntity = await _accountRepository.FindAccount(acc => email.Equals(acc.Email));
 

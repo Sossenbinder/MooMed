@@ -20,8 +20,10 @@ export default class NotificationService extends ModuleService implements INotif
 
 	public async start() { }
 
-	public subscribe<T>(notificationType: NotificationType,	onNotify: (notification: SignalRNotification<T>) => void) {		
+	public subscribe<T>(notificationType: NotificationType,	onNotify: (notification: SignalRNotification<T>) => void) {
+
 		const notificationName = this.getNotificationTypeName(notificationType);
+		
 		this._hubConnection.on(notificationName, onNotify);
 	}
 

@@ -43,6 +43,10 @@ namespace MooMed.Module.Accounts.Module
 				.As<IUserService>()
 				.SingleInstance();
 
+			builder.RegisterType<PersonalDataService>()
+				.As<IPersonalDataService>()
+				.SingleInstance();
+
 			// Repositories
 			builder.RegisterType<AccountDbContextFactory>()
 				.AsSelf()

@@ -9,7 +9,7 @@ namespace MooMed.Common.Definitions.IPC
 	public abstract class SessionContextAttachedContainer : ISessionContextAttachedContainer
 	{
 		[NotNull]
-		[ProtoMember(1)]
-		public ISessionContext SessionContext { get; set; }
+		[ProtoMember(50)]
+		public ISessionContext SessionContext { get; set; } = null!;
 	}
 }

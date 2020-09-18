@@ -1,22 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Platforms>AnyCPU;x64</Platforms>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="Grpc.Core.Api" Version="2.25.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-    <PackageReference Include="protobuf-net.Grpc" Version="1.0.21" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json ;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
-    <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-    <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="5.1.2" />
+        <PackageReference Include="Grpc.Core.Api" Version="2.25.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+        <PackageReference Include="protobuf-net.Grpc" Version="1.0.21" />
+        <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
+    </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.6.0-3.20207.2" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.0.0-beta2.final" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
+        <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+        <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+    </ItemGroup>
 </Project>

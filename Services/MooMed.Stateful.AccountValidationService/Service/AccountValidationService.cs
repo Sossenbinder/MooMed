@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Core.DataTypes;
-using MooMed.Core.Translations.Resources;
-using MooMed.Module.Accounts.Helper.Interface;
-using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.AccountValidation.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
 
@@ -18,23 +13,13 @@ namespace MooMed.Stateful.AccountValidationService.Service
 	public class AccountValidationService : MooMedServiceBaseWithLogger, IAccountValidationService
 	{
 		[NotNull]
-		private readonly IAccountValidationRepository _accountValidationRepository;
-
-		[NotNull]
-		private readonly IAccountValidationTokenHelper _accountValidationTokenHelper;
-
-		[NotNull]
 		private readonly IEmailValidationService _emailValidationService;
 
 		public AccountValidationService(
 			[NotNull] IMooMedLogger logger,
-			[NotNull] IAccountValidationRepository accountValidationRepository,
-			[NotNull] IAccountValidationTokenHelper accountValidationTokenHelper,
 			[NotNull] IEmailValidationService emailValidationService)
 			: base(logger)
 		{
-			_accountValidationRepository = accountValidationRepository;
-			_accountValidationTokenHelper = accountValidationTokenHelper;
 			_emailValidationService = emailValidationService;
 		}
 
@@ -43,30 +28,13 @@ namespace MooMed.Stateful.AccountValidationService.Service
 		/// </summary>
 		/// <param name="accountValidationModel">Object containing accountId and token</param>
 		/// <returns></returns>
-		[ItemNotNull]
-		public async Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationModel accountValidationModel)
+		public async Task<ServiceResponse<IdentityErrorCode>> ValidateRegistration(AccountValidationModel accountValidationModel)
 		{
-			await _emailValidationService.ValidateAccount(accountValidationModel);
-			var resultCode = AccountValidationResult.None;
+			var validationResult = await _emailValidationService.ValidateAccount(accountValidationModel);
 
-			if (resultCode == AccountValidationResult.Success)
-			{
-				var validationEntity = await _accountValidationRepository.Read(x => x.Id == accountValidationModel.AccountId);
-
-				// Validation went smoothly or already happened, we can get rid of the validation entry for this account
-				await _accountValidationRepository.Delete(validationEntity.First());
-
-				return ServiceResponse<bool>.Success(true);
-			}
-
-			var errorMessage = resultCode switch
-			{
-				AccountValidationResult.AlreadyValidated => Translation.AccountValidationAlreadyValidated,
-				AccountValidationResult.ValidationGuidInvalid => Translation.AccountValidationInvalidGuid,
-				_ => Translation.GenericErrorMessage
-			};
-
-			return ServiceResponse<bool>.Failure(errorMessage: errorMessage);
+			return validationResult != IdentityErrorCode.Success
+				? ServiceResponse.Success(validationResult)
+				: ServiceResponse<IdentityErrorCode>.Failure();
 		}
 	}
 }

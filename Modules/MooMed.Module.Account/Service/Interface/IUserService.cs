@@ -9,12 +9,12 @@ namespace MooMed.Module.Accounts.Service.Interface
 	public interface IUserService
 	{
 		[ItemCanBeNull]
-		Task<Account> FindById([NotNull] int accountId);
+		Task<Account?> FindById([NotNull] int accountId);
 
 		[NotNull]
 		Task<List<Account>> FindAccountsStartingWithName([NotNull] string name);
 
 		[ItemCanBeNull]
-		Task<Account> FindByEmail([NotNull] string email);
+		Task<Account?> FindByEmail([NotNull] string email);
 	}
 }

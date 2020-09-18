@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 // Components
 import ProfileFull from "./ProfileFull";
+import OwnProfileFull from "./OwnProfileFull";
 import Flex from "Common/Components/Flex";
 
 // Functionality
@@ -36,13 +37,24 @@ export const Profile: React.FC<Props> = ({ accountId, account }) => {
 	}, [accountId, account]);
 
 	return (
-		<Flex 
-			className="Profile">
-			<If condition={displayAccount != null}>
-				<ProfileFull 
-					account={displayAccount}
-					isSelf={isSelf} />        
-			</If>
+		<Flex className="Profile">
+			<Choose>
+				<When condition={displayAccount != null}>
+					<Choose>
+						<When condition={isSelf}>
+							<OwnProfileFull 
+								account={displayAccount}/>
+						</When>
+						<Otherwise>
+							<ProfileFull
+								account={displayAccount}/>
+						</Otherwise>
+					</Choose>
+				</When>				
+				<Otherwise>
+					Loading ...
+				</Otherwise>
+			</Choose>
 		</Flex>
 	);
 }

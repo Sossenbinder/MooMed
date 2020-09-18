@@ -52,5 +52,5 @@ RUN dotnet publish "MooMed.Frontend.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/* .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MooMed.Frontend.dll"]

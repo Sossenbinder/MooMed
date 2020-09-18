@@ -9,15 +9,15 @@ enum GridDisplay {
 	Inline
 }
 
-type ColumnGridPropsSelection = "gridColumnGap" | "gridRowGap" | 'gridTemplateColumns' | 'gridTemplateRows' | 'justifyContent' | 'alignContent';
+type GridStyleKeys = "gridColumnGap" | "gridRowGap" | 'gridTemplateColumns' | 'gridAutoColumns' | 'gridAutoRows' | 'gridTemplateRows' | 'justifyContent' | 'alignContent' | 'gridTemplateAreas';
 
-type ColumnGridProps = Pick<React.CSSProperties, ColumnGridPropsSelection>;
+type GridStyles = Pick<React.CSSProperties, GridStyleKeys>;
 
 type GridProps = {
 	className?: string;
 	display?: GridDisplay;
 
-	gridProperties?: ColumnGridProps;
+	gridProperties?: GridStyles;
 
 	children?: Array<JSX.Element>;
 }

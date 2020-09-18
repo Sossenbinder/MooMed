@@ -46,7 +46,8 @@ namespace MooMed.Configuration
 
 		public T ReadDecryptedValue<T>(string key, string? parameterToDecrypt = null)
 		{
-			var value = _settingsCrypto.DecryptSetting(ReadValue<string>(key) ?? throw new ArgumentException("Key not found"), parameterToDecrypt);
+			var value = _settingsCrypto.DecryptSetting(
+				ReadValue<string>(key) ?? throw new ArgumentException("Key not found"), parameterToDecrypt);
 
 			if (value == null)
 			{
@@ -67,5 +68,7 @@ namespace MooMed.Configuration
 
 			return (T)Convert.ChangeType(value, typeof(T));
 		}
+
+		public string this[string key] => ReadValue<string>(key);
 	}
 }

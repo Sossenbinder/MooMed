@@ -35,7 +35,7 @@ namespace MooMed.Common.Definitions.Models.User
 		}
 
 		[NotNull]
-		public static RegistrationResult Success(Account account) => new RegistrationResult(true, IdentityErrorCode.None, account);
+		public static RegistrationResult Success(Account account) => new RegistrationResult(true, IdentityErrorCode.Success, account);
 
 		[NotNull]
 		public static RegistrationResult Failure(IdentityErrorCode errorCode) => new RegistrationResult(false, new List<IdentityErrorCode>() { errorCode }, null);

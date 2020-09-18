@@ -13,6 +13,7 @@ namespace MooMed.Common.Definitions.Models.User
 		[ProtoMember(2)]
 		public Account Account { get; set; }
 
+		[UsedImplicitly]
 		public LoginResult()
 		{
 		}

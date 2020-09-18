@@ -7,6 +7,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <DockerfileContext>..\..</DockerfileContext>
     <DockerComposeProjectPath>..\..\MooMed.dcproj</DockerComposeProjectPath>
+	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
 
   <ItemGroup>

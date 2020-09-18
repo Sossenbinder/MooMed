@@ -28,10 +28,12 @@ type Reducer<T> = {
 
 export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 
-	const ADD_IDENTIFIER = `${params.actionIdentifier}_ADD`;
-	const UPDATE_IDENTIFIER = `${params.actionIdentifier}_UPDATE`;
-	const DELETE_IDENTIFIER = `${params.actionIdentifier}_DELETE`;
-	const REPLACE_IDENTIFIER = `${params.actionIdentifier}_REPLACE`;
+	const actionIdentifier = params.actionIdentifier;
+
+	const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
+	const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
+	const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
+	const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
 
 	const initialState: ReducerState<T> = {
 		data: []

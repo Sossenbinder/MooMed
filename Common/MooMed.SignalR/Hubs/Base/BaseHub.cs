@@ -8,14 +8,16 @@ namespace MooMed.SignalR.Hubs.Base
 	{
 		public override async Task OnConnectedAsync()
 		{
-			await Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
-			await base.OnConnectedAsync();
+			await Task.WhenAll(
+				Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name),
+				base.OnConnectedAsync());
 		}
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{
-			await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
-			await base.OnDisconnectedAsync(exception);
+			await Task.WhenAll(
+				Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.User.Identity.Name),
+				base.OnDisconnectedAsync(exception));
 		}
 	}
 }

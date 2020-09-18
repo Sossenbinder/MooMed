@@ -1,0 +1,37 @@
+﻿.MooMedButton {
+	border: 1px solid black;
+	border-radius: 10px;
+
+	min-width: 100px;
+	min-height: 27px;
+
+	background-image: linear-gradient(to right, #232526 0%, #414345 51%, #232526 100%);
+
+	cursor: pointer;
+
+	&:hover {
+		background-position: right center;
+		cursor: pointer;
+	}
+
+	.Text {
+		text-align: center;
+		vertical-align: middle;
+
+		margin-bottom: 3px;
+		
+		cursor: pointer;
+
+		color: white;
+	}
+
+	&.Disabled {
+		border: 1px solid #999999;
+		
+		background-image: none;
+		
+		.Text {
+			color: grey !important;
+		}
+	}
+}

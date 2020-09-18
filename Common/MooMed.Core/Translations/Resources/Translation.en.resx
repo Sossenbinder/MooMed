@@ -120,7 +120,7 @@
   <data name="AccountEmailValidationBody" xml:space="preserve">
     <value>Hello!
 Thank you for registering your account to MooMed! Please click the following link to complete your registration:
-http://{{0}}/AccountValidation?accountId={{1}}&amp;token={{2}}</value>
+{{0}}/AccountValidation?accountId={{1}}&amp;token={{2}}</value>
   </data>
   <data name="AccountEmailValidationSubject" xml:space="preserve">
     <value>Please validate your MooMed account</value>
@@ -232,5 +232,8 @@ http://{{0}}/AccountValidation?accountId={{1}}&amp;token={{2}}</value>
   </data>
   <data name="IdentityError_EmailNotConfirmed" xml:space="preserve">
     <value>Email not confirmed yet.</value>
+  </data>
+  <data name="IdentityError_EmailAlreadyConfirmed" xml:space="preserve">
+    <value>Email already confirmed.</value>
   </data>
 </root>

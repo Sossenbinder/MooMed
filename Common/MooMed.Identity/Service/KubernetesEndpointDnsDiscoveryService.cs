@@ -17,7 +17,7 @@ namespace MooMed.Identity.Service
 				IpAddress = dnsEntry,
 			};
 		}
-		
+
 		public StatefulEndpointCollection GetStatefulEndpoints(StatefulSetService statefulSetService, int totalReplicas = 1)
 		{
 			var statefulServiceName = statefulSetService.ToString().ToLower();
@@ -33,7 +33,6 @@ namespace MooMed.Identity.Service
 						IpAddress = dns,
 					};
 				});
-			
 
 			return new StatefulEndpointCollection(endpoints.ToList());
 		}

@@ -5,6 +5,10 @@ namespace MooMed.AspNetCore.Identity.DataTypes
 {
 	public class CodeIdentityError : IdentityError
 	{
-		public IdentityErrorCode ErrorCode { get; set; }
+		public IdentityErrorCode ErrorCode
+		{
+			get;
+			set;
+		}
 	}
 }

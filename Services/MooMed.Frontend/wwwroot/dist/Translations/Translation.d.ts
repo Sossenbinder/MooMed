@@ -29,4 +29,5 @@ export type Translation = {
     "IdentityError_PasswordRequiresUpper": "Password requires uppercase character.",
     "IdentityError_PasswordMissing": "Missing password.",
     "IdentityError_EmailNotConfirmed": "Email not confirmed yet.",
+    "IdentityError_EmailAlreadyConfirmed": "Email already confirmed.",
 };

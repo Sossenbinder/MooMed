@@ -8,6 +8,7 @@ using MooMed.Common.Definitions.Notifications;
 using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.DotNet.Extensions;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Eventing.Helper;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Datatypes.SignalR;
 using MooMed.Module.Accounts.Events.Interface;
@@ -67,16 +68,11 @@ namespace MooMed.Module.Accounts.Service
 
 		private async Task SendFrontendNotification([NotNull] ISessionContext sessionContext, AccountOnlineState onlineState)
 		{
-			var notification = new FrontendNotification<AccountOnlineStateFrontendNotification>()
+			var notification = FrontendNotificationFactory.Update(new AccountOnlineStateFrontendNotification()
 			{
-				Data = new AccountOnlineStateFrontendNotification()
-				{
-					AccountId = sessionContext.Account.Id,
-					AccountOnlineState = onlineState,
-				},
-				NotificationType = NotificationType.FriendOnlineStateChange,
-				Operation = Operation.Update,
-			};
+				AccountId = sessionContext.Account.Id,
+				AccountOnlineState = onlineState,
+			}, NotificationType.FriendOnlineStateChange);
 
 			var friendsOfAccount = await _friendsService.GetFriends(sessionContext);
 			var receiverIds = friendsOfAccount.Select(x => x.Id);

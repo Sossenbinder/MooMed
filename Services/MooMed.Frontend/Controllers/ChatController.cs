@@ -27,13 +27,13 @@ namespace MooMed.Frontend.Controllers
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> GetMessages([NotNull][FromBody] GetMessagesUiModel model)
+		public async Task<JsonDataResponse<RetrievedMessages>> GetMessages([NotNull][FromBody] GetMessagesUiModel model)
 		{
 			var messages = await _chatService.GetMessages(new GetMessages()
 			{
-				ReceiverId = model.ReceiverId,
-				SessionContext = CurrentSessionOrFail,
 				ContinuationToken = model.ContinuationToken,
+				ReceiverId = model.ReceiverId,
+				SessionContext = CurrentSessionOrFail
 			});
 
 			return messages.ToJsonResponse();

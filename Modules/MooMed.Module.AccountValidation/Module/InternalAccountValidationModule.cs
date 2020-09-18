@@ -23,8 +23,9 @@ namespace MooMed.Module.AccountValidation.Module
 			base.Load(builder);
 
 			builder.RegisterType<EmailValidationService>()
-				.As<IEmailValidationService, IStartable>()
-				.SingleInstance();
+				.As<IEmailValidationService>()
+				.SingleInstance()
+				.AutoActivate();
 
 			builder.RegisterType<AccountDbContextFactory>()
 				.AsSelf()

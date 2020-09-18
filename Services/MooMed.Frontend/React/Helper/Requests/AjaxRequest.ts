@@ -18,7 +18,7 @@ export default class AjaxRequest<TRequest, TResponse> {
 		this.m_requestMethod = requestMethod;
 	}
 
-	public async send(requestData?: TRequest, verificationToken?: string): Promise<NetworkResponse<TResponse>> {
+	public async send(requestData: TRequest, verificationToken?: string): Promise<NetworkResponse<TResponse>> {
 
 		const requestInit: RequestInit = {
 			method: this.m_requestMethod,
@@ -45,7 +45,7 @@ export default class AjaxRequest<TRequest, TResponse> {
 		const payload: TResponse = typeof jsonResponse !== "undefined" ? jsonResponse?.data as TResponse : undefined;
 		
 		return {
-			success: jsonResponse.success,
+			success: typeof jsonResponse !== "undefined" ? jsonResponse.success : false,
 			payload,
 		};
 	}

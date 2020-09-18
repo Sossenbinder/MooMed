@@ -40,6 +40,9 @@ namespace MooMed.Stateful.AccountService.Service
 		[NotNull]
 		private readonly IUserService _userService;
 
+		[NotNull]
+		private readonly IPersonalDataService _personalDataService;
+
 		public AccountService(
 			[NotNull] IMooMedLogger logger,
 			[NotNull] IRegisterService registerService,
@@ -48,7 +51,8 @@ namespace MooMed.Stateful.AccountService.Service
 			[NotNull] IProfilePictureService profilePictureService,
 			[NotNull] ISessionService sessionService,
 			[NotNull] IFriendsService friendsService,
-			[NotNull] IUserService userService)
+			[NotNull] IUserService userService,
+			[NotNull] IPersonalDataService personalDataService)
 			: base(logger)
 		{
 			_registerService = registerService;
@@ -58,6 +62,7 @@ namespace MooMed.Stateful.AccountService.Service
 			_sessionService = sessionService;
 			_friendsService = friendsService;
 			_userService = userService;
+			_personalDataService = personalDataService;
 		}
 
 		/// <summary>
@@ -65,12 +70,11 @@ namespace MooMed.Stateful.AccountService.Service
 		/// </summary>
 		/// <param name="loginModel">Login model of that account</param>
 		/// <returns></returns>
-		[ItemNotNull]
 		public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
 		{
 			var loginResult = await _loginService.Login(loginModel);
 
-			if (loginResult.IdentityErrorCode != IdentityErrorCode.None)
+			if (loginResult.IdentityErrorCode != IdentityErrorCode.Success)
 			{
 				return ServiceResponse.Failure(loginResult);
 			}
@@ -118,11 +122,9 @@ namespace MooMed.Stateful.AccountService.Service
 		/// </summary>
 		/// <param name="registerModel">Register model of that account</param>
 		/// <returns></returns>
-		[ItemNotNull]
 		public async Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
 		{
 			var registrationResult = await _registerService.Register(registerModel);
-
 			return ServiceResponse.Success(registrationResult);
 		}
 
@@ -130,30 +132,24 @@ namespace MooMed.Stateful.AccountService.Service
 		{
 			Logger.Info($"Logging {sessionContext.Account.Id} off.");
 			await _accountEventHub.AccountLoggedOut.Raise(new AccountLoggedOutEvent(sessionContext));
-
 			return ServiceResponse.Success();
 		}
 
 		public async Task<ServiceResponse<Account>> FindById(Primitive<int> accountId)
 		{
 			var account = await _userService.FindById(accountId);
-
 			return account == null ? ServiceResponse<Account>.Failure() : ServiceResponse<Account>.Success(account);
 		}
 
-		[ItemNotNull]
 		public async Task<ServiceResponse<List<Account>>> FindAccountsStartingWithName(string name)
 		{
 			var accounts = await _userService.FindAccountsStartingWithName(name);
-
 			return ServiceResponse<List<Account>>.Success(accounts);
 		}
 
-		[ItemCanBeNull]
 		public async Task<ServiceResponse<Account>> FindByEmail(string email)
 		{
 			var account = await _userService.FindByEmail(email);
-
 			return ServiceResponse<Account>.Success(account);
 		}
 
@@ -185,5 +181,11 @@ namespace MooMed.Stateful.AccountService.Service
 
 			return ServiceResponse.Success(friends);
 		}
+
+		public Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData)
+			=> _personalDataService.UpdatePersonalData(personalData);
+
+		public Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePasswordData)
+			=> _personalDataService.UpdatePassword(updatePasswordData);
 	}
 }

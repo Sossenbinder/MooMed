@@ -41,16 +41,15 @@ export const SignIn: React.FC = () => {
 				<Switch>
 					<Route 
 						exact={true} 
-						path={"/"} 
-						render={() => { return <LoginDialog />}} />
-					<Route 
-						exact={true} 
 						path={"/register"} 
 						render={() => { return <RegisterDialog /> }} />
 					<Route 
 						exact={true} 
 						path={"/login"} 
 						render={() => { return <LoginDialog /> }} />
+					<Route
+						path={"/"} 
+						render={() => { return <LoginDialog />}} />
 				</Switch>
 			</Flex>
 		</Flex> 

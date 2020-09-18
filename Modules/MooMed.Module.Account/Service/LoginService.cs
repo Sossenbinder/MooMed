@@ -49,13 +49,12 @@ namespace MooMed.Module.Accounts.Service
 			_accountDbConverter = accountDbConverter;
 		}
 
-		[ItemNotNull]
 		public async Task<LoginResult> Login(LoginModel loginModel)
 		{
 			// Validate the login data we got
 			var loginValidationResult = _logonModelValidator.ValidateLoginModel(loginModel);
 
-			if (loginValidationResult != IdentityErrorCode.None)
+			if (loginValidationResult != IdentityErrorCode.Success)
 			{
 				return new LoginResult(loginValidationResult);
 			}
@@ -78,7 +77,7 @@ namespace MooMed.Module.Accounts.Service
 
 			if (result.Succeeded)
 			{
-				return new LoginResult(IdentityErrorCode.None, _accountDbConverter.ToModel(account));
+				return new LoginResult(IdentityErrorCode.Success, _accountDbConverter.ToModel(account));
 			}
 
 			if (!account.EmailConfirmed)

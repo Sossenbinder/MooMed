@@ -1,13 +1,10 @@
 // Functionality
 import ModuleService from "modules/common/Service/ModuleService";
 import * as logonCommunication from "modules/Logon/Communication/LogonCommunication";
-import { createPopUpMessage } from "helper/popUpMessageHelper";
-import getTranslationForErrorCode from "Translations/helpers/IdentityErrorLookupHelper";
+import handleIdentityResponse from "modules/Common/Helper/IdentityResultHelper";
 
 // Types
 import { ILogonService } from "Definitions/Service";
-import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
-import { IdentityErrorCode } from "enums/moomedEnums";
 
 export default class LogonService extends ModuleService implements ILogonService {
 
@@ -24,27 +21,17 @@ export default class LogonService extends ModuleService implements ILogonService
 		
 		const response = await logonCommunication.login(email, password, rememberMe);
 		
-		this.handleIdentityResponse(response.success, response.payload?.identityErrorCode);
+		handleIdentityResponse(response.success, response.payload?.identityErrorCode);
 	}
 	
 	public async register(email: string, userName: string, password: string, confirmPassword: string) {
 
 		const response = await logonCommunication.register(email, userName, password, confirmPassword);
 		
-		this.handleIdentityResponse(response.success, response.payload?.identityErrorCode);
+		handleIdentityResponse(response.success, response.payload?.identityErrorCode);
 	}
 
 	public async logOff() {
 		const response = await logonCommunication.logOff();
-	}
-
-	private handleIdentityResponse(success: boolean, errorCode?: IdentityErrorCode) {
-		if (success) {
-			location.reload();
-		} else {
-			const errorMessage = getTranslationForErrorCode(errorCode);
-
-			createPopUpMessage(errorMessage, PopUpMessageLevel.Error);
-		}
 	}
 }

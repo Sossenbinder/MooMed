@@ -1,19 +1,18 @@
-﻿// Framework
-import * as ReactDOM from "react-dom";
-import * as React from "react";
-import { BrowserRouter  } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "data/store";
+﻿//Functionality
+import { services } from "helper/serviceRegistry";
+import AccountValidationService from "modules/Account/Service/AccountValidationService";
 
 // Components
-import OtherMain from "views/Pages/Other/OtherMain";
+import renderOtherPage from "views/Pages/Other/OtherPage";
 
-window.onload = () => {
-	ReactDOM.render(
-		<Provider store={store}>
-			<BrowserRouter>
-				<OtherMain />
-			</BrowserRouter>
-		</Provider>,
-		document.getElementById("landingContainer"));
+window.onload = async () => {
+
+	await initServices();
+
+	renderOtherPage();
 };
+
+const initServices = async () => {
+	const accountValidationService = new AccountValidationService();
+	services.AccountValidationService = accountValidationService;
+}

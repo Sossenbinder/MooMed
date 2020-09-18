@@ -31,7 +31,7 @@ const initServices = async () => {
 
 	await initCoreServices(signalRConnectionProvider);
 
-	initAdditionalServices(signalRConnectionProvider);
+	initAdditionalServices();
 }
 
 const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProvider) => {
@@ -60,7 +60,7 @@ const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProv
 	await asyncUtils.asyncForEach(modules, x => x.start());
 }
 
-const initAdditionalServices = async (signalRConnectionProvider: SignalRConnectionProvider) => {
+const initAdditionalServices = async () => {
 	
 	const modules: Array<IModuleService> = [];
 

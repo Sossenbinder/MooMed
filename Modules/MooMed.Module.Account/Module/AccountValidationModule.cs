@@ -1,12 +1,9 @@
 ﻿using System.Text;
 using Autofac;
-using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Module.Accounts.Database;
 using MooMed.Module.Accounts.Datatypes.Entity;
-using MooMed.Module.Accounts.Events;
-using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository;
@@ -32,6 +29,10 @@ namespace MooMed.Module.Accounts.Module
 
 			builder.RegisterType<AccountEmailValidationHelper>()
 				.As<IAccountValidationEmailHelper>()
+				.SingleInstance();
+
+			builder.RegisterType<UrlHelper>()
+				.As<IUrlHelper>()
 				.SingleInstance();
 
 			builder.RegisterInstance(Encoding.UTF8)

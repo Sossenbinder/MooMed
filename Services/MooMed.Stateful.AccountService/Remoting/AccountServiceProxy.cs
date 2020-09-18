@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
@@ -52,5 +53,11 @@ namespace MooMed.Stateful.AccountService.Remoting
 
 		public Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
 			=> InvokeSpecificWithResult(sessionContext, service => service.GetFriends(sessionContext));
+
+		public Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData)
+			=> InvokeSpecificWithResult(personalData, service => service.UpdatePersonalData(personalData));
+
+		public Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePasswordData)
+			=> InvokeSpecificWithResult(updatePasswordData, service => service.UpdatePassword(updatePasswordData));
 	}
 }

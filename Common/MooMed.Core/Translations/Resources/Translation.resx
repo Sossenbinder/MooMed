@@ -258,4 +258,8 @@
     <value />
     <comment>{Frontend}</comment>
   </data>
+  <data name="IdentityError_EmailAlreadyConfirmed" xml:space="preserve">
+    <value />
+    <comment>{Frontend}</comment>
+  </data>
 </root>

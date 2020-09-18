@@ -12,7 +12,7 @@ class ImageInfo {
 [ImageInfo[]] $imageInfos = @();
 
 $imageInfos += [ImageInfo]@{
-    Path = "./Services/MooMed/Dockerfile"
+    Path = "./Services/MooMed.Frontend/Dockerfile"
     Name = "frontendservice"
 }
 

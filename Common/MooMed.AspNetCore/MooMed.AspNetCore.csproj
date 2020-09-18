@@ -5,6 +5,7 @@
         <Platforms>AnyCPU;x64</Platforms>
         <Nullable>enable</Nullable>
         <LangVersion>8.0</LangVersion>
+    	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
 
     <ItemGroup>

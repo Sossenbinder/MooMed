@@ -1,4 +1,5 @@
-import { Account } from "modules/Account/types";
+// Types
+import { Account, AccountValidationResult, PersonalData, PasswordData } from "modules/Account/types";
 import { SearchResult } from "modules/Search/types";
 import { NotificationType } from "enums/moomedEnums";
 import { SignalRNotification } from "data/notifications";
@@ -7,9 +8,16 @@ export interface IModuleService {
 	start(): Promise<void>;
 }
 
-export interface IAccountService extends IModuleService{
+export interface IAccountService extends IModuleService {
     getAccount(accountId: number): Promise<Account>;
-    getOwnAccount(): Promise<Account>;
+	getOwnAccount(): Promise<Account>;
+	
+	updatePersonalData(personalData: PersonalData): Promise<void>;
+	updatePassword(passwordData: PasswordData): Promise<void>;
+}
+
+export interface IAccountValidationService extends IModuleService {
+	validateRegistration(accountId: number, token: string): Promise<AccountValidationResult>;
 }
 
 export interface ILogonService extends IModuleService {
@@ -47,7 +55,8 @@ export interface IPortfolioService extends IModuleService{
 
 // Contexts
 export type ServiceContext = {
-    AccountService: IAccountService;
+	AccountService: IAccountService;
+	AccountValidationService: IAccountValidationService;
 	LogonService: ILogonService;
     FriendsService: IFriendsService;
 	SearchService: ISearchService;

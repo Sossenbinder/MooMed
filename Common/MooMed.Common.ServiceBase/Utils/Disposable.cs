@@ -17,11 +17,9 @@ namespace MooMed.Common.ServiceBase.Utils
 			_asyncDisposables = new List<IAsyncDisposable>();
 		}
 
-		protected void RegisterDisposable(IDisposable disposable) 
-			=> _disposables.Add(disposable);
+		protected void RegisterDisposable(IDisposable disposable) => _disposables.Add(disposable);
 
-		protected void RegisterAsyncDisposable(IAsyncDisposable asyncDisposable) =>
-			_asyncDisposables.Add(asyncDisposable);
+		protected void RegisterAsyncDisposable(IAsyncDisposable asyncDisposable) => _asyncDisposables.Add(asyncDisposable);
 
 		public void Dispose()
 		{

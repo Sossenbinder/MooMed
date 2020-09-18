@@ -1,1 +1,0 @@
-{"version":3,"file":"StocksCommunication.js","sourceRoot":"","sources":["StocksCommunication.ts"],"names":[],"mappings":";;;;;;;;;;;AACA,2DAAoD;AAGpD,MAAM,aAAa,GAAG;IACrB,kBAAkB,EAAE,4BAA4B;CAChD,CAAA;AAED,SAAsB,kBAAkB;;QAEpC,MAAM,OAAO,GAAG,IAAI,oBAAU,CAAsC,aAAa,CAAC,kBAAkB,CAAC,CAAC;QAEtG,OAAO,MAAM,OAAO,CAAC,IAAI,EAAE,CAAC;IAChC,CAAC;CAAA;AALD,gDAKC"}

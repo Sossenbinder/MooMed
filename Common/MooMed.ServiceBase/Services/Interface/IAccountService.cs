@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Core.DataTypes;
 using MooMed.ServiceBase.Definitions.Interface;
 
@@ -46,5 +47,11 @@ namespace MooMed.ServiceBase.Services.Interface
 
 		[OperationContract]
 		Task<ServiceResponse<List<Friend>>> GetFriends([NotNull] ISessionContext sessionContext);
+
+		[OperationContract]
+		Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData);
+
+		[OperationContract]
+		Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePasswordData);
 	}
 }

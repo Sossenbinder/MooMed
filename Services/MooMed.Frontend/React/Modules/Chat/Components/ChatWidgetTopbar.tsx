@@ -24,7 +24,7 @@ export const ChatWidgetTopBar: React.FC<Props> = ({ onClick }) => {
 			direction={"Column"}
 			mainAlign={"Center"}>
 			<span className={"Heading"}>
-				{ Translation.Chat }
+				Chat
 			</span>			
 		</Flex>
 	);

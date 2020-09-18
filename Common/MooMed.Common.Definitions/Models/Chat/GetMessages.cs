@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Models.Session.Interface;
 using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.Chat
@@ -7,11 +8,10 @@ namespace MooMed.Common.Definitions.Models.Chat
 	[ProtoContract]
 	public class GetMessages : SessionContextAttachedContainer
 	{
-		[ProtoMember(2)]
+		[ProtoMember(1)]
 		public int ReceiverId { get; set; }
 
-		[ProtoMember(3)]
-		[CanBeNull]
-		public string ContinuationToken { get; set; }
+		[ProtoMember(2)]
+		public string? ContinuationToken { get; set; }
 	}
 }

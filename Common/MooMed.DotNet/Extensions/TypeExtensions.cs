@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MooMed.DotNet.Extensions
@@ -12,5 +15,44 @@ namespace MooMed.DotNet.Extensions
 		/// <returns></returns>
 		public static Type CheckAndGetTaskWrappedType(this Type type)
 			=> type.GetGenericTypeDefinition() == typeof(Task<>) ? type.GetGenericArguments()[0] : type;
+
+		public static bool HasInterface(this Type type, Type @interface)
+		{
+			var typeInterfaces = type.GetInterfaces();
+
+			return typeInterfaces.Length != 0 && typeInterfaces.Any(x => x == @interface);
+		}
+
+		public static string GetRealFullName(this Type type)
+			=> type.GetRealTypeName(t => t.FullName);
+
+		public static string GetRealName(this Type type)
+			=> type.GetRealTypeName(t => t.Name);
+
+		public static string GetRealTypeName(this Type type, Func<Type, string> propSelector)
+		{
+			var toInspect = propSelector(type);
+
+			if (!type.IsGenericType)
+			{
+				return toInspect;
+			}
+
+			var sb = new StringBuilder();
+
+			sb.Append(toInspect.Substring(0, toInspect.IndexOf('`')));
+			sb.Append('<');
+
+			var appendComma = false;
+			foreach (var argType in type.GetGenericArguments())
+			{
+				if (appendComma) sb.Append(',');
+				sb.Append(GetRealTypeName(argType, propSelector));
+				appendComma = true;
+			}
+			sb.Append('>');
+
+			return sb.ToString();
+		}
 	}
 }

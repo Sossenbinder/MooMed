@@ -1,5 +1,6 @@
 //Framework
 import * as React from "react";
+import classNames from "classnames";
 
 // Components
 import LoadingBubbles from "common/Components/LoadingBubbles";
@@ -7,30 +8,35 @@ import LoadingBubbles from "common/Components/LoadingBubbles";
 //Functionality
 import useBackendCallWrapper from "hooks/useBackendCallWrapper";
 
-import "./Styles/Controls.less";
+import "./Styles/Button.less";
 
 type Props = {
 	title: string;
 	onClick: () => Promise<void>;
 	classname?: string;
-	disabled: boolean;
+	disabled?: boolean;
 }
 
-export const Button: React.FC<Props> = ({ title, onClick, classname, disabled}) => {
+export const Button: React.FC<Props> = ({ title, onClick, classname: className, disabled = false}) => {
 	
 	const [loading, callBackend] = useBackendCallWrapper(onClick);
 
+	const classes = classNames({
+		"MooMedButton": true,
+		"Disabled": disabled,
+	});
+
 	return (
 		<button
-		className={"MooMedButton " + (classname ?? "")}
-			onClick={async _ => await callBackend()}
+			className={`${classes} ${className !== undefined && className !== "" ? className : ""}`}
+			onClick={_ => callBackend()}
 			disabled={disabled}>
 			<Choose>
 				<When condition={loading}>
 					<LoadingBubbles />
 				</When>
 				<Otherwise>
-					<p className="ButtonParagraph">
+					<p className="Text">
 						{title}
 					</p>
 				</Otherwise>

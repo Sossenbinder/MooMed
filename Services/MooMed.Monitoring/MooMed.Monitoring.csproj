@@ -6,6 +6,7 @@
         <UserSecretsId>f3464ec3-d0ec-4d63-af79-006d1215e6d8</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
 
     <ItemGroup>

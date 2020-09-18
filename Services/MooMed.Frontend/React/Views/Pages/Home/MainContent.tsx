@@ -14,29 +14,28 @@ import "./Styles/MainContent.less";
 
 const MainContent: React.FC = () => {
 	return (
-		<Flex 
+		<Flex
 			className={"ContentContainerHolder"}
 			direction={"Row"}>
-			<Flex 
+			<Flex
 				direction={"Column"}
 				className={"ContentContainer"}>
-				<Route
-					path={"/profileDetails"}
-					render={routeProps => {
+				<Flex
+					className={"BodyContent"}>
+					<Route
+						path={"/profileDetails"}
+						render={routeProps => {
 							const url = routeProps.location.pathname;
 							const accountId = parseInt(url.substring(url.lastIndexOf('/') + 1));
 							return <Profile
 								accountId={accountId} />;
-						}
-					} />
-				<Flex
-					className={"BodyContent"}>
+						}} />
 					<Route
-						path={"/about" }
+						path={"/about"}
 						render={() => <AboutDialog />} />
 					<Route
-						path={"/Stocks"}
-						render={() => <StocksDialog />}/>
+						path={"/Investing"}
+						render={() => <StocksDialog />} />
 					<PostsContainer />
 				</Flex>
 			</Flex>

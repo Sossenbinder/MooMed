@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using GreenPipes.Internals.Extensions;
 using MooMed.DotNet.Extensions;
 using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Meta;

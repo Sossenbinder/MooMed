@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import "./Styles/Flex.less";
 
-enum FlexDirections {
+export enum FlexDirections {
 	Column,
 	ColumnReverse,
 	Row,

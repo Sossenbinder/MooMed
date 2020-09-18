@@ -30,17 +30,22 @@ export const NavBar: React.FC<Props> = () => (
 		<Link 
 			to="/"
 			className="SubItem">
-			Home
+			Feed
 		</Link>
 		<Link 
-			to="/Stocks"
+			to="/Saving"
 			className="SubItem">
-			Stocks
+			Saving
 		</Link>
 		<Link 
-			to="/Contact"
+			to="/Budgeting"
 			className="SubItem">
-			Contact
+			Budgeting
+		</Link>
+		<Link 
+			to="/Investing"
+			className="SubItem">
+			Investing
 		</Link>
 		<div className="searchBar nav navbar-nav ml-auto">
 			<SearchBar />

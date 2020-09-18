@@ -1,16 +1,17 @@
-﻿using MooMed.Common.Definitions.Interface;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.Common.Definitions.Models.Session.Interface;
 using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Models.Portfolio
 {
 	[ProtoContract]
-	public class PortfolioItem : SessionContextAttachedContainer, IModel
+	public class PortfolioItem : SessionContextAttachedContainer
 	{
-		[ProtoMember(2)]
-		public string Isin { get; set; }
+		[ProtoMember(1)]
+		public string Isin { get; set; } = null!;
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public float Amount { get; set; }
 	}
 }

@@ -33,7 +33,7 @@ namespace MooMed.Frontend.Controllers
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Login([FromBody] LoginModel loginModel)
+		public async Task<JsonDataResponse<LoginResult>> Login([FromBody] LoginModel loginModel)
 		{
 			var serviceResponse = await _accountService.Login(loginModel);
 
@@ -65,7 +65,7 @@ namespace MooMed.Frontend.Controllers
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Register([NotNull][FromBody] RegisterUiModel registerModel)
+		public async Task<JsonDataResponse<RegistrationResult>> Register([NotNull][FromBody] RegisterUiModel registerModel)
 		{
 			var model = registerModel.ToModel();
 			model.Language = CurrentUiLanguage;

@@ -19,10 +19,9 @@ import "./Styles/ProfileFull.less";
 
 type Props = {
 	account: Account;
-	isSelf: boolean;
 }
 
-export const ProfileFull: React.FC<Props> = ({ account, isSelf }) => {
+export const ProfileFull: React.FC<Props> = ({ account }) => {
 
 	return (
 		<Grid
@@ -49,10 +48,8 @@ export const ProfileFull: React.FC<Props> = ({ account, isSelf }) => {
 						</h2>
 					</Flex>
 					<Separator />
-					<If condition={!isSelf}>
-						<FriendshipButton
-							targetAccountId={account.id} />
-					</If>
+					<FriendshipButton
+						targetAccountId={account.id} />
 					<Navigation />
 				</Flex>
 			</Cell>

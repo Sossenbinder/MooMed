@@ -15,7 +15,7 @@ module.exports = {
 		filename: "[name].js",
 		path: path.resolve(__dirname, "wwwroot/dist/")
 	},
-	devtool: "eval-cheap-module-source-map",
+	devtool: "source-map",
 	module: {
 		rules: [
 			{

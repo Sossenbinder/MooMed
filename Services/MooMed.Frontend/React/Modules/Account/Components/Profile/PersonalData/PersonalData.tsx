@@ -2,11 +2,10 @@
 import * as React from "react"
 
 // Components
-import Flex from "common/components/Flex"
-import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
-
-// Functionality
-import useFormState from "hooks/useFormState";
+import Flex from "common/components/Flex";
+import UpdateDetails from "./UpdateDetails";
+import UpdatePassword from "./UpdatePassword";
+import Separator from "common/Components/Separator";
 
 // Types
 import { Account } from "modules/Account/types";
@@ -17,20 +16,15 @@ type Props = {
 	account: Account;
 }
 
-export const PersonalData: React.FC<Props> = ({ account }) => {
-
-	const [email, setEmail] = useFormState<string>("");
-
-	return (
-		<Flex className="PersonalData">
-			<ErrorAttachedTextInput
-				name="Email"
-				formData={email}
-				setFormData={setEmail}
-				errorMessage="Please provide a valid email address"
-				errorFunc={(currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1}/>
-		</Flex>
-	);
-}
+export const PersonalData: React.FC<Props> = ({ account }) => 
+	<Flex 
+		className="PersonalData"
+		direction="Column">
+		<UpdateDetails 
+			account={account}/>
+		<Separator />
+		<UpdatePassword
+			account={account}/>
+	</Flex>;
 
 export default PersonalData

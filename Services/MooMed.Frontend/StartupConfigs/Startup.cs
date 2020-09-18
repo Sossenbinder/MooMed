@@ -38,6 +38,8 @@ namespace MooMed.Frontend.StartupConfigs
 				.AddCookie(options => options.LoginPath = "/Logon/Login");
 
 			services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
+
+			services.AddResponseCompression();
 		}
 
 		private void ConfigureMassTransit([NotNull] IServiceCollection services)
@@ -79,6 +81,8 @@ namespace MooMed.Frontend.StartupConfigs
 		[UsedImplicitly]
 		public void Configure([NotNull] IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			app.UseResponseCompression();
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -89,10 +93,11 @@ namespace MooMed.Frontend.StartupConfigs
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-			app.UseHttpsRedirection();
+
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
 
+			app.UseHttpsRedirection();
 			app.UseRouting();
 
 			app.UseAuthentication();

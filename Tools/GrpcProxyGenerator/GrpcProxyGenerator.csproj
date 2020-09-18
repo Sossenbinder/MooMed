@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+    </ItemGroup>
+        </Project>

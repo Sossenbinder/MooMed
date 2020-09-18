@@ -3,15 +3,16 @@ import * as React from "react";
 
 // Components
 import Flex from "Common/Components/Flex";
+import TextInput from "common/Components/General/Input/General/TextInput";
 
 // Types
 import { FormData } from "definitions/Forms";
 
-type Props = {
+export type InputProps = {
 	name: string;
 
 	formData: FormData<string>;
-	setFormData: React.Dispatch<FormData<string>>;
+	setFormData(value: FormData<string>): void;
 
 	inputType?: string;
 
@@ -19,93 +20,82 @@ type Props = {
 	errorMessage?: string;
 
 	onEnterPress?: () => void;
+
+	timeout?: number;
 }
 
-export const ErrorAttachedTextInput: React.FC<Props> = ({
+export const ErrorAttachedTextInput: React.FC<InputProps> = ({
 	name,
 	inputType,
 	formData,
 	setFormData,
 	errorFunc,
 	errorMessage,
-	onEnterPress }) => {
+	onEnterPress,
+	timeout = 500}) => {
 
 	let touchTimeout: number;
 
 	// Internal states
 	const [touched, setTouched] = React.useState(false);
 
-	const calculateValidity = React.useCallback((data: string) => {
-		let validity = true;
+	// Required so the touchTimeout CB can work correctly
+	const formDataRef = React.useRef(formData);
+	formDataRef.current = formData;
 
-		if (touched && errorFunc) {
-			validity = !errorFunc(data);
-		}
-
-		return validity;
-	}, [touched, errorFunc]);
+	const calculateValidity = React.useCallback((data: string, wasTouched: boolean) => {
+		return !wasTouched || !errorFunc ? true : !errorFunc(data);
+	}, [errorFunc]);
 
 	const handleTouchTimeout = React.useCallback(() => {
-		// Give the user a bit of time before we (possibly) show an error
+		// When touched, no need to do this anymore
 		if (!touched) {
-
-			if (touchTimeout) {
+			
+			// Whenever new input is coming in while the timeout is still active, clear the timeout
+			if (touchTimeout !== undefined) {
 				clearTimeout(touchTimeout)
 			}
 
+			// Set a new timeout
 			touchTimeout = window.setTimeout(() => {
 				setTouched(true);
-				calculateValidity(formData.Value);
-			}, 500);
+				
+				setFormData({ 
+					Value: formDataRef.current.Value,
+					IsValid: calculateValidity(formDataRef.current.Value, true)
+				 });
+			}, timeout);
 		}
-	}, [touched, touchTimeout]);
+	}, [touched, formDataRef, touchTimeout]);
 
-	const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = React.useCallback((newData: string) => {
 
-		// Get and set new payload
-		const inputFieldValue = event.target.value;
+		const isValid = calculateValidity(newData, touched);
 
-		// Update validity
-		const validity = calculateValidity(inputFieldValue);
-
-		if (formData.Value !== inputFieldValue) {
-			const newStateVal: FormData<string> = {
-				IsValid: validity,
-				Value: inputFieldValue
-			};
-
-			setFormData(newStateVal);
-		}
+		// Update the data
+		setFormData({
+			IsValid: isValid,
+			Value: newData
+		});
 
 		// Handle timeout
 		handleTouchTimeout();
-	}, [handleTouchTimeout, formData, setFormData]);
-
-	const handleKeyPress = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-		if (event.charCode === 13 && typeof onEnterPress !== "undefined") {
-			onEnterPress();
-		}
-	}, [onEnterPress]);
+	}, [handleTouchTimeout, formData, setFormData, touched]);
 
 	return (
-		<Flex
-			direction="Column"
-			className="form-group">
-			<input
-				className={(touched && !formData.IsValid) ? "form-control is-invalid" : "form-control"}
-				type={inputType != null ? inputType : "text"}
-				name={name}
-				value={formData.Value}
-				onChange={handleChange}
-				placeholder={name}
-				onKeyPress={handleKeyPress}
-			/>
+		<TextInput
+			classNames={(touched && !formData.IsValid) ? "form-control is-invalid" : "form-control"}
+			inputType={inputType != null ? inputType : "text"}
+			name={name}
+			data={formData.Value}
+			setData={handleChange}
+			onEnterPress={onEnterPress}>
 			<If condition={touched && !formData.IsValid && errorMessage !== ""}>
 				<Flex className="invalid-feedback">
 					{errorMessage}
 				</Flex>
 			</If>
-		</Flex>
+		</TextInput>
 	)
 };
 

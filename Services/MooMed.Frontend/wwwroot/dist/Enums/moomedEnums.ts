@@ -62,4 +62,5 @@ export enum IdentityErrorCode {
 	PasswordRequiresLower = 21,
 	PasswordRequiresUpper = 22,
 	PasswordMissing = 23,
+	EmailNotConfirmed = 24,
 }

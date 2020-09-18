@@ -25,7 +25,7 @@ namespace MooMed.Frontend.Controllers
 
 		[ItemNotNull]
 		[Authorize]
-		public async Task<JsonResponse> SearchForQuery([NotNull][FromBody] SearchUiModel searchUiModel)
+		public async Task<JsonDataResponse<SearchResult>> SearchForQuery([NotNull][FromBody] SearchUiModel searchUiModel)
 		{
 			var query = searchUiModel.Query;
 

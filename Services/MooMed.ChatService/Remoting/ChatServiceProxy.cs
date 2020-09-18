@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Core.DataTypes;
@@ -11,9 +10,8 @@ namespace MooMed.ChatService.Remoting
 {
 	public class ChatServiceProxy : AbstractDeploymentProxy<IChatService>, IChatService
 	{
-		public ChatServiceProxy([NotNull] IGrpcClientProvider clientProvider)
-			: base(
-				clientProvider,
+		public ChatServiceProxy(IGrpcClientProvider clientProvider)
+			: base(clientProvider,
 				DeploymentService.ChatService)
 		{ }
 

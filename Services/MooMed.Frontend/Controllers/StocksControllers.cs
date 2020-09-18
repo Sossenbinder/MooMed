@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using MooMed.Common.Database.Converter;
@@ -28,7 +29,7 @@ namespace MooMed.Frontend.Controllers
 
 		[NotNull]
 		[HttpGet]
-		public async Task<JsonResponse> GetExchangeTradeds()
+		public async Task<JsonDataResponse<List<ExchangeTradedUiModel>>> GetExchangeTradeds()
 		{
 			var response = await _financeService.GetExchangeTradeds();
 

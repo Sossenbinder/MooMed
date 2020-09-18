@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -8,9 +7,8 @@ namespace MooMed.AspNetCore.Config.ConfigProviders
 	internal class DevelopmentConfigProvider : AbstractConfigProvider
 	{
 		public DevelopmentConfigProvider()
-			:base(Environments.Development)
+			: base(Environments.Development)
 		{
-
 		}
 
 		public override IConfiguration BuildConfig(string[] args)

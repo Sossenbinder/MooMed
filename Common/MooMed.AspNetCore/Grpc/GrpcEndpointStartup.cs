@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using JetBrains.Annotations;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -26,8 +27,26 @@ namespace MooMed.AspNetCore.Grpc
 	public abstract class GrpcEndpointStartup<TGrpcService>
 		where TGrpcService : class, IGrpcService
 	{
-		// This method gets called by the runtime. Use this method to add services to the container.
-		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+		#region Pipeline
+
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			app.UseRouting();
+			app.UseEndpoints(RegisterEndpoints);
+		}
+
+		protected void RegisterEndpoints([NotNull] IEndpointRouteBuilder endpointRouteBuilder)
+		{
+			endpointRouteBuilder.MapGrpcService<TGrpcService>();
+			endpointRouteBuilder.MapControllers();
+		}
+
+		#endregion Pipeline
+
+		#region Dependency Injection
+
+		// Regular .net core DI entry point
 		public virtual void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSingleton<IMonitoringEventHub, MonitoringEventHub>();
@@ -49,13 +68,6 @@ namespace MooMed.AspNetCore.Grpc
 			services.AddMassTransit(x => x.AddBus(provider => MassTransitBusFactory.CreateBus(provider)));
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			app.UseRouting();
-			app.UseEndpoints(RegisterServices);
-		}
-
 		// Autofac entry point
 		public void ConfigureContainer(ContainerBuilder containerBuilder) => RegisterModules(containerBuilder);
 
@@ -75,10 +87,6 @@ namespace MooMed.AspNetCore.Grpc
 			containerBuilder.RegisterModule<MonitoringModule>();
 		}
 
-		protected void RegisterServices([NotNull] IEndpointRouteBuilder endpointRouteBuilder)
-		{
-			endpointRouteBuilder.MapGrpcService<TGrpcService>();
-			endpointRouteBuilder.MapControllers();
-		}
+		#endregion Dependency Injection
 	}
 }

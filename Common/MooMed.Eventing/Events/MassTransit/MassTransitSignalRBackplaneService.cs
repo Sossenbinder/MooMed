@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using MassTransit;
 using MassTransit.SignalR.Contracts;
 using MassTransit.SignalR.Utils;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using MooMed.Common.Definitions.Notifications;
 using MooMed.Eventing.Events.MassTransit.Interface;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Core.DataTypes;
 using MooMed.ServiceBase.Definitions.Interface;
 
@@ -12,6 +13,6 @@ namespace MooMed.ServiceBase.Services.Interface
 	{
 		[OperationContract]
 		[NotNull]
-		Task<ServiceResponse<bool>> ValidateRegistration([NotNull] AccountValidationModel accountValidationModel);
+		Task<ServiceResponse<IdentityErrorCode>> ValidateRegistration([NotNull] AccountValidationModel accountValidationModel);
 	}
 }

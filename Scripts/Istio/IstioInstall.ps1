@@ -1,1 +1,1 @@
-istioctl install demo
+istioctl install --set profile=demo

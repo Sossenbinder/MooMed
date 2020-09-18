@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
-using MooMed.AspNetCore.Identity.DataTypes;
+using Microsoft.EntityFrameworkCore;
+using MooMed.AspNetCore.Identity.Extension;
 using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Logging;
@@ -52,14 +52,18 @@ namespace MooMed.Module.Accounts.Service
 			_registrationModelValidator = registrationModelValidator;
 		}
 
-		[ItemNotNull]
 		public async Task<RegistrationResult> Register(RegisterModel registerModel)
 		{
 			var validationResult = _registrationModelValidator.ValidateRegistrationModel(registerModel);
 
-			if (validationResult == IdentityErrorCode.None)
+			if (validationResult != IdentityErrorCode.Success)
 			{
 				return RegistrationResult.Failure(validationResult);
+			}
+
+			if (await _userManager.Users.AnyAsync(x => x.EmailConfirmed && x.Email.Equals(registerModel.Email)))
+			{
+				return RegistrationResult.Failure(IdentityErrorCode.DuplicateEmail);
 			}
 
 			var accountEntity = _registerModelToAccountConverter.ToEntity(registerModel);
@@ -79,10 +83,7 @@ namespace MooMed.Module.Accounts.Service
 				return RegistrationResult.Success(account);
 			}
 
-			var errorCodes = createResult.Errors
-				.Select(x => x as CodeIdentityError)
-				.Where(x => x != null)
-				.Select(x => x.ErrorCode);
+			var errorCodes = createResult.GetErrorCodes();
 
 			return RegistrationResult.Failure(errorCodes);
 		}

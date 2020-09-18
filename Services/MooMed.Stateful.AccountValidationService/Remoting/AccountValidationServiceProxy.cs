@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.User;
+using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Core.DataTypes;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
@@ -24,7 +25,7 @@ namespace MooMed.Stateful.AccountValidationService.Remoting
 		{
 		}
 
-		public Task<ServiceResponse<bool>> ValidateRegistration(AccountValidationModel accountValidationModel)
+		public Task<ServiceResponse<IdentityErrorCode>> ValidateRegistration(AccountValidationModel accountValidationModel)
 			=> InvokeRandomWithResult(service => service.ValidateRegistration(accountValidationModel));
 	}
 }

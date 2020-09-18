@@ -8,6 +8,7 @@
     <DockerfileContext>..\..</DockerfileContext>	
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
 
   <ItemGroup>
