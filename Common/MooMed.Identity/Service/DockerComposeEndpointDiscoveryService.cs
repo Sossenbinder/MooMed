@@ -18,7 +18,7 @@ namespace MooMed.Identity.Service
 
 		public StatefulEndpointCollection GetStatefulEndpoints(StatefulSetService statefulSetService, int totalReplicas = 1)
 		{
-			var ipAddress = $"moomed.stateful.{statefulSetService.ToString().ToLower()}";
+			var ipAddress = $"MooMed.{statefulSetService.ToString().ToLower()}";
 
 			return new StatefulEndpointCollection(new List<StatefulEndpoint>()
 			{

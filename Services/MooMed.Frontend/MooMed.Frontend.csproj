@@ -47,11 +47,11 @@
     <ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
     <ProjectReference Include="..\MooMed.ChatService\MooMed.ChatService.csproj" />
     <ProjectReference Include="..\MooMed.FinanceService\MooMed.FinanceService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.ProfilePictureService\MooMed.Stateful.ProfilePictureService.csproj" />
-    <ProjectReference Include="..\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj" />
+    <ProjectReference Include="..\MooMed.AccountValidationService\MooMed.AccountValidationService.csproj" />
+    <ProjectReference Include="..\MooMed.SearchService\MooMed.SearchService.csproj" />
+    <ProjectReference Include="..\MooMed.AccountService\MooMed.AccountService.csproj" />
+    <ProjectReference Include="..\MooMed.ProfilePictureService\MooMed.ProfilePictureService.csproj" />
+    <ProjectReference Include="..\MooMed.SessionService\MooMed.SessionService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@ namespace GrpcProxyGenerator.Service
 {
 	internal class GrpcProxyFactory : IGrpcProxyFactory
 	{
-		private readonly IProxyEmitService _proxyEmitService;
+		private readonly IGrpcProxyEmitter _grpcProxyEmitter;
 
 		private readonly ITypeInfoProvider _typeInfoProvider;
 
@@ -27,10 +27,10 @@ namespace GrpcProxyGenerator.Service
 		};
 
 		public GrpcProxyFactory(
-			IProxyEmitService proxyEmitService,
+			IGrpcProxyEmitter grpcProxyEmitter,
 			ITypeInfoProvider typeInfoProvider)
 		{
-			_proxyEmitService = proxyEmitService;
+			_grpcProxyEmitter = grpcProxyEmitter;
 			_typeInfoProvider = typeInfoProvider;
 		}
 
@@ -52,7 +52,7 @@ namespace GrpcProxyGenerator.Service
 
 			var builtProxy = proxyCodeBuilder.ToString();
 
-			_proxyEmitService.EmitProxy(builtProxy, proxyMetaData);
+			_grpcProxyEmitter.EmitProxy(builtProxy, proxyMetaData);
 		}
 
 		private static void GenerateClassInternals(StringBuilder proxyCodeBuilder, ProxyMetaData proxyMetaData)

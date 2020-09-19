@@ -19,11 +19,11 @@ services:
     volumes:
       - ./Logs:/hostlogs
  
-  moomed.stateful.sessionservice:
-    image: ${DOCKER_REGISTRY-}moomedstatefulsessionservice
+  MooMed.sessionservice:
+    image: ${DOCKER_REGISTRY-}moomedsessionservice
     build:
       context: .
-      dockerfile: Services/MooMed.Stateful.SessionService/Dockerfile
+      dockerfile: Services/MooMed.SessionService/Dockerfile
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -37,10 +37,10 @@ services:
 
 
   moomed.searchservice:
-    image: ${DOCKER_REGISTRY-}moomedstatefulsearchservice
+    image: ${DOCKER_REGISTRY-}moomedsearchservice
     build:
       context: .
-      dockerfile: Services/MooMed.Stateful.SearchService/Dockerfile
+      dockerfile: Services/MooMed.SearchService/Dockerfile
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -51,10 +51,10 @@ services:
 
 
   moomed.profilepictureservice:
-    image: ${DOCKER_REGISTRY-}moomedstatefulprofilepictureservicekub
+    image: ${DOCKER_REGISTRY-}moomedprofilepictureservice
     build:
       context: .
-      dockerfile: Services/MooMed.Stateful.ProfilePictureService/Dockerfile
+      dockerfile: Services/MooMed.ProfilePictureService/Dockerfile
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -64,11 +64,11 @@ services:
       - ./Logs:/hostlogs
 
 
-  moomed.stateful.accountvalidationservice:
-    image: ${DOCKER_REGISTRY-}moomedstatefulaccountvalidationservice
+  MooMed.accountvalidationservice:
+    image: ${DOCKER_REGISTRY-}moomedaccountvalidationservice
     build:
       context: .
-      dockerfile: Services/MooMed.Stateful.AccountValidationService/Dockerfile
+      dockerfile: Services/MooMed.AccountValidationService/Dockerfile
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -78,11 +78,11 @@ services:
       - ./Logs:/hostlogs
 
 
-  moomed.stateful.accountservice:
-    image: ${DOCKER_REGISTRY-}moomedstatefulaccountservice
+  MooMed.accountservice:
+    image: ${DOCKER_REGISTRY-}moomedaccountservice
     build:
       context: .
-      dockerfile: Services/MooMed.Stateful.AccountService/Dockerfile
+      dockerfile: Services/MooMed.AccountService/Dockerfile
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s

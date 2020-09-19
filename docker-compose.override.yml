@@ -9,7 +9,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
-  moomed.stateful.sessionservice:
+  MooMed.sessionservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
@@ -39,7 +39,7 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  moomed.stateful.accountvalidationservice:
+  MooMed.accountvalidationservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
@@ -49,7 +49,7 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  moomed.stateful.accountservice:
+  MooMed.accountservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

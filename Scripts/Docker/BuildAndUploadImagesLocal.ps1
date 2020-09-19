@@ -16,27 +16,27 @@ $imageInfos += [ImageInfo]@{
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "./Services/MooMed.Stateful.AccountService/Dockerfile"
+    Path = "./Services/MooMed.AccountService/Dockerfile"
     Name = "accountservice"
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "./Services/MooMed.Stateful.AccountValidationService/Dockerfile"
+    Path = "./Services/MooMed.AccountValidationService/Dockerfile"
     Name = "accountvalidationservice"
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "./Services/MooMed.Stateful.ProfilePictureService/Dockerfile"
+    Path = "./Services/MooMed.ProfilePictureService/Dockerfile"
     Name = "profilepictureservice"
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "./Services/MooMed.Stateful.SearchService/Dockerfile"
+    Path = "./Services/MooMed.SearchService/Dockerfile"
     Name = "searchservice"
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "./Services/MooMed.Stateful.SessionService/Dockerfile"
+    Path = "./Services/MooMed.SessionService/Dockerfile"
     Name = "sessionservice"
 }
 

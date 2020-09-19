@@ -14,12 +14,19 @@ namespace GrpcProxyGenerator
 	{
 		public static void Main(string[] args)
 		{
+#if RELEASE
+			var solutionPath = args[0];
+#else
+			var solutionPath = @"P:\Coding\Projects\Programmieren\C-Sharp\MooMed";
+#endif
+
 			//setup our DI
 			var serviceProvider = new ServiceCollection()
 				.AddLogging()
-				.AddSingleton<IProxyEmitService, ProxyEmitService>()
+				.AddSingleton<IGrpcProxyEmitter, GrpcProxyEmitter>()
 				.AddSingleton<IGrpcProxyFactory, GrpcProxyFactory>()
 				.AddSingleton<ITypeInfoProvider, TypeInfoProvider>()
+				.AddSingleton<string>(solutionPath)
 				.BuildServiceProvider();
 
 			var allGrpcServices = Assembly.GetAssembly(typeof(IGrpcService))
@@ -32,7 +39,7 @@ namespace GrpcProxyGenerator
 
 			foreach (var service in allGrpcServices!)
 			{
-				factoryService.GenerateProxy(typeof(IProfilePictureService));
+				factoryService.GenerateProxy(service);
 			}
 		}
 	}

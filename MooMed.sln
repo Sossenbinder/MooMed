@@ -37,19 +37,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.IPC", "Common\MooMed
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Grpc", "Common\MooMed.Grpc\MooMed.Grpc.csproj", "{20EA4F88-4E03-4DE7-9E6F-CFE7C5132D50}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.ProfilePictureService", "Services\MooMed.Stateful.ProfilePictureService\MooMed.Stateful.ProfilePictureService.csproj", "{3B3D0203-2883-4AEE-9FC2-566447C69CA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.ProfilePictureService", "Services\MooMed.ProfilePictureService\MooMed.ProfilePictureService.csproj", "{3B3D0203-2883-4AEE-9FC2-566447C69CA7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Common.ServiceBase", "Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj", "{1823E3A1-24FD-403B-BD90-7BF3B2E83478}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.AspNetCore", "Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj", "{1490B505-31C9-4098-B4B6-B478401D942B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.AccountService", "Services\MooMed.Stateful.AccountService\MooMed.Stateful.AccountService.csproj", "{501FC235-0C9E-4635-8A7A-9583213608CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.AccountService", "Services\MooMed.AccountService\MooMed.AccountService.csproj", "{501FC235-0C9E-4635-8A7A-9583213608CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.SessionService", "Services\MooMed.Stateful.SessionService\MooMed.Stateful.SessionService.csproj", "{B1B10767-2335-4887-A9D2-01A9C2DCA7BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.SessionService", "Services\MooMed.SessionService\MooMed.SessionService.csproj", "{B1B10767-2335-4887-A9D2-01A9C2DCA7BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.AccountValidationService", "Services\MooMed.Stateful.AccountValidationService\MooMed.Stateful.AccountValidationService.csproj", "{DBC2AD9B-0B47-46A9-BDCB-7D849EF21271}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.AccountValidationService", "Services\MooMed.AccountValidationService\MooMed.AccountValidationService.csproj", "{DBC2AD9B-0B47-46A9-BDCB-7D849EF21271}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.Stateful.SearchService", "Services\MooMed.Stateful.SearchService\MooMed.Stateful.SearchService.csproj", "{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooMed.SearchService", "Services\MooMed.SearchService\MooMed.SearchService.csproj", "{BD700E9F-F509-4A62-B1EE-5C26C0E56FE8}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "MooMed", "MooMed.dcproj", "{AAA8C1AD-C0A4-4F14-A34E-5BEB81974E2D}"
 EndProject
