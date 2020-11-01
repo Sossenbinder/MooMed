@@ -5,28 +5,28 @@ using MooMed.Caching.Cache.UnderlyingCache.Locking.Interface;
 
 namespace MooMed.Caching.Cache.UnderlyingCache
 {
-	public abstract class AbstractUnderlyingCache<TKeyType, TValueType> : IUnderlyingCache<TKeyType, TValueType>
+	public abstract class AbstractUnderlyingCache<TKey, TValue> : IUnderlyingCache<TKey, TValue>
 	{
-		protected readonly ICacheLockManager<TKeyType> CacheLockManager;
+		protected readonly ICacheLockManager<TKey> CacheLockManager;
 
-		protected AbstractUnderlyingCache(ICacheLockManager<TKeyType> cacheLockManager)
+		protected AbstractUnderlyingCache(ICacheLockManager<TKey> cacheLockManager)
 		{
 			CacheLockManager = cacheLockManager;
 		}
 
-		public abstract void PutItem(TKeyType key, TValueType value, int? secondsToLive = null);
+		public abstract ValueTask PutItem(TKey key, TValue value, int? secondsToLive = null);
 
-		public abstract TValueType GetItem(TKeyType key);
+		public abstract ValueTask<TValue> GetItem(TKey key);
 
-		public async Task<LockedCacheItem<TValueType>> GetItemLocked(TKeyType key)
+		public async ValueTask<LockedCacheItem<TValue>> GetItemLocked(TKey key)
 		{
-			var semaphoreCacheLock = await CacheLockManager.GetLockedLock(key);
+			var cacheLock = await CacheLockManager.GetLockedLock(key);
 
-			return new LockedCacheItem<TValueType>(GetItem(key), semaphoreCacheLock);
+			return new LockedCacheItem<TValue>(await GetItem(key), cacheLock);
 		}
 
-		public abstract void Remove(TKeyType key);
+		public abstract ValueTask Remove(TKey key);
 
-		public abstract bool HasValue(TKeyType key);
+		public abstract ValueTask<bool> HasValue(TKey key);
 	}
 }

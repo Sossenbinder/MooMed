@@ -2,8 +2,8 @@
 import * as React from "react";
 
 // Components
-import Flex from "Common/Components/Flex";
-import TextInput from "common/Components/General/Input/General/TextInput";
+import Flex from "common/components/Flex";
+import TextInput from "common/components/general/input/General/TextInput";
 
 // Types
 import { FormData } from "definitions/Forms";

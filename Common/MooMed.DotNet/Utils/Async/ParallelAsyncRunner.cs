@@ -32,21 +32,20 @@ namespace MooMed.DotNet.Utils.Async
 					continue;
 				}
 
-				if (workItem != null)
+				if (workItem == null)
 				{
-					try
-					{
-						await _asyncAction(workItem);
-					}
-					catch (Exception e)
-					{
-						if (exceptions == null)
-						{
-							exceptions = new List<Exception>();
-						}
+					continue;
+				}
 
-						exceptions.Add(e);
-					}
+				try
+				{
+					await _asyncAction(workItem);
+				}
+				catch (Exception e)
+				{
+					exceptions ??= new List<Exception>();
+
+					exceptions.Add(e);
 				}
 			}
 

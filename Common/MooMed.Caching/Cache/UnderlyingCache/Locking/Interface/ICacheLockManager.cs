@@ -2,15 +2,29 @@
 
 namespace MooMed.Caching.Cache.UnderlyingCache.Locking.Interface
 {
-	public interface ICacheLockManager<in TKeyType>
+	public interface ICacheLockManager<in TKey>
 	{
-		Task<ICacheLock> GetLockedLock(TKeyType key);
+		/// <summary>
+		/// Retrieves a locked lock
+		/// </summary>
+		/// <param name="key">Key of lock</param>
+		/// <returns>Locked lock</returns>
+		Task<ICacheLock> GetLockedLock(TKey key);
 
-		ICacheLock GetUnlockedLock(TKeyType key);
+		/// <summary>
+		/// Immediately breaks any existing lock
+		/// </summary>
+		/// <param name="key">Key of lock</param>
+		/// <returns>Unlocked lock</returns>
+		Task<ICacheLock> GetUnlockedLock(TKey key);
 
-		bool HasLockedLock(TKeyType key);
+		/// <summary>
+		/// Retrieves the current lock state
+		/// </summary>
+		/// <param name="key">Key of lock</param>
+		/// <returns>State of lock</returns>
+		Task<bool> HasLockedLock(TKey key);
 
-		void RemoveLock(TKeyType key);
-
+		void RemoveLock(TKey key);
 	}
 }

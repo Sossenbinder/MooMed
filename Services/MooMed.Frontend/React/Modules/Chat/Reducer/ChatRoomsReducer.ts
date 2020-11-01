@@ -1,4 +1,4 @@
-import { createReducer } from "modules/common/Reducer/CrudReducer";
+import { createReducer } from "modules/common/reducer/CrudReducer";
 import { ChatRoom } from "modules/Chat/types";
 
 export const reducer = createReducer<ChatRoom>({

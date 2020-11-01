@@ -1,5 +1,5 @@
 // Functionality
-import PostRequest from "helper/Requests/PostRequest";
+import PostRequest from "helper/requests/PostRequest";
 import { Network } from "modules/Search/types";
 
 export async function search(searchRequest: Network.SearchRequest) {

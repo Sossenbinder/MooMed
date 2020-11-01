@@ -1,16 +1,14 @@
-﻿using JetBrains.Annotations;
+﻿using System.Threading.Tasks;
 using MooMed.Common.Definitions.IPC;
 
 namespace MooMed.IPC.EndpointResolution.Interface
 {
 	public interface IEndpointProvider
 	{
-		[NotNull]
-		Endpoint GetDeploymentEndpoint(DeploymentService deploymentService);
+		Task<Endpoint> GetDeploymentEndpoint(DeploymentService deploymentService);
 
-		[NotNull]
-		StatefulEndpointCollection GetStatefulSetEndpointCollectionInfoForService(StatefulSetService statefulSetService);
+		Task<StatefulEndpointCollection> GetStatefulSetEndpointCollectionInfoForService(StatefulSetService statefulSetService);
 
-		int GetAvailableReplicasForStatefulService(StatefulSetService statefulSetService);
+		Task<int> GetAvailableReplicasForStatefulService(StatefulSetService statefulSetService);
 	}
 }

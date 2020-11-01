@@ -21,6 +21,7 @@ using MooMed.Logging.Module;
 using MooMed.Module.AccountValidation.Module;
 using MooMed.Module.Finance.Modules;
 using MooMed.Module.Monitoring.Module;
+using MooMed.Serialization.Module;
 using MooMed.SignalR.Hubs;
 
 namespace MooMed.Frontend.StartupConfigs
@@ -34,7 +35,8 @@ namespace MooMed.Frontend.StartupConfigs
 
 			services.AddMvc();
 
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+			services
+				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(options => options.LoginPath = "/Logon/Login");
 
 			services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
@@ -67,6 +69,7 @@ namespace MooMed.Frontend.StartupConfigs
 			builder.RegisterModule<ConfigurationModule>();
 			builder.RegisterModule<LoggingModule>();
 			builder.RegisterModule<CachingModule>();
+			builder.RegisterModule<SerializationModule>();
 			builder.RegisterModule<FrontendMooMedAspNetCoreModule>();
 			builder.RegisterModule<KubernetesModule>();
 			builder.RegisterModule<IdentityModule>();

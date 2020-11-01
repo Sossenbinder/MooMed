@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+﻿using System.Threading.Tasks;
 using MooMed.Common.Definitions.IPC;
 using MooMed.ServiceBase.Definitions.Interface;
 
@@ -15,8 +15,7 @@ namespace MooMed.IPC.Grpc.Interface
 		/// <typeparam name="TService">Type of GrpcService</typeparam>
 		/// <param name="moomedService">Target service</param>
 		/// <returns>Object of TService to communicate through</returns>
-		[NotNull]
-		TService GetGrpcClient<TService>(DeploymentService moomedService)
+		ValueTask<TService> GetGrpcClient<TService>(DeploymentService moomedService)
 			where TService : class, IGrpcService;
 	}
 }

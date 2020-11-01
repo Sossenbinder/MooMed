@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-searchservice
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - image: moomed.azurecr.io/searchservice:prod
+        name: moomed-searchservice
+      imagePullSecrets:
+      - name: acrimgpullsecret

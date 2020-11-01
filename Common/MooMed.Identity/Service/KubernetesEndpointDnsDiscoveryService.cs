@@ -14,7 +14,7 @@ namespace MooMed.Identity.Service
 
 			return new Endpoint
 			{
-				IpAddress = dnsEntry,
+				DnsName = dnsEntry,
 			};
 		}
 
@@ -30,7 +30,7 @@ namespace MooMed.Identity.Service
 					return new StatefulEndpoint
 					{
 						InstanceNumber = replicaNr,
-						IpAddress = dns,
+						DnsName = dns,
 					};
 				});
 

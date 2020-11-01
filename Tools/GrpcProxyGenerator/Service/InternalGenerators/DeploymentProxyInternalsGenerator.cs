@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GrpcProxyGenerator.DataTypes;
 using GrpcProxyGenerator.Extensions;
+using GrpcProxyGenerator.Helper;
 using GrpcProxyGenerator.Service.InternalGenerators.Interface;
 using MooMed.Common.Definitions.IPC;
 using MooMed.DotNet.Extensions;
@@ -16,7 +17,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 	internal class DeploymentProxyInternalsGenerator : IProxyInternalsGenerator
 	{
 		// Needed for nameof() with non-static object methods
-		private AbstractDeploymentProxy<IGrpcService> _proxyObj;
+		private static readonly AbstractDeploymentProxy<IGrpcService> _proxyObj = null!;
 
 		public void GenerateProxyInternals(StringBuilder stringBuilder, ProxyMetaData metaData)
 		{
@@ -26,9 +27,9 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 
 		private void GenerateConstructor(StringBuilder stringBuilder, ProxyMetaData metaData)
 		{
-			stringBuilder.Tab(2).AppendLine($"public {metaData.ServiceNameShort}Proxy({nameof(IGrpcClientProvider)} clientProvider)");
+			stringBuilder.Tab(2).AppendLine($"public {metaData.ServiceNameShort}Proxy({typeof(IGrpcClientProvider).GetRealFullName()} clientProvider)");
 			stringBuilder.Tab(3).AppendLine(": base(clientProvider,");
-			stringBuilder.Tab(4).AppendLine($"{nameof(DeploymentService)}.{metaData.ServiceNameShort})");
+			stringBuilder.Tab(4).AppendLine($"{typeof(DeploymentService).GetRealFullName()}.{metaData.ServiceNameShort})");
 			stringBuilder.Tab(2).AppendLine("{ }");
 		}
 
@@ -42,7 +43,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 			}
 		}
 
-		private void AddMethod(StringBuilder stringBuilder, MethodInfo methodInfo)
+		private static void AddMethod(StringBuilder stringBuilder, MethodInfo methodInfo)
 		{
 			// Needs to be cleaned, as this will always be a Task when running over grpc
 			var returnType = methodInfo.ReturnType.GetRealFullName();
@@ -58,7 +59,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 			if (parameters.Length <= 1)
 			{
 				var parameter = parameters.Single();
-				stringBuilder.AppendLine($"({parameter.ParameterType.GetRealName()} {StripGenericArtifacts(parameter.Name)})");
+				stringBuilder.AppendLine($"({parameter.ParameterType.GetRealFullName()} {TypeNameHelper.StripGenericArtifacts(parameter.Name)})");
 			}
 			else
 			{
@@ -67,7 +68,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 				for (var i = 0; i < parameters.Length; ++i)
 				{
 					var parameter = parameters[i];
-					stringBuilder.Tab(3).Append($"{parameter.ParameterType.GetRealName()} {StripGenericArtifacts(parameter.Name)}");
+					stringBuilder.Tab(3).Append($"{parameter.ParameterType.GetRealFullName()} {TypeNameHelper.StripGenericArtifacts(parameter.Name)}");
 					stringBuilder.AppendLine(i == parameters.Length - 1 ? ")" : ",");
 				}
 			}
@@ -79,7 +80,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 			if (parameters.Length <= 1)
 			{
 				var parameter = parameters.Single();
-				stringBuilder.AppendLine($"({StripGenericArtifacts(parameter.Name)});");
+				stringBuilder.AppendLine($"{TypeNameHelper.StripGenericArtifacts(parameter.Name)}));");
 			}
 			else
 			{
@@ -87,35 +88,12 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 				for (var i = 0; i < parameters.Length; i++)
 				{
 					var parameter = parameters[i];
-					stringBuilder.Tab(4).Append(StripGenericArtifacts(parameter.Name));
-					stringBuilder.AppendLine(i == parameters.Length - 1 ? ");" : ",");
+					stringBuilder.Tab(4).Append(TypeNameHelper.StripGenericArtifacts(parameter.Name));
+					stringBuilder.AppendLine(i == parameters.Length - 1 ? "));" : ",");
 				}
 			}
 
 			stringBuilder.AppendLine();
-		}
-
-		private static string StripGenericArtifacts(string? name)
-		{
-			if (name == null)
-			{
-				return "";
-			}
-
-			var genericOpen = name.IndexOf('[');
-			if (genericOpen != -1)
-			{
-				name = name.Replace('[', '<');
-				name = name.Replace('[', '>');
-			}
-
-			var compilerGeneratedSuffix = name.IndexOf('`');
-			if (compilerGeneratedSuffix != -1)
-			{
-				name = name[..compilerGeneratedSuffix];
-			}
-
-			return name;
 		}
 	}
 }

@@ -25,32 +25,36 @@ export interface ILogonService extends IModuleService {
 	register(email: string, userName: string, password: string, confirmPassword: string): Promise<void>;
 }
 
-export interface IFriendsService extends IModuleService{
+export interface IFriendsService extends IModuleService {
     addFriend(friendId: number): Promise<void>;
 }
 
-export interface IStocksService extends IModuleService{
+export interface IStocksService extends IModuleService {
 
 }
 
-export interface IChatService extends IModuleService{
+export interface IChatService extends IModuleService {
 	openChat(partnerId: number): void;
 	registerForActiveChatChange(handler: (partnerId: number) => void): void;
 
 	sendMessage(message: string, receiverId: number): Promise<void>;
 }
 
-export interface ISearchService extends IModuleService{
+export interface ISearchService extends IModuleService {
     search(query: string): Promise<SearchResult>;
 }
 
-export interface INotificationService extends IModuleService{
+export interface INotificationService extends IModuleService {
 	subscribe<T>(notificationType: NotificationType, onNotify: (notification: SignalRNotification<T>) => void): void;
 	unsubscribe(notificationType: NotificationType): void;
 }
 
-export interface IPortfolioService extends IModuleService{
+export interface IPortfolioService extends IModuleService {
 	addToPortfolio(isin: string, amount: number): Promise<void>;
+}
+
+export interface ISavingService extends IModuleService {
+
 }
 
 // Contexts
@@ -64,4 +68,5 @@ export type ServiceContext = {
 	ChatService: IChatService;
 	StocksService: IStocksService;
 	PortfolioService: IPortfolioService;
+	SavingService: ISavingService;
 }

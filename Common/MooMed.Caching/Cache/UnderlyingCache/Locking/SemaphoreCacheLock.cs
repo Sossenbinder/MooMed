@@ -20,10 +20,21 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking
 			_lockTimeout = TimeSpan.FromSeconds(5);
 		}
 
+		/// <summary>
+		/// Whoever asked for the lock will have at most _lockTimeout seconds before the lock is released
+		/// </summary>
+		/// <returns></returns>
 		public Task Lock() => _lockingSemaphoreSlim.WaitAsync(_lockTimeout);
 
-		public void Unlock() => _lockingSemaphoreSlim.Release();
+		public Task Unlock()
+		{
+			_lockingSemaphoreSlim.Release();
+			return Task.CompletedTask;
+		}
 
-		public bool IsLocked() => _lockingSemaphoreSlim.CurrentCount == 0;
+		public Task<bool> IsLocked()
+		{
+			return Task.FromResult(_lockingSemaphoreSlim.CurrentCount == 0);
+		}
 	}
 }

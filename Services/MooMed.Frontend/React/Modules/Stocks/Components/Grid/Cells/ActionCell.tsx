@@ -2,14 +2,14 @@
 import * as React from "react";
 
 // Components
-import Flex from "common/Components/Flex";
-import Icon from "common/Components/Icon";
+import Flex from "common/components/Flex";
+import Icon from "common/components/Icon";
 
 // Functionality
 import useServices from "hooks/useServices";
 
 // Types
-import { GridCellProps } from "common/Components/DataGrid/gridTypes";
+import { GridCellProps } from "common/components/DataGrid/gridTypes";
 import { ExchangeTradedItem } from "modules/Stocks/types";
 
 import "./ActionCell.less";

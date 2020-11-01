@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 
 // Components
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 import ChatWidgetTopBar from "./ChatWidgetTopBar";
 import ChatWidgetContent from "./ChatWidgetContent";
 

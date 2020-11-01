@@ -16,12 +16,12 @@ namespace MooMed.Caching.Cache.UnderlyingCache.Locking.Interface
 		/// <summary>
 		/// Unlocks the cache lock
 		/// </summary>
-		void Unlock();
+		Task Unlock();
 
 		/// <summary>
 		/// Checks whether the cache lock is locked
 		/// </summary>
 		/// <returns>Lock state</returns>
-		bool IsLocked();
+		Task<bool> IsLocked();
 	}
 }

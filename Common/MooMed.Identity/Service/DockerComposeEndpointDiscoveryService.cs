@@ -12,7 +12,7 @@ namespace MooMed.Identity.Service
 
 			return new Endpoint()
 			{
-				IpAddress = ipAddress,
+				DnsName = ipAddress,
 			};
 		}
 
@@ -25,7 +25,7 @@ namespace MooMed.Identity.Service
 				new StatefulEndpoint()
 				{
 					InstanceNumber = 0,
-					IpAddress = ipAddress.ToString(),
+					DnsName = ipAddress.ToString(),
 				}
 			});
 		}

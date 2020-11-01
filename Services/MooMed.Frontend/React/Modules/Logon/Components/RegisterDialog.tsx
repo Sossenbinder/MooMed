@@ -2,8 +2,8 @@
 import * as React from "react";
 
 // Components
-import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
-import Button from "common/components/general/Input/Buttons/Button";
+import ErrorAttachedTextInput from "common/components/general/input/ErrorAttached/ErrorAttachedTextInput";
+import Button from "common/components/general/input/Buttons/Button";
 
 // Functionality
 import PostRequest from "helper/requests/PostRequest";

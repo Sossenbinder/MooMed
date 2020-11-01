@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using Grpc.Net.Client;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.DotNet.Utils.Async;
 using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc.Interface;
 using ProtoBuf.Grpc.Client;
@@ -19,7 +21,7 @@ namespace MooMed.IPC.Grpc
 		private readonly IEndpointProvider _endpointProvider;
 
 		[NotNull]
-		private readonly ConcurrentDictionary<DeploymentService, GrpcChannel> _deploymentGrpcChannels;
+		private readonly ConcurrentDictionary<DeploymentService, AsyncLazy<GrpcChannel>> _deploymentGrpcChannels;
 
 		public GrpcChannelProvider([NotNull] IEndpointProvider endpointProvider)
 		{
@@ -27,23 +29,23 @@ namespace MooMed.IPC.Grpc
 
 			_endpointProvider = endpointProvider;
 
-			_deploymentGrpcChannels = new ConcurrentDictionary<DeploymentService, GrpcChannel>();
+			_deploymentGrpcChannels = new ConcurrentDictionary<DeploymentService, AsyncLazy<GrpcChannel>>();
 		}
 
-		public GrpcChannel GetGrpcChannel(DeploymentService moomedService)
+		public async ValueTask<GrpcChannel> GetGrpcChannel(DeploymentService moomedService)
 		{
 			var grpcChannel = _deploymentGrpcChannels.GetOrAdd(
 				moomedService,
-				RefreshService);
+				key => new AsyncLazy<GrpcChannel>(() => RefreshService(key)));
 
-			return grpcChannel;
+			return await grpcChannel;
 		}
 
-		private GrpcChannel RefreshService(DeploymentService moomedService)
+		private async Task<GrpcChannel> RefreshService(DeploymentService moomedService)
 		{
-			var deploymentEndpoint = _endpointProvider.GetDeploymentEndpoint(moomedService);
+			var deploymentEndpoint = await _endpointProvider.GetDeploymentEndpoint(moomedService);
 
-			return GrpcChannel.ForAddress($"http://{deploymentEndpoint.IpAddress}:{Port}");
+			return GrpcChannel.ForAddress($"http://{deploymentEndpoint.DnsName}:{Port}");
 		}
 	}
 }

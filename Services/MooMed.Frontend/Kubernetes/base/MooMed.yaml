@@ -34,9 +34,9 @@ kind: Service
 metadata:
   name: moomed-frontendservice
 spec:
+  type: ClusterIP
   selector:
     name: moomed-frontendservice
-  type: NodePort
   ports:
     - name: http
       protocol: TCP

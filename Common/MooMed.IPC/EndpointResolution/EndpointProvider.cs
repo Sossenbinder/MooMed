@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory;
+using MooMed.Caching.Cache.Factory.Interface;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Logging;
 using MooMed.Identity.Service.Interface;
@@ -29,7 +31,7 @@ namespace MooMed.IPC.EndpointResolution
 
 		public EndpointProvider(
 			[NotNull] IEndpointDiscoveryService endpointDiscoveryService,
-			[NotNull] IDefaultCacheFactory cacheFactory,
+			[NotNull] ILocalCacheFactory cacheFactory,
 			[NotNull] IMassTransitEventingService massTransitEventingService,
 			[NotNull] IMooMedLogger logger)
 		{
@@ -42,21 +44,21 @@ namespace MooMed.IPC.EndpointResolution
 			massTransitEventingService.RegisterForEvent<ClusterChangeEvent>("ClusterChanges_Queue", OnClusterChange);
 		}
 
-		private void OnClusterChange([NotNull] ClusterChangeEvent changeEvent)
+		private async Task OnClusterChange([NotNull] ClusterChangeEvent changeEvent)
 		{
 			_logger.Info("Received cluster change event");
 			var statefulSet = changeEvent.StatefulSetService;
 
 			var statefulSetInfo = _endpointDiscoveryService.GetStatefulEndpoints(statefulSet, changeEvent.NewReplicaAmount);
 
-			_statefulServiceReplicaCache.PutItem(statefulSet, statefulSetInfo);
+			await _statefulServiceReplicaCache.PutItem(statefulSet, statefulSetInfo);
 
 			_logger.Info($"Updated internal stateful info provider to {changeEvent.NewReplicaAmount} instances of {statefulSet} on setService {Assembly.GetExecutingAssembly()}");
 		}
 
-		public Endpoint GetDeploymentEndpoint(DeploymentService deploymentService)
+		public async Task<Endpoint> GetDeploymentEndpoint(DeploymentService deploymentService)
 		{
-			var existingDeploymentEndpoint = _deploymentEndpointCache.GetItem(deploymentService);
+			var existingDeploymentEndpoint = await _deploymentEndpointCache.GetItem(deploymentService);
 
 			if (existingDeploymentEndpoint != null)
 			{
@@ -65,14 +67,14 @@ namespace MooMed.IPC.EndpointResolution
 
 			var newDeploymentEndpoint = _endpointDiscoveryService.GetDeploymentEndpoint(deploymentService);
 
-			_deploymentEndpointCache.PutItem(deploymentService, newDeploymentEndpoint);
+			await _deploymentEndpointCache.PutItem(deploymentService, newDeploymentEndpoint);
 
 			return newDeploymentEndpoint;
 		}
 
-		public StatefulEndpointCollection GetStatefulSetEndpointCollectionInfoForService(StatefulSetService statefulSetService)
+		public async Task<StatefulEndpointCollection> GetStatefulSetEndpointCollectionInfoForService(StatefulSetService statefulSetService)
 		{
-			var existingStatefulSetInfo = _statefulServiceReplicaCache.GetItem(statefulSetService);
+			var existingStatefulSetInfo = await _statefulServiceReplicaCache.GetItem(statefulSetService);
 
 			if (existingStatefulSetInfo != null)
 			{
@@ -81,14 +83,14 @@ namespace MooMed.IPC.EndpointResolution
 
 			var statefulSetInfo = _endpointDiscoveryService.GetStatefulEndpoints(statefulSetService);
 
-			_statefulServiceReplicaCache.PutItem(statefulSetService, statefulSetInfo);
+			await _statefulServiceReplicaCache.PutItem(statefulSetService, statefulSetInfo);
 
 			return statefulSetInfo;
 		}
 
-		public int GetAvailableReplicasForStatefulService(StatefulSetService statefulSetService)
+		public async Task<int> GetAvailableReplicasForStatefulService(StatefulSetService statefulSetService)
 		{
-			var statefulEndpointCollection = GetStatefulSetEndpointCollectionInfoForService(statefulSetService);
+			var statefulEndpointCollection = await GetStatefulSetEndpointCollectionInfoForService(statefulSetService);
 
 			return statefulEndpointCollection.ReplicaCount;
 		}

@@ -9,8 +9,10 @@ using MooMed.Configuration.Module;
 using MooMed.Core;
 using MooMed.Encryption.Interface;
 using MooMed.Encryption.Module;
+using MooMed.Logging.Loggers.Helper.Interface;
 using MooMed.Logging.Module;
 using MooMed.TestBase.Config;
+using MooMed.TestBase.Utils;
 using NUnit.Framework;
 
 namespace MooMed.TestBase
@@ -81,6 +83,10 @@ namespace MooMed.TestBase
 
 			builder.RegisterType<UnitTestCryptoProvider>()
 				.As<ICryptoProvider>()
+				.SingleInstance();
+
+			builder.RegisterType<UnitTestSerilogConfigProvider>()
+				.As<ISerilogConfigProvider>()
 				.SingleInstance();
 
 			UnitTestContainer = builder.Build();

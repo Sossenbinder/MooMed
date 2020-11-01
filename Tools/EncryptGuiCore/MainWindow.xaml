@@ -4,52 +4,52 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="EncryptGui" 
-        Height="402" 
+        Title="EncryptGui"
+        Height="402"
         Width="534">
 	<WrapPanel>
-		<Border 
-			BorderBrush="Black" 
-			BorderThickness="1" 
+		<Border
+			BorderBrush="Black"
+			BorderThickness="1"
 			Width="530">
 			<StackPanel>
 				<WrapPanel>
-					<Label 
+					<Label
 						Content="KeyVault Secret"
 						Width="100"
 						Target="{Binding ElementName=KeyVaultSecretTextBox}" />
-					<TextBox 
-						Name="KeyVaultSecretTextBox" 
-						Width="320" 
+					<TextBox
+						Name="KeyVaultSecretTextBox"
+						Width="320"
 						Text="{Binding Model.KeyVaultSecret, Mode=TwoWay}" />
-					<Button 
+					<Button
 						Width="98"
 						Margin="5,0,5,0"
-						Content="Submit" Click="Button_Click"/>
+						Content="Submit" Click="Button_Click" />
 				</WrapPanel>
 				<Separator />
 				<StackPanel>
 					<WrapPanel
 						Margin="0, 20">
-						<Label 
-							Content="Encrypted Data" 
+						<Label
+							Content="Encrypted Data"
 							Width="100"
 							Target="{Binding ElementName=EncryptedIvTextBox}" />
-						<TextBox 
-							Name="EncryptedData" 
-							Text="{Binding Model.EncryptedData, Mode=OneWay}" 
+						<TextBox
+							Name="EncryptedData"
+							Text="{Binding Model.EncryptedData, Mode=TwoWay}"
 							Width="420"
 							Height="100"
-							IsEnabled="False" />
+							IsEnabled="False" TextChanged="EncryptedTextData_TextChanged" />
 					</WrapPanel>
 					<WrapPanel>
-						<Label 
-							Content="Cleartext Data" 
+						<Label
+							Content="Cleartext Data"
 							Width="100"
 							Target="{Binding ElementName=ClearTextData}" />
-						<TextBox 
-							Name="ClearTextData" 
-							Text="{Binding Model.ClearTextData, Mode=TwoWay}" 
+						<TextBox
+							Name="ClearTextData"
+							Text="{Binding Model.ClearTextData, Mode=TwoWay}"
 							Width="420"
 							Height="100"
 							IsEnabled="False" TextChanged="ClearTextData_TextChanged" />

@@ -4,7 +4,7 @@ import * as React from "react";
 // Component
 import DataGridHeader from "./DataGridHeader";
 import DataGridBody from "./DataGridBody";
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 import DataGridPageSelector from "./DataGridPageSelector";
 
 // Functionality

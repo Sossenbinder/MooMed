@@ -3,6 +3,7 @@
 	public enum DeploymentService
 	{
 		RabbitMq,
+		Redis,
 		SearchService,
 		ChatService,
 		ProfilePictureService,

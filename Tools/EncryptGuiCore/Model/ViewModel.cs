@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using JetBrains.Annotations;
 
 namespace EncryptGuiCore.Model
@@ -12,8 +10,8 @@ namespace EncryptGuiCore.Model
 
 		private string _encryptedData;
 
-		public string EncryptedData 
-		{ 
+		public string EncryptedData
+		{
 			get => _encryptedData;
 			set
 			{
@@ -22,7 +20,17 @@ namespace EncryptGuiCore.Model
 			}
 		}
 
-		public string ClearTextData { get; set; }
+		private string _clearTextData;
+
+		public string ClearTextData
+		{
+			get => _clearTextData;
+			set
+			{
+				_clearTextData = value;
+				OnPropertyChanged();
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

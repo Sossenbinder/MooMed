@@ -31,7 +31,6 @@ namespace MooMed.Common.Database.Repository
 			return _contextFactory.CreateContext();
 		}
 
-		[NotNull]
 		public async Task<TEntity> Create(TEntity entity)
 		{
 			var creationResult = await RunInContextAndCommitWithResult(async set =>
@@ -44,45 +43,42 @@ namespace MooMed.Common.Database.Repository
 			return creationResult;
 		}
 
-		[NotNull]
 		public Task<List<TEntity>> Read()
 			=> RunInContextWithResult(dbSet => dbSet.ToListAsync());
 
-		[NotNull]
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate)
 			=> RunInContextWithResult(dbSet => dbSet.Where(predicate).ToListAsync());
 
-		[NotNull]
 		public Task<List<TEntity>> Read(params Expression<Func<TEntity, bool>>[] filters)
 			=> Read(filters.AsEnumerable());
 
-		[NotNull]
-		public async Task<List<TEntity>> Read([CanBeNull] IEnumerable<Expression<Func<TEntity, bool>>> filters)
+		public async Task<List<TEntity>> Read(IEnumerable<Expression<Func<TEntity, bool>>> filters)
 		{
-			var predicateList = filters?.ToList();
+			var predicateList = filters.ToList();
 
 			if (predicateList.IsNullOrEmpty())
 			{
 				return await RunInContextWithResult(dbSet => dbSet.ToListAsync());
 			}
 
-			var predicate = PredicateBuilder.New<TEntity>(x => true);
-
-			predicate = predicateList.Aggregate(predicate, (current, filter) => current.And(filter));
+			var predicate = predicateList.Aggregate((current, filter) => current.And(filter));
 
 			return await RunInContextWithResult(dbSet => dbSet.Where(predicate).ToListAsync());
 		}
 
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes)
-			=> Read(predicate, queryable => foreignIncludes.Aggregate(queryable, (current, include) => current.Include(include)));
+		{
+			// Assemble all includes. With queryable as seed, add .Include for all the includes passed in here
+			var foreignIncludesAsFunc = new Func<IQueryable<TEntity>, IQueryable<TEntity>>(queryable => foreignIncludes.Aggregate(queryable, (current, include) => current.Include(include)));
 
-		[NotNull]
+			return Read(predicate, foreignIncludesAsFunc);
+		}
+
 		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Func<IQueryable<TEntity>, IQueryable<TEntity>>[] foreignIncludes)
 		{
 			return RunInContextWithResult(dbSet =>
 			{
-				var query = dbSet
-					.Where(predicate);
+				var query = dbSet.Where(predicate);
 
 				query = foreignIncludes.Aggregate(query, (current, include) => include(current));
 
@@ -90,14 +86,13 @@ namespace MooMed.Common.Database.Repository
 			});
 		}
 
-		[NotNull]
 		public Task Update(TEntity entity, Action<TEntity> updateFunc)
 			=> Update(entity.Id, updateFunc);
 
 		public Task Update(TKeyType key, Action<TEntity> updateFunc)
 			=> RunInContextAndCommit(async set =>
 			{
-				var existingEntity = (await Read(x => x.Id.Equals(key))).SingleOrDefault();
+				var existingEntity = (await Read(x => x.Id!.Equals(key))).SingleOrDefault();
 
 				if (existingEntity == null)
 				{
@@ -109,14 +104,13 @@ namespace MooMed.Common.Database.Repository
 				set.Update(existingEntity);
 			});
 
-		[NotNull]
 		public Task Delete(TEntity entityToDelete)
 			=> Delete(entityToDelete.Id);
 
 		public Task Delete(TKeyType key)
 			=> RunInContextAndCommit(async set =>
 			{
-				var existingEntity = (await Read(x => x.Id.Equals(key))).SingleOrDefault();
+				var existingEntity = (await Read(x => x.Id!.Equals(key))).SingleOrDefault();
 
 				if (existingEntity == null)
 				{
@@ -128,7 +122,7 @@ namespace MooMed.Common.Database.Repository
 
 		public async Task CreateOrUpdate(TEntity entity, Action<TEntity> updateFunc)
 		{
-			var existingItem = (await Read(x => x.Id.Equals(entity.Id))).SingleOrDefault();
+			var existingItem = (await Read(x => x.Id!.Equals(entity.Id))).SingleOrDefault();
 
 			if (existingItem == null)
 			{

@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moomed-financeservice
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - image: moomed.azurecr.io/financeservice:testing
+        name: moomed-financeservice
+      imagePullSecrets:
+      - name: acrimgpullsecret

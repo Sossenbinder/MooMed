@@ -2,8 +2,8 @@
 import * as React from "react";
 
 // Components
-import Flex from "Common/Components/Flex";
-import Button from "common/Components/General/Input/Buttons/Button";
+import Flex from "common/components/Flex";
+import Button from "common/components/general/input/Buttons/Button";
 
 // Functionality
 import useServices from "hooks/useServices";

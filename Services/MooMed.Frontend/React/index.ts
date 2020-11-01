@@ -12,6 +12,7 @@ import SearchService from "modules/Search/Service/SearchService";
 import AccountService from "modules/Account/Service/AccountService";
 import FriendsService from "modules/Friends/Service/FriendsService";
 import StocksService from "modules/Stocks/Service/StocksService";
+import SavingService from "modules/Saving/Service/SavingService";
 import NotificationService from "modules/common/Notifications/NotificationService";
 import ChatService from "modules/Chat/Service/ChatService";
 import PortfolioService from "modules/Portfolio/Service/PortfolioService";
@@ -69,6 +70,9 @@ const initAdditionalServices = async () => {
 	
 	services.PortfolioService = new PortfolioService();
 	modules.push(services.PortfolioService);
+
+	services.SavingService = new SavingService();
+	modules.push(services.SavingService);
 
 	await Promise.all(modules.map(x => x.start()));
 }

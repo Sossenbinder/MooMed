@@ -3,14 +3,14 @@ import * as React from "react";
 import { Route } from "react-router";
 
 // Components
-import Flex from "Common/Components/Flex";
-import Grid from "Common/Components/Grid/Grid";
-import Cell from "Common/Components/Grid/Cell";
+import Flex from "common/components/Flex";
+import Grid from "common/components/Grid/Grid";
+import Cell from "common/components/Grid/Cell";
 import FriendshipButton from "./SubComponents/FriendshipButton"
-import ImagePreLoad from "common/Components/ImagePreLoad";
+import ImagePreLoad from "common/components/ImagePreLoad";
 import Navigation from "./SubComponents/Navigation";
 import PersonalData from "./PersonalData/PersonalData";
-import Separator from "common/Components/Separator";
+import Separator from "common/components/Separator";
 
 // Type
 import { Account } from "modules/Account/types";

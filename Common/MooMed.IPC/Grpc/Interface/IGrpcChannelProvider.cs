@@ -11,6 +11,6 @@ namespace MooMed.IPC.Grpc.Interface
 		/// </summary>
 		/// <param name="moomedService">Type of service</param>
 		/// <returns>Grpc channel to create clients from</returns>
-		GrpcChannel GetGrpcChannel(DeploymentService moomedService);
+		ValueTask<GrpcChannel> GetGrpcChannel(DeploymentService moomedService);
 	}
 }

@@ -10,11 +10,11 @@ import { ExchangeTradedList } from "./Grid/ExchangeTradedList";
 import { ReduxStore } from "data/store";
 import { ExchangeTradedItem } from "modules/stocks/types";
 
-type ReduxProps = {
+type Props = {
 	exchangeTradeds: Array<ExchangeTradedItem>;
 }
 
-export const StocksDialog = ({ exchangeTradeds }) => {
+export const StocksDialog: React.FC<Props> = ({ exchangeTradeds }) => {
 	return (
 		<Flex
 			direction={"Column"}>
@@ -25,7 +25,7 @@ export const StocksDialog = ({ exchangeTradeds }) => {
 	);
 }
 
-const mapStateToProps = (store: ReduxStore): ReduxProps => {
+const mapStateToProps = (store: ReduxStore): Props => {
 	return {
 		exchangeTradeds: store.exchangeTradedsReducer.data,
 	};

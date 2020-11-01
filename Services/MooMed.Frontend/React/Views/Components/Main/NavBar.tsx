@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 import SearchBar from "modules/Search/View/SearchBar"
 import SmallAccountManager from "views/Components/Account/SmallAccountManager";
 
@@ -20,7 +20,7 @@ interface Props {
 
 export const NavBar: React.FC<Props> = () => (
 	<Flex 
-		className={"MainNavBar navbar navbar-expand-md navbar-dark navbar-fixed-top"}
+		className={"MainNavBar navbar navbar-expand-md"}
 		direction={"Row"}>
 		<Link 
 			to="/"
@@ -33,17 +33,12 @@ export const NavBar: React.FC<Props> = () => (
 			Feed
 		</Link>
 		<Link 
-			to="/Saving"
+			to="/saving"
 			className="SubItem">
-			Saving
+			Saving &amp; Budgeting
 		</Link>
 		<Link 
-			to="/Budgeting"
-			className="SubItem">
-			Budgeting
-		</Link>
-		<Link 
-			to="/Investing"
+			to="/investing"
 			className="SubItem">
 			Investing
 		</Link>

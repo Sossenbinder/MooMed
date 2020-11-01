@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 // Components
 import RegisterDialog from "./RegisterDialog";
 import LoginDialog from "./LoginDialog";
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 import useTranslations from "hooks/useTranslations";

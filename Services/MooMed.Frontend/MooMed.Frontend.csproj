@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Logging\MooMed.Logging.csproj" />
+    <ProjectReference Include="..\..\Common\MooMed.Serialization\MooMed.Serialization.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.SignalR\MooMed.SignalR.csproj" />
     <ProjectReference Include="..\..\Modules\MooMed.Module.AccountValidation\MooMed.Module.AccountValidation.csproj" />

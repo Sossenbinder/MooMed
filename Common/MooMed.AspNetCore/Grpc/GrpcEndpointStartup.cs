@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using JetBrains.Annotations;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -21,11 +20,34 @@ using MooMed.Module.Monitoring.Eventing.Interface;
 using MooMed.Module.Monitoring.Module;
 using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Grpc.Server;
+using MooMed.DependencyInjection.Extensions;
+using MooMed.Serialization.Module;
 
 namespace MooMed.AspNetCore.Grpc
 {
-	public abstract class GrpcEndpointStartup<TGrpcService>
+	/// <summary>
+	/// Base template for the common case (single grpc service per microservice)
+	/// All others need to derive from base
+	/// </summary>
+	public abstract class GrpcEndpointStartup<TGrpcService> : GrpcEndpointStartup
 		where TGrpcService : class, IGrpcService
+	{
+		protected override void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
+		{
+			endpointRouteBuilder.MapGrpcService<TGrpcService>();
+
+			base.RegisterEndpoints(endpointRouteBuilder);
+		}
+
+		protected override void RegisterModules(ContainerBuilder containerBuilder)
+		{
+			containerBuilder.RegisterGrpcService<TGrpcService>();
+
+			base.RegisterModules(containerBuilder);
+		}
+	}
+
+	public abstract class GrpcEndpointStartup
 	{
 		#region Pipeline
 
@@ -36,9 +58,8 @@ namespace MooMed.AspNetCore.Grpc
 			app.UseEndpoints(RegisterEndpoints);
 		}
 
-		protected void RegisterEndpoints([NotNull] IEndpointRouteBuilder endpointRouteBuilder)
+		protected virtual void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
 		{
-			endpointRouteBuilder.MapGrpcService<TGrpcService>();
 			endpointRouteBuilder.MapControllers();
 		}
 
@@ -69,18 +90,16 @@ namespace MooMed.AspNetCore.Grpc
 		}
 
 		// Autofac entry point
+		[UsedImplicitly]
 		public void ConfigureContainer(ContainerBuilder containerBuilder) => RegisterModules(containerBuilder);
 
 		protected virtual void RegisterModules(ContainerBuilder containerBuilder)
 		{
-			containerBuilder.RegisterType<TGrpcService>()
-				.As<IGrpcService, TGrpcService>()
-				.SingleInstance();
-
 			containerBuilder.RegisterModule<MooMedAspNetCoreModule>();
 			containerBuilder.RegisterModule<EventingModule>();
 			containerBuilder.RegisterModule<ConfigurationModule>();
 			containerBuilder.RegisterModule<CoreModule>();
+			containerBuilder.RegisterModule<SerializationModule>();
 			containerBuilder.RegisterModule<EncryptionModule>();
 			containerBuilder.RegisterModule<LoggingModule>();
 			containerBuilder.RegisterModule<ServiceBaseModule>();

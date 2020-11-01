@@ -1,5 +1,5 @@
 // Functionality
-import { VoidPostRequest } from "helper/Requests/PostRequest";
+import { VoidPostRequest } from "helper/requests/PostRequest";
 import { Network } from "modules/Portfolio/types";
 
 const portFolioRequests = {

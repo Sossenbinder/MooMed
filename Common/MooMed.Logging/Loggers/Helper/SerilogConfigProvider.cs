@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.WindowsAzure.Storage;
 using MooMed.Common.Definitions.Configuration;
-using MooMed.Configuration.Interface;
+using MooMed.Logging.Loggers.Helper.Interface;
 using MooMed.Logging.LogManagement.Interface;
 using Serilog;
 using Serilog.Configuration;
 
 namespace MooMed.Logging.Loggers.Helper
 {
-	public class SerilogConfigProvider
+	public class SerilogConfigProvider : ISerilogConfigProvider
 	{
 		private readonly IConfigProvider _configProvider;
 

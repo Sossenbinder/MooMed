@@ -3,7 +3,7 @@ import * as React from "react";
 import { useHistory } from "react-router-dom";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 

@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 // Components
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 import useServices from "hooks/useServices";

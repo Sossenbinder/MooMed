@@ -33,7 +33,7 @@ namespace MooMed.Eventing.Helper
 
 				await RetryStrategy.DoRetryExponential(() =>
 				{
-					var deploymentIp = endpointDiscoveryService.GetDeploymentEndpoint(DeploymentService.RabbitMq).IpAddress;
+					var deploymentIp = endpointDiscoveryService.GetDeploymentEndpoint(DeploymentService.RabbitMq).DnsName;
 
 					if (deploymentIp == null)
 					{

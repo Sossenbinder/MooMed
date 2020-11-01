@@ -6,6 +6,14 @@ namespace MooMed.DependencyInjection.Extensions
 {
 	public static class ContainerBuilderExtensions
 	{
+		public static void RegisterGrpcService<TGrpcService>([NotNull] this ContainerBuilder builder)
+			where TGrpcService : class, IGrpcService
+		{
+			builder.RegisterType<TGrpcService>()
+				.As<IGrpcService, TGrpcService>()
+				.SingleInstance();
+		}
+
 		public static void RegisterGrpcService<TServiceInterface, TServiceImpl>([NotNull] this ContainerBuilder builder)
 			where TServiceImpl : TServiceInterface
 			where TServiceInterface : IGrpcService

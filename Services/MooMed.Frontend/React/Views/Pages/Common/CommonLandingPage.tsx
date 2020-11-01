@@ -4,7 +4,7 @@ import * as React from "react";
 // Components
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
 import LanguagePicker from "common/components/General/LanguagePicker";
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 

@@ -1,40 +1,59 @@
-﻿using JetBrains.Annotations;
+﻿using Autofac.Features.AttributeFilters;
+using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.CacheInformation;
+using MooMed.Caching.Cache.Factory.Interface;
+using MooMed.Caching.Cache.UnderlyingCache;
 
 namespace MooMed.Caching.Cache.Factory
 {
-	public class CacheFactory : IDefaultCacheFactory
+	public class AbstractCacheFactory : ICacheFactory
 	{
-		[NotNull]
+		private readonly IUnderlyingCacheProvider _underlyingCacheProvider;
+
 		private readonly CacheSettingsProvider _cacheSettingsProvider;
 
-		public CacheFactory([NotNull] CacheSettingsProvider cacheSettingsProvider)
+		public AbstractCacheFactory(
+			IUnderlyingCacheProvider underlyingCacheProvider,
+			CacheSettingsProvider cacheSettingsProvider)
 		{
+			_underlyingCacheProvider = underlyingCacheProvider;
 			_cacheSettingsProvider = cacheSettingsProvider;
 		}
 
-		[NotNull]
-		public ICache<TDataType> CreateCache<TDataType>([CanBeNull] CacheSettings cacheSettings = null) where TDataType : class
+		public ICache<TValue> CreateCache<TValue>(CacheSettings? cacheSettings = null)
+			where TValue : class
 		{
-			if (cacheSettings == null)
-			{
-				cacheSettings = _cacheSettingsProvider.DefaultCacheSettings;
-			}
+			cacheSettings ??= _cacheSettingsProvider.DefaultCacheSettings;
 
-			return new Cache<TDataType>(cacheSettings);
+			return new Cache<TValue>(_underlyingCacheProvider.CreateCache<string, TValue>(cacheSettings));
 		}
 
-		[NotNull]
-		public ICache<TKey, TDataType> CreateCache<TKey, TDataType>([CanBeNull] CacheSettings cacheSettings = null) where TDataType : class
+		public ICache<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings? cacheSettings = null)
+			where TValue : class
 		{
-			if (cacheSettings == null)
-			{
-				cacheSettings = _cacheSettingsProvider.DefaultCacheSettings;
-			}
+			cacheSettings ??= _cacheSettingsProvider.DefaultCacheSettings;
 
-			return new Cache<TKey, TDataType>(cacheSettings);
+			return new Cache<TKey, TValue>(_underlyingCacheProvider.CreateCache<TKey, TValue>(cacheSettings));
 		}
+	}
+
+	public class LocalCacheFactory : AbstractCacheFactory, ILocalCacheFactory
+	{
+		public LocalCacheFactory(
+			MemoryCacheProvider underlyingCacheProvider,
+			CacheSettingsProvider cacheSettingsProvider)
+			: base(underlyingCacheProvider, cacheSettingsProvider)
+		{ }
+	}
+
+	public class DistributedCacheFactory : AbstractCacheFactory, IDistributedCacheFactory
+	{
+		public DistributedCacheFactory(
+			RedisCacheProvider underlyingCacheProvider,
+			CacheSettingsProvider cacheSettingsProvider)
+			: base(underlyingCacheProvider, cacheSettingsProvider)
+		{ }
 	}
 }

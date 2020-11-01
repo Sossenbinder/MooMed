@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moomed-sessionservice
+spec:
+  replicas: 3
+  serviceName: moomed-sessionservice
+  template:
+    spec:
+      containers:
+      - image: moomed.azurecr.io/sessionservice:testing
+        name: moomed-sessionservice
+      imagePullSecrets:
+      - name: acrimgpullsecret

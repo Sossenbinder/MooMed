@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Components
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 
 import "./Styles/ChatMessage.less";
 

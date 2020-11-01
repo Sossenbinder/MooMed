@@ -42,22 +42,22 @@ namespace MooMed.IPC.ProxyInvocation
 		}
 
 		// Random invocation
-		public Task InvokeRandom(Func<TServiceType, Task> invocationFunc)
+		public async Task InvokeRandom(Func<TServiceType, Task> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(
+			var proxy = await _clientProvider.GetGrpcClient<TServiceType>(
 				_moomedService,
-				GetRandomReplicaNumber());
+				await GetRandomReplicaNumber());
 
-			return invocationFunc(proxy);
+			await invocationFunc(proxy);
 		}
 
-		public Task<TResult> InvokeRandomWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
+		public async Task<TResult> InvokeRandomWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(
+			var proxy = await _clientProvider.GetGrpcClient<TServiceType>(
 				_moomedService,
-				GetRandomReplicaNumber());
+				await GetRandomReplicaNumber());
 
-			return invocationFunc(proxy);
+			return await invocationFunc(proxy);
 		}
 
 		// Specific invocation
@@ -81,38 +81,38 @@ namespace MooMed.IPC.ProxyInvocation
 			[NotNull] Func<TServiceType, Task<TResult>> invocationFunc)
 			=> InvokeSpecificWithResult(hashableIdentifier.SessionContext.HashableIdentifier, invocationFunc);
 
-		protected Task InvokeSpecific(
+		protected async Task InvokeSpecific(
 			int hashableIdentifier,
 			[NotNull] Func<TServiceType, Task> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(
+			var proxy = await _clientProvider.GetGrpcClient<TServiceType>(
 				_moomedService,
-				ResolveToReplicaNumber(hashableIdentifier));
+				await ResolveToReplicaNumber(hashableIdentifier));
 
-			return invocationFunc(proxy);
+			await invocationFunc(proxy);
 		}
 
-		protected Task<TResult> InvokeSpecificWithResult<TResult>(
+		protected async Task<TResult> InvokeSpecificWithResult<TResult>(
 			int hashableIdentifier,
 			[NotNull] Func<TServiceType, Task<TResult>> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(
+			var proxy = await _clientProvider.GetGrpcClient<TServiceType>(
 				_moomedService,
-				ResolveToReplicaNumber(hashableIdentifier));
+				await ResolveToReplicaNumber(hashableIdentifier));
 
-			return invocationFunc(proxy);
+			return await invocationFunc(proxy);
 		}
 
-		private int ResolveToReplicaNumber(int hashableIdentifier)
+		private async Task<int> ResolveToReplicaNumber(int hashableIdentifier)
 		{
-			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_moomedService);
+			var replicas = await _endpointProvider.GetAvailableReplicasForStatefulService(_moomedService);
 
 			return _deterministicPartitionSelectorHelper.HashIdentifierToPartitionIntIdentifier(hashableIdentifier, replicas);
 		}
 
-		private int GetRandomReplicaNumber()
+		private async Task<int> GetRandomReplicaNumber()
 		{
-			var replicas = _endpointProvider.GetAvailableReplicasForStatefulService(_moomedService);
+			var replicas = await _endpointProvider.GetAvailableReplicasForStatefulService(_moomedService);
 			return _random.Next(replicas);
 		}
 	}

@@ -1,5 +1,5 @@
 ﻿import { Account } from "modules/Account/types";
-import { createReducer } from "modules/common/Reducer/CrudReducer";
+import { createReducer } from "modules/common/reducer/CrudReducer";
 
 export const reducer = createReducer<Account>({
 	actionIdentifier: "ACCOUNT",

@@ -2,6 +2,6 @@
 {
 	public class Endpoint
 	{
-		public string IpAddress { get; set; }
+		public string DnsName { get; set; }
 	}
 }

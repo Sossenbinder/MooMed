@@ -1,5 +1,5 @@
 // Functionality
-import GetRequest from "helper/Requests/GetRequest";
+import GetRequest from "helper/requests/GetRequest";
 import { Network } from "modules/Stocks/types";
 
 const stockRequests = {

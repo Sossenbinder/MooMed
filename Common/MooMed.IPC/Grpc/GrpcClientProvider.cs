@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
+using MooMed.DotNet.Utils.Async;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Grpc.Client;
@@ -17,7 +19,7 @@ namespace MooMed.IPC.Grpc
 		private readonly IGrpcChannelProvider _grpcChannelProvider;
 
 		[NotNull]
-		private readonly ConcurrentDictionary<DeploymentService, IGrpcService> _grpcClientDictionary;
+		private readonly ConcurrentDictionary<DeploymentService, AsyncLazy<IGrpcService>> _grpcClientDictionary;
 
 		public GrpcClientProvider([NotNull] IGrpcChannelProvider grpcChannelProvider)
 		{
@@ -25,22 +27,22 @@ namespace MooMed.IPC.Grpc
 
 			_grpcChannelProvider = grpcChannelProvider;
 
-			_grpcClientDictionary = new ConcurrentDictionary<DeploymentService, IGrpcService>();
+			_grpcClientDictionary = new ConcurrentDictionary<DeploymentService, AsyncLazy<IGrpcService>>();
 		}
 
-		public TService GetGrpcClient<TService>(DeploymentService moomedService) where TService : class, IGrpcService
+		public async ValueTask<TService> GetGrpcClient<TService>(DeploymentService moomedService) where TService : class, IGrpcService
 		{
 			var grpcService = _grpcClientDictionary.GetOrAdd(
 				moomedService,
-				CreateNewGrpcService<TService>);
+				key => new AsyncLazy<IGrpcService>(() => CreateNewGrpcService<TService>(key)));
 
-			return grpcService as TService ?? throw new InvalidOperationException();
+			return (await grpcService) as TService ?? throw new InvalidOperationException();
 		}
 
-		private IGrpcService CreateNewGrpcService<TService>(DeploymentService moomedService)
+		private async Task<IGrpcService> CreateNewGrpcService<TService>(DeploymentService moomedService)
 			where TService : class, IGrpcService
 		{
-			var grpcChannel = _grpcChannelProvider.GetGrpcChannel(moomedService);
+			var grpcChannel = await _grpcChannelProvider.GetGrpcChannel(moomedService);
 
 			return grpcChannel.CreateGrpcService<TService>();
 		}

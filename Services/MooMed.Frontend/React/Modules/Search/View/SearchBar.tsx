@@ -3,7 +3,7 @@ import * as React from "react";
 
 // Components
 import SearchBarPreview from "./SearchBarPreview";
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 import { Account } from "modules/Account/types";
@@ -67,13 +67,13 @@ export const SearchBar: React.FC = () => {
                     {"Search"}
                 </button>
             </Flex>
-            <div>
+            <If condition={isPreviewOpen && hasContent}>
                 <SearchBarPreview
                     visibility={isPreviewOpen && hasContent}
                     previewAccounts={search?.correspondingAccounts}
                     onOpenStateChange={newState => setIsPreviewOpen(newState)}
                 />
-            </div>
+            </If>
 		</Flex>
 	);
 }

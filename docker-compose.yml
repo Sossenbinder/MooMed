@@ -131,6 +131,11 @@ services:
     ports:
     - '3000:3000'
 
+  moomed.redis:
+    image: redis
+    ports:
+    - '6379:6379'
+
   moomed.chatservice:
     image: ${DOCKER_REGISTRY-}moomedchatservice
     build:

@@ -1,17 +1,20 @@
 ﻿using System;
 using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Logging.Loggers.Helper;
+using MooMed.Logging.Loggers.Helper.Interface;
 using Serilog;
 using Serilog.Context;
 
 namespace MooMed.Logging.Loggers
 {
+	/// <summary>
+	/// Wrapper around ILogger to provide a default implementation for attaching session related information
+	/// </summary>
 	public class MooMedLogger : IMooMedLogger
 	{
 		private readonly ILogger _logger;
 
-		public MooMedLogger(SerilogConfigProvider serilogConfigProvider)
+		public MooMedLogger(ISerilogConfigProvider serilogConfigProvider)
 		{
 			_logger = Log.Logger = serilogConfigProvider
 				.CreateConfig()
@@ -63,14 +66,14 @@ namespace MooMed.Logging.Loggers
 		public void Fatal(string message, ISessionContext sessionContext)
 			=> LogWithSessionContext(message, _logger.Fatal, sessionContext);
 
-		private void LogWithOutSessionContext(
+		private static void LogWithOutSessionContext(
 			string message,
 			Action<string> logAction)
 		{
 			logAction(message);
 		}
 
-		private void LogWithAccountId(
+		private static void LogWithAccountId(
 			string message,
 			Action<string, string> logAction,
 			int accountId)
@@ -81,7 +84,7 @@ namespace MooMed.Logging.Loggers
 			}
 		}
 
-		private void LogWithSessionContext(
+		private static void LogWithSessionContext(
 			string message,
 			Action<string, string> logAction,
 			ISessionContext sessionContext)

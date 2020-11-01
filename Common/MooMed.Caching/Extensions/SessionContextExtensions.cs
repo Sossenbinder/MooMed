@@ -7,6 +7,6 @@ namespace MooMed.Caching.Extensions
 	public static class SessionContextExtensions
 	{
 		public static string GetAccountKey([NotNull] this ISessionContext sessionContext) =>
-			CacheKeyUtils.GetCacheKeyForAccountId(sessionContext.Account.Id);
+			$"s-{CacheKeyUtils.GetCacheKeyForAccountId(sessionContext.Account.Id)}";
 	}
 }

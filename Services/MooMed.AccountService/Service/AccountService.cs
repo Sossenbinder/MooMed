@@ -2,6 +2,7 @@
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MooMed.Caching.Cache.UnderlyingCache;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Logging;

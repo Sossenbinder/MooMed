@@ -3,10 +3,10 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
-import { CheckBoxToggle } from "common/components/General/Input/CheckBoxToggle";
-import Button from "common/components/General/Input/Buttons/Button";
-import Flex from "common/Components/Flex";
+import ErrorAttachedTextInput from "common/components/general/input/ErrorAttached/ErrorAttachedTextInput";
+import { CheckBoxToggle } from "common/components/general/input/CheckBoxToggle";
+import Button from "common/components/general/input/Buttons/Button";
+import Flex from "common/components/Flex";
 
 // Functionality
 import useTranslations from "hooks/useTranslations";

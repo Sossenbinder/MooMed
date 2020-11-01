@@ -3,7 +3,7 @@ import * as React from "react";
 
 // Components
 import SearchBarPreviewUserEntry from "./SearchBarPreviewEntry";
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 import { Account } from "modules/Account/types";

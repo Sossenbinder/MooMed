@@ -86,100 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./React/Common/Components/Flex.tsx":
-/*!******************************************!*\
-  !*** ./React/Common/Components/Flex.tsx ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Flex = exports.FlexDirections = void 0;
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-__webpack_require__(/*! ./Styles/Flex.less */ "./React/Common/Components/Styles/Flex.less");
-var FlexDirections;
-(function (FlexDirections) {
-    FlexDirections[FlexDirections["Column"] = 0] = "Column";
-    FlexDirections[FlexDirections["ColumnReverse"] = 1] = "ColumnReverse";
-    FlexDirections[FlexDirections["Row"] = 2] = "Row";
-    FlexDirections[FlexDirections["RowReverse"] = 3] = "RowReverse";
-})(FlexDirections = exports.FlexDirections || (exports.FlexDirections = {}));
-var FlexWrap;
-(function (FlexWrap) {
-    FlexWrap[FlexWrap["NoWrap"] = 0] = "NoWrap";
-    FlexWrap[FlexWrap["Wrap"] = 1] = "Wrap";
-    FlexWrap[FlexWrap["WrapReverse"] = 2] = "WrapReverse";
-})(FlexWrap || (FlexWrap = {}));
-var FlexAlign;
-(function (FlexAlign) {
-    FlexAlign[FlexAlign["Center"] = 0] = "Center";
-    FlexAlign[FlexAlign["Start"] = 1] = "Start";
-    FlexAlign[FlexAlign["End"] = 2] = "End";
-})(FlexAlign || (FlexAlign = {}));
-var FlexSpace;
-(function (FlexSpace) {
-    FlexSpace[FlexSpace["Around"] = 0] = "Around";
-    FlexSpace[FlexSpace["Between"] = 1] = "Between";
-})(FlexSpace || (FlexSpace = {}));
-exports.Flex = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => { }, onScroll = () => { }, ref }) => {
-    const classes = classnames_1.default({
-        "flex": true,
-        "flexColumn": direction === "Column",
-        "flexColumnReverse": direction === "ColumnReverse",
-        "flexRow": direction === "Row",
-        "flexRowReverse": direction === "RowReverse",
-        "flexNoWrap": wrap === "NoWrap",
-        "flexWrap": wrap === "Wrap",
-        "flexWrapReverse": wrap === "WrapReverse",
-        "flexMainCenter": mainAlign === "Center",
-        "flexMainStart": mainAlign === "Start",
-        "flexMainEnd": mainAlign === "End",
-        "flexAround": space === "Around",
-        "flexBetween": space === "Between",
-        "flexCrossCenter": crossAlign === "Center",
-        "flexCrossStart": crossAlign === "Start",
-        "flexCrossEnd": crossAlign === "End",
-    });
-    return (React.createElement("div", { className: `${classes} ${className}`, style: style, onClick: onClick, onScroll: onScroll, ref: ref }, children));
-};
-exports.default = exports.Flex;
-
-
-/***/ }),
-
-/***/ "./React/Common/Components/Styles/Flex.less":
-/*!**************************************************!*\
-  !*** ./React/Common/Components/Styles/Flex.less ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader/dist/cjs.js!../../../../node_modules/postcss-loader/src!../../../../node_modules/less-loader/dist/cjs.js!./Flex.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/Common/Components/Styles/Flex.less");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./React/Translations/helpers/IdentityErrorLookupHelper.ts":
 /*!*****************************************************************!*\
   !*** ./React/Translations/helpers/IdentityErrorLookupHelper.ts ***!
@@ -209,7 +115,7 @@ exports.default = exports.getTranslationForErrorCode;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../node_modules/postcss-loader/src!../../../../../../node_modules/less-loader/dist/cjs.js!./PopUpMessage.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less");
+var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../node_modules/less-loader/dist/cjs.js!./PopUpMessage.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -245,7 +151,7 @@ exports.CommonLandingPage = void 0;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const PopUpMessageHolder_1 = __webpack_require__(/*! views/Components/Main/PopUpMessage/PopUpMessageHolder */ "./React/views/Components/Main/PopUpMessage/PopUpMessageHolder.tsx");
 const LanguagePicker_1 = __webpack_require__(/*! common/components/General/LanguagePicker */ "./React/common/components/General/LanguagePicker.tsx");
-const Flex_1 = __webpack_require__(/*! Common/Components/Flex */ "./React/Common/Components/Flex.tsx");
+const Flex_1 = __webpack_require__(/*! common/components/Flex */ "./React/common/components/Flex.tsx");
 __webpack_require__(/*! ./Styles/CommonLandingPage.less */ "./React/Views/Pages/Common/Styles/CommonLandingPage.less");
 exports.CommonLandingPage = ({ children }) => {
     return (React.createElement(Flex_1.default, { space: "Between", direction: "Column", className: "logOnContentContainer" },
@@ -269,7 +175,7 @@ exports.default = exports.CommonLandingPage;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/postcss-loader/src!../../../../../node_modules/less-loader/dist/cjs.js!./CommonLandingPage.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Pages/Common/Styles/CommonLandingPage.less");
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/less-loader/dist/cjs.js!./CommonLandingPage.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Pages/Common/Styles/CommonLandingPage.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -291,9 +197,9 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./React/common/Components/Flex.tsx":
+/***/ "./React/common/components/Flex.tsx":
 /*!******************************************!*\
-  !*** ./React/common/Components/Flex.tsx ***!
+  !*** ./React/common/components/Flex.tsx ***!
   \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -304,7 +210,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Flex = exports.FlexDirections = void 0;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-__webpack_require__(/*! ./Styles/Flex.less */ "./React/common/Components/Styles/Flex.less");
+__webpack_require__(/*! ./Styles/Flex.less */ "./React/common/components/Styles/Flex.less");
 var FlexDirections;
 (function (FlexDirections) {
     FlexDirections[FlexDirections["Column"] = 0] = "Column";
@@ -347,155 +253,11 @@ exports.Flex = ({ className, style, direction = "Row", wrap, mainAlign, crossAli
         "flexCrossCenter": crossAlign === "Center",
         "flexCrossStart": crossAlign === "Start",
         "flexCrossEnd": crossAlign === "End",
-    });
-    return (React.createElement("div", { className: `${classes} ${className}`, style: style, onClick: onClick, onScroll: onScroll, ref: ref }, children));
+    }, className !== null && className !== void 0 ? className : "");
+    return (React.createElement("div", { className: classes, style: style, onClick: onClick, onScroll: onScroll, ref: ref }, children));
 };
 exports.default = exports.Flex;
 
-
-/***/ }),
-
-/***/ "./React/common/Components/General/Input/Buttons/Button.tsx":
-/*!******************************************************************!*\
-  !*** ./React/common/Components/General/Input/Buttons/Button.tsx ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Button = void 0;
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-const LoadingBubbles_1 = __webpack_require__(/*! common/Components/LoadingBubbles */ "./React/common/Components/LoadingBubbles.tsx");
-const useBackendCallWrapper_1 = __webpack_require__(/*! hooks/useBackendCallWrapper */ "./React/hooks/useBackendCallWrapper.ts");
-__webpack_require__(/*! ./Styles/Button.less */ "./React/common/Components/General/Input/Buttons/Styles/Button.less");
-exports.Button = ({ title, onClick, classname: className, disabled = false }) => {
-    const [loading, callBackend] = useBackendCallWrapper_1.default(onClick);
-    const classes = classnames_1.default({
-        "MooMedButton": true,
-        "Disabled": disabled,
-    });
-    return (React.createElement("button", { className: `${classes} ${className !== undefined && className !== "" ? className : ""}`, onClick: _ => callBackend(), disabled: disabled }, (loading) ? React.createElement(LoadingBubbles_1.default, null) : React.createElement("p", { className: "Text" }, title)));
-};
-exports.default = exports.Button;
-
-
-/***/ }),
-
-/***/ "./React/common/Components/General/Input/Buttons/Styles/Button.less":
-/*!**************************************************************************!*\
-  !*** ./React/common/Components/General/Input/Buttons/Styles/Button.less ***!
-  \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../../node_modules/postcss-loader/src!../../../../../../../node_modules/less-loader/dist/cjs.js!./Button.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/Components/General/Input/Buttons/Styles/Button.less");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./React/common/Components/LoadingBubbles.tsx":
-/*!****************************************************!*\
-  !*** ./React/common/Components/LoadingBubbles.tsx ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoadingBubbles = void 0;
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const Flex_1 = __webpack_require__(/*! ./Flex */ "./React/common/Components/Flex.tsx");
-__webpack_require__(/*! ./Styles/LoadingBubbles.less */ "./React/common/Components/Styles/LoadingBubbles.less");
-exports.LoadingBubbles = ({ amountOfBubbles = 3 }) => {
-    const bubbles = React.useMemo(() => {
-        return [...Array(amountOfBubbles).keys()].map((x, i) => (React.createElement(Flex_1.default, { className: "LoadingButtonBubble", key: `loadingBubble_${i}` })));
-    }, [amountOfBubbles]);
-    return (React.createElement(Flex_1.default, { className: "LoadingButtonBubbleContainer" }, bubbles));
-};
-exports.default = exports.LoadingBubbles;
-
-
-/***/ }),
-
-/***/ "./React/common/Components/Styles/Flex.less":
-/*!**************************************************!*\
-  !*** ./React/common/Components/Styles/Flex.less ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader/dist/cjs.js!../../../../node_modules/postcss-loader/src!../../../../node_modules/less-loader/dist/cjs.js!./Flex.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/Components/Styles/Flex.less");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./React/common/Components/Styles/LoadingBubbles.less":
-/*!************************************************************!*\
-  !*** ./React/common/Components/Styles/LoadingBubbles.less ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader/dist/cjs.js!../../../../node_modules/postcss-loader/src!../../../../node_modules/less-loader/dist/cjs.js!./LoadingBubbles.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/Components/Styles/LoadingBubbles.less");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
 
 /***/ }),
 
@@ -512,7 +274,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LanguagePicker = void 0;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-const Flex_1 = __webpack_require__(/*! Common/Components/Flex */ "./React/Common/Components/Flex.tsx");
+const Flex_1 = __webpack_require__(/*! common/components/Flex */ "./React/common/components/Flex.tsx");
 const cookieHelper = __webpack_require__(/*! helper/cookieHelper */ "./React/helper/cookieHelper.ts");
 __webpack_require__(/*! ./Styles/LanguagePicker.less */ "./React/common/components/General/Styles/LanguagePicker.less");
 exports.LanguagePicker = () => {
@@ -550,7 +312,7 @@ exports.default = exports.LanguagePicker;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/postcss-loader/src!../../../../../node_modules/less-loader/dist/cjs.js!./LanguagePicker.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/General/Styles/LanguagePicker.less");
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/less-loader/dist/cjs.js!./LanguagePicker.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/General/Styles/LanguagePicker.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -572,6 +334,150 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./React/common/components/LoadingBubbles.tsx":
+/*!****************************************************!*\
+  !*** ./React/common/components/LoadingBubbles.tsx ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoadingBubbles = void 0;
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const Flex_1 = __webpack_require__(/*! ./Flex */ "./React/common/components/Flex.tsx");
+__webpack_require__(/*! ./Styles/LoadingBubbles.less */ "./React/common/components/Styles/LoadingBubbles.less");
+exports.LoadingBubbles = ({ amountOfBubbles = 3 }) => {
+    const bubbles = React.useMemo(() => {
+        return [...Array(amountOfBubbles).keys()].map((x, i) => (React.createElement(Flex_1.default, { className: "LoadingButtonBubble", key: `loadingBubble_${i}` })));
+    }, [amountOfBubbles]);
+    return (React.createElement(Flex_1.default, { className: "LoadingButtonBubbleContainer" }, bubbles));
+};
+exports.default = exports.LoadingBubbles;
+
+
+/***/ }),
+
+/***/ "./React/common/components/Styles/Flex.less":
+/*!**************************************************!*\
+  !*** ./React/common/components/Styles/Flex.less ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader/dist/cjs.js!../../../../node_modules/less-loader/dist/cjs.js!./Flex.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/Styles/Flex.less");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./React/common/components/Styles/LoadingBubbles.less":
+/*!************************************************************!*\
+  !*** ./React/common/components/Styles/LoadingBubbles.less ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader/dist/cjs.js!../../../../node_modules/less-loader/dist/cjs.js!./LoadingBubbles.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/Styles/LoadingBubbles.less");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./React/common/components/general/input/Buttons/Button.tsx":
+/*!******************************************************************!*\
+  !*** ./React/common/components/general/input/Buttons/Button.tsx ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Button = void 0;
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+const LoadingBubbles_1 = __webpack_require__(/*! common/components/LoadingBubbles */ "./React/common/components/LoadingBubbles.tsx");
+const useBackendCallWrapper_1 = __webpack_require__(/*! hooks/useBackendCallWrapper */ "./React/hooks/useBackendCallWrapper.ts");
+__webpack_require__(/*! ./Styles/Button.less */ "./React/common/components/general/input/Buttons/Styles/Button.less");
+exports.Button = ({ title, onClick, classname: className, disabled = false }) => {
+    const [loading, callBackend] = useBackendCallWrapper_1.default(onClick);
+    const classes = classnames_1.default({
+        "MooMedButton": true,
+        "Disabled": disabled,
+    });
+    return (React.createElement("button", { className: `${classes} ${className !== undefined && className !== "" ? className : ""}`, onClick: _ => callBackend(), disabled: disabled }, (loading) ? React.createElement(LoadingBubbles_1.default, null) : React.createElement("p", { className: "Text" }, title)));
+};
+exports.default = exports.Button;
+
+
+/***/ }),
+
+/***/ "./React/common/components/general/input/Buttons/Styles/Button.less":
+/*!**************************************************************************!*\
+  !*** ./React/common/components/general/input/Buttons/Styles/Button.less ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../../node_modules/less-loader/dist/cjs.js!./Button.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/general/input/Buttons/Styles/Button.less");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./React/data/reducers/accountReducer.ts":
 /*!***********************************************!*\
   !*** ./React/data/reducers/accountReducer.ts ***!
@@ -583,7 +489,7 @@ if(false) {}
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reducer = void 0;
-const CrudReducer_1 = __webpack_require__(/*! modules/common/Reducer/CrudReducer */ "./React/modules/common/Reducer/CrudReducer.ts");
+const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
 exports.reducer = CrudReducer_1.createReducer({
     actionIdentifier: "ACCOUNT",
     key: "id"
@@ -659,12 +565,14 @@ const popUpNotificationReducer_1 = __webpack_require__(/*! ./reducers/popUpNotif
 const FriendsReducer_1 = __webpack_require__(/*! modules/Friends/Reducer/FriendsReducer */ "./React/modules/Friends/Reducer/FriendsReducer.ts");
 const ChatRoomsReducer_1 = __webpack_require__(/*! modules/Chat/Reducer/ChatRoomsReducer */ "./React/modules/Chat/Reducer/ChatRoomsReducer.ts");
 const ExchangeTradedsReducer_1 = __webpack_require__(/*! modules/Stocks/Reducer/ExchangeTradedsReducer */ "./React/modules/Stocks/Reducer/ExchangeTradedsReducer.ts");
+const SavingConfigurationReducer_1 = __webpack_require__(/*! modules/Saving/Reducer/SavingConfigurationReducer */ "./React/modules/Saving/Reducer/SavingConfigurationReducer.ts");
 exports.store = redux.createStore(redux.combineReducers({
     accountReducer: accountReducer_1.reducer.reducer,
     popUpNotificationReducer: popUpNotificationReducer_1.popUpNotificationReducer,
     friendsReducer: FriendsReducer_1.reducer.reducer,
     chatRoomsReducer: ChatRoomsReducer_1.reducer.reducer,
     exchangeTradedsReducer: ExchangeTradedsReducer_1.reducer.reducer,
+    savingConfigurationReducer: SavingConfigurationReducer_1.reducer.reducer,
 }));
 exports.default = exports.store;
 
@@ -1129,8 +1037,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AccountValidationDialog = void 0;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const Flex_1 = __webpack_require__(/*! Common/Components/Flex */ "./React/Common/Components/Flex.tsx");
-const Button_1 = __webpack_require__(/*! common/Components/General/Input/Buttons/Button */ "./React/common/Components/General/Input/Buttons/Button.tsx");
+const Flex_1 = __webpack_require__(/*! common/components/Flex */ "./React/common/components/Flex.tsx");
+const Button_1 = __webpack_require__(/*! common/components/general/input/Buttons/Button */ "./React/common/components/general/input/Buttons/Button.tsx");
 const useServices_1 = __webpack_require__(/*! hooks/useServices */ "./React/hooks/useServices.ts");
 const IdentityErrorLookupHelper_1 = __webpack_require__(/*! Translations/helpers/IdentityErrorLookupHelper */ "./React/Translations/helpers/IdentityErrorLookupHelper.ts");
 __webpack_require__(/*! ./Styles/AccountValidationDialog.less */ "./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less");
@@ -1239,7 +1147,7 @@ exports.default = exports.AccountValidationDialogRoute;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../node_modules/postcss-loader/src!../../../../../../node_modules/less-loader/dist/cjs.js!./AccountValidationDialog.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less");
+var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../node_modules/less-loader/dist/cjs.js!./AccountValidationDialog.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -1316,7 +1224,7 @@ exports.default = AccountValidationService;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reducer = void 0;
-const CrudReducer_1 = __webpack_require__(/*! modules/common/Reducer/CrudReducer */ "./React/modules/common/Reducer/CrudReducer.ts");
+const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
 exports.reducer = CrudReducer_1.createReducer({
     actionIdentifier: "CHATROOM",
     key: "roomId"
@@ -1337,10 +1245,30 @@ exports.default = exports.reducer;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reducer = void 0;
-const CrudReducer_1 = __webpack_require__(/*! modules/common/Reducer/CrudReducer */ "./React/modules/common/Reducer/CrudReducer.ts");
+const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
 exports.reducer = CrudReducer_1.createReducer({
     actionIdentifier: "FRIENDS",
     key: "id"
+});
+exports.default = exports.reducer;
+
+
+/***/ }),
+
+/***/ "./React/modules/Saving/Reducer/SavingConfigurationReducer.ts":
+/*!********************************************************************!*\
+  !*** ./React/modules/Saving/Reducer/SavingConfigurationReducer.ts ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reducer = void 0;
+const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
+exports.reducer = CrudReducer_1.createSingleReducer({
+    actionIdentifier: "SAVING"
 });
 exports.default = exports.reducer;
 
@@ -1364,95 +1292,6 @@ exports.reducer = CrudReducer_1.createReducer({
     key: "isin"
 });
 exports.default = exports.reducer;
-
-
-/***/ }),
-
-/***/ "./React/modules/common/Reducer/CrudReducer.ts":
-/*!*****************************************************!*\
-  !*** ./React/modules/common/Reducer/CrudReducer.ts ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createReducer = void 0;
-const arrayUtils_1 = __webpack_require__(/*! helper/arrayUtils */ "./React/helper/arrayUtils.ts");
-exports.createReducer = (params) => {
-    const actionIdentifier = params.actionIdentifier;
-    const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
-    const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
-    const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
-    const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
-    const initialState = {
-        data: []
-    };
-    const reducer = (state = initialState, action) => {
-        switch (action.type) {
-            case ADD_IDENTIFIER:
-                const addPayloadAsArray = arrayUtils_1.ensureArray(action.payload);
-                return Object.assign(Object.assign({}, state), { data: [
-                        ...state.data,
-                        ...addPayloadAsArray
-                    ] });
-            case UPDATE_IDENTIFIER:
-                const updatePayloadAsArray = arrayUtils_1.ensureArray(action.payload);
-                const updatedData = [...state.data];
-                updatePayloadAsArray.forEach(val => {
-                    const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
-                    updatedData[existingItemIndex] = val;
-                });
-                return Object.assign(Object.assign({}, state), { data: updatedData });
-            case DELETE_IDENTIFIER:
-                const deletePayloadAsArray = arrayUtils_1.ensureArray(action.payload);
-                const dataToDelete = [...state.data];
-                deletePayloadAsArray.forEach(val => {
-                    const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
-                    if (indexToDelete > -1) {
-                        arrayUtils_1.removeAt(dataToDelete, indexToDelete);
-                    }
-                });
-                return Object.assign(Object.assign({}, state), { data: dataToDelete });
-            case REPLACE_IDENTIFIER:
-                return Object.assign({}, state);
-            default:
-                return state;
-        }
-    };
-    const addAction = (data) => {
-        return {
-            type: ADD_IDENTIFIER,
-            payload: data,
-        };
-    };
-    const updateAction = (data) => {
-        return {
-            type: UPDATE_IDENTIFIER,
-            payload: data,
-        };
-    };
-    const deleteAction = (data) => {
-        return {
-            type: DELETE_IDENTIFIER,
-            payload: data,
-        };
-    };
-    const replaceAction = (data) => {
-        return {
-            type: REPLACE_IDENTIFIER,
-            payload: data,
-        };
-    };
-    return {
-        add: addAction,
-        update: updateAction,
-        delete: deleteAction,
-        replace: replaceAction,
-        reducer: reducer,
-    };
-};
 
 
 /***/ }),
@@ -1494,78 +1333,106 @@ exports.default = ModuleService;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createReducer = void 0;
+exports.createSingleReducer = exports.createReducer = void 0;
 const arrayUtils_1 = __webpack_require__(/*! helper/arrayUtils */ "./React/helper/arrayUtils.ts");
-exports.createReducer = (params) => {
+exports.createReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
+        addAction: (state, action) => {
+            const addPayloadAsArray = arrayUtils_1.ensureArray(action.payload);
+            return Object.assign(Object.assign({}, state), { data: [...state.data].concat(addPayloadAsArray) });
+        },
+        updateAction: (state, action) => {
+            const updatePayloadAsArray = arrayUtils_1.ensureArray(action.payload);
+            const updatedData = [...state.data];
+            updatePayloadAsArray.forEach(val => {
+                const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
+                updatedData[existingItemIndex] = val;
+            });
+            return Object.assign(Object.assign({}, state), { data: updatedData });
+        },
+        deleteAction: (state, action) => {
+            const deletePayloadAsArray = arrayUtils_1.ensureArray(action.payload);
+            const dataToDelete = [...state.data];
+            deletePayloadAsArray.forEach(val => {
+                const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
+                if (indexToDelete > -1) {
+                    arrayUtils_1.removeAt(dataToDelete, indexToDelete);
+                }
+            });
+            return Object.assign(Object.assign({}, state), { data: dataToDelete });
+        }
+    }, initialState: {
+        data: []
+    } }));
+exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
+        addAction: (_, action) => {
+            return {
+                data: action.payload
+            };
+        },
+        updateAction: (_, action) => {
+            return {
+                data: action.payload
+            };
+        },
+        deleteAction: (_, __) => {
+            return {
+                data: undefined,
+            };
+        }
+    }, initialState: {
+        data: undefined
+    } }));
+const createReducerInternal = (params) => {
     const actionIdentifier = params.actionIdentifier;
     const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
     const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
     const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
     const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
-    const initialState = {
-        data: []
-    };
+    const initialState = params.initialState;
+    const { addAction, deleteAction, updateAction } = params.actions;
     const reducer = (state = initialState, action) => {
         switch (action.type) {
             case ADD_IDENTIFIER:
-                const addPayloadAsArray = arrayUtils_1.ensureArray(action.payload);
-                return Object.assign(Object.assign({}, state), { data: [
-                        ...state.data,
-                        ...addPayloadAsArray
-                    ] });
+                return addAction(state, action);
             case UPDATE_IDENTIFIER:
-                const updatePayloadAsArray = arrayUtils_1.ensureArray(action.payload);
-                const updatedData = [...state.data];
-                updatePayloadAsArray.forEach(val => {
-                    const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
-                    updatedData[existingItemIndex] = val;
-                });
-                return Object.assign(Object.assign({}, state), { data: updatedData });
+                return updateAction(state, action);
             case DELETE_IDENTIFIER:
-                const deletePayloadAsArray = arrayUtils_1.ensureArray(action.payload);
-                const dataToDelete = [...state.data];
-                deletePayloadAsArray.forEach(val => {
-                    const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
-                    if (indexToDelete > -1) {
-                        arrayUtils_1.removeAt(dataToDelete, indexToDelete);
-                    }
-                });
-                return Object.assign(Object.assign({}, state), { data: dataToDelete });
+                return deleteAction(state, action);
             case REPLACE_IDENTIFIER:
                 return Object.assign({}, state);
             default:
                 return state;
         }
     };
-    const addAction = (data) => {
+    const addActionGenerator = (data) => {
         return {
             type: ADD_IDENTIFIER,
             payload: data,
         };
     };
-    const updateAction = (data) => {
+    const updateActionGenerator = (data) => {
         return {
             type: UPDATE_IDENTIFIER,
             payload: data,
         };
     };
-    const deleteAction = (data) => {
+    const deleteActionGenerator = (data) => {
         return {
             type: DELETE_IDENTIFIER,
             payload: data,
         };
     };
-    const replaceAction = (data) => {
+    const replaceActionGenerator = (data) => {
         return {
             type: REPLACE_IDENTIFIER,
             payload: data,
         };
     };
     return {
-        add: addAction,
-        update: updateAction,
-        delete: deleteAction,
-        replace: replaceAction,
+        add: addActionGenerator,
+        update: updateActionGenerator,
+        delete: deleteActionGenerator,
+        replace: replaceActionGenerator,
         reducer: reducer,
     };
 };
@@ -1622,7 +1489,7 @@ const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 const PopUpNotificationDefinitions_1 = __webpack_require__(/*! definitions/PopUpNotificationDefinitions */ "./React/definitions/PopUpNotificationDefinitions.ts");
-const Flex_1 = __webpack_require__(/*! Common/Components/Flex */ "./React/Common/Components/Flex.tsx");
+const Flex_1 = __webpack_require__(/*! common/components/Flex */ "./React/common/components/Flex.tsx");
 const popUpNotificationReducer_1 = __webpack_require__(/*! data/reducers/popUpNotificationReducer */ "./React/data/reducers/popUpNotificationReducer.ts");
 __webpack_require__(/*! Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less */ "./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less");
 exports.PopUpMessage = ({ popupNotification, deletePopUpNotification }) => {
@@ -1672,7 +1539,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PopUpMessageHolder = void 0;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-const Flex_1 = __webpack_require__(/*! common/Components/Flex */ "./React/common/Components/Flex.tsx");
+const Flex_1 = __webpack_require__(/*! common/components/Flex */ "./React/common/components/Flex.tsx");
 const PopUpMessage_1 = __webpack_require__(/*! ./PopUpMessage */ "./React/views/Components/Main/PopUpMessage/PopUpMessage.tsx");
 __webpack_require__(/*! ./Styles/PopUpMessageHolder.less */ "./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less");
 exports.PopUpMessageHolder = ({ popupMessages }) => {
@@ -1699,7 +1566,7 @@ exports.default = react_redux_1.connect(mapStateToProps)(exports.PopUpMessageHol
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../node_modules/postcss-loader/src!../../../../../../node_modules/less-loader/dist/cjs.js!./PopUpMessageHolder.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less");
+var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader/dist/cjs.js!../../../../../../node_modules/less-loader/dist/cjs.js!./PopUpMessageHolder.less */ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -1910,25 +1777,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/Common/Components/Styles/Flex.less":
-/*!*****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/Common/Components/Styles/Flex.less ***!
-  \*****************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
-// Module
-exports.push([module.i, ".flex {\n  display: flex;\n}\n.flexColumn {\n  flex-direction: column;\n}\n.flexColumnReverse {\n  flex-direction: column-reverse;\n}\n.flexRow {\n  flex-direction: row;\n}\n.flexRowReverse {\n  flex-direction: row-reverse;\n}\n.flexNoWrap {\n  flex-wrap: nowrap;\n}\n.flexWrap {\n  flex-wrap: wrap;\n}\n.flexWrapReverse {\n  flex-wrap: wrap-reverse;\n}\n.flexMainCenter {\n  justify-content: center;\n}\n.flexMainStart {\n  justify-content: flex-start;\n}\n.flexMainEnd {\n  justify-content: flex-end;\n}\n.flexAround {\n  justify-content: space-around;\n}\n.flexBetween {\n  justify-content: space-between;\n}\n.flexCrossCenter {\n  align-items: center;\n}\n.flexCrossStart {\n  align-items: flex-start;\n}\n.flexCrossEnd {\n  align-items: flex-end;\n}\n", ""]);
-
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less":
-/*!******************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less ***!
-  \******************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less":
+/*!********************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Components/Main/PopUpMessage/Styles/PopUpMessage.less ***!
+  \********************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1940,10 +1792,10 @@ exports.push([module.i, ".PopUpMessage {\n  width: 800px;\n  height: 42px;\n  bo
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Pages/Common/Styles/CommonLandingPage.less":
-/*!*******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/Views/Pages/Common/Styles/CommonLandingPage.less ***!
-  \*******************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Pages/Common/Styles/CommonLandingPage.less":
+/*!*********************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/Views/Pages/Common/Styles/CommonLandingPage.less ***!
+  \*********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1955,55 +1807,10 @@ exports.push([module.i, "html,\nbody {\n  height: 100%;\n  width: 100%;\n  overf
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/Components/General/Input/Buttons/Styles/Button.less":
-/*!*****************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/common/Components/General/Input/Buttons/Styles/Button.less ***!
-  \*****************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
-// Module
-exports.push([module.i, ".MooMedButton {\n  border: 1px solid black;\n  border-radius: 10px;\n  min-width: 100px;\n  min-height: 27px;\n  background-image: linear-gradient(to right, #232526 0%, #414345 51%, #232526 100%);\n  cursor: pointer;\n}\n.MooMedButton:hover {\n  background-position: right center;\n  cursor: pointer;\n}\n.MooMedButton .Text {\n  text-align: center;\n  vertical-align: middle;\n  margin-bottom: 3px;\n  cursor: pointer;\n  color: white;\n}\n.MooMedButton.Disabled {\n  border: 1px solid #999999;\n  background-image: none;\n}\n.MooMedButton.Disabled .Text {\n  color: grey !important;\n}\n", ""]);
-
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/Components/Styles/Flex.less":
-/*!*****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/common/Components/Styles/Flex.less ***!
-  \*****************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
-// Module
-exports.push([module.i, ".flex {\n  display: flex;\n}\n.flexColumn {\n  flex-direction: column;\n}\n.flexColumnReverse {\n  flex-direction: column-reverse;\n}\n.flexRow {\n  flex-direction: row;\n}\n.flexRowReverse {\n  flex-direction: row-reverse;\n}\n.flexNoWrap {\n  flex-wrap: nowrap;\n}\n.flexWrap {\n  flex-wrap: wrap;\n}\n.flexWrapReverse {\n  flex-wrap: wrap-reverse;\n}\n.flexMainCenter {\n  justify-content: center;\n}\n.flexMainStart {\n  justify-content: flex-start;\n}\n.flexMainEnd {\n  justify-content: flex-end;\n}\n.flexAround {\n  justify-content: space-around;\n}\n.flexBetween {\n  justify-content: space-between;\n}\n.flexCrossCenter {\n  align-items: center;\n}\n.flexCrossStart {\n  align-items: flex-start;\n}\n.flexCrossEnd {\n  align-items: flex-end;\n}\n", ""]);
-
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/Components/Styles/LoadingBubbles.less":
-/*!***************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/common/Components/Styles/LoadingBubbles.less ***!
-  \***************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
-// Module
-exports.push([module.i, ".LoadingButtonBubbleContainer {\n  top: 4px;\n  width: 60px;\n  margin: auto;\n  position: relative;\n}\n@keyframes expand {\n  0% {\n    transform: scale(1);\n  }\n  50% {\n    transform: scale(0.5);\n  }\n}\n.LoadingButtonBubbleContainer .LoadingButtonBubble {\n  width: 15px;\n  height: 15px;\n  margin: 2px;\n  background: black;\n  border-radius: 50px;\n  animation: expand 1s ease-in-out infinite;\n  float: left;\n}\n.LoadingButtonBubbleContainer .LoadingButtonBubble:nth-child(2) {\n  animation-delay: 200ms;\n}\n.LoadingButtonBubbleContainer .LoadingButtonBubble:nth-child(3) {\n  animation-delay: 400ms;\n}\n", ""]);
-
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/General/Styles/LanguagePicker.less":
-/*!***********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/common/components/General/Styles/LanguagePicker.less ***!
-  \***********************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/General/Styles/LanguagePicker.less":
+/*!*************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/General/Styles/LanguagePicker.less ***!
+  \*************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2015,10 +1822,55 @@ exports.push([module.i, ".languagePickerContainer {\n  width: 95px;\n  height: 5
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less":
-/*!***************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less ***!
-  \***************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/Styles/Flex.less":
+/*!*******************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/Styles/Flex.less ***!
+  \*******************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
+// Module
+exports.push([module.i, ".flex {\n  display: flex;\n}\n.flexColumn {\n  flex-direction: column;\n}\n.flexColumnReverse {\n  flex-direction: column-reverse;\n}\n.flexRow {\n  flex-direction: row;\n}\n.flexRowReverse {\n  flex-direction: row-reverse;\n}\n.flexNoWrap {\n  flex-wrap: nowrap;\n}\n.flexWrap {\n  flex-wrap: wrap;\n}\n.flexWrapReverse {\n  flex-wrap: wrap-reverse;\n}\n.flexMainCenter {\n  justify-content: center;\n}\n.flexMainStart {\n  justify-content: flex-start;\n}\n.flexMainEnd {\n  justify-content: flex-end;\n}\n.flexAround {\n  justify-content: space-around;\n}\n.flexBetween {\n  justify-content: space-between;\n}\n.flexCrossCenter {\n  align-items: center;\n}\n.flexCrossStart {\n  align-items: flex-start;\n}\n.flexCrossEnd {\n  align-items: flex-end;\n}\n", ""]);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/Styles/LoadingBubbles.less":
+/*!*****************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/Styles/LoadingBubbles.less ***!
+  \*****************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
+// Module
+exports.push([module.i, ".LoadingButtonBubbleContainer {\n  top: 4px;\n  width: 60px;\n  margin: auto;\n  position: relative;\n}\n@keyframes expand {\n  0% {\n    transform: scale(1);\n  }\n  50% {\n    transform: scale(0.5);\n  }\n}\n.LoadingButtonBubbleContainer .LoadingButtonBubble {\n  width: 15px;\n  height: 15px;\n  margin: 2px;\n  background: black;\n  border-radius: 50px;\n  animation: expand 1s ease-in-out infinite;\n  float: left;\n}\n.LoadingButtonBubbleContainer .LoadingButtonBubble:nth-child(2) {\n  animation-delay: 200ms;\n}\n.LoadingButtonBubbleContainer .LoadingButtonBubble:nth-child(3) {\n  animation-delay: 400ms;\n}\n", ""]);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/general/input/Buttons/Styles/Button.less":
+/*!*******************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/common/components/general/input/Buttons/Styles/Button.less ***!
+  \*******************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
+// Module
+exports.push([module.i, ".MooMedButton {\n  border: 1px solid black;\n  border-radius: 10px;\n  min-width: 100px;\n  min-height: 27px;\n  background-image: linear-gradient(to right, #232526 0%, #414345 51%, #232526 100%);\n  cursor: pointer;\n}\n.MooMedButton:hover {\n  background-position: right center;\n  cursor: pointer;\n}\n.MooMedButton .Text {\n  text-align: center;\n  vertical-align: middle;\n  margin-bottom: 3px;\n  cursor: pointer;\n  color: white;\n}\n.MooMedButton.Disabled {\n  border: 1px solid #999999;\n  background-image: none;\n}\n.MooMedButton.Disabled .Text {\n  color: grey !important;\n}\n", ""]);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/modules/Account/Components/AccountValidation/Styles/AccountValidationDialog.less ***!
+  \*****************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2030,10 +1882,10 @@ exports.push([module.i, ".AccountValidationContainer {\n  position: absolute;\n 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src/index.js!./node_modules/less-loader/dist/cjs.js!./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less":
-/*!************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/less-loader/dist/cjs.js!./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less ***!
-  \************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less":
+/*!**************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./React/views/Components/Main/PopUpMessage/Styles/PopUpMessageHolder.less ***!
+  \**************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

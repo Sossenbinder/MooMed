@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using GrpcProxyGenerator.DataTypes;
 using GrpcProxyGenerator.Extensions;
+using GrpcProxyGenerator.Helper;
 using GrpcProxyGenerator.Service.Interface;
 using GrpcProxyGenerator.Service.InternalGenerators;
 using GrpcProxyGenerator.Service.InternalGenerators.Interface;
 using MooMed.Common.Definitions.IPC;
-using MooMed.DotNet.Extensions;
-using MooMed.ServiceBase.Attributes;
 
 namespace GrpcProxyGenerator.Service
 {
@@ -64,7 +61,9 @@ namespace GrpcProxyGenerator.Service
 
 		private string GetKubernetesType(ProxyMetaData proxyMetaData)
 		{
-			return _typeInfoProvider.GetProxyTypeForType(proxyMetaData.KubernetesServiceType).GetRealFullName();
+			var proxyTypeName = _typeInfoProvider.GetProxyTypeForType(proxyMetaData.KubernetesServiceType).FullName;
+
+			return TypeNameHelper.StripGenericArtifacts(proxyTypeName);
 		}
 	}
 }

@@ -21,50 +21,50 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 		}
 
 		[Test]
-		public void PutShouldWorkForHappyPath()
+		public async Task PutShouldWorkForHappyPath()
 		{
 			var key = Guid.NewGuid();
 
-			Assert.False(_underlyingCache.HasValue(key));
+			Assert.False(await _underlyingCache.HasValue(key));
 
-			_underlyingCache.PutItem(key, "1234");
+			await _underlyingCache.PutItem(key, "1234");
 
-			Assert.True(_underlyingCache.HasValue(key));
+			Assert.True(await _underlyingCache.HasValue(key));
 		}
 
 		[Test]
-		public void RemoveShouldWorkForHappyPath()
+		public async Task RemoveShouldWorkForHappyPath()
 		{
 			var key = Guid.NewGuid();
 
-			_underlyingCache.PutItem(key, "1234");
+			await _underlyingCache.PutItem(key, "1234");
 
-			Assert.True(_underlyingCache.HasValue(key));
+			Assert.True(await _underlyingCache.HasValue(key));
 
-			_underlyingCache.Remove(key);
+			await _underlyingCache.Remove(key);
 
-			Assert.False(_underlyingCache.HasValue(key));
+			Assert.False(await _underlyingCache.HasValue(key));
 		}
 
 		[Test]
-		public void GetItemShouldWorkForHappyPath()
+		public async Task GetItemShouldWorkForHappyPath()
 		{
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			_underlyingCache.PutItem(key, item);
+			await _underlyingCache.PutItem(key, item);
 
-			var itemFromCache = _underlyingCache.GetItem(key);
+			var itemFromCache = await _underlyingCache.GetItem(key);
 
 			Assert.AreEqual(item, itemFromCache);
 		}
 
 		[Test]
-		public void GetItemShouldReturnNullIfElementNotAvailable()
+		public async Task GetItemShouldReturnNullIfElementNotAvailable()
 		{
 			var key = Guid.NewGuid();
 
-			var itemFromCache = _underlyingCache.GetItem(key);
+			var itemFromCache = await _underlyingCache.GetItem(key);
 
 			Assert.AreEqual(null, itemFromCache);
 		}
@@ -75,7 +75,7 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			_underlyingCache.PutItem(key, item);
+			await _underlyingCache.PutItem(key, item);
 
 			var lockedItemFromCache = await _underlyingCache.GetItemLocked(key);
 
@@ -83,16 +83,49 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 		}
 
 		[Test]
-		public async Task GetItemLockedShouldTimeoutWhenNotReleasedAndQueriedAgain()
+		public async Task GetItemLockedShouldUnlockOnDispose()
 		{
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			_underlyingCache.PutItem(key, item);
+			await _underlyingCache.PutItem(key, item);
 
-			await _underlyingCache.GetItemLocked(key);
+			await using (await _underlyingCache.GetItemLocked(key))
+			{
+				// Doing nothing
+			}
 
-			Assert.False(await _underlyingCache.GetItemLocked(key).WaitAsync(TimeSpan.FromSeconds(2)));
+			var proofTimer = Task.Delay(TimeSpan.FromSeconds(1));
+			var lockAquirationTask = _underlyingCache.GetItemLocked(key);
+
+			await Task.WhenAny(proofTimer, lockAquirationTask.AsTask());
+
+			// If the cache item is unlocked, the lock aquiration shouldn't run into a timeout and therefore be available immediately here.
+			// If the prooftimer finishes first, then the other Task is still stuck in aquiring the lock which hints at it having to wait for lock resolution
+			Assert.That(!proofTimer.IsCompleted && lockAquirationTask.IsCompleted);
+		}
+
+		[Test]
+		public async Task GetItemLockedShouldUnlockOnAutoUnlock()
+		{
+			var key = Guid.NewGuid();
+			var item = "1234";
+
+			await _underlyingCache.PutItem(key, item);
+
+			var lockHold = await _underlyingCache.GetItemLocked(key);
+
+			// Lock should timeout after
+			await Task.Delay(TimeSpan.FromSeconds(6));
+
+			var proofTimer = Task.Delay(TimeSpan.FromSeconds(1));
+			var lockAquirationTask = _underlyingCache.GetItemLocked(key);
+
+			await Task.WhenAny(proofTimer, lockAquirationTask.AsTask());
+
+			// If the cache item is unlocked, the lock aquiration shouldn't run into a timeout and therefore be available immediately here.
+			// If the prooftimer finishes first, then the other Task is still stuck in aquiring the lock which hints at it having to wait for lock resolution
+			Assert.That(!proofTimer.IsCompleted && lockAquirationTask.IsCompleted);
 		}
 
 		[Test]
@@ -101,7 +134,7 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			_underlyingCache.PutItem(key, item);
+			await _underlyingCache.PutItem(key, item);
 
 			var lockedItem = await _underlyingCache.GetItemLocked(key);
 			lockedItem.Release();

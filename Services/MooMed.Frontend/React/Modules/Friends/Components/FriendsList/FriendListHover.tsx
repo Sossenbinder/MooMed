@@ -3,8 +3,8 @@ import * as React from "react";
 import { useHistory  } from "react-router-dom";
 
 // Components
-import Flex from "Common/Components/Flex";
-import Icon from "Common/Components/Icon";
+import Flex from "common/components/Flex";
+import Icon from "common/components/Icon";
 import FriendListImage from "./FriendListImage";
 
 // Functionality

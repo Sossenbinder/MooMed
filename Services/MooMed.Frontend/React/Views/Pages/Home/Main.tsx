@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import NavBar from "views/Components/Main/NavBar";
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
 import GlobalClickCapturer from "views/Components/Helper/GlobalClickCapturer";
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 import MainContent from "./MainContent";
 import ChatWidget from "modules/Chat/Components/ChatWidget";
 

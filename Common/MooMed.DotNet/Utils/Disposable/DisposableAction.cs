@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MooMed.DotNet.Utils.Disposable
 {
@@ -13,9 +11,6 @@ namespace MooMed.DotNet.Utils.Disposable
 			_onDispose = onDispose;
 		}
 
-		public void Dispose()
-		{
-			_onDispose();
-		}
+		public void Dispose() => _onDispose();
 	}
 }

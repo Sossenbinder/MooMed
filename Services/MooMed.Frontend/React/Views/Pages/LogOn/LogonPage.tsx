@@ -8,7 +8,7 @@ import { createBrowserHistory } from 'history';
 
 // Components
 import SignIn from "modules/Logon/Components/SignIn";
-import Flex from "Common/Components/Flex";
+import Flex from "common/components/Flex";
 import CommonLandingPage from "Views/Pages/Common/CommonLandingPage";
 
 const LogonPage: React.FC = () => (

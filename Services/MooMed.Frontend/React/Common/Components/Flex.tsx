@@ -43,7 +43,7 @@ export type FlexProps = {
 }
 
 export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => {}, onScroll = () => {}, ref}) => {
-
+ 
 	const classes = classNames({
 		"flex": true,
 		"flexColumn": direction === "Column",
@@ -61,11 +61,11 @@ export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row",
 		"flexCrossCenter": crossAlign === "Center",
 		"flexCrossStart": crossAlign === "Start",
 		"flexCrossEnd": crossAlign === "End",
-	});
+	}, className ?? "");
 
 	return (
 		<div 
-			className={`${classes} ${className}`}
+			className={classes}
 			style={style}
 			onClick={onClick}
 			onScroll={onScroll}

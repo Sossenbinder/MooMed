@@ -29,18 +29,18 @@ namespace MooMed.IPC.ProxyInvocation
 			_moomedService = moomedService;
 		}
 
-		public Task Invoke(Func<TServiceType, Task> invocationFunc)
+		public async Task Invoke(Func<TServiceType, Task> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
+			var proxy = await _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
 
-			return invocationFunc(proxy);
+			await invocationFunc(proxy);
 		}
 
-		public Task<TResult> InvokeWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
+		public async Task<TResult> InvokeWithResult<TResult>(Func<TServiceType, Task<TResult>> invocationFunc)
 		{
-			var proxy = _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
+			var proxy = await _clientProvider.GetGrpcClient<TServiceType>(_moomedService);
 
-			return invocationFunc(proxy);
+			return await invocationFunc(proxy);
 		}
 	}
 }

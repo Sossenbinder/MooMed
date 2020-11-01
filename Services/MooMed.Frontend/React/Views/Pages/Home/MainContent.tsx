@@ -7,7 +7,8 @@ import AboutDialog from "views/Pages/AboutDialog";
 import Profile from "modules/Account/Components/Profile/Profile";
 import FriendsList from "modules/Friends/Components/FriendsList/FriendsList";
 import StocksDialog from "modules/Stocks/Components/StocksDialog";
-import Flex from "Common/Components/Flex";
+import SavingDialog from "modules/Saving/Components/SavingDialog";
+import Flex from "common/components/Flex";
 import PostsContainer from "modules/Posts/Components/PostsContainer";
 
 import "./Styles/MainContent.less";
@@ -33,8 +34,11 @@ const MainContent: React.FC = () => {
 					<Route
 						path={"/about"}
 						render={() => <AboutDialog />} />
+					<Route 
+						path={"/saving"}
+						render={() => <SavingDialog />}/>
 					<Route
-						path={"/Investing"}
+						path={"/investing"}
 						render={() => <StocksDialog />} />
 					<PostsContainer />
 				</Flex>

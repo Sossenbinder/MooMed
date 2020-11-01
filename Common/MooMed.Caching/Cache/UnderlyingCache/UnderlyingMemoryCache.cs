@@ -5,41 +5,45 @@ using MooMed.Caching.Cache.UnderlyingCache.Locking;
 
 namespace MooMed.Caching.Cache.UnderlyingCache
 {
-	public class UnderlyingMemoryCache<TKeyType, TValueType> : AbstractUnderlyingCache<TKeyType, TValueType>
+	public class UnderlyingMemoryCache<TKey, TValue> : AbstractUnderlyingCache<TKey, TValue>
 	{
 		private readonly IMemoryCache _memoryCache;
 
 		private readonly int _baseTtlTimeInSeconds;
 
 		public UnderlyingMemoryCache(int baseTtlTimeInSeconds)
-			: base(new SemaphoreCacheLockManager<TKeyType>())
+			: base(new SemaphoreCacheLockManager<TKey>())
 		{
 			_memoryCache = new MemoryCache(new MemoryCacheOptions());
 
 			_baseTtlTimeInSeconds = baseTtlTimeInSeconds;
 		}
 
-		public override void PutItem(TKeyType key, TValueType value, int? secondsToLive = null)
+		public override ValueTask PutItem(TKey key, TValue value, int? secondsToLive = null)
 		{
 			_memoryCache.Set(key, value, DateTimeOffset.Now.AddSeconds(secondsToLive ?? _baseTtlTimeInSeconds));
+
+			return default;
 		}
 
-		public override TValueType GetItem(TKeyType key)
+		public override ValueTask<TValue> GetItem(TKey key)
 		{
-			var value = (TValueType)_memoryCache.Get(key);
+			var value = (TValue)_memoryCache.Get(key);
 
-			return value == null ? default : value;
+			return new ValueTask<TValue>(value == null ? default : value);
 		}
 
-		public override void Remove(TKeyType key)
+		public override ValueTask Remove(TKey key)
 		{
 			_memoryCache.Remove(key);
 			CacheLockManager.RemoveLock(key);
+
+			return default;
 		}
 
-		public override bool HasValue(TKeyType key)
+		public override ValueTask<bool> HasValue(TKey key)
 		{
-			return _memoryCache.TryGetValue(key, out _);
+			return new ValueTask<bool>(_memoryCache.TryGetValue(key, out _));
 		}
 	}
 }

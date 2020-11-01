@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moomed-accountservice
+spec:
+  replicas: 3
+  serviceName: moomed-accountservice
+  template:
+    spec:
+      containers:
+      - image: moomed.azurecr.io/accountservice:prod
+        name: moomed-accountservice
+      imagePullSecrets:
+      - name: acrimgpullsecret

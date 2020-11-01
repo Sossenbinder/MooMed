@@ -1,6 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System.Threading.Tasks;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
-using MooMed.Caching.Cache.Factory;
+using MooMed.Caching.Cache.Factory.Interface;
 using MooMed.Caching.Extensions;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Module.Session.Cache.Interface;
@@ -9,28 +9,27 @@ namespace MooMed.Module.Session.Cache
 {
 	public class SessionContextCache : ISessionContextCache
 	{
-		[NotNull]
 		private readonly ICache<ISessionContext> _sessionContextCache;
 
-		public SessionContextCache([NotNull] IDefaultCacheFactory defaultCacheFactory)
+		public SessionContextCache(IDistributedCacheFactory cacheFactory)
 		{
-			_sessionContextCache = defaultCacheFactory.CreateCache<ISessionContext>();
+			_sessionContextCache = cacheFactory.CreateCache<ISessionContext>();
 		}
 
-		public void PutItem(ISessionContext sessionContext, int? secondsToLive = null)
+		public ValueTask PutItem(ISessionContext sessionContext, int? secondsToLive = null)
 		{
 			var key = sessionContext.GetAccountKey();
-			_sessionContextCache.PutItem(key, sessionContext, secondsToLive);
+			return _sessionContextCache.PutItem(key, sessionContext, secondsToLive);
 		}
 
-		public ISessionContext GetItem(string key)
+		public ValueTask<ISessionContext> GetItem(string key)
 		{
 			return _sessionContextCache.GetItem(key);
 		}
 
-		public void RemoveItem(ISessionContext sessionContext)
+		public ValueTask RemoveItem(ISessionContext sessionContext)
 		{
-			_sessionContextCache.Remove(sessionContext.GetAccountKey());
+			return _sessionContextCache.Remove(sessionContext.GetAccountKey());
 		}
 	}
 }

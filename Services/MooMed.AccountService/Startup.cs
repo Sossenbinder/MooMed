@@ -16,6 +16,7 @@ using MooMed.ServiceBase.Services.Interface;
 using MooMed.AccountService.Module;
 using MooMed.AccountValidationService.Remoting;
 using MooMed.ProfilePictureService.Remoting;
+using MooMed.Serialization.Module;
 using MooMed.SessionService.Remoting;
 
 namespace MooMed.AccountService
@@ -48,6 +49,7 @@ namespace MooMed.AccountService
 			containerBuilder.RegisterModule<InternalAccountModule>();
 			containerBuilder.RegisterModule(new AccountServiceModule());
 			containerBuilder.RegisterModule(new CachingModule());
+			containerBuilder.RegisterModule<SerializationModule>();
 			containerBuilder.RegisterModule(new KubernetesModule());
 			containerBuilder.RegisterModule(new IdentityModule());
 

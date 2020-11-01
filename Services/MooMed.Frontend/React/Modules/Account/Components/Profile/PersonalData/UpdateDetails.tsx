@@ -4,9 +4,9 @@ import * as React from "react"
 // Components
 import Flex from "common/components/Flex";
 import Grid from "common/components/Grid/Grid";
-import Cell from "common/Components/Grid/Cell";
-import LabelledErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/LabelledErrorAttachedTextInput";
-import Button from "common/Components/General/Input/Buttons/Button";
+import Cell from "common/components/Grid/Cell";
+import LabelledErrorAttachedTextInput from "common/components/general/input/ErrorAttached/LabelledErrorAttachedTextInput";
+import Button from "common/components/general/input/Buttons/Button";
 
 // Functionality
 import useFormState from "hooks/useFormState";

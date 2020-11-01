@@ -61,5 +61,14 @@ namespace EncryptGuiCore
 
 			Model.EncryptedData = encrypted;
 		}
+
+		private void EncryptedTextData_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			var encryptedTextData = EncryptedData.Text;
+
+			var decrypted = Convert.ToBase64String(_settingsCryptoProvider.Decrypt(Convert.FromBase64String(encryptedTextData)));
+
+			Model.ClearTextData = decrypted;
+		}
 	}
 }

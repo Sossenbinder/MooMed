@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Components
-import ErrorAttachedTextInput from "common/components/General/Input/ErrorAttached/ErrorAttachedTextInput";
+import ErrorAttachedTextInput from "common/components/general/input/ErrorAttached/ErrorAttachedTextInput";
 
 // Functionality
 import useFormState from "hooks/useFormState";

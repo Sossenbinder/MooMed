@@ -4,18 +4,16 @@ using MooMed.Caching.Cache.UnderlyingCache.Locking;
 
 namespace MooMed.Caching.Cache.UnderlyingCache.Interface
 {
-	public interface IUnderlyingCache<in TKeyType, TValueType>
+	public interface IUnderlyingCache<in TKey, TValue>
 	{
-		void PutItem([NotNull] TKeyType key, [NotNull] TValueType value, [CanBeNull] int? secondsToLive = null);
+		ValueTask PutItem(TKey key, TValue value, int? secondsToLive = null);
 
-		[CanBeNull]
-		TValueType GetItem([NotNull] TKeyType key);
+		ValueTask<TValue> GetItem(TKey key);
 
-		[ItemNotNull]
-		Task<LockedCacheItem<TValueType>> GetItemLocked([NotNull] TKeyType key);
+		ValueTask<LockedCacheItem<TValue>> GetItemLocked(TKey key);
 
-		void Remove([NotNull] TKeyType key);
+		ValueTask Remove(TKey key);
 
-		bool HasValue([NotNull] TKeyType key);
+		ValueTask<bool> HasValue(TKey key);
 	}
 }

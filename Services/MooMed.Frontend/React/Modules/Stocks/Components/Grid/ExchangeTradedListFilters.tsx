@@ -3,8 +3,8 @@ import * as React from "react";
 import { $enum } from "ts-enum-util";
 
 // Components
-import Flex from "common/Components/Flex";
-import Dropdown, { DropdownItem } from "common/Components/General/Input/Dropdown";
+import Flex from "common/components/Flex";
+import Dropdown, { DropdownItem } from "common/components/general/input/Dropdown";
 
 // Types
 import { ExchangeTradedType } from "enums/moomedEnums";

@@ -1,60 +1,49 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
-using MooMed.Caching.Cache.CacheInformation;
-using MooMed.Caching.Cache.UnderlyingCache;
 using MooMed.Caching.Cache.UnderlyingCache.Interface;
 using MooMed.Caching.Cache.UnderlyingCache.Locking;
 
 namespace MooMed.Caching.Cache.CacheImplementations
 {
-	public class Cache<TDataType> : Cache<string, TDataType>, ICache<TDataType>
+	public class Cache<TValue> : Cache<string, TValue>, ICache<TValue>
 	{
-		public Cache([NotNull] CacheSettings cacheSettings)
-			: base(cacheSettings)
+		public Cache(IUnderlyingCache<string, TValue> underlyingCache)
+			: base(underlyingCache)
 		{
 		}
 	}
 
-	public class Cache<TKeyType, TDataType> : ICache<TKeyType, TDataType>
+	public class Cache<TKey, TValue> : ICache<TKey, TValue>
 	{
 		[NotNull]
-		private readonly IUnderlyingCache<TKeyType, TDataType> _memoryCache;
+		private readonly IUnderlyingCache<TKey, TValue> _underlyingCache;
 
-		public Cache([NotNull] CacheSettings cacheSettings)
+		public Cache(IUnderlyingCache<TKey, TValue> underlyingCache)
 		{
-			_memoryCache = new UnderlyingMemoryCache<TKeyType, TDataType>(cacheSettings.TtlInSeconds);
+			_underlyingCache = underlyingCache;
 		}
 
-		public void PutItem(TKeyType key, TDataType value, int? secondsToLive = null)
-			=> _memoryCache.PutItem(key, value, secondsToLive);
+		public ValueTask PutItem(TKey key, TValue value, int? secondsToLive = null)
+			=> _underlyingCache.PutItem(key, value, secondsToLive);
 
-		public Task<LockedCacheItem<TDataType>> GetItemLocked(TKeyType key)
-			=> _memoryCache.GetItemLocked(key);
+		public ValueTask<LockedCacheItem<TValue>> GetItemLocked(TKey key)
+			=> _underlyingCache.GetItemLocked(key);
 
-		public void PutItems(TKeyType key, IEnumerable<TDataType> values, int? secondsToLive = null)
+		public async Task PutItems(TKey key, IEnumerable<TValue> values, int? secondsToLive = null)
 		{
-			foreach (var value in values)
-			{
-				_memoryCache.PutItem(key, value, secondsToLive);
-			}
+			await Task.WhenAll(values.Select(value => _underlyingCache.PutItem(key, value, secondsToLive).AsTask()));
 		}
 
-		public void Remove(TKeyType key)
-			=> _memoryCache.Remove(key);
+		public ValueTask Remove(TKey key)
+			=> _underlyingCache.Remove(key);
 
-		public bool HasValue(TKeyType key)
-			=> _memoryCache.HasValue(key);
+		public ValueTask<bool> HasValue(TKey key)
+			=> _underlyingCache.HasValue(key);
 
-		[CanBeNull]
-		public TDataType this[[NotNull] TKeyType key]
-		{
-			set => PutItem(key, value);
-			get => GetItem(key);
-		}
-
-		public TDataType GetItem(TKeyType key)
-			=> _memoryCache.GetItem(key);
+		public ValueTask<TValue> GetItem(TKey key)
+			=> _underlyingCache.GetItem(key);
 	}
 }

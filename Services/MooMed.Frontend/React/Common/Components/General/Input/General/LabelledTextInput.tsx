@@ -2,7 +2,7 @@
 import * as React from "react"
 
 // Components
-import Flex, { FlexDirections } from "common/Components/Flex";
+import Flex, { FlexDirections } from "common/components/Flex";
 import TextInput from "./TextInput";
 
 // Types

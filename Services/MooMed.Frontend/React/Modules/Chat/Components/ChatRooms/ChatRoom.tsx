@@ -2,8 +2,8 @@
 import * as React from "react";
 
 // Components
-import Flex from "common/Components/Flex";
-import Icon from "common/Components/Icon";
+import Flex from "common/components/Flex";
+import Icon from "common/components/Icon";
 import FriendListImage from "modules/Friends/Components/FriendsList/FriendListImage";
 import ChatRoomInput from "./ChatRoomInput";
 import ChatMessage from "./ChatMessage";

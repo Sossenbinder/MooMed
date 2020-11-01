@@ -28,7 +28,6 @@ namespace MooMed.IPC.Module
 				.SingleInstance();
 
 			// Client / Channel providers
-
 			builder.RegisterType<GrpcClientProvider>()
 				.As<IGrpcClientProvider>()
 				.SingleInstance();

@@ -1,58 +1,37 @@
-// Framework
-import * as Redux from "redux";
-
 // Functionality
-import { CouldBeArray } from "data/commonTypes";
 import { ensureArray, removeAt } from "helper/arrayUtils";
 
-type ReducerParams<T> = {
+// Types
+import { CouldBeArray } from "data/commonTypes";
+import { Reducer, ReducerState, MultiReducerState, ReducerAction } from "./types";
+
+type ReducerParamsWithoutKey = {
 	actionIdentifier: string;
+}
+
+type ReducerParams<T> = ReducerParamsWithoutKey & {
 	key: keyof T;
 }
 
-export type ReducerState<T> = {
-	data: Array<T>;
+type CrudActions<TDataType, TReducerState extends ReducerState<TDataType>> = {
+	addAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
+	updateAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
+	deleteAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
 }
 
-type ReducerAction<T> = Redux.Action & {
-	payload: CouldBeArray<T>;
-}
-
-type Reducer<T> = {
-	add: (data: CouldBeArray<T>) => ReducerAction<T>;
-	update: (data: CouldBeArray<T>) => ReducerAction<T>;
-	delete: (data: CouldBeArray<T>) => ReducerAction<T>;
-	replace: (data: CouldBeArray<T>) => ReducerAction<T>;
-	reducer: Redux.Reducer<ReducerState<T>, ReducerAction<T>>;
-}
-
-export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
-
-	const actionIdentifier = params.actionIdentifier;
-
-	const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
-	const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
-	const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
-	const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
-
-	const initialState: ReducerState<T> = {
-		data: []
-	};
-
-	const reducer = (state = initialState, action: ReducerAction<T>): ReducerState<T> => {
-		switch (action.type) {
-			case ADD_IDENTIFIER:
+export const createReducer = <T>(params: ReducerParams<T>) => createReducerInternal<CouldBeArray<T>, MultiReducerState<T>>(
+	{ 
+		...params,
+		actions: {
+			addAction: (state, action) => {
 				const addPayloadAsArray = ensureArray(action.payload);
 
 				return { 
 					...state, 
-					data: [
-						...state.data, 
-						...addPayloadAsArray
-					],
+					data: [...state.data].concat(addPayloadAsArray),
 				};
-			case UPDATE_IDENTIFIER:
-
+			},
+			updateAction: (state, action) => {
 				const updatePayloadAsArray = ensureArray(action.payload);
 				const updatedData = [ ...state.data ];
 
@@ -65,8 +44,8 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 					...state,
 					data: updatedData
 				};
-			case DELETE_IDENTIFIER:
-
+			},
+			deleteAction: (state, action) => {
 				const deletePayloadAsArray = ensureArray(action.payload);
 				const dataToDelete = [ ...state.data ];
 
@@ -82,6 +61,68 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 					...state,
 					data: dataToDelete
 				};
+			}
+		},
+		initialState: {
+			data: []
+		},
+	}
+);
+
+export const createSingleReducer = <T>(params: ReducerParamsWithoutKey) => createReducerInternal<T, ReducerState<T>>(
+	{ 
+		...params,
+		actions: {
+			addAction: (_, action) => {
+				return {
+					data: action.payload
+				}
+			},
+			updateAction: (_, action) => {
+				return {
+					data: action.payload
+				}
+			},
+			deleteAction: (_, __) => {
+				return {
+					data: undefined,
+				}
+			}
+		},
+		initialState: {
+			data: undefined
+		},
+	}
+);
+
+type GenericReducerParams<TDataType, TReducerState extends ReducerState<TDataType>> = ReducerParamsWithoutKey & {
+	actions: CrudActions<TDataType, TReducerState>;
+	initialState: TReducerState;
+}
+
+const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDataType>>(
+	params: GenericReducerParams<TDataType, TReducerState>
+): Reducer<TDataType> => {
+
+	const actionIdentifier = params.actionIdentifier;
+
+	const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
+	const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
+	const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
+	const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
+
+	const initialState: TReducerState = params.initialState;
+
+	const { addAction, deleteAction, updateAction } = params.actions;
+
+	const reducer = (state = initialState, action: ReducerAction<TDataType>): TReducerState => {
+		switch (action.type) {
+			case ADD_IDENTIFIER:
+				return addAction(state, action);
+			case UPDATE_IDENTIFIER:
+				return updateAction(state, action);
+			case DELETE_IDENTIFIER:
+				return deleteAction(state, action);
 			case REPLACE_IDENTIFIER:
 				return {
 					...state,
@@ -91,28 +132,28 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 		}
 	}
 
-	const addAction = (data: CouldBeArray<T>): ReducerAction<T> => {
+	const addActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
 		return {
 			type: ADD_IDENTIFIER,
 			payload: data,
 		}
 	};
 
-	const updateAction = (data: CouldBeArray<T>): ReducerAction<T> => {
+	const updateActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
 		return {
 			type: UPDATE_IDENTIFIER,
 			payload: data,
 		}
 	};
 
-	const deleteAction = (data: CouldBeArray<T>): ReducerAction<T> => {
+	const deleteActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
 		return {
 			type: DELETE_IDENTIFIER,
 			payload: data,
 		}
 	};
 
-	const replaceAction = (data: CouldBeArray<T>): ReducerAction<T> => {
+	const replaceActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
 		return {
 			type: REPLACE_IDENTIFIER,
 			payload: data,
@@ -120,10 +161,10 @@ export const createReducer = <T>(params: ReducerParams<T>): Reducer<T> => {
 	};
 
 	return {
-		add: addAction,
-		update: updateAction,
-		delete: deleteAction,
-		replace: replaceAction,
+		add: addActionGenerator,
+		update: updateActionGenerator,
+		delete: deleteActionGenerator,
+		replace: replaceActionGenerator,
 		reducer: reducer,
 	}
 }

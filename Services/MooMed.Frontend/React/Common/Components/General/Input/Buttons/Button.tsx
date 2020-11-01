@@ -3,7 +3,7 @@ import * as React from "react";
 import classNames from "classnames";
 
 // Components
-import LoadingBubbles from "common/Components/LoadingBubbles";
+import LoadingBubbles from "common/components/LoadingBubbles";
 
 //Functionality
 import useBackendCallWrapper from "hooks/useBackendCallWrapper";

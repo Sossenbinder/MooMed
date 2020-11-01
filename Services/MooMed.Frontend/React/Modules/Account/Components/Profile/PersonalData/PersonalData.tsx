@@ -5,7 +5,7 @@ import * as React from "react"
 import Flex from "common/components/Flex";
 import UpdateDetails from "./UpdateDetails";
 import UpdatePassword from "./UpdatePassword";
-import Separator from "common/Components/Separator";
+import Separator from "common/components/Separator";
 
 // Types
 import { Account } from "modules/Account/types";

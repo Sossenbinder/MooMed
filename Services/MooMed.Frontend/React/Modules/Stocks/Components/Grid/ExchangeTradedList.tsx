@@ -5,14 +5,14 @@ import * as React from "react";
 import { Flex } from "common/components/Flex";
 import { ExchangeTradedListFilters } from "./ExchangeTradedListFilters";
 import { ActionCell } from "./Cells/ActionCell";
-import DataGrid from "common/Components/DataGrid/DataGrid";
+import DataGrid from "common/components/DataGrid/DataGrid";
 
 // Functionality
 import useUiState from "hooks/useUiState";
 
 // Types
 import { ExchangeTradedItem, ExchangeTradedUiFilters } from "modules/stocks/types";
-import { GridConfiguration } from "common/Components/DataGrid/gridTypes";
+import { GridConfiguration } from "common/components/DataGrid/gridTypes";
 import { ExchangeTradedType } from "enums/moomedEnums";
 
 import "./Styles/ExchangeTradedList.less";

@@ -60,7 +60,7 @@ namespace MooMed.Frontend.Controllers.Base
 
 				if (sessionServiceResponse.IsFailure)
 				{
-					StaticLogger.Fatal("Couldn't retrieve SessionContext.", accountId);
+					StaticLogger.Fatal("Request was authenticated, but couldn't retrieve SessionContext for account", accountId);
 				}
 				else
 				{
