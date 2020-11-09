@@ -7,17 +7,19 @@ import Flex from "common/components/Flex"
 
 import "./Styles/TextInput.less";
 
-export type InputProps = {
+export type DataTypes = number | string | readonly string[];
+
+export type InputProps<T extends DataTypes> = {
 	name: string;
-	classNames: string;
-	data: string;
-	setData(data: string): void;
+	classNames?: string;
+	data: T;
+	setData(data: T): void;
 	inputType?: string;
 	onEnterPress?: () => void;
 	children?: React.ReactNode;
 }
 
-export const TextInput: React.FC<InputProps> = ({
+export const TextInput = <T extends DataTypes = string>({
 	name,
 	classNames,
 	data,
@@ -25,10 +27,12 @@ export const TextInput: React.FC<InputProps> = ({
 	inputType,
 	onEnterPress,
 	children
-}) => {
+}: InputProps<T>) => {
 
 	const classes = React.useMemo(() => {
-		return classnames("form-control", classNames);
+		return classnames("form-control", {
+			"classNames": !!classNames,
+		});
 	}, [classNames])
 
 	const handleKeyPress = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -46,7 +50,7 @@ export const TextInput: React.FC<InputProps> = ({
 				type={inputType ?? "text"}
 				name={name}
 				value={data}
-				onChange={event => setData(event.target.value)}
+				onChange={event => setData(event.target.value as T)}
 				placeholder={name}
 				onKeyPress={handleKeyPress}
 			/>

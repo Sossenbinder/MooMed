@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MooMed.Common.Definitions.Interface;
+﻿using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Database.Converter
 {
@@ -7,6 +6,6 @@ namespace MooMed.Common.Database.Converter
 		where TUiModel : IUiModel
 		where TModel : IModel
 	{
-		TModel ToModel([NotNull] TUiModel uiModel);
+		TModel ToModel(TUiModel uiModel);
 	}
 }

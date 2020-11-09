@@ -45,7 +45,10 @@ namespace MooMed.DotNet.Extensions
 			var appendComma = false;
 			foreach (var argType in type.GetGenericArguments())
 			{
-				if (appendComma) sb.Append(',');
+				if (appendComma)
+				{
+					sb.Append(',');
+				}
 				sb.Append(GetRealTypeName(argType, propSelector));
 				appendComma = true;
 			}

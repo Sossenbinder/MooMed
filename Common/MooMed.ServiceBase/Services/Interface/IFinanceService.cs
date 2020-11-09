@@ -20,6 +20,6 @@ namespace MooMed.ServiceBase.Services.Interface
 		Task<ServiceResponse<Portfolio>> GetPortfolio(ISessionContext sessionContext);
 
 		[OperationContract]
-		Task<ServiceResponse> AddFondToPortfolio([NotNull] PortfolioItem portfolioItem);
+		Task<ServiceResponse> AddFondToPortfolio(PortfolioItem portfolioItem);
 	}
 }

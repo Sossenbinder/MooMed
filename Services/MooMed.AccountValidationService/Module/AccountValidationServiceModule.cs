@@ -1,6 +1,6 @@
 ﻿using Autofac;
+using MooMed.RemotingProxies.Proxies;
 using MooMed.ServiceBase.Services.Interface;
-using MooMed.AccountValidationService.Remoting;
 
 namespace MooMed.AccountValidationService.Module
 {

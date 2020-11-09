@@ -7,7 +7,7 @@
         <DockerfileContext>..\..</DockerfileContext>
         <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
         <Platforms>AnyCPU;x64</Platforms>
-		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Common\MooMed.RemotingProxies\MooMed.RemotingProxies.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />

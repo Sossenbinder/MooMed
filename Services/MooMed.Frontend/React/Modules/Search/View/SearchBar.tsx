@@ -6,7 +6,6 @@ import SearchBarPreview from "./SearchBarPreview";
 import Flex from "common/components/Flex";
 
 // Functionality
-import { Account } from "modules/Account/types";
 import { SearchResult } from "modules/Search/types";
 import useServices from "hooks/useServices";
 

@@ -235,7 +235,7 @@ var FlexSpace;
     FlexSpace[FlexSpace["Around"] = 0] = "Around";
     FlexSpace[FlexSpace["Between"] = 1] = "Between";
 })(FlexSpace || (FlexSpace = {}));
-exports.Flex = ({ className, style, direction = "Row", wrap, mainAlign, crossAlign, space, children, onClick = () => { }, onScroll = () => { }, ref }) => {
+exports.Flex = ({ className, style, direction = "Row", wrap, mainAlign, mainAlignSelf, crossAlign, crossAlignSelf, space, children, onClick = () => { }, onScroll = () => { }, ref, title = null }) => {
     const classes = classnames_1.default({
         "flex": true,
         "flexColumn": direction === "Column",
@@ -248,13 +248,19 @@ exports.Flex = ({ className, style, direction = "Row", wrap, mainAlign, crossAli
         "flexMainCenter": mainAlign === "Center",
         "flexMainStart": mainAlign === "Start",
         "flexMainEnd": mainAlign === "End",
+        "flexMainCenterSelf": mainAlignSelf === "Center",
+        "flexMainStartSelf": mainAlignSelf === "Start",
+        "flexMainEndSelf": mainAlignSelf === "End",
         "flexAround": space === "Around",
         "flexBetween": space === "Between",
         "flexCrossCenter": crossAlign === "Center",
         "flexCrossStart": crossAlign === "Start",
         "flexCrossEnd": crossAlign === "End",
+        "flexCrossCenterSelf": crossAlignSelf === "Center",
+        "flexCrossStartSelf": crossAlignSelf === "Start",
+        "flexCrossEndSelf": crossAlignSelf === "End",
     }, className !== null && className !== void 0 ? className : "");
-    return (React.createElement("div", { className: classes, style: style, onClick: onClick, onScroll: onScroll, ref: ref }, children));
+    return (React.createElement("div", { className: classes, style: style, onClick: onClick, onScroll: onScroll, ref: ref, title: title }, children));
 };
 exports.default = exports.Flex;
 
@@ -611,7 +617,7 @@ var PopUpMessageLevel;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IdentityErrorCode = exports.ExchangeTradedType = exports.NotificationType = exports.AccountOnlineState = exports.LoginResponseCode = void 0;
+exports.Currency = exports.IdentityErrorCode = exports.ExchangeTradedType = exports.NotificationType = exports.AccountOnlineState = exports.AccountValidationResult = exports.LoginResponseCode = void 0;
 var LoginResponseCode;
 (function (LoginResponseCode) {
     LoginResponseCode[LoginResponseCode["None"] = 0] = "None";
@@ -623,6 +629,15 @@ var LoginResponseCode;
     LoginResponseCode[LoginResponseCode["PasswordWrong"] = 6] = "PasswordWrong";
     LoginResponseCode[LoginResponseCode["UnknownFailure"] = 7] = "UnknownFailure";
 })(LoginResponseCode = exports.LoginResponseCode || (exports.LoginResponseCode = {}));
+var AccountValidationResult;
+(function (AccountValidationResult) {
+    AccountValidationResult[AccountValidationResult["None"] = 0] = "None";
+    AccountValidationResult[AccountValidationResult["Success"] = 1] = "Success";
+    AccountValidationResult[AccountValidationResult["AlreadyValidated"] = 2] = "AlreadyValidated";
+    AccountValidationResult[AccountValidationResult["ValidationGuidInvalid"] = 3] = "ValidationGuidInvalid";
+    AccountValidationResult[AccountValidationResult["TokenInvalid"] = 4] = "TokenInvalid";
+    AccountValidationResult[AccountValidationResult["AccountNotFound"] = 5] = "AccountNotFound";
+})(AccountValidationResult = exports.AccountValidationResult || (exports.AccountValidationResult = {}));
 var AccountOnlineState;
 (function (AccountOnlineState) {
     AccountOnlineState[AccountOnlineState["Offline"] = 0] = "Offline";
@@ -643,7 +658,7 @@ var ExchangeTradedType;
 })(ExchangeTradedType = exports.ExchangeTradedType || (exports.ExchangeTradedType = {}));
 var IdentityErrorCode;
 (function (IdentityErrorCode) {
-    IdentityErrorCode[IdentityErrorCode["None"] = 0] = "None";
+    IdentityErrorCode[IdentityErrorCode["Success"] = 0] = "Success";
     IdentityErrorCode[IdentityErrorCode["DefaultError"] = 1] = "DefaultError";
     IdentityErrorCode[IdentityErrorCode["ConcurrencyFailure"] = 2] = "ConcurrencyFailure";
     IdentityErrorCode[IdentityErrorCode["PasswordMismatch"] = 3] = "PasswordMismatch";
@@ -668,7 +683,13 @@ var IdentityErrorCode;
     IdentityErrorCode[IdentityErrorCode["PasswordRequiresUpper"] = 22] = "PasswordRequiresUpper";
     IdentityErrorCode[IdentityErrorCode["PasswordMissing"] = 23] = "PasswordMissing";
     IdentityErrorCode[IdentityErrorCode["EmailNotConfirmed"] = 24] = "EmailNotConfirmed";
+    IdentityErrorCode[IdentityErrorCode["EmailAlreadyConfirmed"] = 25] = "EmailAlreadyConfirmed";
 })(IdentityErrorCode = exports.IdentityErrorCode || (exports.IdentityErrorCode = {}));
+var Currency;
+(function (Currency) {
+    Currency[Currency["Euro"] = 0] = "Euro";
+    Currency[Currency["Dollar"] = 1] = "Dollar";
+})(Currency = exports.Currency || (exports.Currency = {}));
 
 
 /***/ }),
@@ -1052,7 +1073,7 @@ var ValidationStep;
 exports.AccountValidationDialog = ({ accountId, token }) => {
     var _a;
     const [validationStep, setValidationStep] = React.useState(ValidationStep.Validating);
-    const [identityError, setIdentityError] = React.useState(moomedEnums_1.IdentityErrorCode.None);
+    const [identityError, setIdentityError] = React.useState(moomedEnums_1.IdentityErrorCode.Success);
     const { AccountValidationService } = useServices_1.default();
     const validationStepMap = React.useMemo(() => {
         return new Map([
@@ -1087,7 +1108,7 @@ exports.AccountValidationDialog = ({ accountId, token }) => {
                         IdentityErrorLookupHelper_1.default(identityError))),
                     onActionButtonClick: () => {
                         setValidationStep(ValidationStep.Validating);
-                        setIdentityError(moomedEnums_1.IdentityErrorCode.None);
+                        setIdentityError(moomedEnums_1.IdentityErrorCode.Success);
                         return Promise.resolve();
                     }
                 }
@@ -1831,7 +1852,7 @@ exports.push([module.i, ".languagePickerContainer {\n  width: 95px;\n  height: 5
 
 exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, ".flex {\n  display: flex;\n}\n.flexColumn {\n  flex-direction: column;\n}\n.flexColumnReverse {\n  flex-direction: column-reverse;\n}\n.flexRow {\n  flex-direction: row;\n}\n.flexRowReverse {\n  flex-direction: row-reverse;\n}\n.flexNoWrap {\n  flex-wrap: nowrap;\n}\n.flexWrap {\n  flex-wrap: wrap;\n}\n.flexWrapReverse {\n  flex-wrap: wrap-reverse;\n}\n.flexMainCenter {\n  justify-content: center;\n}\n.flexMainStart {\n  justify-content: flex-start;\n}\n.flexMainEnd {\n  justify-content: flex-end;\n}\n.flexAround {\n  justify-content: space-around;\n}\n.flexBetween {\n  justify-content: space-between;\n}\n.flexCrossCenter {\n  align-items: center;\n}\n.flexCrossStart {\n  align-items: flex-start;\n}\n.flexCrossEnd {\n  align-items: flex-end;\n}\n", ""]);
+exports.push([module.i, ".flex {\n  display: flex;\n}\n.flexColumn {\n  flex-direction: column;\n}\n.flexColumnReverse {\n  flex-direction: column-reverse;\n}\n.flexRow {\n  flex-direction: row;\n}\n.flexRowReverse {\n  flex-direction: row-reverse;\n}\n.flexNoWrap {\n  flex-wrap: nowrap;\n}\n.flexWrap {\n  flex-wrap: wrap;\n}\n.flexWrapReverse {\n  flex-wrap: wrap-reverse;\n}\n.flexMainCenter {\n  justify-content: center;\n}\n.flexMainStart {\n  justify-content: flex-start;\n}\n.flexMainEnd {\n  justify-content: flex-end;\n}\n.flexMainCenterSelf {\n  justify-self: center;\n}\n.flexMainStartSelf {\n  justify-self: flex-start;\n}\n.flexMainEndSelf {\n  justify-self: flex-end;\n}\n.flexAround {\n  justify-content: space-around;\n}\n.flexBetween {\n  justify-content: space-between;\n}\n.flexCrossCenter {\n  align-items: center;\n}\n.flexCrossStart {\n  align-items: flex-start;\n}\n.flexCrossEnd {\n  align-items: flex-end;\n}\n.flexCrossCenterSelf {\n  align-self: center;\n}\n.flexCrossStartSelf {\n  align-self: flex-start;\n}\n.flexCrossEndSelf {\n  align-self: flex-end;\n}\n", ""]);
 
 
 

@@ -4,8 +4,6 @@ using MooMed.IPC.EndpointResolution.Interface;
 using MooMed.IPC.Grpc;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.IPC.Interface;
-using MooMed.IPC.ProxyInvocation;
-using MooMed.IPC.ProxyInvocation.Interface;
 
 namespace MooMed.IPC.Module
 {

@@ -151,7 +151,8 @@ namespace MooMed.AccountService.Service
 		public async Task<ServiceResponse<Account>> FindByEmail(string email)
 		{
 			var account = await _userService.FindByEmail(email);
-			return ServiceResponse<Account>.Success(account);
+
+			return account != null ? ServiceResponse.Success(account) : ServiceResponse<Account>.Failure();
 		}
 
 		public async Task<ServiceResponse> AddAsFriend(AddAsFriendModel model)
@@ -167,7 +168,7 @@ namespace MooMed.AccountService.Service
 
 			if (friends.IsNullOrEmpty())
 			{
-				return ServiceResponse<List<Friend>>.Success(null);
+				return ServiceResponse<List<Friend>>.Success(new List<Friend>());
 			}
 
 			await friends.ParallelAsync(async friend =>

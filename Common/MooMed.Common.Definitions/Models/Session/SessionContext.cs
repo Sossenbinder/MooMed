@@ -9,7 +9,7 @@ namespace MooMed.Common.Definitions.Models.Session
 	public class SessionContext : ISessionContext
 	{
 		[ProtoMember(1)]
-		public Account Account { get; set; }
+		public Account Account { get; set; } = null!;
 
 		public int HashableIdentifier => Account.Id;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using MooMed.Core.DataTypes;
 using MooMed.DotNet.Extensions;
 using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Meta;
@@ -18,7 +19,7 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 
 		private readonly SerializationHelper _serializationHelper;
 
-		private Dictionary<Type, int> _protoDict;
+		private readonly Dictionary<Type, int> _protoDict;
 
 		public GrpcServiceTypeSerializer(SerializationHelper serializationHelper)
 		{
@@ -31,7 +32,7 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 				.ToList();
 
 			_protoDict = new Dictionary<Type, int>();
-			for (var i = 0; i < allGrpcServices.Count; ++i)
+			for (var i = 0; i < allGrpcServices!.Count; ++i)
 			{
 				_protoDict.Add(allGrpcServices[i], (i + 1) * PreAllocatedProtoPerService);
 			}
@@ -49,14 +50,14 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 						.GetInterfaces()
 						.ToList();
 
-					return interfaces.Any() ? interfaces.SingleOrDefault(x => x.FullName.StartsWith("MooMed.ServiceBase.Services.Interface")) : null;
+					return interfaces.Any() ? interfaces.SingleOrDefault(x => x.FullName!.StartsWith("MooMed.ServiceBase.Services.Interface")) : null;
 				})
 				.Where(x => x != null)
 				.ToList();
 
 			foreach (var grpcServiceType in grpcServicesTypes)
 			{
-				InitializeBindingsForGrpcService(grpcServiceType);
+				InitializeBindingsForGrpcService(grpcServiceType!);
 			}
 		}
 
@@ -81,9 +82,8 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 
 		/// <summary>
 		/// Register all generic types on a service method declaration. E.g.
-		/// chains ServiceResponse<int> to the respective base chain
+		/// chains <see cref="ServiceResponse"/> to the respective base chain
 		/// </summary>
-		/// <param name="genericTypes"></param>
 		private void RegisterGenericTypeChain(IEnumerable<Type> genericTypes, Type grpcServiceType)
 		{
 			foreach (var genericType in genericTypes)
@@ -92,7 +92,7 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 			}
 		}
 
-		private void RegisterPlainTypes(IEnumerable<Type> plainTypes)
+		private static void RegisterPlainTypes(IEnumerable<Type> plainTypes)
 		{
 			foreach (var type in plainTypes)
 			{

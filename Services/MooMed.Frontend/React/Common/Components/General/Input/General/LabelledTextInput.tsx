@@ -6,7 +6,9 @@ import Flex, { FlexDirections } from "common/components/Flex";
 import TextInput from "./TextInput";
 
 // Types
-import { InputProps } from "./TextInput";
+import { InputProps, DataTypes } from "./TextInput";
+
+import "./Styles/LabelledTextInput.less";
 
 enum LabelPosition {
 	Top,
@@ -30,18 +32,21 @@ const dirLookUp = new Map<string, keyof typeof FlexDirections>([
 	]
 ])
 
-type Props = InputProps & {
+type Props<T extends DataTypes> = InputProps<T> & {
 	labelPosition?: keyof typeof LabelPosition;
+	labelText: string;
 }
 
-export const LabelledTextInput: React.FC<Props> = ({ labelPosition }, props) => {
+export const LabelledTextInput = <T extends DataTypes = string>(props: Props<T>) => {
 	return (
 		<Flex
-			direction={dirLookUp.get(labelPosition)}>
+			className="LabelledTextInput"
+			direction={dirLookUp.get(props.labelPosition ?? "Left")}>
 			<Flex
 				mainAlign="Center"
-				crossAlign="Center">
-				<span>{props.name}</span>
+				crossAlign="Center"
+				className="Label">
+				<span>{props.labelText}</span>
 			</Flex>
 			<TextInput 
 				{...props} />

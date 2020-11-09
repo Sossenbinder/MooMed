@@ -1,0 +1,30 @@
+@import (reference) "~Styles/Colors.less";
+
+.CurrencyItem {	
+	position: relative;
+	margin: 0px 5px 0px 5px;
+
+	border: 1px solid black;
+	border-radius: 4px;
+	background-color: @lightgrey;
+	box-shadow: 5px -5px 8px -4px rgba(0, 0, 0, 0.75);
+	
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 2px -2px 8px -4px rgba(0, 0, 0, 0.75);
+	}
+
+	&:active {
+		bottom: 2px;
+		left: 2px;
+		box-shadow: 2px -2px 8px -4px rgba(0, 0, 0, 0.75);
+	}
+
+	.SelectedCheckmark {
+		position: absolute;
+		
+		left: 32px;
+		top: 32px;
+	}
+}

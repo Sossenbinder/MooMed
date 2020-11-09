@@ -11,13 +11,10 @@ namespace MooMed.Frontend.Controllers.Base
 {
 	public class SessionBaseController : BaseController
 	{
-		[NotNull]
 		private readonly ISessionService _sessionService;
 
-		[CanBeNull]
-		protected ISessionContext CurrentSession { get; private set; }
+		protected ISessionContext? CurrentSession { get; private set; }
 
-		[NotNull]
 		protected ISessionContext CurrentSessionOrFail
 		{
 			get
@@ -31,10 +28,8 @@ namespace MooMed.Frontend.Controllers.Base
 			}
 		}
 
-		[CanBeNull]
-		protected Account CurrentAccountOrNull => CurrentSession?.Account;
+		protected Account? CurrentAccountOrNull => CurrentSession?.Account;
 
-		[NotNull]
 		protected Account CurrentAccountOrFail => CurrentSession?.Account ?? throw new InvalidOperationException();
 
 		public SessionBaseController([NotNull] ISessionService sessionService)

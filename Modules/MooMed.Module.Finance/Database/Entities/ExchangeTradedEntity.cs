@@ -8,7 +8,7 @@ namespace MooMed.Module.Finance.Database.Entities
 	public class ExchangeTradedEntity : IEntity<string>
 	{
 		[Column("Id")]
-		public string? Id { get; set; }
+		public string Id { get; set; } = null!;
 
 		[Column("Type")]
 		public ExchangeTradedType Type { get; set; }

@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\MooMed\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+      <ProjectReference Include="..\MooMed\Common\MooMed.IPC\MooMed.IPC.csproj" />
+    </ItemGroup>
+</Project>

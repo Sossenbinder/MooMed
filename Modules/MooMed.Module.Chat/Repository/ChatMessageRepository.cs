@@ -13,16 +13,18 @@ namespace MooMed.Module.Chat.Repository
 {
 	public class ChatMessageRepository : AbstractCrudRepository<ChatDbContext, ChatMessageEntity, Guid>, IChatMessageRepository
 	{
-		public ChatMessageRepository([NotNull] AbstractDbContextFactory<ChatDbContext> contextFactory) 
+		public ChatMessageRepository([NotNull] AbstractDbContextFactory<ChatDbContext> contextFactory)
 			: base(contextFactory)
 		{
 		}
 
-		public async Task<IEnumerable<ChatMessageEntity>> GetChatMessages([NotNull] Func<ChatMessageEntity, bool> predicate, int? toSkip = null, int takeCount = 100)
+		public async Task<IEnumerable<ChatMessageEntity>> GetChatMessages(Func<ChatMessageEntity, bool> predicate, int? toSkip = null, int takeCount = 100)
 		{
 			await using var ctx = CreateContext();
 
-			var query = ctx.ChatMessages.Where(predicate).Take(takeCount);
+			var query = ctx.ChatMessages
+				.Where(predicate)
+				.Take(takeCount);
 
 			if (toSkip.HasValue)
 			{

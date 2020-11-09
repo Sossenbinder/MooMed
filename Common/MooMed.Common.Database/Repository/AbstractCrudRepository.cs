@@ -17,11 +17,9 @@ namespace MooMed.Common.Database.Repository
 		where TEntity : class, IEntity<TKeyType>
 		where TDbContext : DbContext
 	{
-		[NotNull]
 		private readonly IDbContextFactory<TDbContext> _contextFactory;
 
-		protected AbstractCrudRepository(
-			[NotNull] IDbContextFactory<TDbContext> contextFactory)
+		protected AbstractCrudRepository(IDbContextFactory<TDbContext> contextFactory)
 		{
 			_contextFactory = contextFactory;
 		}

@@ -5,13 +5,13 @@ using MooMed.Core.Code.Helper.Email.Interface;
 
 namespace MooMed.Core
 {
-    public class CoreModule : Module
-    {
-        protected override void Load([NotNull] ContainerBuilder builder)
-        {
-	        builder.RegisterType<EmailManager>()
-                .As<IEmailManager>()
-                .SingleInstance();
-        }
-    }
+	public class CoreModule : Autofac.Module
+	{
+		protected override void Load([NotNull] ContainerBuilder builder)
+		{
+			builder.RegisterType<EmailManager>()
+				.As<IEmailManager>()
+				.SingleInstance();
+		}
+	}
 }

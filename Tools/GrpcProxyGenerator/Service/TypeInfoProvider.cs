@@ -4,7 +4,7 @@ using System.Linq;
 using GrpcProxyGenerator.DataTypes;
 using GrpcProxyGenerator.Service.Interface;
 using MooMed.Common.Definitions.IPC;
-using MooMed.IPC.ProxyInvocation;
+using MooMed.RemotingProxies.ProxyInvocation;
 using MooMed.ServiceBase.Attributes;
 
 namespace GrpcProxyGenerator.Service

@@ -11,5 +11,14 @@ namespace MooMed.Common.Definitions.IPC
 		[NotNull]
 		[ProtoMember(50)]
 		public ISessionContext SessionContext { get; set; } = null!;
+
+		protected SessionContextAttachedContainer()
+		{
+		}
+
+		protected SessionContextAttachedContainer(ISessionContext sessionContext)
+		{
+			SessionContext = sessionContext;
+		}
 	}
 }

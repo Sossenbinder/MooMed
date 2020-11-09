@@ -137,7 +137,7 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			await _underlyingCache.PutItem(key, item);
 
 			var lockedItem = await _underlyingCache.GetItemLocked(key);
-			lockedItem.Release();
+			await lockedItem.Release();
 
 			Assert.True(await _underlyingCache.GetItemLocked(key).WaitAsync(TimeSpan.FromSeconds(2)));
 		}

@@ -13,7 +13,7 @@ spec:
     name: moomed-accountservice
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: moomed-accountservice
 spec:
@@ -21,7 +21,6 @@ spec:
   selector:
     matchLabels:
       name: moomed-accountservice
-  serviceName: moomed-accountservice
   template:
     metadata:
       labels:

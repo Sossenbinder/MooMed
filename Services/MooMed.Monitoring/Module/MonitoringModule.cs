@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using MooMed.Monitoring.Remoting;
+using MooMed.RemotingProxies.Proxies;
 using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Monitoring.Module

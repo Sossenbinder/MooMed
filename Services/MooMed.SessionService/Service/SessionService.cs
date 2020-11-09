@@ -43,8 +43,8 @@ namespace MooMed.SessionService.Service
 		[CanBeNull]
 		public async Task<ServiceResponse<ISessionContext>> GetSessionContext(Primitive<int> accountId)
 		{
-			var accountIdKey = CacheKeyUtils.GetCacheKeyForAccountId(accountId);
-			var sessionContext = await _sessionContextCache.GetItem(accountIdKey);
+			var key = CacheKeyUtils.GetCacheKeyForSessionContext(accountId);
+			var sessionContext = await _sessionContextCache.GetItem(key);
 
 			return sessionContext == null
 				? ServiceResponse<ISessionContext>.Failure()

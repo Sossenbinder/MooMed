@@ -14,10 +14,8 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Module;
 using MooMed.ServiceBase.Services.Interface;
 using MooMed.AccountService.Module;
-using MooMed.AccountValidationService.Remoting;
-using MooMed.ProfilePictureService.Remoting;
+using MooMed.RemotingProxies.Proxies;
 using MooMed.Serialization.Module;
-using MooMed.SessionService.Remoting;
 
 namespace MooMed.AccountService
 {

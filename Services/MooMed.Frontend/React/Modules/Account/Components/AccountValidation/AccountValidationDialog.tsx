@@ -34,7 +34,7 @@ type ValidationStepInfo = {
 export const AccountValidationDialog: React.FC<Props> = ({ accountId, token }) => {
 
 	const [validationStep, setValidationStep] = React.useState<ValidationStep>(ValidationStep.Validating);
-	const [identityError, setIdentityError] = React.useState<IdentityErrorCode>(IdentityErrorCode.None);
+	const [identityError, setIdentityError] = React.useState<IdentityErrorCode>(IdentityErrorCode.Success);
 
 	const { AccountValidationService } = useServices();
 
@@ -77,7 +77,7 @@ export const AccountValidationDialog: React.FC<Props> = ({ accountId, token }) =
 					),
 					onActionButtonClick: () => {
 						setValidationStep(ValidationStep.Validating);
-						setIdentityError(IdentityErrorCode.None);
+						setIdentityError(IdentityErrorCode.Success);
 						return Promise.resolve();
 					}
 				}

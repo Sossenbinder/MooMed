@@ -11,7 +11,7 @@ type Props = {
 export const Separator: React.FC<Props> = ({ borderColor = "black" }) => {
 	return (
 		<Flex 
-			style={{borderTop: `1px solid ${borderColor}`}}
+			style={{borderTop: `1px solid ${borderColor}`, paddingTop: '5px', paddingBottom: '5px'}}
 		/>
 	);
 }

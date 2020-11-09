@@ -8,9 +8,9 @@ namespace MooMed.Module.Finance.Database
 	public class FinanceDbContext : AbstractDbContext
 	{
 		[NotNull]
-		public DbSet<ExchangeTradedEntity> ExchangeTradeds { get; set; }
+		public DbSet<ExchangeTradedEntity> ExchangeTradeds { get; set; } = null!;
 
-		public FinanceDbContext(string connectionString) 
+		public FinanceDbContext(string connectionString)
 			: base(connectionString)
 		{
 		}

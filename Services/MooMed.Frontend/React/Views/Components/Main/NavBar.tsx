@@ -42,7 +42,7 @@ export const NavBar: React.FC<Props> = () => (
 			className="SubItem">
 			Investing
 		</Link>
-		<div className="searchBar nav navbar-nav ml-auto">
+		<div className="SearchBar nav navbar-nav ml-auto">
 			<SearchBar />
 		</div>
 		<SmallAccountManager />

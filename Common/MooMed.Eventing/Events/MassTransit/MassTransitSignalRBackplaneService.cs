@@ -26,13 +26,8 @@ namespace MooMed.Eventing.Events.MassTransit
 			_signalRProtocols = new List<IHubProtocol>() { new JsonHubProtocol() };
 		}
 
-		public async Task RaiseAllSignalREvent<T>(FrontendNotification<T> notification, string[] excludedConnectionIds = null)
+		public async Task RaiseAllSignalREvent<T>(FrontendNotification<T> notification, string[]? excludedConnectionIds = null)
 		{
-			await _busControl.Publish<All<SignalRHub>>(new
-			{
-				Messages = _signalRProtocols.ToProtocolDictionary("Test", new object[] { "blub" }),
-			});
-
 			var signalRParams = new
 			{
 				ExcludedConnectionIds = excludedConnectionIds,
@@ -53,7 +48,7 @@ namespace MooMed.Eventing.Events.MassTransit
 			await _busControl.Publish<Connection<SignalRHub>>(signalRParams);
 		}
 
-		public async Task RaiseGroupSignalREvent<T>(string groupName, FrontendNotification<T> notification, string[] excludedConnectionIds = null)
+		public async Task RaiseGroupSignalREvent<T>(string groupName, FrontendNotification<T> notification, string[]? excludedConnectionIds = null)
 		{
 			var signalRParams = new
 			{

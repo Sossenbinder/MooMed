@@ -12,6 +12,6 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
 		public AccountOnlineState OnlineState { get; set; }
 
 		[ForeignKey("Id")]
-		public AccountEntity Account { get; set; }
+		public AccountEntity Account { get; set; } = null!;
 	}
 }

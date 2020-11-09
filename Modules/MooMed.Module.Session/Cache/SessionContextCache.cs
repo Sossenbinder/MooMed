@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.Factory.Interface;
-using MooMed.Caching.Extensions;
+using MooMed.Caching.Helper;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Module.Session.Cache.Interface;
 
@@ -18,7 +18,7 @@ namespace MooMed.Module.Session.Cache
 
 		public ValueTask PutItem(ISessionContext sessionContext, int? secondsToLive = null)
 		{
-			var key = sessionContext.GetAccountKey();
+			var key = CacheKeyUtils.GetCacheKeyForSessionContext(sessionContext.Account.Id);
 			return _sessionContextCache.PutItem(key, sessionContext, secondsToLive);
 		}
 
@@ -29,7 +29,7 @@ namespace MooMed.Module.Session.Cache
 
 		public ValueTask RemoveItem(ISessionContext sessionContext)
 		{
-			return _sessionContextCache.Remove(sessionContext.GetAccountKey());
+			return _sessionContextCache.Remove(CacheKeyUtils.GetCacheKeyForSessionContext(sessionContext.Account.Id));
 		}
 	}
 }

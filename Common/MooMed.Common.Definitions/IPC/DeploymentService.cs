@@ -8,6 +8,10 @@
 		ChatService,
 		ProfilePictureService,
 		FinanceService,
+		AccountService,
+		AccountValidationService,
+		SessionService,
 		MonitoringService,
+		SavingService,
 	}
 }

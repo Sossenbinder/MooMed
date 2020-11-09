@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Common\MooMed.RemotingProxies\MooMed.RemotingProxies.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />

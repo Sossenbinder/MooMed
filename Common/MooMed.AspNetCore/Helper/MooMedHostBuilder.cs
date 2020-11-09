@@ -48,7 +48,7 @@ namespace MooMed.AspNetCore.Helper
 		private static IHost CreateSharedHost<TStartup>(
 			string[] args,
 			Action<IHostBuilder>? hostBuilderEnricher = null,
-			Action<IWebHostBuilder> webHostBuilderEnricher = null)
+			Action<IWebHostBuilder>? webHostBuilderEnricher = null)
 			where TStartup : class
 		{
 			var hostBuilder = Host
@@ -63,7 +63,7 @@ namespace MooMed.AspNetCore.Helper
 
 					webHostBuilder.UseSentry();
 
-					webHostBuilderEnricher(webHostBuilder);
+					webHostBuilderEnricher?.Invoke(webHostBuilder);
 				}
 			);
 

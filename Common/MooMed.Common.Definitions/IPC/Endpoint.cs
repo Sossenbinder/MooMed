@@ -2,6 +2,6 @@
 {
 	public class Endpoint
 	{
-		public string DnsName { get; set; }
+		public string DnsName { get; set; } = null!;
 	}
 }

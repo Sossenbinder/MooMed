@@ -9,7 +9,7 @@ using GrpcProxyGenerator.Service.InternalGenerators.Interface;
 using MooMed.Common.Definitions.IPC;
 using MooMed.DotNet.Extensions;
 using MooMed.IPC.Grpc.Interface;
-using MooMed.IPC.ProxyInvocation;
+using MooMed.RemotingProxies.ProxyInvocation;
 using MooMed.ServiceBase.Definitions.Interface;
 
 namespace GrpcProxyGenerator.Service.InternalGenerators

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UserSecretsId>fc596a5c-58ca-4aa0-9363-a7d924fc311f</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\MooMed.dcproj</DockerComposeProjectPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Kubernetes\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Common\MooMed.RemotingProxies\MooMed.RemotingProxies.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+        <ProjectReference Include="..\..\Modules\MooMed.Module.Saving\MooMed.Module.Saving.csproj" />
+    </ItemGroup>
+</Project>

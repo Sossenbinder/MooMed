@@ -10,6 +10,7 @@ import NavigationArrow from "./NavigationArrow";
 // Functionality
 
 // Types
+import { Currency } from "enums/moomedEnums";
 
 import "./Styles/SavingSetup.less";
 
@@ -18,13 +19,22 @@ enum SetupStep {
 	Basics,
 }
 
+type NavigationInfo = {
+	unAvailable?: boolean;
+	disabled?: boolean;
+	disabledToolTip?: string;
+	onClick?(currentStep: SetupStep): void;
+}
+
 type StepInfo = {
 	stepComponent: JSX.Element;
-	onNext?(prevStep: SetupStep): void;
-	onPrevious?(prevStep: SetupStep): void;
+	nextInfo?: NavigationInfo;
+	prevInfo?: NavigationInfo;
 }
 
 export const SavingSetup: React.FC = () => {
+
+	const [currency, setCurrency] = React.useState<Currency>(null);
 
 	const [currentStep, setCurrentStep] = React.useState<SetupStep>(SetupStep.Welcome);
 
@@ -32,20 +42,28 @@ export const SavingSetup: React.FC = () => {
 		return new Map<SetupStep, StepInfo>([
 			[SetupStep.Welcome, {
 				stepComponent: (
-					<SavingSetupStepWelcome />
+					<SavingSetupStepWelcome 
+						currency={currency}/>
 				),
-				onNext: _ => setCurrentStep(SetupStep.Basics),
-
+				nextInfo: {
+					onClick: _ => setCurrentStep(SetupStep.Basics),
+					disabled: currency === null,
+					disabledToolTip: "No currency picked yet"
+				},
 			}],
 			[SetupStep.Basics, {
 				stepComponent: (
 					<SavingSetupStepBasics />
 				),
-				onNext: _ => setCurrentStep(SetupStep.Basics),
-				onPrevious: _ => setCurrentStep(SetupStep.Welcome),
+				nextInfo: {
+					onClick: _ => setCurrentStep(SetupStep.Basics)
+				},
+				prevInfo: {
+					onClick: _ => setCurrentStep(SetupStep.Welcome)
+				},
 			}]
 		]);
-	}, []);
+	}, [currency]);
 
 	const currentStepInfo = stepMap.get(currentStep);
 
@@ -53,15 +71,20 @@ export const SavingSetup: React.FC = () => {
 		return null;
 	}
 
+	const nextInfo = currentStepInfo.nextInfo;
+	const prevInfo = currentStepInfo.prevInfo;
+
 	return (
 		<Flex className="SavingSetup">
 			<Flex 
 				className="NavigationArrowContainer"
 				direction="Column">
-				<If condition={!!currentStepInfo.onPrevious}>
+				<If condition={prevInfo !== undefined && !prevInfo.unAvailable}>
 					<NavigationArrow
 						direction="Left"
-						onClick={() => currentStepInfo.onPrevious(currentStep)} />
+						onClick={() => prevInfo.onClick(currentStep)}
+						disabled={prevInfo.disabled ?? false}
+						toolTip={prevInfo.disabledToolTip ?? null}/>
 				</If>
 			</Flex>
 			<Flex className="StepComponent">
@@ -70,10 +93,12 @@ export const SavingSetup: React.FC = () => {
 			<Flex 
 				className="NavigationArrowContainer"
 				direction="Column">
-				<If condition={!!currentStepInfo.onNext}>
+				<If condition={nextInfo !== undefined && !nextInfo.unAvailable}>
 					<NavigationArrow
 						direction="Right"
-						onClick={() => currentStepInfo.onNext(currentStep)} />
+						onClick={() => nextInfo.onClick(currentStep)}
+						disabled={nextInfo.disabled ?? false}
+						toolTip={nextInfo.disabledToolTip ?? null} />
 				</If>
 			</Flex>
 		</Flex>

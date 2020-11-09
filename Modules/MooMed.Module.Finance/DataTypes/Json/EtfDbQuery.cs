@@ -10,8 +10,8 @@ namespace MooMed.Module.Finance.DataTypes.Json
 
 		public int per_page { get; set; }
 
-		public string[] structure { get; set; }
+		public string[] structure { get; set; } = null!;
 
-		public string[] only { get; set; }
+		public string[] only { get; set; } = null!;
 	}
 }

@@ -9,5 +9,11 @@ namespace MooMed.Caching.Helper
 		{
 			return $"a-{accountId}";
 		}
+
+		[NotNull]
+		public static string GetCacheKeyForSessionContext(int accountId)
+		{
+			return $"s-a-{accountId}";
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Text.Json.Serialization;
+using Autofac;
 using JetBrains.Annotations;
 using MassTransit;
 using MassTransit.SignalR;
@@ -33,7 +34,12 @@ namespace MooMed.Frontend.StartupConfigs
 		{
 			ConfigureMassTransit(services);
 
-			services.AddMvc();
+			services
+				.AddMvc()
+				.AddJsonOptions(options =>
+				{
+					options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+				});
 
 			services
 				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

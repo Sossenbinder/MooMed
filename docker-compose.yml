@@ -11,11 +11,11 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Frontend/Dockerfile
+    labels: 
+      - moomedcompose
     ports:
     - "1337:80"
     - "1338:443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
     volumes:
       - ./Logs:/hostlogs
  
@@ -24,14 +24,13 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.SessionService/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-    ports:
-    - "2337:80"
-    - "2338:443"
     volumes:
       - ./Logs:/hostlogs
 
@@ -41,6 +40,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.SearchService/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -55,6 +56,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.ProfilePictureService/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -69,6 +72,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.AccountValidationService/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -83,6 +88,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.AccountService/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -97,6 +104,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.FinanceService/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -108,12 +117,16 @@ services:
   moomed.rabbitmq:
     container_name: rabbitmq
     image: docker.io/library/rabbitmq:3.8.6-management
+    labels: 
+      - moomedcompose
     ports:
     - "12643:15672"
 
   prometheus:
     container_name: prometheus
     image: prom/prometheus
+    labels: 
+      - moomedcompose
     volumes:
     - ./General/Metrics/Prometheus/DockerCompose:/etc/prometheus
     - ./prometheus_db:/var/lib/prometheus
@@ -122,6 +135,8 @@ services:
 
   grafana:
     image: grafana/grafana
+    labels: 
+      - moomedcompose
     environment:
     - GF_SECURITY_ADMIN_PASSWORD=secure_pass
     volumes:
@@ -133,6 +148,8 @@ services:
 
   moomed.redis:
     image: redis
+    labels: 
+      - moomedcompose
     ports:
     - '6379:6379'
 
@@ -141,6 +158,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.ChatService/Dockerfile
+    labels:
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -155,6 +174,8 @@ services:
     build:
       context: .
       dockerfile: Services/MooMed.Monitoring/Dockerfile
+    labels: 
+      - moomedcompose
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -162,5 +183,20 @@ services:
       retries: 3
     ports:
     - "4122:80"
+    volumes:
+      - ./Logs:/hostlogs
+
+  moomed.savingservice:
+    image: ${DOCKER_REGISTRY-}moomedsavingservice
+    build:
+      context: .
+      dockerfile: Services/MooMed.SavingService/Dockerfile
+    labels: 
+      - moomedcompose
+    healthcheck:
+      test: curl --fail -s http://localhost/health/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
     volumes:
       - ./Logs:/hostlogs

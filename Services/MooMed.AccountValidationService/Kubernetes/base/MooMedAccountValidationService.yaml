@@ -13,13 +13,12 @@ spec:
     name: moomed-accountvalidationservice
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: moomed-accountvalidationservice
   labels:
     name: moomed-accountvalidationservice
 spec:
-  serviceName: moomed-accountvalidationservice
   replicas: 3
   selector:  
     matchLabels:

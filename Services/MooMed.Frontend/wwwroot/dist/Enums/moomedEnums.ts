@@ -38,7 +38,7 @@ export enum ExchangeTradedType {
 }
 
 export enum IdentityErrorCode {
-	None = 0,
+	Success = 0,
 	DefaultError = 1,
 	ConcurrencyFailure = 2,
 	PasswordMismatch = 3,
@@ -63,4 +63,10 @@ export enum IdentityErrorCode {
 	PasswordRequiresUpper = 22,
 	PasswordMissing = 23,
 	EmailNotConfirmed = 24,
+	EmailAlreadyConfirmed = 25,
+}
+
+export enum Currency {
+	Euro = 0,
+	Dollar = 1,
 }

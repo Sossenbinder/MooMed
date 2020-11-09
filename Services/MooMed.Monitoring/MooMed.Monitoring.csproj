@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Common\MooMed.RemotingProxies\MooMed.RemotingProxies.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />

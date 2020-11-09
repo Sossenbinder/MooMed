@@ -31,7 +31,7 @@ export const SavingDialog: React.FC<Props> = ({ savingInfo }) => {
 				className="SavingDialogGrid"		
 				gridProperties={{
 					gridTemplateColumns: "3fr 1fr",
-					gridTemplateRows: "500px 200px",
+					gridTemplateRows: "50% 50%",
 				}}>
 				<Cell
 					cellStyles={{
@@ -40,10 +40,7 @@ export const SavingDialog: React.FC<Props> = ({ savingInfo }) => {
 					<SavingConfigurator 
 						savingInfo={savingInfo}/>
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridColumn: "1 / 2"
-					}}>
+				<Cell>
 					<SavingGrowthChart />
 				</Cell>
 				<Cell>					

@@ -1,7 +1,7 @@
 // Types
 import { Account, AccountValidationResult, PersonalData, PasswordData } from "modules/Account/types";
 import { SearchResult } from "modules/Search/types";
-import { NotificationType } from "enums/moomedEnums";
+import { Currency, NotificationType } from "enums/moomedEnums";
 import { SignalRNotification } from "data/notifications";
 
 export interface IModuleService {
@@ -54,7 +54,7 @@ export interface IPortfolioService extends IModuleService {
 }
 
 export interface ISavingService extends IModuleService {
-
+	setCurrency(currency: Currency): Promise<void>;
 }
 
 // Contexts

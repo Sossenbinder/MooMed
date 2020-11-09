@@ -2,8 +2,5 @@
 {
 	public enum StatefulSetService
 	{
-		AccountService,
-		AccountValidationService,
-		SessionService,
 	}
 }

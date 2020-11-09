@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using MooMed.Common.Definitions.Configuration;
 
 namespace MooMed.Logging.LogManagement
@@ -19,14 +18,6 @@ namespace MooMed.Logging.LogManagement
 			PrepareEnv(serviceLogsPath);
 
 			return $"{serviceLogsPath}/{GetServiceName()}.txt";
-		}
-
-		private void PrepareEnv(string serviceLogsPath)
-		{
-			if (!Directory.Exists(serviceLogsPath))
-			{
-				Directory.CreateDirectory(serviceLogsPath);
-			}
 		}
 	}
 }

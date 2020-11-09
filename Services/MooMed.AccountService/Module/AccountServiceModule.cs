@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.ServiceBase.Services.Interface;
-using MooMed.ProfilePictureService.Remoting;
-using MooMed.SessionService.Remoting;
+using MooMed.RemotingProxies.Proxies;
 
 namespace MooMed.AccountService.Module
 {

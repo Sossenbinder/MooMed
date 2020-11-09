@@ -7,6 +7,8 @@ using StackExchange.Redis;
 namespace MooMed.Caching.Cache.UnderlyingCache
 {
 	public class UnderlyingRedisCache<TKey, TValue> : AbstractUnderlyingCache<TKey, TValue>
+		where TKey : notnull
+
 	{
 		private readonly AsyncLazy<IConnectionMultiplexer> _connectionMultiPlexer;
 
