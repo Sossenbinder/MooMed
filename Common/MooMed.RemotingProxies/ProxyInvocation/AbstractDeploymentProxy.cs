@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
 using MooMed.IPC.Grpc.Interface;
 using MooMed.RemotingProxies.ProxyInvocation.Interface;
@@ -15,13 +14,12 @@ namespace MooMed.RemotingProxies.ProxyInvocation
 	public abstract class AbstractDeploymentProxy<TServiceType> : IDeploymentProxy<TServiceType>
 		where TServiceType : class, IGrpcService
 	{
-		[NotNull]
 		private readonly IGrpcClientProvider _clientProvider;
 
 		private readonly DeploymentService _moomedService;
 
 		protected AbstractDeploymentProxy(
-			[NotNull] IGrpcClientProvider clientProvider,
+			IGrpcClientProvider clientProvider,
 			DeploymentService moomedService)
 		{
 			_clientProvider = clientProvider;

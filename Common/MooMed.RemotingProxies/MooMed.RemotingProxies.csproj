@@ -3,7 +3,9 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-      <ProjectReference Include="..\MooMed\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-      <ProjectReference Include="..\MooMed\Common\MooMed.IPC\MooMed.IPC.csproj" />
+        <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+        <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+        <ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+        <ProjectReference Include="..\MooMed.IPC\MooMed.IPC.csproj" />
     </ItemGroup>
 </Project>
