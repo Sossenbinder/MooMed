@@ -19,11 +19,8 @@ type Props = {
 export const SavingConfigurator: React.FC<Props> = ({ savingInfo }) => {
 	return (
 		<Flex className="SavingConfigurator">
-			<If condition={!!savingInfo}>
-			</If>
-			<If condition={!savingInfo}>
-				<SavingSetup />
-			</If>
+			<SavingSetup 
+				savingInfo={savingInfo}/>
 		</Flex>
 	);
 }

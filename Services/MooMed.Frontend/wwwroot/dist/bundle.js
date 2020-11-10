@@ -4338,8 +4338,7 @@ const SavingSetup_1 = __webpack_require__(/*! ./Setup/SavingSetup */ "./React/mo
 __webpack_require__(/*! ./Styles/SavingConfigurator.less */ "./React/modules/Saving/Components/Input/Styles/SavingConfigurator.less");
 exports.SavingConfigurator = ({ savingInfo }) => {
     return (React.createElement(Flex_1.default, { className: "SavingConfigurator" },
-        null,
-        (!savingInfo) ? React.createElement(SavingSetup_1.default, null) : null));
+        React.createElement(SavingSetup_1.default, { savingInfo: savingInfo })));
 };
 exports.default = exports.SavingConfigurator;
 
@@ -4440,17 +4439,16 @@ var SetupStep;
     SetupStep[SetupStep["Welcome"] = 0] = "Welcome";
     SetupStep[SetupStep["Basics"] = 1] = "Basics";
 })(SetupStep || (SetupStep = {}));
-exports.SavingSetup = () => {
+exports.SavingSetup = ({ savingInfo }) => {
     var _a, _b, _c, _d, _e;
-    const [currency, setCurrency] = React.useState(null);
     const [currentStep, setCurrentStep] = React.useState(SetupStep.Welcome);
     const stepMap = React.useMemo(() => {
         return new Map([
             [SetupStep.Welcome, {
-                    stepComponent: (React.createElement(SavingSetupStepWelcome_1.default, { currency: currency })),
+                    stepComponent: (React.createElement(SavingSetupStepWelcome_1.default, { currency: savingInfo.currency })),
                     nextInfo: {
                         onClick: _ => setCurrentStep(SetupStep.Basics),
-                        disabled: currency === null,
+                        disabled: savingInfo.currency === undefined,
                         disabledToolTip: "No currency picked yet"
                     },
                 }],
@@ -4464,7 +4462,7 @@ exports.SavingSetup = () => {
                     },
                 }]
         ]);
-    }, [currency]);
+    }, [savingInfo.currency]);
     const currentStepInfo = stepMap.get(currentStep);
     if (currentStepInfo === undefined) {
         return null;
@@ -4549,7 +4547,7 @@ exports.SavingSetupStepWelcome = ({ currency }) => {
         const currencyEnum = ts_enum_util_1.$enum(moomedEnums_1.Currency);
         return currencyEnum
             .map((curr, index) => {
-            return React.createElement(CurrencyItem_1.default, { text: currencyHelper_1.currencySymbolMap.get(curr), size: 60, onClick: () => __awaiter(void 0, void 0, void 0, function* () { return yield SavingService.setCurrency(curr); }), key: `${index}_${curr.toString()}`, isSelected: true });
+            return React.createElement(CurrencyItem_1.default, { text: currencyHelper_1.currencySymbolMap.get(curr), size: 60, onClick: () => __awaiter(void 0, void 0, void 0, function* () { return yield SavingService.setCurrency(curr); }), key: `${index}_${curr.toString()}`, isSelected: currency === curr });
         });
     }, [currency]);
     return (React.createElement(Flex_1.default, { direction: "Column", className: "WelcomeDialog" },
@@ -4860,19 +4858,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleService_1 = __webpack_require__(/*! modules/common/Service/ModuleService */ "./React/modules/common/Service/ModuleService.ts");
 const savingCommunication = __webpack_require__(/*! modules/saving/communication/SavingCommunication */ "./React/modules/saving/communication/SavingCommunication.ts");
+const SavingConfigurationReducer_1 = __webpack_require__(/*! modules/saving/reducer/SavingConfigurationReducer */ "./React/modules/saving/reducer/SavingConfigurationReducer.ts");
 class SavingService extends ModuleService_1.default {
     constructor() {
         super();
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
+            const savingInfo = {};
+            this.dispatch(SavingConfigurationReducer_1.reducer.replace(savingInfo));
         });
     }
     setCurrency(currency) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield savingCommunication.setCurrency(currency);
-            console.log("Setting currency response: " + response.success);
             if (response.success) {
+                const savingConfiguration = (_a = Object.assign({}, this.getStore().savingConfigurationReducer.data)) !== null && _a !== void 0 ? _a : {};
+                savingConfiguration.currency = currency;
+                this.dispatch(SavingConfigurationReducer_1.reducer.replace(savingConfiguration));
             }
         });
     }
@@ -5776,7 +5780,7 @@ const createReducerInternal = (params) => {
             case DELETE_IDENTIFIER:
                 return deleteAction(state, action);
             case REPLACE_IDENTIFIER:
-                return Object.assign({}, state);
+                return Object.assign(Object.assign({}, state), { data: action.payload });
             default:
                 return state;
         }
@@ -5838,6 +5842,26 @@ exports.setCurrency = (currency) => {
         Currency: currency,
     });
 };
+
+
+/***/ }),
+
+/***/ "./React/modules/saving/reducer/SavingConfigurationReducer.ts":
+/*!********************************************************************!*\
+  !*** ./React/modules/saving/reducer/SavingConfigurationReducer.ts ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reducer = void 0;
+const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
+exports.reducer = CrudReducer_1.createSingleReducer({
+    actionIdentifier: "SAVING"
+});
+exports.default = exports.reducer;
 
 
 /***/ }),

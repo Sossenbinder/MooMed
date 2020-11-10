@@ -126,6 +126,7 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 			case REPLACE_IDENTIFIER:
 				return {
 					...state,
+					data: action.payload,
 				};
 			default:
 				return state;

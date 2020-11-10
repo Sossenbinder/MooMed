@@ -32,7 +32,7 @@ export const SavingSetupStepWelcome: React.FC<Props> = ({ currency }) => {
 					size={60}
 					onClick={async () => await SavingService.setCurrency(curr)} 
 					key={`${index}_${curr.toString()}`}
-					isSelected={true}/>
+					isSelected={currency === curr}/>
 			});
 	}, [currency]);
 

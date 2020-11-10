@@ -10,8 +10,6 @@ using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {
-	//[ApiController]
-	//[Route("[controller]")]
 	public class SavingController : SessionBaseController
 	{
 		private readonly ISavingService _savingService;
@@ -37,6 +35,13 @@ namespace MooMed.Frontend.Controllers
 			});
 
 			return response.ToJsonResponse();
+		}
+
+		[HttpGet]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public async Task<JsonDataResponse<SavingInfoUiModel>> GetSavingInfo()
+		{
 		}
 	}
 }

@@ -1420,7 +1420,7 @@ const createReducerInternal = (params) => {
             case DELETE_IDENTIFIER:
                 return deleteAction(state, action);
             case REPLACE_IDENTIFIER:
-                return Object.assign({}, state);
+                return Object.assign(Object.assign({}, state), { data: action.payload });
             default:
                 return state;
         }

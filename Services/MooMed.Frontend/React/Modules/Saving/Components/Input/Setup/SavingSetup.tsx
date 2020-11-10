@@ -11,6 +11,7 @@ import NavigationArrow from "./NavigationArrow";
 
 // Types
 import { Currency } from "enums/moomedEnums";
+import { SavingInfo } from "modules/saving/types";
 
 import "./Styles/SavingSetup.less";
 
@@ -32,9 +33,11 @@ type StepInfo = {
 	prevInfo?: NavigationInfo;
 }
 
-export const SavingSetup: React.FC = () => {
+type Props = {
+	savingInfo: SavingInfo;
+}
 
-	const [currency, setCurrency] = React.useState<Currency>(null);
+export const SavingSetup: React.FC<Props> = ({ savingInfo }) => {
 
 	const [currentStep, setCurrentStep] = React.useState<SetupStep>(SetupStep.Welcome);
 
@@ -43,11 +46,11 @@ export const SavingSetup: React.FC = () => {
 			[SetupStep.Welcome, {
 				stepComponent: (
 					<SavingSetupStepWelcome 
-						currency={currency}/>
+						currency={savingInfo.currency}/>
 				),
 				nextInfo: {
 					onClick: _ => setCurrentStep(SetupStep.Basics),
-					disabled: currency === null,
+					disabled: savingInfo.currency === undefined,
 					disabledToolTip: "No currency picked yet"
 				},
 			}],
@@ -63,7 +66,7 @@ export const SavingSetup: React.FC = () => {
 				},
 			}]
 		]);
-	}, [currency]);
+	}, [savingInfo.currency]);
 
 	const currentStepInfo = stepMap.get(currentStep);
 
