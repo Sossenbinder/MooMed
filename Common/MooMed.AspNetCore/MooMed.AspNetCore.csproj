@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <Platforms>AnyCPU;x64</Platforms>
-        <Nullable>enable</Nullable>
-        <LangVersion>8.0</LangVersion>
     	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
 
@@ -19,8 +17,8 @@
         <PackageReference Include="Microsoft.Azure.KeyVault" Version="2.3.2" />
         <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.0.2" />
-        <PackageReference Include="protobuf-net" Version="3.0.0-alpha.128" />
-        <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.21" />
+        <PackageReference Include="protobuf-net" Version="3.0.52" />
+        <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.123" />
         <PackageReference Include="Sentry.AspNetCore" Version="2.1.4" />
     </ItemGroup>
 

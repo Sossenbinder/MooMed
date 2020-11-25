@@ -12,53 +12,53 @@ using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	public class FriendsService : IFriendsService
-	{
-		[NotNull]
-		private readonly IFriendsMappingRepository _friendsMappingRepository;
+    public class FriendsService : IFriendsService
+    {
+        [NotNull]
+        private readonly IFriendsMappingRepository _friendsMappingRepository;
 
-		[NotNull]
-		private readonly IEntityToModelConverter<AccountEntity, Friend, int> _accountFriendConverter;
+        [NotNull]
+        private readonly IEntityToModelConverter<AccountEntity, Friend, int> _accountFriendConverter;
 
-		public FriendsService(
-			[NotNull] IFriendsMappingRepository friendsMappingRepository,
-			[NotNull] IEntityToModelConverter<AccountEntity, Friend, int> accountFriendConverter)
-		{
-			_friendsMappingRepository = friendsMappingRepository;
-			_accountFriendConverter = accountFriendConverter;
-		}
+        public FriendsService(
+            [NotNull] IFriendsMappingRepository friendsMappingRepository,
+            [NotNull] IEntityToModelConverter<AccountEntity, Friend, int> accountFriendConverter)
+        {
+            _friendsMappingRepository = friendsMappingRepository;
+            _accountFriendConverter = accountFriendConverter;
+        }
 
-		public async Task<List<Friend>> GetFriends(ISessionContext sessionContext)
-		{
-			var friends = await _friendsMappingRepository.Read(
-				x => x.Id == sessionContext.Account.Id,
-				x => x.Include(y => y.Friend).ThenInclude(y => y.AccountOnlineStateEntity));
+        public async Task<List<Friend>> GetFriends(ISessionContext sessionContext)
+        {
+            var friends = await _friendsMappingRepository.Read(
+                x => x.Id == sessionContext.Account.Id,
+                x => x.Include(y => y.Friend).ThenInclude(y => y.AccountOnlineStateEntity));
 
-			return friends.Select(x => _accountFriendConverter.ToModel(x.Friend)).ToList();
-		}
+            return friends.Select(x => _accountFriendConverter.ToModel(x.Friend)).ToList();
+        }
 
-		public async Task<bool> AddFriend(ISessionContext sessionContext, int accountId)
-		{
-			var friends = await GetFriends(sessionContext);
+        public async Task<bool> AddFriend(ISessionContext sessionContext, int accountId)
+        {
+            var friends = await GetFriends(sessionContext);
 
-			if (friends.Any(x => x.Id == accountId))
-			{
-				return false;
-			}
+            if (friends.Any(x => x.Id == accountId))
+            {
+                return false;
+            }
 
-			await _friendsMappingRepository.Create(new FriendsMappingEntity()
-			{
-				Id = sessionContext.Account.Id,
-				FriendId = accountId
-			});
+            await _friendsMappingRepository.Create(new FriendsMappingEntity()
+            {
+                Id = sessionContext.Account.Id,
+                FriendId = accountId
+            });
 
-			await _friendsMappingRepository.Create(new FriendsMappingEntity()
-			{
-				Id = accountId,
-				FriendId = sessionContext.Account.Id
-			});
+            await _friendsMappingRepository.Create(new FriendsMappingEntity()
+            {
+                Id = accountId,
+                FriendId = sessionContext.Account.Id
+            });
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 }

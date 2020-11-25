@@ -14,7 +14,7 @@ const accountRequests = {
 
 export const getOwnAccount = async () => {
 	const request = new GetRequest<Account>(accountRequests.getOwnAccount);
-	return await request.send();
+	return await request.get();
 }
 
 export const getAccount = async (accountId: number) => {

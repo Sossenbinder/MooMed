@@ -33,6 +33,8 @@ const initServices = async () => {
 	await initCoreServices(signalRConnectionProvider);
 
 	initAdditionalServices();
+
+	addNonInitService();
 }
 
 const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProvider) => {
@@ -71,8 +73,9 @@ const initAdditionalServices = async () => {
 	services.PortfolioService = new PortfolioService();
 	modules.push(services.PortfolioService);
 
-	services.SavingService = new SavingService();
-	modules.push(services.SavingService);
-
 	await Promise.all(modules.map(x => x.start()));
+}
+
+const addNonInitService = async () => {
+	services.SavingService = new SavingService();
 }

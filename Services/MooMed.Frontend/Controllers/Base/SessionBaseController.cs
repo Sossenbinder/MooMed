@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Grpc.Core;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MooMed.Common.Definitions.Models.Session.Interface;
@@ -48,20 +49,18 @@ namespace MooMed.Frontend.Controllers.Base
 
 		private async Task InitUserContext([NotNull] ActionExecutingContext actionExecutingContext)
 		{
-			if (actionExecutingContext.HttpContext.IsAuthenticated())
-			{
-				var accountId = Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name);
-				var sessionServiceResponse = await _sessionService.GetSessionContext(accountId);
+			var accountId = Convert.ToInt32(actionExecutingContext.HttpContext.User.Identity.Name);
+			var sessionServiceResponse = await _sessionService.GetSessionContext(accountId);
 
-				if (sessionServiceResponse.IsFailure)
-				{
-					StaticLogger.Fatal("Request was authenticated, but couldn't retrieve SessionContext for account", accountId);
-				}
-				else
-				{
-					StaticLogger.Info("Retrieved SessionContext..", accountId);
-					CurrentSession = sessionServiceResponse.PayloadOrFail;
-				}
+			if (sessionServiceResponse.IsFailure)
+			{
+				StaticLogger.Fatal(
+					"Request was authenticated, but couldn't retrieve SessionContext for account", accountId);
+			}
+			else
+			{
+				StaticLogger.Info("Retrieved SessionContext..", accountId);
+				CurrentSession = sessionServiceResponse.PayloadOrFail;
 			}
 		}
 	}

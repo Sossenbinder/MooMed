@@ -1,6 +1,7 @@
 // Framework
 import * as React from "react"
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex"
@@ -20,24 +21,18 @@ enum Direction {
 type Props = {
 	className?: string;
 	direction: keyof typeof Direction;
-	onClick(): void;
+	navTarget: string;
 	color?: string;
 	disabled?: boolean;
 	toolTip?: string;
 }
 
-export const NavigationArrow: React.FC<Props> = ({ className, direction, onClick, color = "black", disabled = true, toolTip}) => {
+export const NavigationArrow: React.FC<Props> = ({ className, direction, navTarget, color = "black", disabled = true, toolTip}) => {
 
 	const cn = classNames({
 		"NavigationArrow": true,
 		"Disabled": disabled,
 	}, className);
-
-	const onArrowClick = React.useCallback(() => {
-		if (!disabled) {
-			onClick();
-		}
-	}, [onClick]);
 
 	const getBackgroundColor = React.useCallback((verticalDirection: string) => {		
 		let actualColor = color;
@@ -50,19 +45,22 @@ export const NavigationArrow: React.FC<Props> = ({ className, direction, onClick
 	}, [disabled, direction, color]);
 
 	return (
-		<Flex
+		<Link
 			className={cn}
-			direction="Column"
-			onClick={onArrowClick}>
+			to={disabled ? null : navTarget}>
 			<Flex 
-				className="ArrowRender"
-				style={{ background: getBackgroundColor("bottom")}}
-				title={toolTip} />
-			<Flex 
-				className="ArrowRender"
-				style={{ background: getBackgroundColor("top")}} 
-				title={toolTip} />
-		</Flex>
+				className="Arrow"
+				direction="Column">
+				<Flex 
+					className="ArrowRender"
+					style={{ background: getBackgroundColor("bottom")}}
+					title={disabled ? toolTip : null} />
+				<Flex 
+					className="ArrowRender"
+					style={{ background: getBackgroundColor("top")}} 
+					title={disabled ? toolTip : null} />
+			</Flex>
+		</Link>
 	);
 }
 

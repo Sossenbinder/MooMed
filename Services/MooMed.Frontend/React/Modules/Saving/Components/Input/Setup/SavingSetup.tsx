@@ -1,5 +1,7 @@
 // Framework
-import * as React from "react"
+import * as React from "react";
+import { connect } from "react-redux";
+import { Switch, Route } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex"
@@ -8,65 +10,86 @@ import SavingSetupStepWelcome from "./SavingSetupStepWelcome";
 import NavigationArrow from "./NavigationArrow";
 
 // Functionality
+import { useServices } from "hooks/useServices";
+import { reducer as savingConfigurationReducer } from "modules/saving/reducer/SavingConfigurationReducer";
 
 // Types
-import { Currency } from "enums/moomedEnums";
-import { SavingInfo } from "modules/saving/types";
+import { BasicSavingInfo, SavingInfo } from "modules/saving/types";
 
 import "./Styles/SavingSetup.less";
 
 enum SetupStep {
 	Welcome,
 	Basics,
+	Free,
 }
 
 type NavigationInfo = {
 	unAvailable?: boolean;
 	disabled?: boolean;
 	disabledToolTip?: string;
-	onClick?(currentStep: SetupStep): void;
+	navStep: SetupStep;
 }
 
 type StepInfo = {
-	stepComponent: JSX.Element;
 	nextInfo?: NavigationInfo;
 	prevInfo?: NavigationInfo;
 }
 
 type Props = {
 	savingInfo: SavingInfo;
+	pathName: string;
+
+	updateSavingInfo(savingInfo: SavingInfo): void;
 }
 
-export const SavingSetup: React.FC<Props> = ({ savingInfo }) => {
+const routePrefix = "/saving/setup/";
 
-	const [currentStep, setCurrentStep] = React.useState<SetupStep>(SetupStep.Welcome);
+export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavingInfo }) => {
 
+	const { SavingService } = useServices();
+
+	const [networkCallInProgress, setNetworkCallInProgess] = React.useState<boolean>(true);
+	const [currentStep, setCurrentStep] = React.useState<SetupStep>(undefined);
+
+	const onBasicSettingsUpdate = React.useCallback((basicSavingInfo: BasicSavingInfo) => {
+		savingInfo.basicSavingInfo = basicSavingInfo;
+		updateSavingInfo(savingInfo);
+	}, [savingInfo.basicSavingInfo]);
+	
 	const stepMap: Map<SetupStep, StepInfo> = React.useMemo(() => {
 		return new Map<SetupStep, StepInfo>([
 			[SetupStep.Welcome, {
-				stepComponent: (
-					<SavingSetupStepWelcome 
-						currency={savingInfo.currency}/>
-				),
 				nextInfo: {
-					onClick: _ => setCurrentStep(SetupStep.Basics),
+					navStep: SetupStep.Basics,
 					disabled: savingInfo.currency === undefined,
 					disabledToolTip: "No currency picked yet"
 				},
 			}],
 			[SetupStep.Basics, {
-				stepComponent: (
-					<SavingSetupStepBasics />
-				),
 				nextInfo: {
-					onClick: _ => setCurrentStep(SetupStep.Basics)
+					navStep: SetupStep.Free,
 				},
 				prevInfo: {
-					onClick: _ => setCurrentStep(SetupStep.Welcome)
+					navStep: SetupStep.Welcome,
+				},
+			}],
+			[SetupStep.Basics, {
+				nextInfo: {
+					navStep: SetupStep.Free,
+				},
+				prevInfo: {
+					navStep: SetupStep.Welcome,
 				},
 			}]
 		]);
 	}, [savingInfo.currency]);
+
+	React.useEffect(() => {
+		const plainRoute = pathName.substring(pathName.lastIndexOf("/") + 1);
+		const step: SetupStep = SetupStep[plainRoute] as SetupStep ?? SetupStep.Welcome;
+		setCurrentStep(step);
+	}, [pathName]);
 
 	const currentStepInfo = stepMap.get(currentStep);
 
@@ -85,13 +108,37 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo }) => {
 				<If condition={prevInfo !== undefined && !prevInfo.unAvailable}>
 					<NavigationArrow
 						direction="Left"
-						onClick={() => prevInfo.onClick(currentStep)}
+						navTarget={`${routePrefix}${SetupStep[currentStepInfo.prevInfo.navStep]}`}
 						disabled={prevInfo.disabled ?? false}
 						toolTip={prevInfo.disabledToolTip ?? null}/>
 				</If>
 			</Flex>
 			<Flex className="StepComponent">
-				{stepMap.get(currentStep)?.stepComponent}
+				<Choose>
+					<If condition={networkCallInProgress}>
+
+					</If>
+					<Otherwise>
+						<Switch>
+							<Route
+								path={`${routePrefix}${SetupStep[SetupStep.Welcome]}`} 
+								render={() => (
+									<SavingSetupStepWelcome 
+										currency={savingInfo.currency} />
+								)} 
+							/>
+							<Route
+								path={`${routePrefix}${SetupStep[SetupStep.Basics]}`} 
+								render={() => (
+									<SavingSetupStepBasics
+										basicSavingInfo={savingInfo.basicSavingInfo}
+										onUpdate={onBasicSettingsUpdate}
+										currency={savingInfo.currency} />
+								)} 
+							/>
+						</Switch>
+					</Otherwise>
+				</Choose>
 			</Flex>
 			<Flex 
 				className="NavigationArrowContainer"
@@ -99,7 +146,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo }) => {
 				<If condition={nextInfo !== undefined && !nextInfo.unAvailable}>
 					<NavigationArrow
 						direction="Right"
-						onClick={() => nextInfo.onClick(currentStep)}
+						navTarget={`${routePrefix}${SetupStep[currentStepInfo.nextInfo.navStep]}`}
 						disabled={nextInfo.disabled ?? false}
 						toolTip={nextInfo.disabledToolTip ?? null} />
 				</If>
@@ -108,4 +155,10 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo }) => {
 	);
 }
 
-export default SavingSetup;
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		updateSavingInfo: (savingInfo: SavingInfo) => dispatch(savingConfigurationReducer.update(savingInfo))
+	}
+}
+
+export default connect(null, mapDispatchToProps)(SavingSetup);

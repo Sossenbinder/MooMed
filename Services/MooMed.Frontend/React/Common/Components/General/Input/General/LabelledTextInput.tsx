@@ -6,7 +6,7 @@ import Flex, { FlexDirections } from "common/components/Flex";
 import TextInput from "./TextInput";
 
 // Types
-import { InputProps, DataTypes } from "./TextInput";
+import { InputProps } from "./TextInput";
 
 import "./Styles/LabelledTextInput.less";
 
@@ -32,12 +32,12 @@ const dirLookUp = new Map<string, keyof typeof FlexDirections>([
 	]
 ])
 
-type Props<T extends DataTypes> = InputProps<T> & {
+type Props = InputProps & {
 	labelPosition?: keyof typeof LabelPosition;
 	labelText: string;
 }
 
-export const LabelledTextInput = <T extends DataTypes = string>(props: Props<T>) => {
+export const LabelledTextInput: React.FC<Props>= (props: Props) => {
 	return (
 		<Flex
 			className="LabelledTextInput"

@@ -1,9 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+RUN apt-get update
+RUN apt-get install curl -y
 
 ENV MooMed_LogFileName="MooMedLog"
 ENV MooMed_Cache_BaseTtlInSeconds=3600
@@ -15,7 +17,7 @@ ENV MooMed_Email_Password="yUZp917ExPWz2vZiMqpdBQ=="
 ENV AZURE_CLIENT_ID "82259ded-f445-4db4-80d4-1c07f13c50b7"
 ENV AZURE_TENANT_ID "ff009f2c-d651-472e-b73e-e0f894c6011e"
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["Services/MooMed.AccountValidationService/MooMed.AccountValidationService.csproj", "Services/MooMed.AccountValidationService/"]
 COPY ["Common/MooMed.Common.ServiceBase/MooMed.Common.ServiceBase.csproj", "Common/MooMed.Common.ServiceBase/"]

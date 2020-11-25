@@ -4,8 +4,10 @@ using MooMed.Common.Definitions.Models.Session.Interface;
 
 namespace MooMed.Module.Saving.Service.Interface
 {
-	public interface ICurrencyService
-	{
-		Task SetCurrency(ISessionContext sessionContext, Currency currency);
-	}
+    public interface ICurrencyService
+    {
+        Task SetCurrency(ISessionContext sessionContext, Currency currency);
+
+        Task<Currency?> GetCurrency(ISessionContext sessionContext);
+    }
 }

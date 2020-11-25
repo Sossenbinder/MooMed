@@ -1,6 +1,6 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/runtime:5.0-buster-slim AS base
 WORKDIR /app
 
 ENV MooMed_Cache_BaseTtlInSeconds=3600
@@ -10,7 +10,7 @@ ENV MooMed_Logging_TableStorageConnectionString="DefaultEndpointsProtocol=https;
 
 COPY "Certs/moomed.pfx" /usr/local/share/ca-certificates/moomed.pfx
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["Workers/KubeWatcher/KubeWatcher.csproj", "Workers/KubeWatcher/"]
 RUN dotnet restore "Workers/KubeWatcher/KubeWatcher.csproj"

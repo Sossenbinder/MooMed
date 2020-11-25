@@ -1,52 +1,54 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Platforms>x64;AnyCPU</Platforms>
-	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Platforms>x64;AnyCPU</Platforms>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="5.1.2" />
+		<PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.SignalR\MooMed.SignalR.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.SignalR\MooMed.SignalR.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Http.Features">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.features\2.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Identity">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.3\ref\netcoreapp3.1\Microsoft.AspNetCore.Identity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore.sqlserver\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Localization.Abstractions">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.0\ref\netcoreapp3.1\Microsoft.Extensions.Localization.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\windowsazure.storage\8.1.4\lib\netstandard1.3\Microsoft.WindowsAzure.Storage.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
+	<ItemGroup>
+		<Reference Include="Microsoft.AspNetCore.Http.Features">
+			<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.features\2.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Identity">
+			<HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.3\ref\netcoreapp3.1\Microsoft.AspNetCore.Identity.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.EntityFrameworkCore">
+			<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
+			<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore.sqlserver\2.0.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Localization.Abstractions">
+			<HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.0\ref\netcoreapp3.1\Microsoft.Extensions.Localization.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.WindowsAzure.Storage">
+			<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\windowsazure.storage\8.1.4\lib\netstandard1.3\Microsoft.WindowsAzure.Storage.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Converters\" />
+	</ItemGroup>
 </Project>

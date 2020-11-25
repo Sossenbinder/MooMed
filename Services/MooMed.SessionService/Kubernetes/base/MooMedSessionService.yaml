@@ -20,7 +20,7 @@ metadata:
     name: moomed-sessionservice
 spec:
   replicas: 3
-  selector:  
+  selector:
     matchLabels:
       name: moomed-sessionservice
   template:

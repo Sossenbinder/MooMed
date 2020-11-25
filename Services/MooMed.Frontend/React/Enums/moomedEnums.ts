@@ -70,3 +70,15 @@ export enum Currency {
 	Euro = 0,
 	Dollar = 1,
 }
+
+export enum CashFlow {
+	Income = 0,
+	Outcome = 1,
+}
+
+export enum CashFlowItemType {
+	Unspecified = 0,
+	Income = 1,
+	Rent = 2,
+	Groceries = 3,
+}

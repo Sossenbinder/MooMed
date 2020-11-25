@@ -5,12 +5,16 @@ export type FreeFormSavingInfo = {
 	amount: number;
 }
 
-export type SavingInfo = {
+export type BasicSavingInfo = {
 	income: number;
 	rent: number;
-	transport: number;
-	freeFormSavingInfo: FreeFormSavingInfo;
+	groceries: number;
+}
+
+export type SavingInfo = {
 	currency: Currency;
+	basicSavingInfo: BasicSavingInfo;
+	freeFormSavingInfo: Array<FreeFormSavingInfo>;
 }
 
 export namespace Network {
@@ -18,5 +22,13 @@ export namespace Network {
 		export type Request = {
 			Currency: Currency;
 		}
+	}
+
+	export namespace SaveBasicSettings {
+		export type Request = BasicSavingInfo;
+	}
+
+	export namespace GetSavingInfo {
+		export type Response = SavingInfo;
 	}
 }

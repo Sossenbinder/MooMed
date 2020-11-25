@@ -12,41 +12,69 @@ import SavingGrowthChart from "./Charts/SavingGrowthChart";
 
 // Functionality
 import { ReduxStore } from "data/store";
+import { useServices } from "hooks/useServices";
 
 // Types
 import { SavingInfo } from "modules/saving/types";
 
 import "./Styles/SavingDialog.less";
+import LoadingBubbles from "common/components/LoadingBubbles";
 
 type Props = {
 	savingInfo: SavingInfo
 }
 
 export const SavingDialog: React.FC<Props> = ({ savingInfo }) => {
+
+	const { SavingService } = useServices();
+
+	const [loading, setLoading] = React.useState<boolean>(true);
+
+	React.useEffect(() => {
+		const initSavingData = async () => {
+			await SavingService.initSavingService();
+			setLoading(false);
+		}
+		initSavingData();
+	}, []);
+
 	return (
 		<Flex
 			className="SavingDialog"
 			direction="Column">
-			<Grid
-				className="SavingDialogGrid"		
-				gridProperties={{
-					gridTemplateColumns: "3fr 1fr",
-					gridTemplateRows: "50% 50%",
-				}}>
-				<Cell
-					cellStyles={{
-						gridColumn: "1 / 3"
-					}}>					
-					<SavingConfigurator 
-						savingInfo={savingInfo}/>
-				</Cell>
-				<Cell>
-					<SavingGrowthChart />
-				</Cell>
-				<Cell>					
-					<SavingDistributionChart />
-				</Cell>
-			</Grid>
+			<Choose>
+				<When condition={!loading}>
+					<Grid
+						className="SavingDialogGrid"		
+						gridProperties={{
+							gridTemplateColumns: "3fr 1fr",
+							gridTemplateRows: "50% 50%",
+						}}>
+						<Cell
+							cellStyles={{
+								gridColumn: "1 / 3"
+							}}>					
+							<SavingConfigurator 
+								savingInfo={savingInfo}/>
+						</Cell>
+						<Cell>
+							<SavingGrowthChart 
+								savingInfo={savingInfo} />
+						</Cell>
+						<Cell>					
+							<SavingDistributionChart />
+						</Cell>
+					</Grid>
+				</When>
+				<Otherwise>
+					<Flex
+						className="LoadingContainer"
+						mainAlignSelf={"Center"}
+						crossAlignSelf={"Center"}>
+						<LoadingBubbles />
+					</Flex>
+				</Otherwise>
+			</Choose>
 		</Flex>
 	);
 }

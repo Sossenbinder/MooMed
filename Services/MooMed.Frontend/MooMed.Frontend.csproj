@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>aspnet-MooMed.Frontend-18E883F0-BED5-4D2B-8836-0FBDB69DAF2C</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -59,6 +59,6 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="dotnet $(SolutionDir)\Tools\FrontendEnumGenerator\bin\Debug\netcoreapp3.1\FrontendEnumGenerator.dll $(SolutionDir)" />
+      <Exec Command="if $(ConfigurationName) == Debug (&#xD;&#xA;    dotnet build $(SolutionDir)Tools/FrontendEnumGenerator&#xD;&#xA;    dotnet $(SolutionDir)Tools/FrontendEnumGenerator/bin/Debug/net5.0/FrontendEnumGenerator.dll $(SolutionDir)&#xD;&#xA;) ELSE (&#xD;&#xA;    dotnet build ../../src/Tools/FrontendEnumGenerator&#xD;&#xA;    dotnet ../../src/Tools/FrontendEnumGenerator/bin/Debug/net5.0/FrontendEnumGenerator.dll src&#xD;&#xA;)" />
     </Target>
 </Project>

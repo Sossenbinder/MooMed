@@ -18,7 +18,7 @@ export default class AjaxRequest<TRequest, TResponse> {
 		this.m_requestMethod = requestMethod;
 	}
 
-	public async send(requestData: TRequest, verificationToken?: string): Promise<NetworkResponse<TResponse>> {
+	protected async send(requestData?: TRequest, attachVerificationToken: boolean = true): Promise<NetworkResponse<TResponse>> {
 
 		const requestInit: RequestInit = {
 			method: this.m_requestMethod,
@@ -30,8 +30,9 @@ export default class AjaxRequest<TRequest, TResponse> {
 			credentials: 'include'
 		}
 
-		if (verificationToken) {
-			requestInit.headers["AntiForgery"] = verificationToken;
+		if (attachVerificationToken) {
+			const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
+			requestInit.headers["AntiForgery"] = tokenHolder.value;
 		}
 
 		if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {

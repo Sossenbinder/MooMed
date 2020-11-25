@@ -1,1 +1,1 @@
-istioctl install --set profile=demo
+istioctl install --set profile=demo -f istioConfig.yaml

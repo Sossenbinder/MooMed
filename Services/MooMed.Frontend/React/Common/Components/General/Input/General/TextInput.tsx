@@ -7,27 +7,27 @@ import Flex from "common/components/Flex"
 
 import "./Styles/TextInput.less";
 
-export type DataTypes = number | string | readonly string[];
-
-export type InputProps<T extends DataTypes> = {
+export type InputProps = {
 	name: string;
 	classNames?: string;
-	data: T;
-	setData(data: T): void;
+	data: string | number | undefined;
+	setData(data: string): void;
 	inputType?: string;
 	onEnterPress?: () => void;
 	children?: React.ReactNode;
+	step?: number;
 }
 
-export const TextInput = <T extends DataTypes = string>({
+export const TextInput: React.FC<InputProps> = ({
 	name,
 	classNames,
 	data,
 	setData,
 	inputType,
 	onEnterPress,
-	children
-}: InputProps<T>) => {
+	children,
+	step,
+}: InputProps) => {
 
 	const classes = React.useMemo(() => {
 		return classnames("form-control", {
@@ -44,15 +44,16 @@ export const TextInput = <T extends DataTypes = string>({
 	return (
 		<Flex
 			direction="Column"
-			className="form-group TextInput">
+			className="TextInput">
 			<input
 				className={classes}
 				type={inputType ?? "text"}
 				name={name}
 				value={data}
-				onChange={event => setData(event.target.value as T)}
+				onChange={event => setData(event.target.value)}
 				placeholder={name}
 				onKeyPress={handleKeyPress}
+				step={step}
 			/>
 			{children}
 		</Flex>

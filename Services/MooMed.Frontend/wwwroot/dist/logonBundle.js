@@ -613,7 +613,7 @@ const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 const Flex_1 = __webpack_require__(/*! common/components/Flex */ "./React/common/components/Flex.tsx");
 __webpack_require__(/*! ./Styles/TextInput.less */ "./React/common/components/general/input/General/Styles/TextInput.less");
-exports.TextInput = ({ name, classNames, data, setData, inputType, onEnterPress, children }) => {
+exports.TextInput = ({ name, classNames, data, setData, inputType, onEnterPress, children, step, }) => {
     const classes = React.useMemo(() => {
         return classnames_1.default("form-control", {
             "classNames": !!classNames,
@@ -624,8 +624,8 @@ exports.TextInput = ({ name, classNames, data, setData, inputType, onEnterPress,
             onEnterPress();
         }
     }, [onEnterPress]);
-    return (React.createElement(Flex_1.default, { direction: "Column", className: "form-group TextInput" },
-        React.createElement("input", { className: classes, type: inputType !== null && inputType !== void 0 ? inputType : "text", name: name, value: data, onChange: event => setData(event.target.value), placeholder: name, onKeyPress: handleKeyPress }),
+    return (React.createElement(Flex_1.default, { direction: "Column", className: "TextInput" },
+        React.createElement("input", { className: classes, type: inputType !== null && inputType !== void 0 ? inputType : "text", name: name, value: data, onChange: event => setData(event.target.value), placeholder: name, onKeyPress: handleKeyPress, step: step }),
         children));
 };
 exports.default = exports.TextInput;
@@ -796,7 +796,7 @@ var PopUpMessageLevel;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Currency = exports.IdentityErrorCode = exports.ExchangeTradedType = exports.NotificationType = exports.AccountOnlineState = exports.AccountValidationResult = exports.LoginResponseCode = void 0;
+exports.CashFlowItemType = exports.CashFlow = exports.Currency = exports.IdentityErrorCode = exports.ExchangeTradedType = exports.NotificationType = exports.AccountOnlineState = exports.AccountValidationResult = exports.LoginResponseCode = void 0;
 var LoginResponseCode;
 (function (LoginResponseCode) {
     LoginResponseCode[LoginResponseCode["None"] = 0] = "None";
@@ -869,6 +869,18 @@ var Currency;
     Currency[Currency["Euro"] = 0] = "Euro";
     Currency[Currency["Dollar"] = 1] = "Dollar";
 })(Currency = exports.Currency || (exports.Currency = {}));
+var CashFlow;
+(function (CashFlow) {
+    CashFlow[CashFlow["Income"] = 0] = "Income";
+    CashFlow[CashFlow["Outcome"] = 1] = "Outcome";
+})(CashFlow = exports.CashFlow || (exports.CashFlow = {}));
+var CashFlowItemType;
+(function (CashFlowItemType) {
+    CashFlowItemType[CashFlowItemType["Unspecified"] = 0] = "Unspecified";
+    CashFlowItemType[CashFlowItemType["Income"] = 1] = "Income";
+    CashFlowItemType[CashFlowItemType["Rent"] = 2] = "Rent";
+    CashFlowItemType[CashFlowItemType["Groceries"] = 3] = "Groceries";
+})(CashFlowItemType = exports.CashFlowItemType || (exports.CashFlowItemType = {}));
 
 
 /***/ }),
@@ -1093,7 +1105,7 @@ class AjaxRequest {
         this.m_url = url;
         this.m_requestMethod = requestMethod;
     }
-    send(requestData, verificationToken) {
+    send(requestData, attachVerificationToken = true) {
         return __awaiter(this, void 0, void 0, function* () {
             const requestInit = {
                 method: this.m_requestMethod,
@@ -1104,8 +1116,9 @@ class AjaxRequest {
                 },
                 credentials: 'include'
             };
-            if (verificationToken) {
-                requestInit.headers["AntiForgery"] = verificationToken;
+            if (attachVerificationToken) {
+                const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0];
+                requestInit.headers["AntiForgery"] = tokenHolder.value;
             }
             if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
                 requestInit.body = JSON.stringify(requestData);
@@ -1156,12 +1169,7 @@ class PostRequest extends AjaxRequest_1.default {
         });
         return __awaiter(this, void 0, void 0, function* () {
             const postData = requestData !== null && requestData !== void 0 ? requestData : {};
-            let token = null;
-            if (attachVerificationToken) {
-                const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0];
-                token = tokenHolder.value;
-            }
-            return _super.send.call(this, postData, token);
+            return _super.send.call(this, postData, attachVerificationToken);
         });
     }
 }
@@ -1810,12 +1818,12 @@ exports.createReducer = (params) => createReducerInternal(Object.assign(Object.a
 exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
         addAction: (_, action) => {
             return {
-                data: action.payload
+                data: Object.assign({}, action.payload)
             };
         },
         updateAction: (_, action) => {
             return {
-                data: action.payload
+                data: Object.assign({}, action.payload)
             };
         },
         deleteAction: (_, __) => {
@@ -2318,7 +2326,7 @@ exports.push([module.i, ".CheckBoxToggle .SwitchContainer {\n  background: grey;
 
 exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, ".modalFormFailureParagraph {\n  display: none;\n}\n.leftBtn {\n  margin-right: 10px;\n}\n.signUpLoginContainer {\n  width: 300px;\n  margin: 0px 25px 150px 0px;\n  background-color: white;\n  border-radius: 5px;\n}\n.signInContainer {\n  width: 300px;\n  min-height: 550px;\n  border: 1px groove black;\n  border-radius: 5px;\n}\n.signInContainer h4 {\n  margin-top: 10px;\n}\n.signInContainer .signInMethodPicker {\n  margin-bottom: 5px;\n}\n.signInContainer .signInMethodPicker .signInMethodBtn {\n  background: lightgrey;\n  height: 45px;\n  line-height: 45px;\n  text-align: center;\n  text-decoration: none;\n}\n.signInContainer .signInMethodPicker .signInMethodBtn:active {\n  background: grey;\n}\n.signInContainer .signInMethodPicker .selectedBtn {\n  background: white;\n}\n.signInContainer .signInMethodPicker .registerBtn {\n  border-radius: 0px 5px 0px 0px;\n}\n.signInContainer .signInMethodPicker .loginBtn {\n  border-radius: 5px 0px 0px 0px;\n}\n.signInContainer .signInDialog {\n  padding: 15px;\n}\n", ""]);
+exports.push([module.i, ".modalFormFailureParagraph {\n  display: none;\n}\n.leftBtn {\n  margin-right: 10px;\n}\n.signUpLoginContainer {\n  width: 300px;\n  margin: 0px 25px 150px 0px;\n  background-color: white;\n  border-radius: 5px;\n}\n.signInContainer {\n  width: 300px;\n  min-height: 550px;\n  border: 1px groove black;\n  border-radius: 5px;\n}\n.signInContainer h4 {\n  margin-top: 10px;\n}\n.signInContainer .TextInput {\n  margin: 10px 0px 10px 0px;\n}\n.signInContainer .signInMethodPicker {\n  margin-bottom: 5px;\n}\n.signInContainer .signInMethodPicker .signInMethodBtn {\n  background: lightgrey;\n  height: 45px;\n  line-height: 45px;\n  text-align: center;\n  text-decoration: none;\n}\n.signInContainer .signInMethodPicker .signInMethodBtn:active {\n  background: grey;\n}\n.signInContainer .signInMethodPicker .selectedBtn {\n  background: white;\n}\n.signInContainer .signInMethodPicker .registerBtn {\n  border-radius: 0px 5px 0px 0px;\n}\n.signInContainer .signInMethodPicker .loginBtn {\n  border-radius: 5px 0px 0px 0px;\n}\n.signInContainer .signInDialog {\n  padding: 15px;\n}\n", ""]);
 
 
 

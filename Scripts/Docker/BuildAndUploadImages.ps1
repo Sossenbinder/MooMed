@@ -4,7 +4,7 @@ param (
 
 [string[]] $availableConfigs = "dev", "testing", "prod"
 
-if ($availableConfigs -contains $configuration)
+if (!$availableConfigs -contains $configuration)
 {
 	Write-Host "Invalid configuration, only dev / testing / prod are allowed";
 	return;
@@ -60,6 +60,11 @@ $imageInfos += [ImageInfo]@{
 $imageInfos += [ImageInfo]@{
     Path = "Services/MooMed.Monitoring/Dockerfile"
     Name = "monitoringservice"
+}
+
+$imageInfos += [ImageInfo]@{
+    Path = "Services/MooMed.SavingService/Dockerfile"
+    Name = "savingservice"
 }
 
 az acr login --name moomed

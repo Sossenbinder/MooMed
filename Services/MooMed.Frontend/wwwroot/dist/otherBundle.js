@@ -617,7 +617,7 @@ var PopUpMessageLevel;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Currency = exports.IdentityErrorCode = exports.ExchangeTradedType = exports.NotificationType = exports.AccountOnlineState = exports.AccountValidationResult = exports.LoginResponseCode = void 0;
+exports.CashFlowItemType = exports.CashFlow = exports.Currency = exports.IdentityErrorCode = exports.ExchangeTradedType = exports.NotificationType = exports.AccountOnlineState = exports.AccountValidationResult = exports.LoginResponseCode = void 0;
 var LoginResponseCode;
 (function (LoginResponseCode) {
     LoginResponseCode[LoginResponseCode["None"] = 0] = "None";
@@ -690,6 +690,18 @@ var Currency;
     Currency[Currency["Euro"] = 0] = "Euro";
     Currency[Currency["Dollar"] = 1] = "Dollar";
 })(Currency = exports.Currency || (exports.Currency = {}));
+var CashFlow;
+(function (CashFlow) {
+    CashFlow[CashFlow["Income"] = 0] = "Income";
+    CashFlow[CashFlow["Outcome"] = 1] = "Outcome";
+})(CashFlow = exports.CashFlow || (exports.CashFlow = {}));
+var CashFlowItemType;
+(function (CashFlowItemType) {
+    CashFlowItemType[CashFlowItemType["Unspecified"] = 0] = "Unspecified";
+    CashFlowItemType[CashFlowItemType["Income"] = 1] = "Income";
+    CashFlowItemType[CashFlowItemType["Rent"] = 2] = "Rent";
+    CashFlowItemType[CashFlowItemType["Groceries"] = 3] = "Groceries";
+})(CashFlowItemType = exports.CashFlowItemType || (exports.CashFlowItemType = {}));
 
 
 /***/ }),
@@ -849,7 +861,7 @@ class AjaxRequest {
         this.m_url = url;
         this.m_requestMethod = requestMethod;
     }
-    send(requestData, verificationToken) {
+    send(requestData, attachVerificationToken = true) {
         return __awaiter(this, void 0, void 0, function* () {
             const requestInit = {
                 method: this.m_requestMethod,
@@ -860,8 +872,9 @@ class AjaxRequest {
                 },
                 credentials: 'include'
             };
-            if (verificationToken) {
-                requestInit.headers["AntiForgery"] = verificationToken;
+            if (attachVerificationToken) {
+                const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0];
+                requestInit.headers["AntiForgery"] = tokenHolder.value;
             }
             if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
                 requestInit.body = JSON.stringify(requestData);
@@ -912,12 +925,7 @@ class PostRequest extends AjaxRequest_1.default {
         });
         return __awaiter(this, void 0, void 0, function* () {
             const postData = requestData !== null && requestData !== void 0 ? requestData : {};
-            let token = null;
-            if (attachVerificationToken) {
-                const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0];
-                token = tokenHolder.value;
-            }
-            return _super.send.call(this, postData, token);
+            return _super.send.call(this, postData, attachVerificationToken);
         });
     }
 }
@@ -1026,7 +1034,7 @@ const accountValidationRequests = {
 function validateRegistration(accountId, token) {
     return __awaiter(this, void 0, void 0, function* () {
         const request = new PostRequest_1.default(accountValidationRequests.validateRegistration);
-        return yield request.send({
+        return yield request.post({
             accountId,
             token,
         });
@@ -1387,12 +1395,12 @@ exports.createReducer = (params) => createReducerInternal(Object.assign(Object.a
 exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
         addAction: (_, action) => {
             return {
-                data: action.payload
+                data: Object.assign({}, action.payload)
             };
         },
         updateAction: (_, action) => {
             return {
-                data: action.payload
+                data: Object.assign({}, action.payload)
             };
         },
         deleteAction: (_, __) => {

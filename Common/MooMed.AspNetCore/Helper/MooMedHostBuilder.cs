@@ -1,10 +1,11 @@
-﻿using System;
-using System.IO;
-using Autofac.Extensions.DependencyInjection;
+﻿using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MooMed.AspNetCore.Config;
 using MooMed.AspNetCore.Extensions;
+using System;
+using System.IO;
 
 namespace MooMed.AspNetCore.Helper
 {
@@ -64,8 +65,8 @@ namespace MooMed.AspNetCore.Helper
 					webHostBuilder.UseSentry();
 
 					webHostBuilderEnricher?.Invoke(webHostBuilder);
-				}
-			);
+				})
+				.ConfigureLogging(x => x.SetMinimumLevel(LogLevel.Warning));
 
 			hostBuilderEnricher?.Invoke(hostBuilder);
 

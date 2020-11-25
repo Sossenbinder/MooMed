@@ -1,9 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+RUN apt-get update
+RUN apt-get install curl -y
 
 ENV MooMed_ProfilePictures_StorageAccountUrl="https://moomedprofilepictures.blob.core.windows.net"
 ENV MooMed_ProfilePictures_ConnectionString="DefaultEndpointsProtocol=https;AccountName=moomedprofilepictures;AccountKey=fqQXGxkohvP2QF64+mTtx8A6Ln9hkyfNxGrdPAMETBy8BWT3TiMM2bFkMXc+w3dH064kS9cfEmgxaTjmte8vmU4tEJQJOOMkpJNjSELi8w8=;EndpointSuffix=core.windows.net"
@@ -12,7 +14,7 @@ ENV MooMed_Logging_TableStorageConnectionString="DefaultEndpointsProtocol=https;
 ENV AZURE_CLIENT_ID "82259ded-f445-4db4-80d4-1c07f13c50b7"
 ENV AZURE_TENANT_ID "ff009f2c-d651-472e-b73e-e0f894c6011e"
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["Services/MooMed.ProfilePictureService/MooMed.ProfilePictureService.csproj", "Services/MooMed.ProfilePictureService/"]
 COPY ["Common/MooMed.Common.ServiceBase/MooMed.Common.ServiceBase.csproj", "Common/MooMed.Common.ServiceBase/"]

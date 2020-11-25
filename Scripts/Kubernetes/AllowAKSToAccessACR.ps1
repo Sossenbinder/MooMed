@@ -1,4 +1,4 @@
-$AKS_RESOURCE_GROUP="moomedkubernetes"
+$AKS_RESOURCE_GROUP="moomed"
 $AKS_CLUSTER_NAME="moomed"
 $ACR_RESOURCE_GROUP="SchranzTesting"
 $ACR_NAME="moomed"

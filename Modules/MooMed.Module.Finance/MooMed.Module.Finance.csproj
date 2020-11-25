@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <Platforms>AnyCPU;x64</Platforms>
         <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
@@ -9,7 +9,6 @@
     <ItemGroup>
         <PackageReference Include="Autofac" Version="5.1.2" />
         <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-        <PackageReference Include="LinqKit" Version="1.1.8" />
         <PackageReference Include="VSLee.IEXSharp" Version="1.1.0" />
     </ItemGroup>
 

@@ -75,12 +75,12 @@ export const createSingleReducer = <T>(params: ReducerParamsWithoutKey) => creat
 		actions: {
 			addAction: (_, action) => {
 				return {
-					data: action.payload
+					data: { ...action.payload }
 				}
 			},
 			updateAction: (_, action) => {
 				return {
-					data: action.payload
+					data: { ...action.payload }
 				}
 			},
 			deleteAction: (_, __) => {

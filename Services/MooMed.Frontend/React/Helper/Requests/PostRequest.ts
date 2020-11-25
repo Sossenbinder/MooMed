@@ -12,17 +12,10 @@ export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TReque
 	}
 
 	public async post(requestData?: TRequest, attachVerificationToken: boolean = true): Promise<NetworkResponse<TResponse>> {
-        
+
 		const postData: TRequest & VerificationTokenRequest = requestData ?? ({} as TRequest & VerificationTokenRequest);
 
-		let token: string = null;
-		if (attachVerificationToken) {
-			const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
-
-			token = tokenHolder.value;
-		}
-
-		return super.send(postData, token);
+		return super.send(postData, attachVerificationToken);
 	}
 }
 

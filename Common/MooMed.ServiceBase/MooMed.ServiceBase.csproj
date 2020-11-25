@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="protobuf-net.Grpc" Version="1.0.21" />
+        <PackageReference Include="protobuf-net.Grpc" Version="1.0.123" />
         <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
     </ItemGroup>
 

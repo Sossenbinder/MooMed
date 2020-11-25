@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.IPC;
@@ -36,7 +37,7 @@ namespace MooMed.IPC.Grpc
 				moomedService,
 				key => new AsyncLazy<IGrpcService>(() => CreateNewGrpcService<TService>(key)));
 
-			return (await grpcService) as TService ?? throw new InvalidOperationException();
+			return await grpcService as TService ?? throw new InvalidOperationException();
 		}
 
 		private async Task<IGrpcService> CreateNewGrpcService<TService>(DeploymentService moomedService)

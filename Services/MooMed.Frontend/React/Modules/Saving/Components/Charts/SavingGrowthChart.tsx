@@ -1,77 +1,86 @@
 // Framework
 import * as React from "react";
-import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, ResponsiveContainer } from "recharts";
+import { LineChart, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from "recharts";
+import * as moment from 'moment';
 
 // Components
 import Flex from "common/components/Flex"
 
 // Functionality
+import { calculateCompoundInterest } from "modules/saving/utils/savingUtils";
 
 // Types
+import { SavingInfo } from "modules/saving/types";
 
 import "./Styles/SavingGrowthChart.less";
 
-type Props = {
+const noInterest = "No Interest";
+const onePercentInterest = "1% Interest";
+const twoPercentInterest = "2% Interest";
+const fourPercentInterest = "4% Interest";
+const sixPercentInterest = "6% Interest";
+const eigthPercentInterest = "8% Interest";
 
+type Props = {
+	savingInfo: SavingInfo;
 }
 
-export const SavingGrowthChart: React.FC<Props> = () => {
+type ChartData = {
+	Year: number;
+	[noInterest]: number;
+	[onePercentInterest]: number;
+	[twoPercentInterest]: number;
+	[fourPercentInterest]: number;
+	[sixPercentInterest]: number;
+	[eigthPercentInterest]: number;
+}
 
-	const data = [
-		{
-		  "name": "Page A",
-		  "uv": 4000,
-		  "pv": 2400,
-		  "amt": 2400
-		},
-		{
-		  "name": "Page B",
-		  "uv": 3000,
-		  "pv": 1398,
-		  "amt": 2210
-		},
-		{
-		  "name": "Page C",
-		  "uv": 2000,
-		  "pv": 9800,
-		  "amt": 2290
-		},
-		{
-		  "name": "Page D",
-		  "uv": 2780,
-		  "pv": 3908,
-		  "amt": 2000
-		},
-		{
-		  "name": "Page E",
-		  "uv": 1890,
-		  "pv": 4800,
-		  "amt": 2181
-		},
-		{
-		  "name": "Page F",
-		  "uv": 2390,
-		  "pv": 3800,
-		  "amt": 2500
-		},
-		{
-		  "name": "Page G",
-		  "uv": 3490,
-		  "pv": 4300,
-		  "amt": 2100
-		}
-	  ];
+export const SavingGrowthChart: React.FC<Props> = ({ savingInfo }) => {
+
+	const initialAmount = 5000;
+	
+	const currentDate = moment().year();
+
+	const dates = React.useMemo(() => {
+		return [
+			currentDate,
+			currentDate + 1,
+			currentDate + 2,
+			currentDate + 5,
+			currentDate + 10,
+			currentDate + 20,
+			currentDate + 45,
+		];
+	}, []);
+
+	const valuesByDate = React.useMemo((): Array<ChartData> => dates.map(date => ({
+		Year: date,
+		[noInterest]: calculateCompoundInterest(initialAmount, 0, date - currentDate),
+		[onePercentInterest]: calculateCompoundInterest(initialAmount, 1, date - currentDate),
+		[twoPercentInterest]: calculateCompoundInterest(initialAmount, 2, date - currentDate),
+		[fourPercentInterest]: calculateCompoundInterest(initialAmount, 4, date - currentDate),
+		[sixPercentInterest]: calculateCompoundInterest(initialAmount, 6, date - currentDate),
+		[eigthPercentInterest]: calculateCompoundInterest(initialAmount, 8, date - currentDate),
+	})), [dates]);
 
 	return (
 		<Flex className="SavingGrowthChart">
 			<ResponsiveContainer width="95%">
-				<AreaChart data={data}>
-					<XAxis dataKey="name" />
-					<YAxis />
-					<Tooltip />
-					<Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-					<Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-				</AreaChart>
+				<LineChart data={valuesByDate}>
+					<XAxis dataKey="Year" />
+					<YAxis/>
+					<Tooltip 
+						formatter={(value, name, props) => {
+							return [value, name, props];
+						}}
+					/>
+					<Line type="monotone" dataKey={noInterest} stroke="#8884d8"/>
+					<Line type="monotone" dataKey={onePercentInterest} stroke="#82ca9d"/>
+					<Line type="monotone" dataKey={twoPercentInterest} stroke="#82ca9d"/>
+					<Line type="monotone" dataKey={fourPercentInterest} stroke="#82ca9d"/>
+					<Line type="monotone" dataKey={sixPercentInterest} stroke="#82ca9d"/>
+					<Line type="monotone" dataKey={eigthPercentInterest} stroke="#82ca9d"/>
+				</LineChart>
 			</ResponsiveContainer>
 		</Flex>
 	);

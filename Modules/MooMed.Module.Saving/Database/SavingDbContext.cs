@@ -5,14 +5,17 @@ using MooMed.Module.Saving.Database.Entities;
 
 namespace MooMed.Module.Saving.Database
 {
-	public class SavingDbContext : AbstractDbContext
-	{
-		[NotNull]
-		public DbSet<CurrencyMappingEntity> CurrencyMapping { get; set; } = null!;
+    public class SavingDbContext : AbstractDbContext
+    {
+        [NotNull]
+        public DbSet<CurrencyMappingEntity> CurrencyMapping { get; set; } = null!;
 
-		public SavingDbContext(string connectionString)
-			: base(connectionString)
-		{
-		}
-	}
+        [NotNull]
+        public DbSet<CashFlowItemEntity> CashFlowItems { get; set; } = null!;
+
+        public SavingDbContext(string connectionString)
+            : base(connectionString)
+        {
+        }
+    }
 }

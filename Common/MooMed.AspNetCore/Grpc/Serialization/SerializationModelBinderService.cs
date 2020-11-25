@@ -72,7 +72,7 @@ namespace MooMed.AspNetCore.Grpc.Serialization
 
 			_serializationHelper.SerializeType<Account>();
 
-			RuntimeTypeModel.Default.Add(typeof(DateTimeOffset?), false).SetSurrogate(typeof(DateTimeOffsetSurrogate));
+			RuntimeTypeModel.Default[typeof(DateTimeOffset?)].SetSurrogate(typeof(DateTimeOffsetSurrogate));
 
 			stopWatch.Stop();
 			_logger.Info($"Initialization of serialization model service took {stopWatch.Elapsed}");

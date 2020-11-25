@@ -1,77 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using GreenPipes.Internals.Extensions;
 using JetBrains.Annotations;
+using MooMed.Common.Definitions.Attributes;
 
 namespace FrontendEnumGenerator
 {
-	public class EnumGenerator
-	{
-		[NotNull]
-		private readonly string _solutionDir;
+    public class EnumGenerator
+    {
+        [NotNull]
+        private readonly string _solutionDir;
 
-		private List<Type> _enumsToExport;
+        private readonly List<Type> _enumsToExport;
 
-		private readonly string _outputFile;
+        private readonly string _outputFile;
 
-		private readonly string _wwwRootPath;
+        private readonly string _wwwRootPath;
 
-		public EnumGenerator([NotNull] string solutionDir)
-		{
-			_solutionDir = solutionDir;
-			_enumsToExport = EnumsToExport.Enums;
+        public EnumGenerator([NotNull] string solutionDir)
+        {
+            _solutionDir = solutionDir;
+            _enumsToExport = EnumsToExport.Enums;
 
-			var outputDirectory = $"{solutionDir}\\Services\\MooMed.Frontend\\React\\Enums";
+            _enumsToExport.AddRange(AppDomain
+                .CurrentDomain
+                .GetAssemblies()
+                .SelectMany(x => x.GetTypes().Where(y => y.HasAttribute<ExportEnumAttribute>())));
 
-			_outputFile = Path.Combine(outputDirectory, "moomedEnums.ts");
+            var outputDirectory = $"{solutionDir}/Services/MooMed.Frontend/React/Enums";
 
-			_wwwRootPath = $"{solutionDir}\\Services\\MooMed.Frontend\\wwwroot\\dist\\Enums";
-		}
+            _outputFile = Path.Combine(outputDirectory, "moomedEnums.ts");
 
-		public void GenerateEnums()
-		{
-			var output = GetOutputFile();
+            _wwwRootPath = $"{solutionDir}/Services/MooMed.Frontend/wwwroot/dist/Enums";
+        }
 
-			foreach (var enumToExport in _enumsToExport)
-			{
-				output.WriteLine();
-				output.WriteLine($"export enum {enumToExport.Name} {{");
+        public void GenerateEnums()
+        {
+            var output = GetOutputFile();
 
-				var enumMembers = Enum.GetNames(enumToExport);
-				for (var i = 0; i < enumMembers.Length; ++i)
-				{
-					output.WriteLine($"	{enumMembers[i]} = {i},");
-				}
-				output.WriteLine($"}}");
-			}
+            foreach (var enumToExport in _enumsToExport)
+            {
+                output.WriteLine();
+                output.WriteLine($"export enum {enumToExport.Name} {{");
 
-			output.Close();
+                var enumMembers = Enum.GetNames(enumToExport);
+                for (var i = 0; i < enumMembers.Length; ++i)
+                {
+                    output.WriteLine($"	{enumMembers[i]} = {i},");
+                }
+                output.WriteLine("}");
+            }
 
-			CopyTranslationsToWWWRoot();
-		}
+            output.Close();
 
-		[NotNull]
-		private StreamWriter GetOutputFile()
-		{
-			var outputDirectory = $"{_solutionDir}\\Services\\MooMed.Frontend\\React\\Enums";
+            CopyTranslationsToWwwRoot();
+        }
 
-			var outputPath = Path.Combine(outputDirectory, "moomedEnums.ts");
+        [NotNull]
+        private StreamWriter GetOutputFile()
+        {
+            var outputDirectory = $"{_solutionDir}/Services/MooMed.Frontend/React/Enums";
 
-			if (!File.Exists(outputPath))
-			{
-				return new StreamWriter(File.Create(outputPath));
-			}
+            var outputPath = Path.Combine(outputDirectory, "moomedEnums.ts");
 
-			File.WriteAllText(outputPath, string.Empty);
+            if (!File.Exists(outputPath))
+            {
+                return new StreamWriter(File.Create(outputPath));
+            }
 
-			return new StreamWriter(outputPath, true);
-		}
+            File.WriteAllText(outputPath, string.Empty);
 
-		private void CopyTranslationsToWWWRoot()
-		{
-			var fileName = _outputFile.Substring(_outputFile.LastIndexOf("\\", StringComparison.Ordinal));
+            return new StreamWriter(outputPath, true);
+        }
 
-			File.Copy(_outputFile, _wwwRootPath + fileName, true);
-		}
-	}
+        private void CopyTranslationsToWwwRoot()
+        {
+            var fileName = _outputFile.Substring(_outputFile.LastIndexOf(@"\", StringComparison.Ordinal));
+
+            File.Copy(_outputFile, _wwwRootPath + fileName, true);
+        }
+    }
 }

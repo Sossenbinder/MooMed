@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ProtoBuf;
 
 namespace MooMed.Common.Definitions.Interface
 {
+	[ProtoContract]
 	public interface IModel
 	{
 	}

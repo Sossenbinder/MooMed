@@ -10,7 +10,7 @@ export async function addToPortfolio(isin: string, amount: number) {
 	
     const request = new VoidPostRequest<Network.AddToPortfolio.Request>(portFolioRequests.AddToPortfolio);
 
-    return await request.send({
+    return await request.post({
 		isin,
 		amount,
 	});    

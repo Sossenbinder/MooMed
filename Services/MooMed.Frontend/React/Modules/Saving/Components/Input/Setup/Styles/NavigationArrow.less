@@ -4,15 +4,20 @@
 	height: 100%;
 	width: 100%;
 
-	cursor: pointer;
+	.Arrow {
+		height: 100%;
+		width: 100%;
 
-	.ArrowRender {
-		margin-left: @marginLeftRight;
-		margin-right: @marginLeftRight;
-		height: 50%;
-	}
-
-	&.Disabled {
-		cursor: default !important;
+		cursor: pointer;
+	
+		.ArrowRender {
+			margin-left: @marginLeftRight;
+			margin-right: @marginLeftRight;
+			height: 50%;
+		}
+	
+		&.Disabled {
+			cursor: default !important;
+		}
 	}
 }

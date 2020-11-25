@@ -3,21 +3,21 @@ using MooMed.Common.Definitions.Configuration;
 
 namespace MooMed.Logging.LogManagement
 {
-	internal class DebugLogFileManager : AbstractLogFileManager
-	{
-		public DebugLogFileManager(IConfigProvider configProvider)
-			: base(configProvider)
-		{
-		}
+    internal class DebugLogFileManager : AbstractLogFileManager
+    {
+        public DebugLogFileManager(IConfigProvider configProvider)
+            : base(configProvider)
+        {
+        }
 
-		public override string GetFilePath()
-		{
-			// Get the base path, e.g. /hostlogs/ProfilePictureService
-			var serviceLogsPath = $"/{LogFilePath}{GetServiceName()}";
+        public override string GetFilePath()
+        {
+            // Get the base path, e.g. /hostlogs/ProfilePictureService
+            var serviceLogsPath = $"{LogFilePath}/{GetServiceName()}";
 
-			PrepareEnv(serviceLogsPath);
+            PrepareEnv(serviceLogsPath);
 
-			return $"{serviceLogsPath}/{GetServiceName()}.txt";
-		}
-	}
+            return $"{serviceLogsPath}/{GetServiceName()}.txt";
+        }
+    }
 }

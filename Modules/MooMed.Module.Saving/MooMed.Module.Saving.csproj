@@ -1,16 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
         <ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Converters\" />
     </ItemGroup>
 </Project>
