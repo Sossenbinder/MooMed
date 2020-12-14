@@ -1,24 +1,27 @@
-﻿using JetBrains.Annotations;
-using MooMed.Common.Definitions.Eventing.User;
+﻿using MooMed.Common.Definitions.Eventing.User;
+using MooMed.Common.Definitions.Logging;
 using MooMed.Eventing.Events;
+using MooMed.Eventing.Events.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 
 namespace MooMed.Module.Accounts.Events
 {
     public class AccountEventHub : IAccountEventHub
-	{
-		public MtMooEvent<AccountLoggedInEvent> AccountLoggedIn { get; }
+    {
+        public IDistributedEvent<AccountLoggedInEvent> AccountLoggedIn { get; }
 
-		public MtMooEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
+        public IDistributedEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
 
-		public MtMooEvent<AccountRegisteredEvent> AccountRegistered { get; }
+        public IDistributedEvent<AccountRegisteredEvent> AccountRegistered { get; }
 
-		public AccountEventHub([NotNull] IMassTransitEventingService massTransitEventingService)
-	    {
-			AccountLoggedIn = new MtMooEvent<AccountLoggedInEvent>(nameof(AccountLoggedIn), massTransitEventingService);
-			AccountLoggedOut = new MtMooEvent<AccountLoggedOutEvent>(nameof(AccountLoggedOut), massTransitEventingService);
-			AccountRegistered = new MtMooEvent<AccountRegisteredEvent>(nameof(AccountRegistered), massTransitEventingService);
-		}
+        public AccountEventHub(
+            IMassTransitEventingService massTransitEventingService,
+            IMooMedLogger logger)
+        {
+            AccountLoggedIn = new MtMooEvent<AccountLoggedInEvent>(nameof(AccountLoggedIn), massTransitEventingService, logger);
+            AccountLoggedOut = new MtMooEvent<AccountLoggedOutEvent>(nameof(AccountLoggedOut), massTransitEventingService, logger);
+            AccountRegistered = new MtMooEvent<AccountRegisteredEvent>(nameof(AccountRegistered), massTransitEventingService, logger);
+        }
     }
 }

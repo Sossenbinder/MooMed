@@ -7,43 +7,43 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace MooMed.AspNetCore.Extensions
 {
-	public static class WebHostBuilderExtensions
-	{
-		public static IWebHostBuilder ConfigureGrpc(this IWebHostBuilder webHostBuilder, int port = 10042)
-		{
-			webHostBuilder
-				.UseKestrel(options =>
-				{
-					// Compatibility to allow regular calls for health checks
-					options.ListenAnyIP(80);
-					options.ListenAnyIP(443);
+    public static class WebHostBuilderExtensions
+    {
+        public static IWebHostBuilder ConfigureGrpc(this IWebHostBuilder webHostBuilder, int port = 10042)
+        {
+            webHostBuilder
+                .UseKestrel(options =>
+                {
+                    // Compatibility to allow regular calls for health checks
+                    options.ListenAnyIP(80);
 
-					options.ListenAnyIP(port, listenOptions =>
-					{
-						listenOptions.Protocols = HttpProtocols.Http2;
-					});
-				});
+                    // Grpc port listener
+                    options.ListenAnyIP(port, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
+                });
 
-			return webHostBuilder;
-		}
+            return webHostBuilder;
+        }
 
-		public static IWebHostBuilder AddAppMetricsWithPrometheusSupport(this IWebHostBuilder webHostBuilder)
-		{
-			var metrics = AppMetrics.CreateDefaultBuilder()
-				.OutputMetrics.AsPrometheusPlainText()
-				.OutputMetrics.AsPrometheusProtobuf()
-				.Build();
+        public static IWebHostBuilder AddAppMetricsWithPrometheusSupport(this IWebHostBuilder webHostBuilder)
+        {
+            var metrics = AppMetrics.CreateDefaultBuilder()
+                .OutputMetrics.AsPrometheusPlainText()
+                //.OutputMetrics.AsPrometheusProtobuf()
+                .Build();
 
-			return webHostBuilder
-				.UseMetrics(options =>
-				{
-					options.EndpointOptions = endpointOptions =>
-					{
-						endpointOptions.MetricsTextEndpointOutputFormatter = metrics.OutputMetricsFormatters.OfType<MetricsPrometheusTextOutputFormatter>().First();
-						endpointOptions.MetricsEndpointOutputFormatter = metrics.OutputMetricsFormatters.OfType<MetricsPrometheusProtobufOutputFormatter>().First();
-					};
-				})
-				.UseMetricsEndpoints();
-		}
-	}
+            return webHostBuilder
+                .UseMetrics(options =>
+                {
+                    options.EndpointOptions = endpointOptions =>
+                    {
+                        endpointOptions.MetricsTextEndpointOutputFormatter = metrics.OutputMetricsFormatters.OfType<MetricsPrometheusTextOutputFormatter>().First();
+                        //endpointOptions.MetricsEndpointOutputFormatter = metrics.OutputMetricsFormatters.OfType<MetricsPrometheusProtobufOutputFormatter>().First();
+                    };
+                })
+                .UseMetricsEndpoints();
+        }
+    }
 }

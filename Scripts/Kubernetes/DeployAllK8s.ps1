@@ -6,6 +6,8 @@ param (
 
 if ($availableConfigs -contains $configuration)
 {
+	Invoke-Expression "kubectl apply -f ../General/RabbitMQ/RabbitMq.yaml";
+
 	$serviceFolders = Get-ChildItem -Path "../../Services" -Directory -Force
 
 	foreach ($folder in $serviceFolders)

@@ -1,4 +1,4 @@
-﻿using MooMed.Common.Database.Context.Interface;
+﻿using Microsoft.EntityFrameworkCore;
 using MooMed.Common.Database.Repository;
 using MooMed.Module.Saving.Database;
 using MooMed.Module.Saving.Database.Entities;

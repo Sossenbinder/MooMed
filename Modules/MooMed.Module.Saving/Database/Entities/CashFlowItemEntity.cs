@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
@@ -11,7 +12,6 @@ namespace MooMed.Module.Saving.Database.Entities
     [Table("CashFlowItems")]
     public class CashFlowItemEntity : IEntity<int>
     {
-        [Key]
         public int Id { get; set; }
 
         [ForeignKey(nameof(Id))]
@@ -25,6 +25,7 @@ namespace MooMed.Module.Saving.Database.Entities
         [Column("Name")]
         public string Name { get; set; } = null!;
 
+        [Key]
         [Column("Identifier")]
         public Guid Identifier { get; set; }
 
@@ -36,5 +37,22 @@ namespace MooMed.Module.Saving.Database.Entities
 
         [Column("FlowType")]
         public CashFlow FlowType { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (!(obj is CashFlowItemEntity comparisonItem))
+            {
+                return false;
+            }
+
+            return Id!.Equals(comparisonItem.Id) && Identifier.Equals(comparisonItem.Identifier);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                EqualityComparer<int>.Default.GetHashCode(Id!),
+                EqualityComparer<Guid>.Default.GetHashCode(Identifier));
+        }
     }
 }

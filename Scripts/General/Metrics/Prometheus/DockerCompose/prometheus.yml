@@ -1,0 +1,18 @@
+global:
+    scrape_interval: 5s
+scrape_configs:
+    - job_name: 'prometheus'
+      static_configs:
+          - targets: [
+            'moomed.frontend',
+            'moomed.monitoringservice',
+            'moomed.sessionservice',
+            'moomed.searchservice',
+            'moomed.profilepictureservice',
+            'moomed.accountvalidationservice',
+            'moomed.accountservice',
+            'moomed.financeservice',
+            'moomed.chatservice',
+            'moomed.monitoringservice',
+            'moomed.savingservice']
+      metrics_path: /metrics-text

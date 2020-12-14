@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <AssemblyName>MooMed.RemotingProxies</AssemblyName>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-        <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
-        <ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
-        <ProjectReference Include="..\MooMed.IPC\MooMed.IPC.csproj" />
-    </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<AssemblyName>MooMed.RemotingProxies</AssemblyName>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+		<PackageReference Include="protobuf-net.Grpc" Version="1.0.140" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+		<ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+		<ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+		<ProjectReference Include="..\MooMed.IPC\MooMed.IPC.csproj" />
+	</ItemGroup>
 </Project>

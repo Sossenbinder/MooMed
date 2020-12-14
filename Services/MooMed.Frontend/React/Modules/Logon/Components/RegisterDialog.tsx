@@ -6,22 +6,10 @@ import ErrorAttachedTextInput from "common/components/general/input/ErrorAttache
 import Button from "common/components/general/input/Buttons/Button";
 
 // Functionality
-import PostRequest from "helper/requests/PostRequest";
-import requestUrls from "helper/requestUrls";
-import { PopUpMessageLevel } from "definitions/PopUpNotificationDefinitions";
-import { createPopUpMessage } from "helper/popUpMessageHelper";
 import useTranslations from "hooks/useTranslations";
 import useFormState from "hooks/useFormState";
+import useServices from "hooks/useServices";
 
-// Types
-import { FormData } from "definitions/Forms";
-
-interface IRegisterModel {
-	Email: string;
-	UserName: string;
-	Password: string;
-	ConfirmPassword: string;
-}
 
 export const RegisterDialog: React.FC = () => {
 
@@ -31,29 +19,14 @@ export const RegisterDialog: React.FC = () => {
 	const [confirmPassword, setConfirmPassword] = useFormState("");
 
 	const Translation = useTranslations();
+	const { LogonService } = useServices();
 
 	const hasErrors = () => !(email.IsValid && userName.IsValid && password.IsValid && confirmPassword.IsValid);
 
 	const handleRegisterClick = async () => {
 
-		if (!hasErrors()) {
-			const registerModel: IRegisterModel = {
-				Email: email.Value,
-				UserName: userName.Value,
-				Password: password.Value,
-				ConfirmPassword: confirmPassword.Value,
-			}
-
-			const request = new PostRequest<IRegisterModel, any>(requestUrls.logOn.register);
-			const response = await request.post(registerModel);
-
-			debugger;
-
-			if (response.success) {
-				location.reload();
-			} else {
-				createPopUpMessage(response.payload.responseJson, PopUpMessageLevel.Error, "Registration failed", 5000);
-			}
+		if (!hasErrors()) {			
+			await LogonService.register(email.Value, userName.Value, password.Value, confirmPassword.Value);
 		}
 	}
 

@@ -2,11 +2,11 @@
 import { Currency } from "enums/moomedEnums"
 import { VoidPostRequest } from "helper/requests/PostRequest";
 import GetRequest from "helper/requests/GetRequest";
-import { BasicSavingInfo, Network } from "modules/Saving/types";
+import { CashFlowItem, Network } from "modules/Saving/types";
 
 const savingRequests = {
 	SetCurrency: "/Saving/SetCurrency",
-	SaveBasicSettings: "/Saving/SaveBasicSettings",
+	SetCashFlowItems: "/Saving/SetCashFlowItems",
 	GetSavingInfo: "/Saving/GetSavingInfo",
 }
 
@@ -19,10 +19,12 @@ export const setCurrency = (currency: Currency) => {
 	});
 }
 
-export const saveBasicSettings = (basicSavingInfo: BasicSavingInfo) => {
-	const request = new VoidPostRequest<Network.SaveBasicSettings.Request>(savingRequests.SaveBasicSettings);
+export const setCashFlowItems = (cashFlowItems: Array<CashFlowItem>) => {
+	const request = new VoidPostRequest<Network.SetCashFlowItems.Request>(savingRequests.SetCashFlowItems);
 
-	return request.post(basicSavingInfo);
+	return request.post({
+		cashFlowItems: cashFlowItems,
+	});
 }
 
 export const getSavingInfo = () => {

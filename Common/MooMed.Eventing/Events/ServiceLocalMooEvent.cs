@@ -1,31 +1,39 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using MooMed.Common.Definitions.Logging;
 using MooMed.DotNet.Extensions;
+using MooMed.DotNet.Utils.Tasks;
+using MooMed.Eventing.Events.Interface;
 
 [assembly: InternalsVisibleTo("MooMed.Core.Tests")]
 
 namespace MooMed.Eventing.Events
 {
-	public class ServiceLocalMooEvent<TEventArgs> : EventBase<TEventArgs>
-	{
-		public override async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
-		{
-			var accumulatedExceptions = new AccumulatedMooEventExceptions();
+    public class ServiceLocalMooEvent<TEventArgs> : EventBase<TEventArgs>, ILocalEvent<TEventArgs>
+    {
+        public async Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs)
+        {
+            var accumulatedExceptions = new AccumulatedMooEventExceptions();
 
-			await Handlers.ParallelAsync(async handler =>
-			{
-				try
-				{
-					await handler(eventArgs);
-				}
-				catch (Exception e)
-				{
-					accumulatedExceptions.Exceptions.Add(e);
-				}
-			});
+            await Handlers.ToArray().ParallelAsync(async handler =>
+            {
+                try
+                {
+                    await handler(eventArgs);
+                }
+                catch (Exception e)
+                {
+                    accumulatedExceptions.Exceptions.Add(e);
+                }
+            });
 
-			return accumulatedExceptions;
-		}
-	}
+            return accumulatedExceptions;
+        }
+
+        public void RaiseFireAndForget(TEventArgs eventArgs, IMooMedLogger logger)
+        {
+            _ = FireAndForgetTask.Run(() => Raise(eventArgs), logger);
+        }
+    }
 }

@@ -17,79 +17,91 @@ using NUnit.Framework;
 
 namespace MooMed.TestBase
 {
-	public class MooMedTestBase
-	{
-		protected string TestDir { get; private set; }
+    public class MooMedTestBase
+    {
+        protected string TestDir { get; private set; } = string.Empty;
 
-		protected IConfigProvider UnitTestProvider { get; private set; }
+        protected IConfigProvider UnitTestProvider { get; private set; }
 
-		// Can be replaced by deriving classes
-		protected IContainer UnitTestContainer { get; set; }
+        private ContainerBuilder ContainerBuilder { get; set; }
 
-		public MooMedTestBase()
-		{
-			// ReSharper disable once VirtualMemberCallInConstructor
-			SetupFixture();
-		}
+        protected IContainer Container { get; set; }
 
-		~MooMedTestBase()
-		{
-			TearDownFixture();
-		}
+        public MooMedTestBase()
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            SetupFixture();
+        }
 
-		protected virtual void SetupFixture()
-		{
-			CreateAutoFacModule();
+        ~MooMedTestBase()
+        {
+            TearDownFixture();
+        }
 
-			TestDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			UnitTestProvider = UnitTestContainer.Resolve<IConfigProvider>();
-		}
+        protected virtual void SetupFixture()
+        {
+            TestDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!);
+        }
 
-		[SetUp]
-		protected virtual void Setup()
-		{
-		}
+        [SetUp]
+        public void SetupEntry()
+        {
+            ContainerBuilder = new ContainerBuilder();
+            SetupContainer(ContainerBuilder);
 
-		[TearDown]
-		protected virtual void TearDown()
-		{
-		}
+            AddDefaultRegistrations();
+            Container = ContainerBuilder.Build();
+            UnitTestProvider = Container.Resolve<IConfigProvider>();
 
-		protected virtual void TearDownFixture()
-		{
-		}
+            Setup();
+        }
 
-		private void CreateAutoFacModule()
-		{
-			var builder = new ContainerBuilder();
+        #region Nunit Events
 
-			builder.RegisterModule<CoreModule>();
-			builder.RegisterModule<EncryptionModule>();
-			builder.RegisterModule<ConfigurationModule>();
-			builder.RegisterModule<LoggingModule>();
-			builder.RegisterModule<ConfigurationModule>();
+        protected virtual void SetupContainer(ContainerBuilder builder)
+        {
+        }
 
-			var config = new ConfigurationBuilder()
-				.Add(new JsonConfigurationSource()
-				{
-					Path = "UnitTestSettings.json"
-				})
-				.Build();
+        protected virtual void Setup()
+        {
+        }
 
-			builder
-				.Register(x => new Configuration.Config(config))
-				.As<IConfig>()
-				.SingleInstance();
+        [TearDown]
+        protected virtual void TearDown() { }
 
-			builder.RegisterType<UnitTestCryptoProvider>()
-				.As<ICryptoProvider>()
-				.SingleInstance();
+        protected virtual void TearDownFixture()
+        {
+        }
 
-			builder.RegisterType<UnitTestSerilogConfigProvider>()
-				.As<ISerilogConfigProvider>()
-				.SingleInstance();
+        #endregion Nunit Events
 
-			UnitTestContainer = builder.Build();
-		}
-	}
+        private void AddDefaultRegistrations()
+        {
+            ContainerBuilder.RegisterModule<CoreModule>();
+            ContainerBuilder.RegisterModule<EncryptionModule>();
+            ContainerBuilder.RegisterModule<ConfigurationModule>();
+            ContainerBuilder.RegisterModule<LoggingModule>();
+            ContainerBuilder.RegisterModule<ConfigurationModule>();
+
+            var config = new ConfigurationBuilder()
+                .Add(new JsonConfigurationSource()
+                {
+                    Path = "UnitTestSettings.json"
+                })
+                .Build();
+
+            ContainerBuilder
+                .Register(x => new Configuration.Config(config))
+                .As<IConfig>()
+                .SingleInstance();
+
+            ContainerBuilder.RegisterType<UnitTestCryptoProvider>()
+                .As<ICryptoProvider>()
+                .SingleInstance();
+
+            ContainerBuilder.RegisterType<UnitTestSerilogConfigProvider>()
+                .As<ISerilogConfigProvider>()
+                .SingleInstance();
+        }
+    }
 }

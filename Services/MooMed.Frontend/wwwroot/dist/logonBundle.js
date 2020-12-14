@@ -1039,42 +1039,6 @@ exports.default = createPopUpMessage;
 
 /***/ }),
 
-/***/ "./React/helper/requestUrls.ts":
-/*!*************************************!*\
-  !*** ./React/helper/requestUrls.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const requestUrls = {
-    account: {
-        getOwnAccount: "Account/GetOwnAccount",
-        getAccount: "Account/GetAccount",
-    },
-    accountValidation: {
-        validateRegistration: "AccountValidation/ValidateRegistration",
-    },
-    friends: {
-        getAllFriends: "Friends/GetAllFriends",
-    },
-    profile: {
-        getProfilePicturePath: "Profile/GetProfilePicturePath",
-        uploadProfilePicture: "Profile/UploadProfilePicture",
-    },
-    logOn: {
-        login: "/Logon/Login",
-        logOff: "/Logon/LogOff",
-        register: "/Logon/Register",
-    },
-};
-exports.default = requestUrls;
-
-
-/***/ }),
-
 /***/ "./React/helper/requests/AjaxRequest.ts":
 /*!**********************************************!*\
   !*** ./React/helper/requests/AjaxRequest.ts ***!
@@ -1531,36 +1495,20 @@ exports.RegisterDialog = void 0;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const ErrorAttachedTextInput_1 = __webpack_require__(/*! common/components/general/input/ErrorAttached/ErrorAttachedTextInput */ "./React/common/components/general/input/ErrorAttached/ErrorAttachedTextInput.tsx");
 const Button_1 = __webpack_require__(/*! common/components/general/input/Buttons/Button */ "./React/common/components/general/input/Buttons/Button.tsx");
-const PostRequest_1 = __webpack_require__(/*! helper/requests/PostRequest */ "./React/helper/requests/PostRequest.ts");
-const requestUrls_1 = __webpack_require__(/*! helper/requestUrls */ "./React/helper/requestUrls.ts");
-const PopUpNotificationDefinitions_1 = __webpack_require__(/*! definitions/PopUpNotificationDefinitions */ "./React/definitions/PopUpNotificationDefinitions.ts");
-const popUpMessageHelper_1 = __webpack_require__(/*! helper/popUpMessageHelper */ "./React/helper/popUpMessageHelper.ts");
 const useTranslations_1 = __webpack_require__(/*! hooks/useTranslations */ "./React/hooks/useTranslations.ts");
 const useFormState_1 = __webpack_require__(/*! hooks/useFormState */ "./React/hooks/useFormState.ts");
+const useServices_1 = __webpack_require__(/*! hooks/useServices */ "./React/hooks/useServices.ts");
 exports.RegisterDialog = () => {
     const [email, setEmail] = useFormState_1.default("");
     const [userName, setUserName] = useFormState_1.default("");
     const [password, setPassword] = useFormState_1.default("");
     const [confirmPassword, setConfirmPassword] = useFormState_1.default("");
     const Translation = useTranslations_1.default();
+    const { LogonService } = useServices_1.default();
     const hasErrors = () => !(email.IsValid && userName.IsValid && password.IsValid && confirmPassword.IsValid);
     const handleRegisterClick = () => __awaiter(void 0, void 0, void 0, function* () {
         if (!hasErrors()) {
-            const registerModel = {
-                Email: email.Value,
-                UserName: userName.Value,
-                Password: password.Value,
-                ConfirmPassword: confirmPassword.Value,
-            };
-            const request = new PostRequest_1.default(requestUrls_1.default.logOn.register);
-            const response = yield request.post(registerModel);
-            debugger;
-            if (response.success) {
-                location.reload();
-            }
-            else {
-                popUpMessageHelper_1.createPopUpMessage(response.payload.responseJson, PopUpNotificationDefinitions_1.PopUpMessageLevel.Error, "Registration failed", 5000);
-            }
+            yield LogonService.register(email.Value, userName.Value, password.Value, confirmPassword.Value);
         }
     });
     return (React.createElement("div", null,

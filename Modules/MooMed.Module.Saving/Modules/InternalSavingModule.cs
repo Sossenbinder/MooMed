@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using MooMed.Common.Database.Context.Interface;
+using Microsoft.EntityFrameworkCore;
 using MooMed.Module.Saving.Converters;
 using MooMed.Module.Saving.Database;
 using MooMed.Module.Saving.Repository;
@@ -37,6 +37,14 @@ namespace MooMed.Module.Saving.Modules
 
             builder.RegisterType<CashFlowItemService>()
                 .As<ICashFlowItemService>()
+                .SingleInstance();
+
+            builder.RegisterType<AssetRepository>()
+                .As<IAssetRepository>()
+                .SingleInstance();
+
+            builder.RegisterType<AssetService>()
+                .As<IAssetService>()
                 .SingleInstance();
         }
     }

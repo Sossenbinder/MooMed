@@ -1,12 +1,11 @@
-﻿using JetBrains.Annotations;
-using MooMed.Common.Definitions.Interface;
+﻿using MooMed.Common.Definitions.Interface;
 
 namespace MooMed.Common.Database.Converter
 {
-	public interface IModelToUiModelConverter<in TModel, out TUiModel>
-		where TUiModel : IUiModel
-		where TModel : IModel
-	{
-		TUiModel ToUiModel([NotNull] TModel model);
-	}
+    public interface IModelToUiModelConverter<in TModel, out TUiModel>
+        where TUiModel : IUiModel
+        where TModel : IModel
+    {
+        TUiModel ToUiModel(TModel model);
+    }
 }

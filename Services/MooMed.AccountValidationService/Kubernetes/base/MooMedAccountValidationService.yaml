@@ -27,6 +27,7 @@ spec:
     metadata:
       labels:
         name: moomed-accountvalidationservice
+        serviceType: moomedFunctionalService
     spec:
       containers:
       - name: moomed-accountvalidationservice
@@ -40,5 +41,10 @@ spec:
               secretKeyRef:
                 name: akv
                 key: client_secret
+        resources:
+          requests:
+            memory: 64Mi
+          limits:
+            memory: 256Mi
       imagePullSecrets:
         - name: acrimgpullsecret

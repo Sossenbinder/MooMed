@@ -17,19 +17,29 @@ namespace MooMed.SavingService.Service
 
         private readonly ICashFlowItemService _cashFlowItemService;
 
+        private readonly IAssetService _assetService;
+
         public SavingService(
             IMooMedLogger logger,
             ICurrencyService currencyService,
-            ICashFlowItemService cashFlowItemService)
+            ICashFlowItemService cashFlowItemService,
+            IAssetService assetService)
             : base(logger)
         {
             _currencyService = currencyService;
             _cashFlowItemService = cashFlowItemService;
+            _assetService = assetService;
         }
 
         public async Task<ServiceResponse> SetCurrency(SetCurrencyModel setCurrencyModel)
         {
             await _currencyService.SetCurrency(setCurrencyModel.SessionContext, setCurrencyModel.Currency);
+            return ServiceResponse.Success();
+        }
+
+        public async Task<ServiceResponse> SetAssets(AssetsModel assetsModel)
+        {
+            await _assetService.SetAssets(assetsModel.SessionContext, assetsModel);
             return ServiceResponse.Success();
         }
 
@@ -51,17 +61,25 @@ namespace MooMed.SavingService.Service
                 Currency = currencyRetrievalTask.Result,
             };
 
+            // First, order all items by type
             var cashFlowItems = cashFlowItemsTask.Result
-                .ToDictionary(x => x.CashFlowItemType, x => x);
+                .GroupBy(x => x.CashFlowItemType, x => x)
+                .ToDictionary(x => x.Key, x => x.Select(y => y));
 
             if (cashFlowItems.Any())
             {
+                // Setup the special items
                 savingModel.BasicSavingInfo = new BasicSavingInfoModel()
                 {
-                    Groceries = cashFlowItems.GetValueOrDefault(CashFlowItemType.Groceries)!,
-                    Income = cashFlowItems.GetValueOrDefault(CashFlowItemType.Income)!,
-                    Rent = cashFlowItems.GetValueOrDefault(CashFlowItemType.Rent)!,
+                    Groceries = cashFlowItems.GetValueOrDefault(CashFlowItemType.Groceries)?.First(),
+                    Income = cashFlowItems.GetValueOrDefault(CashFlowItemType.Income)?.First(),
+                    Rent = cashFlowItems.GetValueOrDefault(CashFlowItemType.Rent)?.First(),
                 };
+
+                if (cashFlowItems.ContainsKey(CashFlowItemType.Unspecified))
+                {
+                    savingModel.FreeFormSavingInfo = cashFlowItems[CashFlowItemType.Unspecified].ToList();
+                }
             }
 
             return ServiceResponse.Success(savingModel);

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using MassTransit;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
@@ -17,75 +18,75 @@ using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	public class AccountOnlineStateService : MooMedServiceBase, IAccountOnlineStateService
-	{
-		[NotNull]
-		private readonly IAccountOnlineStateRepository _accountOnlineStateRepository;
+    public class AccountOnlineStateService : MooMedServiceBase, IAccountOnlineStateService
+    {
+        [NotNull]
+        private readonly IAccountOnlineStateRepository _accountOnlineStateRepository;
 
-		[NotNull]
-		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
+        [NotNull]
+        private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
 
-		[NotNull]
-		private readonly IFriendsService _friendsService;
+        [NotNull]
+        private readonly IFriendsService _friendsService;
 
-		public AccountOnlineStateService(
-			[NotNull] IAccountEventHub accountEventHub,
-			[NotNull] IAccountOnlineStateRepository accountOnlineStateRepository,
-			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
-			[NotNull] IFriendsService friendsService)
-		{
-			_accountOnlineStateRepository = accountOnlineStateRepository;
-			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
-			_friendsService = friendsService;
+        public AccountOnlineStateService(
+            [NotNull] IAccountEventHub accountEventHub,
+            [NotNull] IAccountOnlineStateRepository accountOnlineStateRepository,
+            [NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
+            [NotNull] IFriendsService friendsService)
+        {
+            _accountOnlineStateRepository = accountOnlineStateRepository;
+            _massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
+            _friendsService = friendsService;
 
-			RegisterEventHandler(accountEventHub.AccountLoggedIn, OnAccountLoggedIn);
-			RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
-		}
+            RegisterEventHandler(accountEventHub.AccountLoggedIn, OnAccountLoggedIn);
+            RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
+        }
 
-		private async Task OnAccountLoggedIn(AccountLoggedInEvent loggedInEvent)
-		{
-			var sessionContext = loggedInEvent.SessionContext;
+        private async Task OnAccountLoggedIn(AccountLoggedInEvent loggedInEvent)
+        {
+            var sessionContext = loggedInEvent.SessionContext;
 
-			var onlineStateEntity = new AccountOnlineStateEntity()
-			{
-				Id = sessionContext.Account.Id,
-				OnlineState = AccountOnlineState.Online,
-			};
+            var onlineStateEntity = new AccountOnlineStateEntity()
+            {
+                Id = sessionContext.Account.Id,
+                OnlineState = AccountOnlineState.Online,
+            };
 
-			await _accountOnlineStateRepository.CreateOrUpdate(onlineStateEntity, entity => entity.OnlineState = AccountOnlineState.Online);
+            await _accountOnlineStateRepository.CreateOrUpdate(onlineStateEntity, entity => entity.OnlineState = AccountOnlineState.Online);
 
-			await SendFrontendNotification(loggedInEvent.SessionContext, AccountOnlineState.Online);
-		}
+            await SendFrontendNotification(loggedInEvent.SessionContext, AccountOnlineState.Online);
+        }
 
-		private async Task OnAccountLoggedOut(AccountLoggedOutEvent loggedOutEvent)
-		{
-			var sessionContext = loggedOutEvent.SessionContext;
+        private async Task OnAccountLoggedOut(AccountLoggedOutEvent loggedOutEvent)
+        {
+            var sessionContext = loggedOutEvent.SessionContext;
 
-			await _accountOnlineStateRepository.Update(sessionContext.Account.Id, entity => entity.OnlineState = AccountOnlineState.Offline);
+            await _accountOnlineStateRepository.Update(entity => entity.Id == sessionContext.Account.Id, entity => entity.OnlineState = AccountOnlineState.Offline);
 
-			await SendFrontendNotification(loggedOutEvent.SessionContext, AccountOnlineState.Offline);
-		}
+            await SendFrontendNotification(loggedOutEvent.SessionContext, AccountOnlineState.Offline);
+        }
 
-		private async Task SendFrontendNotification([NotNull] ISessionContext sessionContext, AccountOnlineState onlineState)
-		{
-			var notification = FrontendNotificationFactory.Update(new AccountOnlineStateFrontendNotification()
-			{
-				AccountId = sessionContext.Account.Id,
-				AccountOnlineState = onlineState,
-			}, NotificationType.FriendOnlineStateChange);
+        private async Task SendFrontendNotification([NotNull] ISessionContext sessionContext, AccountOnlineState onlineState)
+        {
+            var notification = FrontendNotificationFactory.Update(new AccountOnlineStateFrontendNotification()
+            {
+                AccountId = sessionContext.Account.Id,
+                AccountOnlineState = onlineState,
+            }, NotificationType.FriendOnlineStateChange);
 
-			var friendsOfAccount = await _friendsService.GetFriends(sessionContext);
-			var receiverIds = friendsOfAccount.Select(x => x.Id);
+            var friendsOfAccount = await _friendsService.GetFriends(sessionContext);
+            var receiverIds = friendsOfAccount.Select(x => x.Id);
 
-			await receiverIds.ParallelAsync(id => _massTransitSignalRBackplaneService.RaiseGroupSignalREvent(id.ToString(), notification));
-		}
+            await receiverIds.ParallelAsync(id => _massTransitSignalRBackplaneService.RaiseGroupSignalREvent(id.ToString(), notification));
+        }
 
-		public async Task<AccountOnlineState> GetOnlineStateForAccount(int accountId)
-		{
-			var onlineState = (await _accountOnlineStateRepository.Read(x => x.Id == accountId))
-				.SingleOrDefault();
+        public async Task<AccountOnlineState> GetOnlineStateForAccount(int accountId)
+        {
+            var onlineState = (await _accountOnlineStateRepository.Read(x => x.Id == accountId))
+                .SingleOrDefault();
 
-			return onlineState?.OnlineState ?? AccountOnlineState.Offline;
-		}
-	}
+            return onlineState?.OnlineState ?? AccountOnlineState.Offline;
+        }
+    }
 }

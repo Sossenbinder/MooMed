@@ -1,14 +1,14 @@
 ﻿namespace MooMed.DotNet.Utils.ResetLazy
 {
-	public class BaseResetLazy<T>
-	{
-		public bool IsValueCreated { get; protected set; }
+    public abstract class BaseResetLazy<T>
+    {
+        public bool IsValueCreated { get; protected set; }
 
-		protected T CachedValue;
+        protected T CachedValue = default!;
 
-		public void Reset()
-		{
-			IsValueCreated = false;
-		}
-	}
+        public void Reset()
+        {
+            IsValueCreated = false;
+        }
+    }
 }

@@ -1,20 +1,23 @@
-import { Currency } from "enums/moomedEnums"
+import { Currency, CashFlowItemType, CashFlow } from "enums/moomedEnums"
 
-export type FreeFormSavingInfo = {
+export type CashFlowItem = {
 	name: string;
+	identifier?: string;
+	cashFlowItemType: CashFlowItemType;
 	amount: number;
+	flowType: CashFlow;
 }
 
 export type BasicSavingInfo = {
-	income: number;
-	rent: number;
-	groceries: number;
+	income: CashFlowItem;
+	rent: CashFlowItem;
+	groceries: CashFlowItem;
 }
 
 export type SavingInfo = {
 	currency: Currency;
 	basicSavingInfo: BasicSavingInfo;
-	freeFormSavingInfo: Array<FreeFormSavingInfo>;
+	freeFormSavingInfo: Array<CashFlowItem>;
 }
 
 export namespace Network {
@@ -23,9 +26,11 @@ export namespace Network {
 			Currency: Currency;
 		}
 	}
-
-	export namespace SaveBasicSettings {
-		export type Request = BasicSavingInfo;
+	
+	export namespace SetCashFlowItems {
+		export type Request = {
+			cashFlowItems: Array<CashFlowItem>;
+		}
 	}
 
 	export namespace GetSavingInfo {

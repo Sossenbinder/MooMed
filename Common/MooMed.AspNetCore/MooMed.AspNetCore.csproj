@@ -1,46 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <Platforms>AnyCPU;x64</Platforms>
-    	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Platforms>AnyCPU;x64</Platforms>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="App.Metrics.AspNetCore.All" Version="4.1.0" />
-        <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="4.1.0" />
-        <PackageReference Include="Autofac" Version="5.1.2" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-        <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Azure.KeyVault" Version="2.3.2" />
-        <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.0.2" />
-        <PackageReference Include="protobuf-net" Version="3.0.52" />
-        <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.123" />
-        <PackageReference Include="Sentry.AspNetCore" Version="2.1.4" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="App.Metrics.AspNetCore.All" Version="4.1.0" />
+		<PackageReference Include="App.Metrics.Formatters.Prometheus" Version="4.1.0" />
+		<PackageReference Include="Autofac" Version="6.1.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+		<PackageReference Include="MassTransit.AspNetCore" Version="7.0.7" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="7.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Azure.KeyVault" Version="2.3.2" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.0.2" />
+		<PackageReference Include="protobuf-net" Version="3.0.73" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.140" />
+		<PackageReference Include="Sentry.AspNetCore" Version="2.1.8" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
-        <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-        <ProjectReference Include="..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-        <ProjectReference Include="..\MooMed.Configuration\MooMed.Configuration.csproj" />
-        <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
-        <ProjectReference Include="..\MooMed.DependencyInjection\MooMed.DependencyInjection.csproj" />
-        <ProjectReference Include="..\MooMed.DotNet\MooMed.DotNet.csproj" />
-        <ProjectReference Include="..\MooMed.Encryption\MooMed.Encryption.csproj" />
-        <ProjectReference Include="..\MooMed.Eventing\MooMed.Eventing.csproj" />
-        <ProjectReference Include="..\MooMed.Grpc\MooMed.Grpc.csproj" />
-        <ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
-        <ProjectReference Include="..\MooMed.Serialization\MooMed.Serialization.csproj" />
-        <ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Modules\MooMed.Module.Monitoring\MooMed.Module.Monitoring.csproj" />
+		<ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+		<ProjectReference Include="..\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+		<ProjectReference Include="..\MooMed.Configuration\MooMed.Configuration.csproj" />
+		<ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+		<ProjectReference Include="..\MooMed.DependencyInjection\MooMed.DependencyInjection.csproj" />
+		<ProjectReference Include="..\MooMed.DotNet\MooMed.DotNet.csproj" />
+		<ProjectReference Include="..\MooMed.Encryption\MooMed.Encryption.csproj" />
+		<ProjectReference Include="..\MooMed.Eventing\MooMed.Eventing.csproj" />
+		<ProjectReference Include="..\MooMed.Grpc\MooMed.Grpc.csproj" />
+		<ProjectReference Include="..\MooMed.Identity\MooMed.Identity.csproj" />
+		<ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
+		<ProjectReference Include="..\MooMed.Serialization\MooMed.Serialization.csproj" />
+		<ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <None Update="Config\sentryconfig.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
+	<ItemGroup>
+		<None Update="Config\sentryconfig.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>

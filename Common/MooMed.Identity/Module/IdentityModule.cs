@@ -6,28 +6,28 @@ using MooMed.Identity.Service.Interface;
 
 namespace MooMed.Identity.Module
 {
-	public class IdentityModule : Autofac.Module
-	{
-		protected override void Load(ContainerBuilder builder)
-		{
-			base.Load(builder);
-			
-			builder.RegisterType<DnsResolutionService>()
-				.As<IDnsResolutionService>()
-				.SingleInstance();
+    public class IdentityModule : Autofac.Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            base.Load(builder);
 
-			builder
+            builder.RegisterType<DnsResolutionService>()
+                .As<IDnsResolutionService>()
+                .SingleInstance();
+
+            builder
 #if DEBUG
 				.RegisterType<DockerComposeEndpointDiscoveryService>()
 #else
-				.RegisterType<KubernetesEndpointDnsDiscoveryService>()
+                .RegisterType<KubernetesEndpointDnsDiscoveryService>()
 #endif
-				.As<IEndpointDiscoveryService>()
-				.SingleInstance();
+                .As<IEndpointDiscoveryService>()
+                .SingleInstance();
 
-			builder.RegisterType<ServiceIdentityProvider>()
-				.As<IServiceIdentityProvider>()
-				.SingleInstance();
-		}
-	}
+            builder.RegisterType<ServiceIdentityProvider>()
+                .As<IServiceIdentityProvider>()
+                .SingleInstance();
+        }
+    }
 }

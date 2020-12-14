@@ -9,6 +9,7 @@ import Cell from "common/components/Grid/Cell";
 import SavingConfigurator from "./Input/SavingConfigurator";
 import SavingDistributionChart from "./Charts/SavingDistributionChart";
 import SavingGrowthChart from "./Charts/SavingGrowthChart";
+import LoadingBubbles from "common/components/LoadingBubbles";
 
 // Functionality
 import { ReduxStore } from "data/store";
@@ -18,7 +19,6 @@ import { useServices } from "hooks/useServices";
 import { SavingInfo } from "modules/saving/types";
 
 import "./Styles/SavingDialog.less";
-import LoadingBubbles from "common/components/LoadingBubbles";
 
 type Props = {
 	savingInfo: SavingInfo

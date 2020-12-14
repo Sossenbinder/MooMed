@@ -15,67 +15,62 @@ using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.SessionService.Service
 {
-	public class SessionService : MooMedServiceBaseWithLogger, ISessionService
-	{
-		[NotNull]
-		private readonly ISessionContextCache _sessionContextCache;
+    public class SessionService : MooMedServiceBaseWithLogger, ISessionService
+    {
+        [NotNull]
+        private readonly ISessionContextCache _sessionContextCache;
 
-		public SessionService(
-			[NotNull] IMooMedLogger logger,
-			[NotNull] ISessionContextCache sessionContextCache,
-			[NotNull] IAccountEventHub accountEventHub)
-			: base(logger)
-		{
-			_sessionContextCache = sessionContextCache;
+        public SessionService(
+            [NotNull] IMooMedLogger logger,
+            [NotNull] ISessionContextCache sessionContextCache,
+            [NotNull] IAccountEventHub accountEventHub)
+            : base(logger)
+        {
+            _sessionContextCache = sessionContextCache;
 
-			RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
-		}
+            RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
+        }
 
-		private void OnAccountLoggedOut([NotNull] AccountLoggedOutEvent accountLoggedOutEvent)
-		{
-			var sessionContext = accountLoggedOutEvent.SessionContext;
+        private void OnAccountLoggedOut([NotNull] AccountLoggedOutEvent accountLoggedOutEvent)
+        {
+            var sessionContext = accountLoggedOutEvent.SessionContext;
 
-			Logger.Debug($"AccountId {sessionContext.Account.Id} logged out.");
-			_sessionContextCache.RemoveItem(sessionContext);
-		}
+            Logger.Debug($"AccountId {sessionContext.Account.Id} logged out.");
+            _sessionContextCache.RemoveItem(sessionContext);
+        }
 
-		[ItemCanBeNull]
-		[CanBeNull]
-		public async Task<ServiceResponse<ISessionContext>> GetSessionContext(Primitive<int> accountId)
-		{
-			var key = CacheKeyUtils.GetCacheKeyForSessionContext(accountId);
-			var sessionContext = await _sessionContextCache.GetItem(key);
+        public async Task<ServiceResponse<ISessionContext>> GetSessionContext(Primitive<int> accountId)
+        {
+            var key = CacheKeyUtils.GetCacheKeyForSessionContext(accountId);
+            var sessionContext = await _sessionContextCache.GetItem(key);
 
-			return sessionContext == null
-				? ServiceResponse<ISessionContext>.Failure()
-				: ServiceResponse<ISessionContext>.Success(sessionContext);
-		}
+            return sessionContext == null
+                ? ServiceResponse<ISessionContext>.Failure()
+                : ServiceResponse<ISessionContext>.Success(sessionContext);
+        }
 
-		[ItemNotNull]
-		[NotNull]
-		public Task<ISessionContext> LoginAccount(Account account)
-		{
-			var sessionContext = CreateSessionContext(account);
+        public Task<ISessionContext> LoginAccount(Account account)
+        {
+            var sessionContext = CreateSessionContext(account);
 
-			_sessionContextCache.PutItem(sessionContext);
+            _sessionContextCache.PutItem(sessionContext);
 
-			return Task.FromResult<ISessionContext>(sessionContext);
-		}
+            return Task.FromResult<ISessionContext>(sessionContext);
+        }
 
-		public Task UpdateSessionContext(ISessionContext sessionContext)
-		{
-			_sessionContextCache.PutItem(sessionContext);
+        public Task UpdateSessionContext(ISessionContext sessionContext)
+        {
+            _sessionContextCache.PutItem(sessionContext);
 
-			return Task.CompletedTask;
-		}
+            return Task.CompletedTask;
+        }
 
-		[NotNull]
-		private SessionContext CreateSessionContext([NotNull] Account account)
-		{
-			return new SessionContext()
-			{
-				Account = account
-			};
-		}
-	}
+        private static SessionContext CreateSessionContext([NotNull] Account account)
+        {
+            return new()
+            {
+                Account = account
+            };
+        }
+    }
 }

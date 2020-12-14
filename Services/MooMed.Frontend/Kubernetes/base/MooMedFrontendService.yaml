@@ -12,12 +12,6 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
-  - port:
-      number: 443
-      name: https-443
-      protocol: HTTPS
-    hosts:
-    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -34,10 +28,6 @@ spec:
           host: moomed-frontendservice
           port:
             number: 80
-      - destination:
-          host: moomed-frontendservice
-          port:
-            number: 443
 ---
 apiVersion: v1
 kind: Service
@@ -52,10 +42,6 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-    - name: https
-      protocol: TCP
-      port: 443
-      targetPort: 443
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -73,7 +59,7 @@ spec:
     spec:
       containers:
       - name: moomed-frontendservice
-        image: moomed.azurecr.io/frontendservice:testing
+        image: moomed.azurecr.io/frontendservice
         imagePullPolicy: Always
         ports:
         - containerPort: 80

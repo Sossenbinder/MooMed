@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/accountservice:prod
+      - image: moomed.azurecr.io/accountservice:testing
         name: moomed-accountservice
       imagePullSecrets:
       - name: acrimgpullsecret

@@ -8,10 +8,10 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 namespace MooMed.Module.Saving.Database.Entities
 {
     [Table("CurrencyMapping")]
-    public class CurrencyMappingEntity : IEntity<int>
+    public class CurrencyMappingEntity : AbstractEntity<int>
     {
         [Key]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [ForeignKey(nameof(Id))]
         public AccountEntity Account

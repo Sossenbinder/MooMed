@@ -10,26 +10,26 @@ namespace MooMed.Module.Accounts.Datatypes.Entity
     [Table("Account")]
     public class AccountEntity : IdentityUser<int>, IEntity<int>
     {
-	    [Column("LastAccessedAt")]
+        [Column("LastAccessedAt")]
         public DateTime LastAccessedAt { get; set; }
 
         // Relations
         [CanBeNull]
         [InverseProperty("Account")]
-        public AccountOnlineStateEntity AccountOnlineStateEntity { get; set; }
+        public AccountOnlineStateEntity AccountOnlineStateEntity { get; set; } = null!;
 
         [NotNull]
         [InverseProperty("Account")]
-        public List<FriendsMappingEntity> FriendsTo { get; set; }
+        public List<FriendsMappingEntity> FriendsTo { get; set; } = null!;
 
         [NotNull]
         [InverseProperty("Friend")]
-        public List<FriendsMappingEntity> FriendsFrom { get; set; }
+        public List<FriendsMappingEntity> FriendsFrom { get; set; } = null!;
 
         [UsedImplicitly]
         // ReSharper disable once NotNullMemberIsNotInitialized
         public AccountEntity()
         {
         }
-	}
+    }
 }

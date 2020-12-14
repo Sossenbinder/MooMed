@@ -1,38 +1,44 @@
-﻿using JetBrains.Annotations;
+﻿using System;
 using MooMed.Common.Definitions.Models.Session.Interface;
 
 namespace MooMed.Common.Definitions.Logging
 {
     public interface IMooMedLogger
     {
-	    void Info([NotNull] string message);
+        void Info(string message);
 
-	    void Info([NotNull] string message, int accountId);
+        void Info(string message, int accountId);
 
-        void Info([NotNull] string message, [CanBeNull] ISessionContext sessionContext);
+        void Info(string message, ISessionContext? sessionContext);
 
-        void Debug([NotNull] string message);
+        void Debug(string message);
 
-        void Debug([NotNull] string message, int accountId);
+        void Debug(string message, int accountId);
 
-        void Debug([NotNull] string message, [CanBeNull] ISessionContext sessionContext);
+        void Debug(string message, ISessionContext? sessionContext);
 
-        void Warning([NotNull] string message);
+        void Warning(string message);
 
-        void Warning([NotNull] string message, int accountId);
+        void Warning(string message, int accountId);
 
-        void Warning([NotNull] string message, [CanBeNull] ISessionContext sessionContext);
+        void Warning(string message, ISessionContext? sessionContext);
 
-        void Error([NotNull] string message);
+        void Error(string message);
 
-        void Error([NotNull] string message, int accountId);
+        void Error(string message, int accountId);
 
-        void Error([NotNull] string message, [CanBeNull] ISessionContext sessionContext);
+        void Error(string message, ISessionContext? sessionContext);
 
-        void Fatal([NotNull] string message);
+        void Exception(Exception exception);
 
-        void Fatal([NotNull] string message, int accountId);
+        void Exception(Exception exception, int accountId);
 
-        void Fatal([NotNull] string message, [CanBeNull] ISessionContext sessionContext);
+        void Exception(Exception exception, ISessionContext? sessionContext);
+
+        void Fatal(string message);
+
+        void Fatal(string message, int accountId);
+
+        void Fatal(string message, ISessionContext? sessionContext);
     }
 }

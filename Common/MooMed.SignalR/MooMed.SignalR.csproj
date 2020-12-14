@@ -6,9 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="5.1.2" />
-        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-        <PackageReference Include="MassTransit.SignalR" Version="6.2.4" />
+        <PackageReference Include="Autofac" Version="6.1.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+        <PackageReference Include="MassTransit.SignalR" Version="7.0.7" />
     </ItemGroup>
 
     <ItemGroup>

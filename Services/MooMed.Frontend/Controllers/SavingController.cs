@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,17 +46,17 @@ namespace MooMed.Frontend.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResponse> SetCashFlowItems([FromBody] SetCashFlowItemsUiModel setCashFlowItems)
+        public async Task<JsonResponse> SetCashFlowItems([FromBody] SetCashFlowItemsUiModel cashFlowItems)
         {
             var response = await _savingService.SetCashFlowItems(new SetCashFlowItemsModel()
             {
                 SessionContext = CurrentSessionOrFail,
-                CashFlowItems = setCashFlowItems.CashFlowItems.ConvertAll(x => new CashFlowItem()
+                CashFlowItems = cashFlowItems.CashFlowItems.ConvertAll(x => new CashFlowItem()
                 {
                     Amount = x.Amount,
                     CashFlowItemType = x.CashFlowItemType,
                     FlowType = x.FlowType,
-                    Identifier = x.Identifier,
+                    Identifier = x.Identifier ?? Guid.NewGuid(),
                     Name = x.Name,
                 })
             });

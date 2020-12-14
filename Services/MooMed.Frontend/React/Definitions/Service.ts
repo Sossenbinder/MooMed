@@ -55,7 +55,7 @@ export interface IPortfolioService extends IModuleService {
 
 export interface ISavingService extends IModuleService {
 	initSavingService(): Promise<void>;
-	saveBasicSettings(income: number, rent: number, groceries: number): Promise<void>;
+	saveBasicSettings(): Promise<void>;
 	setCurrency(currency: Currency): Promise<void>;
 }
 

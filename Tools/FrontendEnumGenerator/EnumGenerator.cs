@@ -10,9 +10,6 @@ namespace FrontendEnumGenerator
 {
     public class EnumGenerator
     {
-        [NotNull]
-        private readonly string _solutionDir;
-
         private readonly List<Type> _enumsToExport;
 
         private readonly string _outputFile;
@@ -21,7 +18,8 @@ namespace FrontendEnumGenerator
 
         public EnumGenerator([NotNull] string solutionDir)
         {
-            _solutionDir = solutionDir;
+            Console.WriteLine($"Running EnumGenerator in {solutionDir}");
+
             _enumsToExport = EnumsToExport.Enums;
 
             _enumsToExport.AddRange(AppDomain
@@ -61,25 +59,19 @@ namespace FrontendEnumGenerator
         [NotNull]
         private StreamWriter GetOutputFile()
         {
-            var outputDirectory = $"{_solutionDir}/Services/MooMed.Frontend/React/Enums";
-
-            var outputPath = Path.Combine(outputDirectory, "moomedEnums.ts");
-
-            if (!File.Exists(outputPath))
+            if (!File.Exists(_outputFile))
             {
-                return new StreamWriter(File.Create(outputPath));
+                return new StreamWriter(File.Create(_outputFile));
             }
 
-            File.WriteAllText(outputPath, string.Empty);
+            File.WriteAllText(_outputFile, string.Empty);
 
-            return new StreamWriter(outputPath, true);
+            return new StreamWriter(_outputFile, true);
         }
 
         private void CopyTranslationsToWwwRoot()
         {
-            var fileName = _outputFile.Substring(_outputFile.LastIndexOf(@"\", StringComparison.Ordinal));
-
-            File.Copy(_outputFile, _wwwRootPath + fileName, true);
+            File.Copy(_outputFile, Path.Combine(_wwwRootPath, "moomedEnums.ts"), true);
         }
     }
 }

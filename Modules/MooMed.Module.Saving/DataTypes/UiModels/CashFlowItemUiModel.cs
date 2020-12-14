@@ -8,7 +8,7 @@ namespace MooMed.Module.Saving.DataTypes.UiModels
     {
         public string Name { get; set; } = null!;
 
-        public Guid Identifier { get; set; }
+        public Guid? Identifier { get; set; }
 
         public CashFlowItemType CashFlowItemType { get; set; }
 

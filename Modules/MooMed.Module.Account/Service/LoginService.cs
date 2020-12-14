@@ -5,7 +5,9 @@ using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
+using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.Module.Accounts.Datatypes.Entity;
+using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Repository.Interface;
@@ -13,85 +15,89 @@ using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	internal class LoginService : ILoginService
-	{
-		[NotNull]
-		private readonly ILogonModelValidator _logonModelValidator;
+    internal class LoginService : MooMedServiceBase, ILoginService
+    {
+        [NotNull]
+        private readonly ILogonModelValidator _logonModelValidator;
 
-		[NotNull]
-		private readonly IMooMedLogger _logger;
+        [NotNull]
+        private readonly IMooMedLogger _logger;
 
-		[NotNull]
-		private readonly IAccountRepository _accountRepository;
+        [NotNull]
+        private readonly IAccountRepository _accountRepository;
 
-		[NotNull]
-		private readonly SignInManager<AccountEntity> _signInManager;
+        [NotNull]
+        private readonly SignInManager<AccountEntity> _signInManager;
 
-		[NotNull]
-		private readonly UserManager<AccountEntity> _userManager;
+        [NotNull]
+        private readonly UserManager<AccountEntity> _userManager;
 
-		[NotNull]
-		private readonly AccountDbConverter _accountDbConverter;
+        [NotNull]
+        private readonly AccountDbConverter _accountDbConverter;
 
-		public LoginService(
-			[NotNull] ILogonModelValidator logonModelValidator,
-			[NotNull] IMooMedLogger logger,
-			[NotNull] IAccountRepository accountRepository,
-			[NotNull] SignInManager<AccountEntity> signInManager,
-			[NotNull] UserManager<AccountEntity> userManager,
-			[NotNull] AccountDbConverter accountDbConverter)
-		{
-			_logonModelValidator = logonModelValidator;
-			_logger = logger;
-			_accountRepository = accountRepository;
-			_signInManager = signInManager;
-			_userManager = userManager;
-			_accountDbConverter = accountDbConverter;
-		}
+        public LoginService(
+            [NotNull] ILogonModelValidator logonModelValidator,
+            [NotNull] IMooMedLogger logger,
+            [NotNull] IAccountRepository accountRepository,
+            [NotNull] IAccountEventHub accountEventHub,
+            [NotNull] SignInManager<AccountEntity> signInManager,
+            [NotNull] UserManager<AccountEntity> userManager,
+            [NotNull] AccountDbConverter accountDbConverter)
+        {
+            _logonModelValidator = logonModelValidator;
+            _logger = logger;
+            _accountRepository = accountRepository;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _accountDbConverter = accountDbConverter;
 
-		public async Task<LoginResult> Login(LoginModel loginModel)
-		{
-			// Validate the login data we got
-			var loginValidationResult = _logonModelValidator.ValidateLoginModel(loginModel);
+            RegisterEventHandler(accountEventHub.AccountLoggedIn, args => RefreshLastAccessed(args.SessionContext));
+            RegisterEventHandler(accountEventHub.AccountLoggedOut, args => RefreshLastAccessed(args.SessionContext));
+        }
 
-			if (loginValidationResult != IdentityErrorCode.Success)
-			{
-				return new LoginResult(loginValidationResult);
-			}
+        public async Task<LoginResult> Login(LoginModel loginModel)
+        {
+            // Validate the login data we got
+            var loginValidationResult = _logonModelValidator.ValidateLoginModel(loginModel);
 
-			var account = await _userManager.FindByEmailAsync(loginModel.Email);
+            if (loginValidationResult != IdentityErrorCode.Success)
+            {
+                return new LoginResult(loginValidationResult);
+            }
 
-			if (account == null)
-			{
-				return new LoginResult(IdentityErrorCode.InvalidEmail);
-			}
+            var account = await _userManager.FindByEmailAsync(loginModel.Email);
 
-			var validator = await _userManager.CheckPasswordAsync(account, loginModel.Password);
+            if (account == null)
+            {
+                return new LoginResult(IdentityErrorCode.InvalidEmail);
+            }
 
-			if (validator == false)
-			{
-				return new LoginResult(IdentityErrorCode.PasswordMismatch);
-			}
+            var validator = await _userManager.CheckPasswordAsync(account, loginModel.Password);
 
-			var result = await _signInManager.PasswordSignInAsync(account.UserName, loginModel.Password, loginModel.RememberMe, false);
+            if (validator == false)
+            {
+                return new LoginResult(IdentityErrorCode.PasswordMismatch);
+            }
 
-			if (result.Succeeded)
-			{
-				return new LoginResult(IdentityErrorCode.Success, _accountDbConverter.ToModel(account));
-			}
+            var result = await _signInManager.PasswordSignInAsync(account.UserName, loginModel.Password, loginModel.RememberMe, false);
 
-			if (!account.EmailConfirmed)
-			{
-				return new LoginResult(IdentityErrorCode.EmailNotConfirmed);
-			}
+            if (result.Succeeded)
+            {
+                return new LoginResult(IdentityErrorCode.Success, _accountDbConverter.ToModel(account));
+            }
 
-			return new LoginResult(IdentityErrorCode.DefaultError);
-		}
+            if (!account.EmailConfirmed)
+            {
+                return new LoginResult(IdentityErrorCode.EmailNotConfirmed);
+            }
 
-		public Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
-		{
-			_logger.Info("Refreshing login for account", sessionContext);
-			return _accountRepository.RefreshLastAccessedAt(sessionContext);
-		}
-	}
+            return new LoginResult(IdentityErrorCode.DefaultError);
+        }
+
+        public Task<bool> RefreshLastAccessed(ISessionContext sessionContext)
+        {
+            _logger.Info("Refreshing login for account", sessionContext);
+            return _accountRepository.RefreshLastAccessedAt(sessionContext);
+        }
+    }
 }

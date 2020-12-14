@@ -19,7 +19,6 @@
       "helper": ["Helper/*"],
       "hooks": ["Hooks/*"],
       "modules": ["Modules/*"],
-      "utils": ["Helper/Utils/*"],
       "views": [ "Views/*"],
 	  "enums":  ["Enums/*"]
     }

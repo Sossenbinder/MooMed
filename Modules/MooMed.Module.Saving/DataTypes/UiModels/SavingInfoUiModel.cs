@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using MooMed.Common.Definitions.Interface;
-using MooMed.Common.Definitions.Models.Saving;
 
 namespace MooMed.Module.Saving.DataTypes.UiModels
 {
     public class BasicSavingInfoUiModel : IUiModel
     {
-        public CashFlowItemUiModel Income { get; set; }
+        public CashFlowItemUiModel Income { get; set; } = null!;
 
-        public CashFlowItemUiModel Rent { get; set; }
+        public CashFlowItemUiModel Rent { get; set; } = null!;
 
-        public CashFlowItemUiModel Groceries { get; set; }
+        public CashFlowItemUiModel Groceries { get; set; } = null!;
     }
 
     public class SavingInfoUiModel : IUiModel

@@ -1,28 +1,42 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MooMed.Common.ServiceBase.Utils;
+using MassTransit;
+using MooMed.DotNet.Extensions;
+using MooMed.DotNet.Utils.Disposable;
 using MooMed.Eventing.Events.Interface;
 
 namespace MooMed.Common.ServiceBase.ServiceBase
 {
-	public class MooMedServiceBase : Disposable
-	{
-		protected void RegisterEventHandler<T>(
-			IAwaitableEvent<T> awaitableEvent,
-			Action<T> handler)
-		{
-			var disposeAction = awaitableEvent.Register(handler);
+    public abstract class MooMedServiceBase : Disposable
+    {
+        protected void RegisterEventHandler<T>(
+            IEvent<T> @event,
+            Action<T> handler)
+            => RegisterEventHandler(@event, handler.MakeTaskCompatible()!);
 
-			RegisterDisposable(disposeAction);
-		}
+        protected void RegisterEventHandler<T>(
+            IEvent<T> @event,
+            Func<T, Task> handler)
+        {
+            var disposeAction = @event.Register(handler);
 
-		protected void RegisterEventHandler<T>(
-			IAwaitableEvent<T> awaitableEvent,
-			Func<T, Task> handler)
-		{
-			var disposeAction = awaitableEvent.Register(handler);
+            RegisterDisposable(disposeAction);
+        }
 
-			RegisterDisposable(disposeAction);
-		}
-	}
+        protected void RegisterFaultHandler<T>(
+            IDistributedEvent<T> @event,
+            Action<Fault<T>> handler)
+            where T : class
+            => RegisterFaultHandler(@event, handler.MakeTaskCompatible()!);
+
+        protected void RegisterFaultHandler<T>(
+            IDistributedEvent<T> @event,
+            Func<Fault<T>, Task> handler)
+            where T : class
+        {
+            var disposeAction = @event.RegisterForErrors(handler);
+
+            RegisterDisposable(disposeAction);
+        }
+    }
 }

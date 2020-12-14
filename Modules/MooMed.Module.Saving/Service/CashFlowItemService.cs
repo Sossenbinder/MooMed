@@ -29,7 +29,7 @@ namespace MooMed.Module.Saving.Service
 
             await _cashFlowItemRepository.CreateOrUpdate(entities, x =>
             {
-                var item = entities.FirstOrDefault(y => x == y)!;
+                var item = entities.FirstOrDefault(x.Equals)!;
 
                 x.Amount = item.Amount;
                 x.Name = item.Name;

@@ -49,17 +49,16 @@ namespace MooMed.Frontend.StartupConfigs
 
         private static void ConfigureMassTransit([NotNull] IServiceCollection services)
         {
-            services.AddSignalR().AddMassTransitBackplane();
+            services.AddSignalR();
 
             // creating the bus config
             services.AddMassTransit(x =>
             {
-                // Add this for each Hub you have
-                x.AddSignalRHubConsumers<SignalRHub>();
+                x.AddSignalRHub<SignalRHub>();
 
-                x.AddBus(provider => MassTransitBusFactory.CreateBus(provider, cfg =>
+                x.AddBus(registrationContext => MassTransitBusFactory.CreateBus(registrationContext, cfg =>
                 {
-                    cfg.AddSignalRHubEndpoints<SignalRHub>(provider);
+                    cfg.ConfigureEndpoints(registrationContext);
                 }));
             });
         }

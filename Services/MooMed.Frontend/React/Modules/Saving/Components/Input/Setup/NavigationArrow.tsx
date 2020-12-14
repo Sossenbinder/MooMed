@@ -1,7 +1,7 @@
 // Framework
 import * as React from "react"
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex"
@@ -13,7 +13,7 @@ import { backgroundGrey } from "common/Styles/Colors";
 
 import "./Styles/NavigationArrow.less";
 
-enum Direction {
+export enum Direction {
 	Left,
 	Right,
 }
@@ -25,9 +25,12 @@ type Props = {
 	color?: string;
 	disabled?: boolean;
 	toolTip?: string;
+	onClick?(): Promise<void>;
 }
 
-export const NavigationArrow: React.FC<Props> = ({ className, direction, navTarget, color = "black", disabled = true, toolTip}) => {
+export const NavigationArrow: React.FC<Props> = ({ className, direction, navTarget, color = "black", disabled = true, toolTip, onClick}) => {
+
+	const history = useHistory();
 
 	const cn = classNames({
 		"NavigationArrow": true,
@@ -44,10 +47,22 @@ export const NavigationArrow: React.FC<Props> = ({ className, direction, navTarg
 		return `linear-gradient(to ${verticalDirection} ${direction == "Left" ? "right" : "left"}, ${backgroundGrey} 0%, ${backgroundGrey} 50%, ${actualColor} 50%, ${actualColor} 70%, ${backgroundGrey} 70%, ${backgroundGrey} 100%)`;
 	}, [disabled, direction, color]);
 
+	const linkCb = React.useCallback(async () => {
+		if (disabled) {
+			return;
+		}
+
+		if (onClick) {
+			await onClick();
+		}
+
+		history.push(navTarget);
+	}, [disabled, navTarget, onClick]);
+
 	return (
-		<Link
+		<Flex
 			className={cn}
-			to={disabled ? null : navTarget}>
+			onClick={linkCb}>
 			<Flex 
 				className="Arrow"
 				direction="Column">
@@ -60,7 +75,7 @@ export const NavigationArrow: React.FC<Props> = ({ className, direction, navTarg
 					style={{ background: getBackgroundColor("top")}} 
 					title={disabled ? toolTip : null} />
 			</Flex>
-		</Link>
+		</Flex>
 	);
 }
 

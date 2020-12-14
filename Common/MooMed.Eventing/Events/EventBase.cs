@@ -1,49 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using MassTransit.SignalR.Utils;
 using MooMed.DotNet.Utils.Disposable;
 using MooMed.Eventing.Events.Interface;
 
 namespace MooMed.Eventing.Events
 {
-	public abstract class EventBase<TEventArgs> : IAwaitableEvent<TEventArgs>
-	{
-		[NotNull]
-		protected readonly List<Func<TEventArgs, Task>> Handlers;
+    public abstract class EventBase<TEventArgs> : IEvent<TEventArgs>
+    {
+        protected readonly ConcurrentHashSet<Func<TEventArgs, Task>> Handlers = new();
 
-		protected EventBase()
-		{
-			Handlers = new List<Func<TEventArgs, Task>>();
-		}
+        public DisposableAction Register(Func<TEventArgs, Task> handler)
+        {
+            Handlers.Add(handler);
 
-		public abstract Task<AccumulatedMooEventExceptions> Raise(TEventArgs eventArgs);
+            return new DisposableAction(() => UnRegister(handler));
+        }
 
-		public DisposableAction Register(Action<TEventArgs> handler)
-		{
-			return Register(eventArgs =>
-			{
-				handler(eventArgs);
-				return Task.CompletedTask;
-			});
-		}
+        public void UnRegister(Func<TEventArgs, Task> handler)
+        {
+            Handlers.Remove(handler);
+        }
 
-		public DisposableAction Register(Func<TEventArgs, Task> handler)
-		{
-			Handlers.Add(handler);
-
-			return new DisposableAction(() => UnRegister(handler));
-		}
-
-		public void UnRegister(Func<TEventArgs, Task> handler)
-		{
-			Handlers.Remove(handler);
-		}
-
-		[NotNull]
-		internal List<Func<TEventArgs, Task>> GetAllRegisteredEvents()
-		{
-			return Handlers;
-		}
-	}
+        [NotNull]
+        internal List<Func<TEventArgs, Task>> GetAllRegisteredEvents()
+        {
+            return Handlers.ToArray().ToList();
+        }
+    }
 }

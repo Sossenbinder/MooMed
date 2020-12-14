@@ -29,7 +29,7 @@ services:
       - ./Logs:/hostlogs
       - ./Certs/localHttps:/localHttps
 
-  MooMed.sessionservice:
+  moomed.sessionservice:
     image: ${DOCKER_REGISTRY-}moomedsessionservice
     build:
       context: .
@@ -77,7 +77,7 @@ services:
       - ./Logs:/hostlogs
 
 
-  MooMed.accountvalidationservice:
+  moomed.accountvalidationservice:
     image: ${DOCKER_REGISTRY-}moomedaccountvalidationservice
     build:
       context: .
@@ -93,7 +93,7 @@ services:
       - ./Logs:/hostlogs
 
 
-  MooMed.accountservice:
+  moomed.accountservice:
     image: ${DOCKER_REGISTRY-}moomedaccountservice
     build:
       context: .

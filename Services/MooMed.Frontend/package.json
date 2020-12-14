@@ -68,6 +68,8 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-devtools": "^3.5.0",
+    "snowpack": "^2.18.2",
+    "snowpack-plugin-less": "^1.0.5",
     "style-loader": "^0.23.1",
     "styled-components": "^5.1.1",
     "styled-css-grid": "^1.2.1",
@@ -76,10 +78,14 @@
     "ts-transformer-keys": "^0.4.1",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tsx-control-statements": "^2.17.1",
-    "typescript": "^3.7.5",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-extraneous-file-cleanup-plugin": "^2.0.0",
     "webpack-shell-plugin": "^0.5.0"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.12.7",
+    "@snowpack/plugin-babel": "^2.1.5",
+    "typescript": "^3.9.7"
   }
 }

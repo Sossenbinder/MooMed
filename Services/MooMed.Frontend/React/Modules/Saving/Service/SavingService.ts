@@ -28,20 +28,22 @@ export default class SavingService extends ModuleService implements ISavingServi
 		this.dispatch(savingConfigurationReducer.replace(savingInfo));
 	}
 	
-	public async saveBasicSettings(income: number, rent: number, groceries: number): Promise<void> {
+	public async saveBasicSettings(): Promise<void> {
 
-		const basicSavingInfo: BasicSavingInfo = {
-			income,
-			rent,
-			groceries,
-		};
+		const savingInfo = this.getStore().savingConfigurationReducer.data;
 
-		//const response = await savingCommunication.saveBasicSettings(basicSavingInfo);
+		const response = await savingCommunication.setCashFlowItems([ 
+			savingInfo.basicSavingInfo.income,
+			savingInfo.basicSavingInfo.rent,
+			savingInfo.basicSavingInfo.groceries
+		]);
 
-		if (true) {
-			const savingInfo = this.getStore().savingConfigurationReducer.data;
-
-			savingInfo.basicSavingInfo = basicSavingInfo;
+		if (response.success) {
+			savingInfo.basicSavingInfo = {
+				income: savingInfo.basicSavingInfo.income,
+				rent: savingInfo.basicSavingInfo.rent,
+				groceries: savingInfo.basicSavingInfo.groceries,
+			};
 
 			this.dispatch(savingConfigurationReducer.update(savingInfo))
 		}

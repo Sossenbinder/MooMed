@@ -12,8 +12,8 @@ import TextInput from "common/components/general/input/general/TextInput";
 import { currencySymbolMap } from "helper/currencyHelper";
 
 // Types
-import { BasicSavingInfo } from "modules/saving/types";
-import { Currency } from "enums/moomedEnums"
+import { BasicSavingInfo, CashFlowItem } from "modules/saving/types";
+import { CashFlow, CashFlowItemType, Currency } from "enums/moomedEnums"
 
 import "./Styles/SavingSetupStepBasics.less";
 
@@ -28,15 +28,15 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 
 	let inputTimeout: number;
 
-	const [income, setIncome] = React.useState(basicSavingInfo?.income);
+	const [income, setIncome] = React.useState(basicSavingInfo?.income?.amount);
 	const incomeRef = React.useRef(income);
 	incomeRef.current = income;
 
-	const [rent, setRent] = React.useState(basicSavingInfo?.rent);
+	const [rent, setRent] = React.useState(basicSavingInfo?.rent?.amount);
 	const rentRef = React.useRef(rent);
 	rentRef.current = rent;
 
-	const [groceries, setGroceries] = React.useState(basicSavingInfo?.groceries);
+	const [groceries, setGroceries] = React.useState(basicSavingInfo?.groceries?.amount);
 	const groceriesRef = React.useRef(groceries);
 	groceriesRef.current = groceries;
 
@@ -50,11 +50,58 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 		}
 
 		inputTimeout = window.setTimeout(() => {
-			const newBasicSavingInfo: BasicSavingInfo = { 
-				groceries: groceriesRef.current,
-				income: incomeRef.current,
-				rent: rentRef.current,
-			};
+			const newBasicSavingInfo: BasicSavingInfo = { ...basicSavingInfo } ?? { } as BasicSavingInfo;
+
+			if (incomeRef.current){
+				let cashFlowItem: CashFlowItem = newBasicSavingInfo?.income;
+				if (!cashFlowItem) {
+					cashFlowItem = {
+						cashFlowItemType: CashFlowItemType.Income,
+						flowType: CashFlow.Income,
+						name: "Income",
+					} as CashFlowItem;
+				}
+
+				if (cashFlowItem.amount != incomeRef.current)
+				{
+					cashFlowItem.amount = incomeRef.current;
+					newBasicSavingInfo.income = cashFlowItem;
+				}
+			}
+
+			if (rentRef.current){
+				let cashFlowItem: CashFlowItem = newBasicSavingInfo?.rent;
+				if (!cashFlowItem) {
+					cashFlowItem = {
+						cashFlowItemType: CashFlowItemType.Rent,
+						flowType: CashFlow.Outcome,
+						name: "Rent",
+					} as CashFlowItem;
+				}
+				
+				if (cashFlowItem.amount != rentRef.current)
+				{
+					cashFlowItem.amount = rentRef.current;
+					newBasicSavingInfo.rent = cashFlowItem;
+				}
+			}
+
+			if (groceriesRef.current){
+				let cashFlowItem: CashFlowItem = newBasicSavingInfo?.groceries;
+				if (!cashFlowItem) {
+					cashFlowItem = {
+						cashFlowItemType: CashFlowItemType.Groceries,
+						flowType: CashFlow.Outcome,
+						name: "Groceries",
+					} as CashFlowItem;
+				}
+				
+				if (cashFlowItem.amount != groceriesRef.current)
+				{
+					cashFlowItem.amount = groceriesRef.current;
+					newBasicSavingInfo.groceries = cashFlowItem;
+				}
+			}
 
 			onUpdate(newBasicSavingInfo);
 

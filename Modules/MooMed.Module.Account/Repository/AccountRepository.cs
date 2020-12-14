@@ -18,21 +18,21 @@ namespace MooMed.Module.Accounts.Repository
 {
     public class AccountRepository : AbstractCrudRepository<AccountDbContext, AccountEntity, int>, IAccountRepository
     {
-	    [NotNull]
-	    private readonly IModelToEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
+        [NotNull]
+        private readonly IModelToEntityConverter<RegisterModel, AccountEntity, int> _registerModelToAccountConverter;
 
         public AccountRepository(
-		    [NotNull] AccountDbContextFactory contextFactory,
-		    [NotNull] IModelToEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter) 
-		    : base(contextFactory)
-	    {
-		    _registerModelToAccountConverter = registerModelToAccountConverter;
+            [NotNull] AccountDbContextFactory contextFactory,
+            [NotNull] IModelToEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter)
+            : base(contextFactory)
+        {
+            _registerModelToAccountConverter = registerModelToAccountConverter;
         }
 
         public async Task<AccountEntity> CreateAccount(RegisterModel registerModel)
         {
-	        var accountDbModel = _registerModelToAccountConverter.ToEntity(registerModel);
-	        accountDbModel.PasswordHash = Sha256Helper.Hash(registerModel.Password);
+            var accountDbModel = _registerModelToAccountConverter.ToEntity(registerModel);
+            accountDbModel.PasswordHash = Sha256Helper.Hash(registerModel.Password);
 
             await Create(accountDbModel);
 
@@ -53,8 +53,8 @@ namespace MooMed.Module.Accounts.Repository
 
         public async Task<AccountEntity> FindAccount(Expression<Func<AccountEntity, bool>> predicateFunc)
         {
-	        await using var ctx = CreateContext();
-            
+            await using var ctx = CreateContext();
+
             var suitableAccount = ctx.Users.Where(predicateFunc);
 
             if (await suitableAccount.AnyAsync())
@@ -67,7 +67,7 @@ namespace MooMed.Module.Accounts.Repository
 
         public async Task<List<AccountEntity>> FindAccounts(Expression<Func<AccountEntity, bool>> predicateFunc)
         {
-	        await using var ctx = CreateContext();
+            await using var ctx = CreateContext();
 
             var accList = ctx.Users.Where(predicateFunc);
 
@@ -85,12 +85,12 @@ namespace MooMed.Module.Accounts.Repository
             await using (var ctx = CreateContext())
             {
                 var account = await ctx.Users.FirstAsync(acc => acc.Id.Equals(sessionContext.Account.Id));
-                account.LastAccessedAt = DateTime.Now;
+                account.LastAccessedAt = DateTime.UtcNow;
 
                 rowsAffected = await ctx.SaveChangesAsync();
             }
 
             return rowsAffected == 1;
         }
-	}
+    }
 }

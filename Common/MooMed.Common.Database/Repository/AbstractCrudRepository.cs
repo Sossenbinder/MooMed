@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using MooMed.Common.Database.Context.Interface;
 using MooMed.Common.Database.Repository.Interface;
 using MooMed.Common.Definitions.Interface;
 using MooMed.DotNet.Extensions;
@@ -26,7 +25,7 @@ namespace MooMed.Common.Database.Repository
 
         protected TDbContext CreateContext()
         {
-            return _contextFactory.CreateContext();
+            return _contextFactory.CreateDbContext();
         }
 
         public async Task<TEntity> Create(TEntity entity)
@@ -90,12 +89,10 @@ namespace MooMed.Common.Database.Repository
         }
 
         public Task Update(TEntity entity, Action<TEntity> updateFunc)
-            => Update(entity.Id, updateFunc);
-
-        public Task Update(TKeyType key, Action<TEntity> updateFunc)
-            => RunInContextAndCommit(async set =>
+        {
+            return RunInContextAndCommit(async set =>
             {
-                var existingEntity = (await Read(x => x.Id!.Equals(key))).SingleOrDefault();
+                var existingEntity = await set.SingleOrDefaultAsync(x => x.Equals(entity));
 
                 if (existingEntity == null)
                 {
@@ -103,17 +100,29 @@ namespace MooMed.Common.Database.Repository
                 }
 
                 updateFunc(existingEntity);
-
-                set.Update(existingEntity);
             });
+        }
 
-        public Task Delete(TEntity entityToDelete)
-            => Delete(entityToDelete.Id);
-
-        public Task Delete(TKeyType key)
-            => RunInContextAndCommit(async set =>
+        public Task Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> updateFunc)
+        {
+            return RunInContextAndCommit(async set =>
             {
-                var existingEntity = (await Read(x => x.Id!.Equals(key))).SingleOrDefault();
+                var existingEntity = await set.Where(selector).SingleOrDefaultAsync();
+
+                if (existingEntity == null)
+                {
+                    return;
+                }
+
+                updateFunc(existingEntity);
+            });
+        }
+
+        public Task Delete(TEntity entity)
+        {
+            return RunInContextAndCommit(async set =>
+            {
+                var existingEntity = await set.SingleOrDefaultAsync(x => x.Equals(entity));
 
                 if (existingEntity == null)
                 {
@@ -122,12 +131,40 @@ namespace MooMed.Common.Database.Repository
 
                 set.Remove(existingEntity);
             });
+        }
+
+        public Task Delete(Expression<Func<TEntity, bool>> selector)
+        {
+            return RunInContextAndCommit(async set =>
+            {
+                var existingEntity = await set.Where(selector).SingleOrDefaultAsync();
+
+                if (existingEntity == null)
+                {
+                    return;
+                }
+
+                set.Remove(existingEntity);
+            });
+        }
 
         public async Task CreateOrUpdate(TEntity entity, Action<TEntity> updateFunc)
         {
             await using var ctx = CreateContext();
 
-            ctx.Update(entity);
+            var set = ctx.Set<TEntity>();
+
+            var existingItem = await set.SingleOrDefaultAsync(x => x.Equals(entity));
+
+            if (existingItem != null)
+            {
+                updateFunc(existingItem);
+            }
+            else
+            {
+                // ReSharper disable once MethodHasAsyncOverload
+                set.Add(entity);
+            }
 
             await ctx.SaveChangesAsync();
         }
@@ -136,15 +173,21 @@ namespace MooMed.Common.Database.Repository
         {
             await using var ctx = CreateContext();
 
-            ctx.UpdateRange(entities);
+            var set = ctx.Set<TEntity>();
 
-            var knownEntries = ctx.ChangeTracker
-                .Entries<TEntity>()
-                .Where(x => x.State == EntityState.Modified);
+            var existingEntities = await set
+                .Where(x => entities.Contains(x))
+                .ToListAsync();
 
-            foreach (var knownEntry in knownEntries)
+            foreach (var entity in existingEntities.Where(entity => entity != null))
             {
-                updateFunc(knownEntry.Entity);
+                updateFunc(entity);
+            }
+
+            foreach (var entity in entities.Except(existingEntities))
+            {
+                // ReSharper disable once MethodHasAsyncOverload
+                set.Add(entity);
             }
 
             await ctx.SaveChangesAsync();
@@ -184,6 +227,6 @@ namespace MooMed.Common.Database.Repository
             return entity;
         }
 
-        private TDbContext GetContext() => _contextFactory.CreateContext();
+        private TDbContext GetContext() => _contextFactory.CreateDbContext();
     }
 }

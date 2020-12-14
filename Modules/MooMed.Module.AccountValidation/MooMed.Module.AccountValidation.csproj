@@ -1,23 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-	<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.1.0" />
+		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
-    <ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
+		<ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />
+	</ItemGroup>
 </Project>

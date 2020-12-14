@@ -7,12 +7,12 @@ namespace MooMed.Common.Definitions.Models.Saving
     public class BasicSavingInfoModel : SessionContextAttachedContainer
     {
         [ProtoMember(1)]
-        public CashFlowItem Income { get; init; }
+        public CashFlowItem? Income { get; init; }
 
         [ProtoMember(2)]
-        public CashFlowItem Rent { get; init; }
+        public CashFlowItem? Rent { get; init; }
 
         [ProtoMember(3)]
-        public CashFlowItem Groceries { get; init; }
+        public CashFlowItem? Groceries { get; init; }
     }
 }

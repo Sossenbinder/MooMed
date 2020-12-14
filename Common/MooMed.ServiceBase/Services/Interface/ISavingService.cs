@@ -14,6 +14,9 @@ namespace MooMed.ServiceBase.Services.Interface
         Task<ServiceResponse> SetCurrency(SetCurrencyModel setCurrencyModel);
 
         [OperationContract]
+        Task<ServiceResponse> SetAssets(AssetsModel assetsModel);
+
+        [OperationContract]
         Task<ServiceResponse> SetCashFlowItems(SetCashFlowItemsModel setCashFlowItemsModel);
 
         [OperationContract]

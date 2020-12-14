@@ -28,11 +28,11 @@ namespace MooMed.Common.Database.Repository.Interface
 
         Task Update(TEntity entity, [NotNull] Action<TEntity> updateFunc);
 
-        Task Update(TKeyType key, [NotNull] Action<TEntity> updateFunc);
+        Task Update(Expression<Func<TEntity, bool>> selector, [NotNull] Action<TEntity> updateFunc);
 
-        Task Delete(TEntity model);
+        Task Delete(TEntity entity);
 
-        Task Delete(TKeyType key);
+        Task Delete(Expression<Func<TEntity, bool>> selector);
 
         // Extended
         Task CreateOrUpdate(TEntity entity, Action<TEntity> updateFunc);

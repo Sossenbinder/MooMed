@@ -6,7 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="protobuf-net.Grpc" Version="1.0.123" />
+        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+        <PackageReference Include="protobuf-net.Grpc" Version="1.0.140" />
         <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
     </ItemGroup>
 

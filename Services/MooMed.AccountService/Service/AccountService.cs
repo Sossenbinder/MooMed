@@ -17,176 +17,174 @@ using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.AccountService.Service
 {
-	public class AccountService : MooMedServiceBaseWithLogger, IAccountService
-	{
-		[NotNull]
-		private readonly IAccountEventHub _accountEventHub;
+    public class AccountService : MooMedServiceBaseWithLogger, IAccountService
+    {
+        [NotNull]
+        private readonly IAccountEventHub _accountEventHub;
 
-		[NotNull]
-		private readonly IRegisterService _registerService;
+        [NotNull]
+        private readonly IRegisterService _registerService;
 
-		[NotNull]
-		private readonly ILoginService _loginService;
+        [NotNull]
+        private readonly ILoginService _loginService;
 
-		[NotNull]
-		private readonly IProfilePictureService _profilePictureService;
+        [NotNull]
+        private readonly IProfilePictureService _profilePictureService;
 
-		[NotNull]
-		private readonly ISessionService _sessionService;
+        [NotNull]
+        private readonly ISessionService _sessionService;
 
-		[NotNull]
-		private readonly IFriendsService _friendsService;
+        [NotNull]
+        private readonly IFriendsService _friendsService;
 
-		[NotNull]
-		private readonly IUserService _userService;
+        [NotNull]
+        private readonly IUserService _userService;
 
-		[NotNull]
-		private readonly IPersonalDataService _personalDataService;
+        [NotNull]
+        private readonly IPersonalDataService _personalDataService;
 
-		public AccountService(
-			[NotNull] IMooMedLogger logger,
-			[NotNull] IRegisterService registerService,
-			[NotNull] ILoginService loginService,
-			[NotNull] IAccountEventHub accountEventHub,
-			[NotNull] IProfilePictureService profilePictureService,
-			[NotNull] ISessionService sessionService,
-			[NotNull] IFriendsService friendsService,
-			[NotNull] IUserService userService,
-			[NotNull] IPersonalDataService personalDataService)
-			: base(logger)
-		{
-			_registerService = registerService;
-			_loginService = loginService;
-			_accountEventHub = accountEventHub;
-			_profilePictureService = profilePictureService;
-			_sessionService = sessionService;
-			_friendsService = friendsService;
-			_userService = userService;
-			_personalDataService = personalDataService;
-		}
+        public AccountService(
+            [NotNull] IMooMedLogger logger,
+            [NotNull] IRegisterService registerService,
+            [NotNull] ILoginService loginService,
+            [NotNull] IAccountEventHub accountEventHub,
+            [NotNull] IProfilePictureService profilePictureService,
+            [NotNull] ISessionService sessionService,
+            [NotNull] IFriendsService friendsService,
+            [NotNull] IUserService userService,
+            [NotNull] IPersonalDataService personalDataService)
+            : base(logger)
+        {
+            _registerService = registerService;
+            _loginService = loginService;
+            _accountEventHub = accountEventHub;
+            _profilePictureService = profilePictureService;
+            _sessionService = sessionService;
+            _friendsService = friendsService;
+            _userService = userService;
+            _personalDataService = personalDataService;
+        }
 
-		/// <summary>
-		/// Login an account
-		/// </summary>
-		/// <param name="loginModel">Login model of that account</param>
-		/// <returns></returns>
-		public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
-		{
-			var loginResult = await _loginService.Login(loginModel);
+        /// <summary>
+        /// Login an account
+        /// </summary>
+        /// <param name="loginModel">Login model of that account</param>
+        /// <returns></returns>
+        public async Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel)
+        {
+            var loginResult = await _loginService.Login(loginModel);
 
-			if (loginResult.IdentityErrorCode != IdentityErrorCode.Success)
-			{
-				return ServiceResponse.Failure(loginResult);
-			}
+            if (loginResult.IdentityErrorCode != IdentityErrorCode.Success)
+            {
+                return ServiceResponse.Failure(loginResult);
+            }
 
-			// Get the profile picture for the account
-			var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(loginResult.Account.Id);
-			loginResult.Account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
+            // Get the profile picture for the account
+            var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(loginResult.Account.Id);
+            loginResult.Account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
 
-			var sessionContext = await _sessionService.LoginAccount(loginResult.Account);
+            var sessionContext = await _sessionService.LoginAccount(loginResult.Account);
 
-			await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
+            await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
 
-			return ServiceResponse.Success(loginResult);
-		}
+            return ServiceResponse.Success(loginResult);
+        }
 
-		/// <summary>
-		/// Refresh login for an account which is already authenticated but lost its session
-		/// </summary>
-		/// <param name="accountId">Account id of account to re-login</param>
-		/// <returns></returns>
-		public async Task RefreshLoginForAccount(Primitive<int> accountId)
-		{
-			var accountResponse = await FindById(accountId);
+        /// <summary>
+        /// Refresh login for an account which is already authenticated but lost its session
+        /// </summary>
+        /// <param name="accountId">Account id of account to re-login</param>
+        /// <returns></returns>
+        public async Task RefreshLoginForAccount(Primitive<int> accountId)
+        {
+            var accountResponse = await FindById(accountId);
 
-			if (accountResponse.IsFailure)
-			{
-				throw new AuthenticationException("Account logged in but could not be found");
-			}
+            if (accountResponse.IsFailure)
+            {
+                throw new AuthenticationException("Account logged in but could not be found");
+            }
 
-			var account = accountResponse.PayloadOrFail;
+            var account = accountResponse.PayloadOrFail;
 
-			var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(accountId);
+            var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(accountId);
 
-			account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
+            account.ProfilePicturePath = profilePictureResponse.PayloadOrNull;
 
-			var sessionContext = await _sessionService.LoginAccount(account);
+            var sessionContext = await _sessionService.LoginAccount(account);
 
-			await _loginService.RefreshLastAccessed(sessionContext);
+            await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
+        }
 
-			await _accountEventHub.AccountLoggedIn.Raise(new AccountLoggedInEvent(sessionContext));
-		}
+        /// <summary>
+        /// Registers an account and logs it in if the register was successful
+        /// </summary>
+        /// <param name="registerModel">Register model of that account</param>
+        /// <returns></returns>
+        public async Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
+        {
+            var registrationResult = await _registerService.Register(registerModel);
+            return ServiceResponse.Success(registrationResult);
+        }
 
-		/// <summary>
-		/// Registers an account and logs it in if the register was successful
-		/// </summary>
-		/// <param name="registerModel">Register model of that account</param>
-		/// <returns></returns>
-		public async Task<ServiceResponse<RegistrationResult>> Register(RegisterModel registerModel)
-		{
-			var registrationResult = await _registerService.Register(registerModel);
-			return ServiceResponse.Success(registrationResult);
-		}
+        public async Task<ServiceResponse> LogOff(ISessionContext sessionContext)
+        {
+            Logger.Info($"Logging {sessionContext.Account.Id} off.");
+            await _accountEventHub.AccountLoggedOut.Raise(new AccountLoggedOutEvent(sessionContext));
+            return ServiceResponse.Success();
+        }
 
-		public async Task<ServiceResponse> LogOff(ISessionContext sessionContext)
-		{
-			Logger.Info($"Logging {sessionContext.Account.Id} off.");
-			await _accountEventHub.AccountLoggedOut.Raise(new AccountLoggedOutEvent(sessionContext));
-			return ServiceResponse.Success();
-		}
+        public async Task<ServiceResponse<Account>> FindById(Primitive<int> accountId)
+        {
+            var account = await _userService.FindById(accountId);
+            return account == null ? ServiceResponse<Account>.Failure() : ServiceResponse<Account>.Success(account);
+        }
 
-		public async Task<ServiceResponse<Account>> FindById(Primitive<int> accountId)
-		{
-			var account = await _userService.FindById(accountId);
-			return account == null ? ServiceResponse<Account>.Failure() : ServiceResponse<Account>.Success(account);
-		}
+        public async Task<ServiceResponse<List<Account>>> FindAccountsStartingWithName(string name)
+        {
+            var accounts = await _userService.FindAccountsStartingWithName(name);
+            return ServiceResponse<List<Account>>.Success(accounts);
+        }
 
-		public async Task<ServiceResponse<List<Account>>> FindAccountsStartingWithName(string name)
-		{
-			var accounts = await _userService.FindAccountsStartingWithName(name);
-			return ServiceResponse<List<Account>>.Success(accounts);
-		}
+        public async Task<ServiceResponse<Account>> FindByEmail(string email)
+        {
+            var account = await _userService.FindByEmail(email);
 
-		public async Task<ServiceResponse<Account>> FindByEmail(string email)
-		{
-			var account = await _userService.FindByEmail(email);
+            return account != null ? ServiceResponse.Success(account) : ServiceResponse<Account>.Failure();
+        }
 
-			return account != null ? ServiceResponse.Success(account) : ServiceResponse<Account>.Failure();
-		}
+        public async Task<ServiceResponse> AddAsFriend(AddAsFriendModel model)
+        {
+            var addResult = await _friendsService.AddFriend(model.SessionContext, model.AccountId);
 
-		public async Task<ServiceResponse> AddAsFriend(AddAsFriendModel model)
-		{
-			var addResult = await _friendsService.AddFriend(model.SessionContext, model.AccountId);
+            return addResult ? ServiceResponse.Success() : ServiceResponse.Failure();
+        }
 
-			return addResult ? ServiceResponse.Success() : ServiceResponse.Failure();
-		}
+        public async Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
+        {
+            var friends = await _friendsService.GetFriends(sessionContext);
 
-		public async Task<ServiceResponse<List<Friend>>> GetFriends(ISessionContext sessionContext)
-		{
-			var friends = await _friendsService.GetFriends(sessionContext);
+            if (friends.IsNullOrEmpty())
+            {
+                return ServiceResponse<List<Friend>>.Success(new List<Friend>());
+            }
 
-			if (friends.IsNullOrEmpty())
-			{
-				return ServiceResponse<List<Friend>>.Success(new List<Friend>());
-			}
+            await friends.ParallelAsync(async friend =>
+            {
+                var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(friend.Id);
 
-			await friends.ParallelAsync(async friend =>
-			{
-				var profilePictureResponse = await _profilePictureService.GetProfilePictureForAccountById(friend.Id);
+                if (profilePictureResponse.IsSuccess)
+                {
+                    friend.ProfilePicturePath = profilePictureResponse.PayloadOrFail;
+                }
+            });
 
-				if (profilePictureResponse.IsSuccess)
-				{
-					friend.ProfilePicturePath = profilePictureResponse.PayloadOrFail;
-				}
-			});
+            return ServiceResponse.Success(friends);
+        }
 
-			return ServiceResponse.Success(friends);
-		}
+        public Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData)
+            => _personalDataService.UpdatePersonalData(personalData);
 
-		public Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData)
-			=> _personalDataService.UpdatePersonalData(personalData);
-
-		public Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePasswordData)
-			=> _personalDataService.UpdatePassword(updatePasswordData);
-	}
+        public Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePasswordData)
+            => _personalDataService.UpdatePassword(updatePasswordData);
+    }
 }
