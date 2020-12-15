@@ -4,9 +4,9 @@ using MassTransit;
 using MassTransit.RabbitMqTransport;
 using Microsoft.Extensions.DependencyInjection;
 using MooMed.Common.Definitions.IPC;
-using MooMed.Common.Definitions.Logging;
 using MooMed.Core.Code.Helper.Retry;
 using MooMed.Identity.Service.Interface;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.Eventing.Helper
 {

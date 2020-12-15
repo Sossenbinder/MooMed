@@ -34,20 +34,15 @@ namespace MooMed.Common.ServiceBase.Tests
         [Test]
         public void ServiceBaseShouldDisposeLocalEventHandlersOnDisposal()
         {
-            //var serviceLocalRegistrationVerifier = VerifiableMockSetup.Setup(_serviceLocalEvent,
-            //    x => x.Register(It.IsAny<Func<string, Task>>()),
-            //    x => new DisposableAction(() => x.UnRegister(TestHandler)));
+            var serviceLocalRegistrationVerifier = VerifiableMockSetup.Setup(_serviceLocalEvent,
+                x => x.Register(It.IsAny<Func<string, Task>>()),
+                () => new DisposableAction(() => _serviceLocalEvent.Object.UnRegister(TestHandler)));
 
-            _serviceLocalEvent.Setup(x => x.Register(It.IsAny<Func<string, Task>>()))
-                .Callback(() =>
-                {
-                })
-                .Returns((ILocalEvent<string> x) => new DisposableAction(() => x.UnRegister(TestHandler)));
             var serviceLocalUnRegistrationVerifier = VerifiableMockSetup.Setup(_serviceLocalEvent, x => x.UnRegister(TestHandler));
 
             using (new TestServiceBase(_serviceLocalEvent.Object))
             {
-                //serviceLocalRegistrationVerifier.Verify();
+                serviceLocalRegistrationVerifier.Verify();
             }
 
             serviceLocalUnRegistrationVerifier.Verify();

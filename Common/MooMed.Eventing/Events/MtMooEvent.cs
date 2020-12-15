@@ -2,14 +2,13 @@
 using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.SignalR.Utils;
-using MooMed.Common.Definitions.Logging;
 using MooMed.DotNet.Extensions;
 using MooMed.DotNet.Utils.Disposable;
 using MooMed.DotNet.Utils.Tasks;
 using MooMed.Eventing.DataTypes;
 using MooMed.Eventing.Events.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
-using MooMed.Logging.Loggers;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.Eventing.Events
 {
@@ -53,7 +52,7 @@ namespace MooMed.Eventing.Events
             }
             catch (Exception e)
             {
-                StaticLogger.Error(e.Message);
+                _logger.Error(e.Message);
 
                 // It is important to throw here, as a consumer registration will raise an {queueName}_error event
                 // when an exception is passed to the calling MassTransit code!
@@ -91,7 +90,7 @@ namespace MooMed.Eventing.Events
             }
             catch (Exception e)
             {
-                StaticLogger.Error(e.Message);
+                _logger.Error(e.Message);
             }
         }
     }

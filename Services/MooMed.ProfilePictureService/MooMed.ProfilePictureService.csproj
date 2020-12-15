@@ -54,6 +54,7 @@
 		<ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.IPC\MooMed.IPC.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
 	</ItemGroup>

@@ -18,7 +18,7 @@
 		<ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
 		<ProjectReference Include="..\MooMed.DotNet\MooMed.DotNet.csproj" />
 		<ProjectReference Include="..\MooMed.Eventing\MooMed.Eventing.csproj" />
-		<ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
+		<ProjectReference Include="..\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage;
 
 namespace MooMed.Azure
@@ -10,37 +9,36 @@ namespace MooMed.Azure
     {
         private readonly Lazy<CloudBlobClient> _cloudBlobClient;
 
-        public CloudStorageAccessor([NotNull] string connectionString)
+        public CloudStorageAccessor(string connectionString)
         {
             _cloudBlobClient = new Lazy<CloudBlobClient>(() =>
             {
-                CloudStorageAccount.TryParse(connectionString, out var account);
+                var _ = CloudStorageAccount.TryParse(connectionString, out var account);
                 return account.CreateCloudBlobClient();
             });
         }
 
-        private CloudBlobContainer GetContainer([NotNull] string containerName)
+        private CloudBlobContainer GetContainer(string containerName)
         {
             return _cloudBlobClient.Value.GetContainerReference(containerName);
         }
 
-        public async Task<bool> DoesBlobExistOnContainer([NotNull] string containerName, [NotNull] string blobName)
+        public async Task<bool> DoesBlobExistOnContainer(string containerName, string blobName)
             => await DoesBlobExistOnContainer(GetContainer(containerName), blobName);
 
-        private async Task<bool> DoesBlobExistOnContainer([NotNull] CloudBlobContainer container, [NotNull] string blobName)
+        private static async Task<bool> DoesBlobExistOnContainer(CloudBlobContainer container, string blobName)
         {
-	        try
-	        {
-		        return await container.GetBlockBlobReference(blobName).ExistsAsync();
-	        }
-	        catch (Exception)
-	        {
-		        return false;
-	        }
+            try
+            {
+                return await container.GetBlockBlobReference(blobName).ExistsAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        [ItemNotNull]
-        public async Task<CloudBlobContainer> CreatePublicContainerIfNotExists([NotNull] string containerName, BlobContainerPublicAccessType blobContainerAccessType)
+        public async Task<CloudBlobContainer> CreatePublicContainerIfNotExists(string containerName, BlobContainerPublicAccessType blobContainerAccessType)
         {
             var container = GetContainer(containerName);
 
@@ -57,7 +55,7 @@ namespace MooMed.Azure
             return container;
         }
 
-        public CloudBlockBlob CreateBlockBlob([NotNull] CloudBlobContainer blobContainer, [NotNull] string blobName)
+        public CloudBlockBlob CreateBlockBlob(CloudBlobContainer blobContainer, string blobName)
         {
             return blobContainer.GetBlockBlobReference(blobName);
         }

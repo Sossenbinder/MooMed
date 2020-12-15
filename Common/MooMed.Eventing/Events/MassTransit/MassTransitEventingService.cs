@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using GreenPipes;
 using JetBrains.Annotations;
 using MassTransit;
-using MooMed.Common.Definitions.Logging;
 using MooMed.Core.Code.Helper.Retry;
 using MooMed.DotNet.Extensions;
 using MooMed.Eventing.DataTypes;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Identity.Service.Identity.Interface;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.Eventing.Events.MassTransit
 {

@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using MooMed.Common.Definitions.Logging;
+using MooMed.Logging.Abstractions.Interface;
 using MooMed.Logging.Loggers;
 using MooMed.Logging.Loggers.Helper;
 using MooMed.Logging.Loggers.Helper.Interface;
@@ -8,33 +8,33 @@ using MooMed.Logging.LogManagement.Interface;
 
 namespace MooMed.Logging.Module
 {
-	public class LoggingModule : Autofac.Module
-	{
-		protected override void Load(ContainerBuilder builder)
-		{
-			base.Load(builder);
+    public class LoggingModule : Autofac.Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            base.Load(builder);
 
-			builder.RegisterType<MooMedLogger>()
-				.As<IMooMedLogger>()
-				.SingleInstance();
+            builder.RegisterType<MooMedLogger>()
+                .As<IMooMedLogger>()
+                .SingleInstance();
 
-			builder.RegisterType<SerilogConfigProvider>()
-				.As<ISerilogConfigProvider>()
-				.SingleInstance();
+            builder.RegisterType<SerilogConfigProvider>()
+                .As<ISerilogConfigProvider>()
+                .SingleInstance();
 
-			builder.RegisterType<StaticLogger>()
-				.AsSelf()
-				.AutoActivate()
-				.SingleInstance();
+            builder.RegisterType<StaticLogger>()
+                .AsSelf()
+                .AutoActivate()
+                .SingleInstance();
 
-			builder
+            builder
 #if DEBUG
-				.RegisterType<DebugLogFileManager>()
+                .RegisterType<DebugLogFileManager>()
 #else
 				.RegisterType<ReleaseLogFileManager>()
 #endif
-				.As<ILogFileManager>()
-				.SingleInstance();
-		}
-	}
+                .As<ILogFileManager>()
+                .SingleInstance();
+        }
+    }
 }

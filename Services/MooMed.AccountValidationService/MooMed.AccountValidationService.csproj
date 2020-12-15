@@ -45,6 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Common\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.RemotingProxies\MooMed.RemotingProxies.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.AspNetCore\MooMed.AspNetCore.csproj" />

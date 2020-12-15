@@ -1,16 +1,16 @@
 ﻿using JetBrains.Annotations;
-using MooMed.Common.Definitions.Logging;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.Common.ServiceBase.ServiceBase
 {
-	public class MooMedServiceBaseWithLogger : MooMedServiceBase
-	{
-		[NotNull]
-		protected readonly IMooMedLogger Logger;
+    public class MooMedServiceBaseWithLogger : MooMedServiceBase
+    {
+        [NotNull]
+        protected readonly IMooMedLogger Logger;
 
-		public MooMedServiceBaseWithLogger([NotNull] IMooMedLogger logger)
-		{
-			Logger = logger;
-		}
-	}
+        public MooMedServiceBaseWithLogger([NotNull] IMooMedLogger logger)
+        {
+            Logger = logger;
+        }
+    }
 }

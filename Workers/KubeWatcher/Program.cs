@@ -12,30 +12,30 @@ using MooMed.Logging.Module;
 
 namespace KubeWatcher
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			Console.WriteLine("Booting Kubewatcher...");
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Booting Kubewatcher...");
 
-			var host = Host.CreateDefaultBuilder(args)
-				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.ConfigureContainer<ContainerBuilder>(builder =>
-				{
-					builder.RegisterModule<CoreModule>();
-					builder.RegisterModule<EncryptionModule>();
-					builder.RegisterModule<ConfigurationModule>();
-					builder.RegisterModule<LoggingModule>();
-					builder.RegisterModule<IdentityModule>();
-					builder.RegisterModule<EventingModule>();
-				})
-				.ConfigureServices((hostContext, services) =>
-				{
-					services.AddHostedService<Worker>();
-				})
-				.Build();
+            var host = Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureContainer<ContainerBuilder>(builder =>
+                {
+                    builder.RegisterModule<CoreModule>();
+                    builder.RegisterModule<EncryptionModule>();
+                    builder.RegisterModule<ConfigurationModule>();
+                    builder.RegisterModule<LoggingModule>();
+                    builder.RegisterModule<IdentityModule>();
+                    builder.RegisterModule<EventingModule>();
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<Worker>();
+                })
+                .Build();
 
-			host.Run();
-		}
-	}
+            host.Run();
+        }
+    }
 }

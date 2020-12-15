@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MooMed.Common.Definitions.Logging;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.Eventing.Events.Interface
 {

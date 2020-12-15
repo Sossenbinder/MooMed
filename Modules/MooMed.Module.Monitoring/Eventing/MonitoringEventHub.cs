@@ -1,7 +1,7 @@
 ﻿using MooMed.Common.Definitions.Eventing.Monitoring;
-using MooMed.Common.Definitions.Logging;
 using MooMed.Eventing.Events;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Monitoring.Eventing.Interface;
 
 namespace MooMed.Module.Monitoring.Eventing

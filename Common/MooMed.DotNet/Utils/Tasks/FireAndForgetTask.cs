@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using MooMed.Common.Definitions.Logging;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.DotNet.Utils.Tasks
 {
@@ -14,7 +13,7 @@ namespace MooMed.DotNet.Utils.Tasks
         /// <param name="logger"></param>
         /// <returns></returns>
         public static async Task Run(
-            [NotNull] Func<Task> taskGenerator,
+            Func<Task> taskGenerator,
             IMooMedLogger logger)
         {
             try
@@ -34,7 +33,7 @@ namespace MooMed.DotNet.Utils.Tasks
         /// <param name="logger"></param>
         /// <returns></returns>
         public static async Task RunThreadPool(
-            [NotNull] Func<Task> taskGenerator,
+            Func<Task> taskGenerator,
             IMooMedLogger logger)
         {
             try

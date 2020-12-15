@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using MooMed.Common.Definitions.Logging;
 using MooMed.DotNet.Extensions;
 using MooMed.DotNet.Utils.Tasks;
 using MooMed.Eventing.Events.Interface;
+using MooMed.Logging.Abstractions.Interface;
 
 [assembly: InternalsVisibleTo("MooMed.Core.Tests")]
 

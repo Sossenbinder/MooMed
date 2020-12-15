@@ -1,6 +1,6 @@
 ﻿using System;
-using MooMed.Common.Definitions.Logging;
 using MooMed.Common.Definitions.Models.Session.Interface;
+using MooMed.Logging.Abstractions.Interface;
 using MooMed.Logging.Loggers.Helper.Interface;
 using Serilog;
 using Serilog.Context;

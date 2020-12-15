@@ -1,8 +1,8 @@
 ﻿using MooMed.Common.Definitions.Eventing.User;
-using MooMed.Common.Definitions.Logging;
 using MooMed.Eventing.Events;
 using MooMed.Eventing.Events.Interface;
 using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 
 namespace MooMed.Module.Accounts.Events

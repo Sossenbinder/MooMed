@@ -27,11 +27,11 @@ namespace MooMed.TestBase.Utils
         public static VerifiableMockSetup Setup<TIn, TOut>(
             Mock<TIn> mock,
             Expression<Func<TIn, TOut>> moqSetup,
-            TOut returnVal)
+            Func<TOut> returnValGenerator)
             where TIn : class
         {
             mock.Setup(moqSetup)
-                .Returns(returnVal);
+                .Returns(returnValGenerator);
 
             return new VerifiableMockSetup(times => mock.Verify(moqSetup, times ?? Times.AtLeastOnce()));
         }
@@ -51,7 +51,7 @@ namespace MooMed.TestBase.Utils
         public static VerifiableMockSetup SetupAsync<TIn, TOut>(
             Mock<TIn> mock,
             Expression<Func<TIn, Task<TOut>>> moqSetup,
-            Task<TOut> returnVal)
+            Func<Task<TOut>> returnVal)
             where TIn : class
             => Setup(mock, moqSetup, returnVal);
 

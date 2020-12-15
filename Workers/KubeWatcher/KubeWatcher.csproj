@@ -27,6 +27,7 @@
         <ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
+        <ProjectReference Include="..\..\Common\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
         <ProjectReference Include="..\..\Common\MooMed.Logging\MooMed.Logging.csproj" />
     </ItemGroup>
 </Project>

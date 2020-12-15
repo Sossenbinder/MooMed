@@ -14,13 +14,13 @@ using MooMed.Encryption.Module;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
 using MooMed.Grpc.Interceptors;
-using MooMed.Logging.Module;
 using MooMed.Module.Monitoring.Eventing;
 using MooMed.Module.Monitoring.Eventing.Interface;
 using MooMed.Module.Monitoring.Module;
 using MooMed.ServiceBase.Definitions.Interface;
 using ProtoBuf.Grpc.Server;
 using MooMed.DependencyInjection.Extensions;
+using MooMed.Logging.Module;
 using MooMed.Serialization.Module;
 
 namespace MooMed.AspNetCore.Grpc

@@ -1,7 +1,7 @@
 ﻿using System;
 using MooMed.Common.Definitions.Models.Session.Interface;
 
-namespace MooMed.Common.Definitions.Logging
+namespace MooMed.Logging.Abstractions.Interface
 {
     public interface IMooMedLogger
     {

@@ -26,6 +26,7 @@
 		<ProjectReference Include="..\MooMed.Eventing\MooMed.Eventing.csproj" />
 		<ProjectReference Include="..\MooMed.Grpc\MooMed.Grpc.csproj" />
 		<ProjectReference Include="..\MooMed.Identity\MooMed.Identity.csproj" />
+		<ProjectReference Include="..\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 		<ProjectReference Include="..\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
 	</ItemGroup>
 </Project>

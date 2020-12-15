@@ -5,8 +5,8 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using MooMed.Common.Definitions.Configuration;
-using MooMed.Common.Definitions.Logging;
 using MooMed.Core.Code.Helper.Email.Interface;
+using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.Core.Code.Helper.Email
 {
