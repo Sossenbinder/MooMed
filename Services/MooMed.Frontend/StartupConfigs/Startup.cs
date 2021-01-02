@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Autofac;
+﻿using Autofac;
 using JetBrains.Annotations;
 using MassTransit;
 using MassTransit.SignalR;
@@ -12,11 +11,11 @@ using MooMed.Caching.Module;
 using MooMed.Common.ServiceBase.Module;
 using MooMed.Configuration.Module;
 using MooMed.Core;
-using MooMed.Identity.Module;
 using MooMed.Encryption.Module;
 using MooMed.Eventing.Helper;
 using MooMed.Eventing.Module;
 using MooMed.Frontend.Modules;
+using MooMed.Identity.Module;
 using MooMed.IPC.Module;
 using MooMed.Logging.Module;
 using MooMed.Module.Accounts.Module;
@@ -25,6 +24,7 @@ using MooMed.Module.Monitoring.Module;
 using MooMed.Module.Saving.Modules;
 using MooMed.Serialization.Module;
 using MooMed.SignalR.Hubs;
+using System.Threading.Tasks;
 using AccountValidationModule = MooMed.Module.AccountValidation.Module.AccountValidationModule;
 
 namespace MooMed.Frontend.StartupConfigs
@@ -40,7 +40,16 @@ namespace MooMed.Frontend.StartupConfigs
 
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => options.LoginPath = "/Logon/Login");
+                .AddCookie(options =>
+                {
+                    options.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+
+                    options.LoginPath = "/Logon/Login";
+                });
 
             services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
 

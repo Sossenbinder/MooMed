@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // Components
 import Flex from "common/components/Flex";
 import FriendsListEntry from "./FriendsListEntry";
+import LoadingBubbles from "common/components/LoadingBubbles";
 
 // Functionality
 import { ReduxStore } from "data/store";
@@ -18,25 +19,26 @@ type Props = {
 
 export const FriendsList: React.FC<Props> = ({ friends }) => {
 
-	const friendsRendered = React.useMemo(() => {
-		return friends.map(friend => {
-			return (
-				<Flex 
-					direction={"Column"}
-					key={friend.id}
-					style={{width: "100%"}}>
-					<FriendsListEntry
-						friend={friend}/>
-				</Flex>
-			);
-		});
-	}, [friends]);
+	const friendsRendered = React.useMemo(() => friends?.map(friend => (
+		<Flex
+			direction={"Column"}
+			key={friend.id}
+			style={{ width: "100%" }}>
+			<FriendsListEntry
+				friend={friend} />
+		</Flex>
+	)), [friends]);
 
 	return (
-		<Flex 
+		<Flex
 			className={"FriendsList"}
 			direction={"Column"}>
-			{friendsRendered}
+			<If condition={friends.length === 0}>
+				<LoadingBubbles />
+			</If>
+			<If condition={friends.length > 0}>
+				{friendsRendered}
+			</If>
 		</Flex>
 	);
 }

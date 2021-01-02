@@ -17,6 +17,7 @@ import { useServices } from "hooks/useServices";
 
 // Types
 import { SavingInfo } from "modules/saving/types";
+import { CashFlow } from "enums/moomedEnums";
 
 import "./Styles/SavingDialog.less";
 
@@ -24,11 +25,49 @@ type Props = {
 	savingInfo: SavingInfo
 }
 
+type CashFlowSummary = {
+	totalExpenses: number;
+	totalIncome: number;
+	netFlow: number;
+}
+
 export const SavingDialog: React.FC<Props> = ({ savingInfo }) => {
 
 	const { SavingService } = useServices();
 
 	const [loading, setLoading] = React.useState<boolean>(true);
+
+	const flowSummary: CashFlowSummary = React.useMemo(() => {
+
+		const summary: CashFlowSummary = {
+			netFlow: 0,
+			totalExpenses: 0,
+			totalIncome: 0,
+		}
+
+		if (savingInfo === undefined) {
+			return summary;
+		}
+
+		savingInfo.freeFormSavingInfo?.forEach(x => {
+			if (x.flowType === CashFlow.Income) {
+				summary.totalIncome += x.amount;
+			} else {
+				summary.totalExpenses += x.amount;
+			}
+		});
+
+		const basicSavingInfo = savingInfo.basicSavingInfo;
+
+		summary.totalIncome += basicSavingInfo.income.amount;
+
+		summary.totalExpenses += basicSavingInfo.rent.amount;
+		summary.totalExpenses += basicSavingInfo.groceries.amount;
+
+		summary.netFlow = summary.totalIncome - summary.totalExpenses;
+
+		return summary;
+	}, [savingInfo]);
 
 	React.useEffect(() => {
 		const initSavingData = async () => {
@@ -45,7 +84,7 @@ export const SavingDialog: React.FC<Props> = ({ savingInfo }) => {
 			<Choose>
 				<When condition={!loading}>
 					<Grid
-						className="SavingDialogGrid"		
+						className="SavingDialogGrid"
 						gridProperties={{
 							gridTemplateColumns: "3fr 1fr",
 							gridTemplateRows: "50% 50%",
@@ -53,15 +92,15 @@ export const SavingDialog: React.FC<Props> = ({ savingInfo }) => {
 						<Cell
 							cellStyles={{
 								gridColumn: "1 / 3"
-							}}>					
-							<SavingConfigurator 
-								savingInfo={savingInfo}/>
-						</Cell>
-						<Cell>
-							<SavingGrowthChart 
+							}}>
+							<SavingConfigurator
 								savingInfo={savingInfo} />
 						</Cell>
-						<Cell>					
+						<Cell>
+							<SavingGrowthChart
+								netFlow={flowSummary.netFlow} />
+						</Cell>
+						<Cell>
 							<SavingDistributionChart />
 						</Cell>
 					</Grid>

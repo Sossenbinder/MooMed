@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\MooMed.Caching\MooMed.Caching.csproj" />
-    <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
     <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
     <ProjectReference Include="..\MooMed.TestBase\MooMed.TestBase.csproj" />

@@ -9,7 +9,7 @@ import { OnlineStateNotification } from "../types";
 import { SignalRNotification } from "data/notifications";
 
 export default class FriendsService extends ModuleService implements IFriendsService {
-	
+
 	constructor() {
 
 		super();
@@ -17,16 +17,16 @@ export default class FriendsService extends ModuleService implements IFriendsSer
 		const notificationService = services.NotificationService;
 
 		notificationService.subscribe<OnlineStateNotification>(
-			NotificationType.FriendOnlineStateChange, 
+			NotificationType.FriendOnlineStateChange,
 			this.onOnlineStateUpdated);
 	}
 
-	public async start() {		
-		const friendsResponse = await friendsCommunication.getFriends();
-		
-		if (friendsResponse.success && friendsResponse.payload){
-			this.dispatch(friendsReducer.add(friendsResponse.payload));
-		}
+	public async start() {
+		friendsCommunication.getFriends().then(friendsResponse => {
+			if (friendsResponse.success && friendsResponse.payload) {
+				this.dispatch(friendsReducer.add(friendsResponse.payload));
+			}
+		});
 	}
 
 	public async addFriend(friendId: number): Promise<void> {
@@ -34,8 +34,8 @@ export default class FriendsService extends ModuleService implements IFriendsSer
 	}
 
 	private onOnlineStateUpdated = (notification: SignalRNotification<OnlineStateNotification>) => {
-			
-		const notificationData = notification.data; 
+
+		const notificationData = notification.data;
 
 		const respectiveFriend = this.getStore().friendsReducer.data.find(x => x.id === notificationData.accountId);
 

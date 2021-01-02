@@ -1,10 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using MooMed.Common.Definitions.Attributes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GreenPipes.Internals.Extensions;
-using JetBrains.Annotations;
-using MooMed.Common.Definitions.Attributes;
+using System.Reflection;
 
 namespace FrontendEnumGenerator
 {
@@ -25,7 +25,7 @@ namespace FrontendEnumGenerator
             _enumsToExport.AddRange(AppDomain
                 .CurrentDomain
                 .GetAssemblies()
-                .SelectMany(x => x.GetTypes().Where(y => y.HasAttribute<ExportEnumAttribute>())));
+                .SelectMany(x => x.GetTypes().Where(y => y.GetCustomAttributes().Any(x => x is ExportEnumAttribute))));
 
             var outputDirectory = $"{solutionDir}/Services/MooMed.Frontend/React/Enums";
 

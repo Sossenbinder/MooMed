@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
 
-    <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-        <PackageReference Include="protobuf-net.Grpc" Version="1.0.140" />
-        <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
-    </ItemGroup>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-        <ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+		<PackageReference Include="protobuf-net.Grpc" Version="1.0.140" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+		<ProjectReference Include="..\MooMed.Core\MooMed.Core.csproj" />
+	</ItemGroup>
 </Project>

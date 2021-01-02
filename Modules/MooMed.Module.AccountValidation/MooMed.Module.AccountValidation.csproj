@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,7 +14,6 @@
 		<ProjectReference Include="..\..\Common\MooMed.AspNetCore.Identity\MooMed.AspNetCore.Identity.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-		<ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.Common.ServiceBase\MooMed.Common.ServiceBase.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.DotNet\MooMed.DotNet.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />

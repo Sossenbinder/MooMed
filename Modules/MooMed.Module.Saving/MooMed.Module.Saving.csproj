@@ -5,12 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.1.0" />
-		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\Common\MooMed.Common.Database\MooMed.Common.Database.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
 		<ProjectReference Include="..\MooMed.Module.Account\MooMed.Module.Accounts.csproj" />

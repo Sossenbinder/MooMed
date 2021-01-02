@@ -2,12 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.1.0" />
-		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
 	</ItemGroup>
 

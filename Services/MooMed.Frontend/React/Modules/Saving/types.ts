@@ -8,6 +8,14 @@ export type CashFlowItem = {
 	flowType: CashFlow;
 }
 
+export type AssetInfo = {
+	cash: number;
+	debt: number;
+	equity: number;
+	estate: number;
+	commodities: number;
+}
+
 export type BasicSavingInfo = {
 	income: CashFlowItem;
 	rent: CashFlowItem;
@@ -16,6 +24,7 @@ export type BasicSavingInfo = {
 
 export type SavingInfo = {
 	currency: Currency;
+	assetInfo: AssetInfo;
 	basicSavingInfo: BasicSavingInfo;
 	freeFormSavingInfo: Array<CashFlowItem>;
 }
@@ -26,7 +35,7 @@ export namespace Network {
 			Currency: Currency;
 		}
 	}
-	
+
 	export namespace SetCashFlowItems {
 		export type Request = {
 			cashFlowItems: Array<CashFlowItem>;

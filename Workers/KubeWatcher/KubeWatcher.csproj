@@ -1,33 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
-    <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <UserSecretsId>dotnet-KubeWatcher-BF4D0642-C804-4967-BC3C-709595285EAC</UserSecretsId>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>..\..</DockerfileContext>
-        <Platforms>AnyCPU;x64</Platforms>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<UserSecretsId>dotnet-KubeWatcher-BF4D0642-C804-4967-BC3C-709595285EAC</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
+		<Platforms>AnyCPU;x64</Platforms>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Autofac" Version="6.1.0" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-        <PackageReference Include="Grpc.Core.Api" Version="2.34.0" />
-        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-        <PackageReference Include="KubernetesClient" Version="1.6.3" />
-        <PackageReference Include="MassTransit" Version="7.0.7" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="7.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.1.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="KubernetesClient" Version="1.6.3" />
+		<PackageReference Include="MassTransit" Version="7.0.7" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="7.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Configuration\MooMed.Configuration.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
-        <ProjectReference Include="..\..\Common\MooMed.Logging\MooMed.Logging.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Common\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Configuration\MooMed.Configuration.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Core\MooMed.Core.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Encryption\MooMed.Encryption.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Eventing\MooMed.Eventing.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Identity\MooMed.Identity.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
+		<ProjectReference Include="..\..\Common\MooMed.Logging\MooMed.Logging.csproj" />
+	</ItemGroup>
 </Project>

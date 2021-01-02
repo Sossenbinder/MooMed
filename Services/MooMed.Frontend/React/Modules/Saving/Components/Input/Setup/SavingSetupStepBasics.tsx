@@ -13,7 +13,7 @@ import { currencySymbolMap } from "helper/currencyHelper";
 
 // Types
 import { BasicSavingInfo, CashFlowItem } from "modules/saving/types";
-import { CashFlow, CashFlowItemType, Currency } from "enums/moomedEnums"
+import { CashFlow, CashFlowItemType, Currency } from "enums/moomedEnums";
 
 import "./Styles/SavingSetupStepBasics.less";
 
@@ -24,7 +24,7 @@ type Props = {
 	onUpdate(basicSavingInfo: BasicSavingInfo): void;
 }
 
-export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currency, onUpdate}) => {
+export const SavingSetupStepBasics: React.FC<Props> = ({ basicSavingInfo, currency, onUpdate }) => {
 
 	let inputTimeout: number;
 
@@ -44,15 +44,14 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 
 		localStateDispatch(val);
 
-		if (inputTimeout !== undefined)
-		{
+		if (inputTimeout !== undefined) {
 			window.clearTimeout(inputTimeout);
 		}
 
 		inputTimeout = window.setTimeout(() => {
-			const newBasicSavingInfo: BasicSavingInfo = { ...basicSavingInfo } ?? { } as BasicSavingInfo;
+			const newBasicSavingInfo: BasicSavingInfo = { ...basicSavingInfo } ?? {} as BasicSavingInfo;
 
-			if (incomeRef.current){
+			if (incomeRef.current) {
 				let cashFlowItem: CashFlowItem = newBasicSavingInfo?.income;
 				if (!cashFlowItem) {
 					cashFlowItem = {
@@ -62,14 +61,13 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 					} as CashFlowItem;
 				}
 
-				if (cashFlowItem.amount != incomeRef.current)
-				{
+				if (cashFlowItem.amount != incomeRef.current) {
 					cashFlowItem.amount = incomeRef.current;
 					newBasicSavingInfo.income = cashFlowItem;
 				}
 			}
 
-			if (rentRef.current){
+			if (rentRef.current) {
 				let cashFlowItem: CashFlowItem = newBasicSavingInfo?.rent;
 				if (!cashFlowItem) {
 					cashFlowItem = {
@@ -78,15 +76,14 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 						name: "Rent",
 					} as CashFlowItem;
 				}
-				
-				if (cashFlowItem.amount != rentRef.current)
-				{
+
+				if (cashFlowItem.amount != rentRef.current) {
 					cashFlowItem.amount = rentRef.current;
 					newBasicSavingInfo.rent = cashFlowItem;
 				}
 			}
 
-			if (groceriesRef.current){
+			if (groceriesRef.current) {
 				let cashFlowItem: CashFlowItem = newBasicSavingInfo?.groceries;
 				if (!cashFlowItem) {
 					cashFlowItem = {
@@ -95,9 +92,8 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 						name: "Groceries",
 					} as CashFlowItem;
 				}
-				
-				if (cashFlowItem.amount != groceriesRef.current)
-				{
+
+				if (cashFlowItem.amount != groceriesRef.current) {
 					cashFlowItem.amount = groceriesRef.current;
 					newBasicSavingInfo.groceries = cashFlowItem;
 				}
@@ -110,68 +106,88 @@ export const SavingSetupStepBasics: React.FC<Props> = ({basicSavingInfo, currenc
 	};
 
 	return (
-		<Flex 
+		<Flex
 			className="SavingSetupStepBasics"
 			direction="Column">
 			<h2>Basics</h2>
-			<p>Let's start off with some basics:</p>
+			<p>Now, please enter some basic cashflow properties:</p>
 			<Separator />
-			<Grid
-				className="SetupGrid"
-				gridProperties={{
-					gridTemplateColumns: "100px 225px",
-					gridRowGap: "10px",
-					gridTemplateRows: "38px 38px 38px",
-				}}>
-				<Cell>
-					Your income:
-				</Cell>
-				<Cell>
-					<Flex
-						direction="Row">
-						<TextInput
-							name="Income"
-							data={income}
-							setData={val => updateItem(+val, setIncome)}
-							inputType="number"/>
-						<span className="Currency">
-							{currencySymbolMap.get(currency)}
-						</span>
-					</Flex>
-				</Cell>
-				<Cell>
-					Your rent:
-				</Cell>
-				<Cell>
-					<Flex
-						direction="Row">
-						<TextInput
-							name="Rent"
-							data={rent}
-							setData={val => updateItem(+val, setRent)}	
-							inputType="number"/>
-						<span className="Currency">
-							{currencySymbolMap.get(currency)}
-						</span>
-					</Flex>
-				</Cell>
-				<Cell>
-					Your groceries:
-				</Cell>
-				<Cell>
-					<Flex
-						direction="Row">
-						<TextInput
-							name="Groceries"
-							data={groceries}
-							setData={val => updateItem(+val, setGroceries)}	
-							inputType="number"/>
-						<span className="Currency">
-							{currencySymbolMap.get(currency)}
-						</span>
-					</Flex>
-				</Cell>
-			</Grid>
+			<Flex>
+				<Flex
+					className="CashFlowSectionContainer"
+					direction="Column">
+					<h3>Income:</h3>
+					<Grid
+						className="SetupGrid"
+						gridProperties={{
+							gridTemplateColumns: "100px 225px",
+							gridRowGap: "10px",
+							gridTemplateRows: "38px 38px 38px",
+						}}>
+						<Cell>
+							Your income:
+						</Cell>
+						<Cell>
+							<Flex
+								direction="Row">
+								<TextInput
+									name="Income"
+									data={income}
+									setData={val => updateItem(+val, setIncome)}
+									inputType="number" />
+								<span className="Currency">
+									{currencySymbolMap.get(currency)}
+								</span>
+							</Flex>
+						</Cell>
+					</Grid>
+				</Flex>
+				<Flex
+					className="CashFlowSectionContainer"
+					direction="Column">
+					<h3>Expenditures:</h3>
+					<Grid
+						className="SetupGrid"
+						gridProperties={{
+							gridTemplateColumns: "100px 225px",
+							gridRowGap: "10px",
+							gridTemplateRows: "38px 38px",
+						}}>
+						<Cell>
+							Your rent:
+						</Cell>
+						<Cell>
+							<Flex
+								direction="Row">
+								<TextInput
+									name="Rent"
+									data={rent}
+									setData={val => updateItem(+val, setRent)}
+									inputType="number" />
+								<span className="Currency">
+									{currencySymbolMap.get(currency)}
+								</span>
+							</Flex>
+						</Cell>
+						<Cell>
+							Your groceries:
+						</Cell>
+						<Cell>
+							<Flex
+								direction="Row">
+								<TextInput
+									name="Groceries"
+									data={groceries}
+									setData={val => updateItem(+val, setGroceries)}
+									inputType="number" />
+								<span className="Currency">
+									{currencySymbolMap.get(currency)}
+								</span>
+							</Flex>
+						</Cell>
+					</Grid>
+				</Flex>
+			</Flex>
 		</Flex>
 	);
 }

@@ -18,7 +18,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\MooMed.Common.Definitions\MooMed.Common.Definitions.csproj" />
-		<ProjectReference Include="..\MooMed.Configuration\MooMed.Configuration.csproj" />
 		<ProjectReference Include="..\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 	</ItemGroup>
 </Project>

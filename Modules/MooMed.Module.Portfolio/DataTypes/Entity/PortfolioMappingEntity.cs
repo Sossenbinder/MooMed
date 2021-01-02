@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Finance.Database.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MooMed.Module.Portfolio.DataTypes.Entity
 {

@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<Platforms>AnyCPU;x64</Platforms>
-		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,7 +18,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Azure.KeyVault" Version="2.3.2" />
 		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.10" />
 		<PackageReference Include="protobuf-net" Version="3.0.73" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.140" />
 		<PackageReference Include="Sentry.AspNetCore" Version="2.1.8" />
@@ -36,7 +35,6 @@
 		<ProjectReference Include="..\MooMed.Encryption\MooMed.Encryption.csproj" />
 		<ProjectReference Include="..\MooMed.Eventing\MooMed.Eventing.csproj" />
 		<ProjectReference Include="..\MooMed.Grpc\MooMed.Grpc.csproj" />
-		<ProjectReference Include="..\MooMed.Identity\MooMed.Identity.csproj" />
 		<ProjectReference Include="..\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 		<ProjectReference Include="..\MooMed.Logging\MooMed.Logging.csproj" />
 		<ProjectReference Include="..\MooMed.Serialization\MooMed.Serialization.csproj" />

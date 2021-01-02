@@ -4,8 +4,7 @@ param (
 
 [string[]] $availableConfigs = "dev", "testing", "prod"
 
-if (!$availableConfigs -contains $configuration)
-{
+if (!$availableConfigs -contains $configuration) {
 	Write-Host "Invalid configuration, only dev / testing / prod are allowed";
 	return;
 }
@@ -16,11 +15,6 @@ class ImageInfo {
 }
 
 [ImageInfo[]] $imageInfos = @();
-
-$imageInfos += [ImageInfo]@{
-	Path = "Services/MooMed.Frontend/Dockerfile"
-	Name = "frontendservice"
-}
 
 $imageInfos += [ImageInfo]@{
 	Path = "Services/MooMed.FinanceService/Dockerfile"
@@ -58,20 +52,25 @@ $imageInfos += [ImageInfo]@{
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "Services/MooMed.Monitoring/Dockerfile"
-    Name = "monitoringservice"
+	Path = "Services/MooMed.Monitoring/Dockerfile"
+	Name = "monitoringservice"
 }
 
 $imageInfos += [ImageInfo]@{
-    Path = "Services/MooMed.SavingService/Dockerfile"
-    Name = "savingservice"
+	Path = "Services/MooMed.SavingService/Dockerfile"
+	Name = "savingservice"
+}
+
+$imageInfos += [ImageInfo]@{
+	Path = "Services/MooMed.Frontend/Dockerfile"
+	Name = "frontendservice"
 }
 
 az acr login --name moomed
 
 foreach ($imageInfo in $imageInfos) {
 	
-	Write-Host "Building$($imageInfo.Path)"
+	Write-Host "Building $($imageInfo.Path)"
 
 	$imgName = "moomed.azurecr.io/" + $imageInfo.Name + ":" + $configuration
 	docker build -t $imgName -f "../../$($imageInfo.Path)" ../..
