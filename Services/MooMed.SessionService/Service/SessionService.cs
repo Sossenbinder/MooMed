@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Caching.Helper;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.IPC;
@@ -12,6 +11,7 @@ using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Session.Cache.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System.Threading.Tasks;
 
 namespace MooMed.SessionService.Service
 {
@@ -31,12 +31,12 @@ namespace MooMed.SessionService.Service
             RegisterEventHandler(accountEventHub.AccountLoggedOut, OnAccountLoggedOut);
         }
 
-        private void OnAccountLoggedOut([NotNull] AccountLoggedOutEvent accountLoggedOutEvent)
+        private async Task OnAccountLoggedOut([NotNull] AccountLoggedOutEvent accountLoggedOutEvent)
         {
             var sessionContext = accountLoggedOutEvent.SessionContext;
 
             Logger.Debug($"AccountId {sessionContext.Account.Id} logged out.");
-            _sessionContextCache.RemoveItem(sessionContext);
+            await _sessionContextCache.RemoveItem(sessionContext);
         }
 
         public async Task<ServiceResponse<ISessionContext>> GetSessionContext(Primitive<int> accountId)
@@ -49,20 +49,19 @@ namespace MooMed.SessionService.Service
                 : ServiceResponse<ISessionContext>.Success(sessionContext);
         }
 
-        public Task<ISessionContext> LoginAccount(Account account)
+        public async Task<ISessionContext> LoginAccount(Account account)
         {
             var sessionContext = CreateSessionContext(account);
 
-            _sessionContextCache.PutItem(sessionContext);
+            var key = CacheKeyUtils.GetCacheKeyForSessionContext(sessionContext.Account.Id);
+            await _sessionContextCache.PutItem(sessionContext);
 
-            return Task.FromResult<ISessionContext>(sessionContext);
+            return sessionContext;
         }
 
-        public Task UpdateSessionContext(ISessionContext sessionContext)
+        public async Task UpdateSessionContext(ISessionContext sessionContext)
         {
-            _sessionContextCache.PutItem(sessionContext);
-
-            return Task.CompletedTask;
+            await _sessionContextCache.PutItem(sessionContext);
         }
 
         private static SessionContext CreateSessionContext([NotNull] Account account)

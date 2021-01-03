@@ -18,7 +18,7 @@ namespace MooMed.Identity.Module
 
             builder
 #if DEBUG
-				.RegisterType<DockerComposeEndpointDiscoveryService>()
+                .RegisterType<DockerComposeEndpointDiscoveryService>()
 #else
                 .RegisterType<KubernetesEndpointDnsDiscoveryService>()
 #endif

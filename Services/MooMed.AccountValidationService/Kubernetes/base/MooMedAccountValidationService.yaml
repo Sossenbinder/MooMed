@@ -5,10 +5,10 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - name: http2
-    port: 10042
-    targetPort: 10042
-    protocol: TCP
+    - name: http2
+      port: 10042
+      targetPort: 10042
+      protocol: TCP
   selector:
     name: moomed-accountvalidationservice
 ---
@@ -20,7 +20,7 @@ metadata:
     name: moomed-accountvalidationservice
 spec:
   replicas: 3
-  selector:  
+  selector:
     matchLabels:
       name: moomed-accountvalidationservice
   template:
@@ -30,21 +30,23 @@ spec:
         serviceType: moomedFunctionalService
     spec:
       containers:
-      - name: moomed-accountvalidationservice
-        image: moomed.azurecr.io/accountvalidationservice
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 10042
-        env:
-          - name: AZURE_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: akv
-                key: client_secret
-        resources:
-          requests:
-            memory: 64Mi
-          limits:
-            memory: 256Mi
+        - name: moomed-accountvalidationservice
+          image: moomed.azurecr.io/accountvalidationservice
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 10042
+          env:
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: akv
+                  key: client_secret
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 256Mi
       imagePullSecrets:
         - name: acrimgpullsecret

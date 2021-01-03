@@ -1,8 +1,8 @@
-version: '3.4'
+version: "3.4"
 
 volumes:
-    prometheus_db: {}
-    grafana_db: {}
+  prometheus_db: {}
+  grafana_db: {}
 
 services:
   moomed.frontend:
@@ -13,13 +13,13 @@ services:
     labels:
       - moomedcompose
     ports:
-    - "1337:80"
-    - "1338:443"
+      - "1337:80"
+      - "1338:443"
     environment:
-    - ASPNETCORE_URLS=https://+:443;http://+:80
-    - ASPNETCORE_HTTPS_PORT=1338
-    - ASPNETCORE_Kestrel__Certificates__Default__Path=/localHttps/moomedLocalhost.pfx
-    - ASPNETCORE_Kestrel__Certificates__Default__Password=Test!234
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=1338
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/localHttps/moomedLocalhost.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Test!234
     healthcheck:
       test: curl --fail -s http://localhost/health/ping || exit 1
       interval: 10s
@@ -44,7 +44,6 @@ services:
     volumes:
       - ./Logs:/hostlogs
 
-
   moomed.searchservice:
     image: ${DOCKER_REGISTRY-}moomedsearchservice
     build:
@@ -59,7 +58,6 @@ services:
       retries: 10
     volumes:
       - ./Logs:/hostlogs
-
 
   moomed.profilepictureservice:
     image: ${DOCKER_REGISTRY-}moomedprofilepictureservice
@@ -76,7 +74,6 @@ services:
     volumes:
       - ./Logs:/hostlogs
 
-
   moomed.accountvalidationservice:
     image: ${DOCKER_REGISTRY-}moomedaccountvalidationservice
     build:
@@ -92,7 +89,6 @@ services:
     volumes:
       - ./Logs:/hostlogs
 
-
   moomed.accountservice:
     image: ${DOCKER_REGISTRY-}moomedaccountservice
     build:
@@ -107,7 +103,6 @@ services:
       retries: 10
     volumes:
       - ./Logs:/hostlogs
-
 
   moomed.financeservice:
     image: ${DOCKER_REGISTRY-}moomedfinanceservice
@@ -130,7 +125,7 @@ services:
     labels:
       - moomedcompose
     ports:
-    - "12643:15672"
+      - "12643:15672"
 
   prometheus:
     container_name: prometheus
@@ -138,30 +133,30 @@ services:
     labels:
       - moomedcompose
     volumes:
-    - ./General/Metrics/Prometheus/DockerCompose:/etc/prometheus
-    - ./prometheus_db:/var/lib/prometheus
+      - ./General/Metrics/Prometheus/DockerCompose:/etc/prometheus
+      - ./prometheus_db:/var/lib/prometheus
     ports:
-    - "9090:9090"
+      - "9090:9090"
 
   grafana:
     image: grafana/grafana
     labels:
       - moomedcompose
     environment:
-    - GF_SECURITY_ADMIN_PASSWORD=secure_pass
+      - GF_SECURITY_ADMIN_PASSWORD=secure_pass
     volumes:
-    - ./grafana_db:/var/lib/grafana
+      - ./grafana_db:/var/lib/grafana
     depends_on:
-    - prometheus
+      - prometheus
     ports:
-    - '3000:3000'
+      - "3000:3000"
 
   moomed.redis:
     image: redis
     labels:
       - moomedcompose
     ports:
-    - '6379:6379'
+      - "6379:6379"
 
   moomed.chatservice:
     image: ${DOCKER_REGISTRY-}moomedchatservice
@@ -178,7 +173,6 @@ services:
     volumes:
       - ./Logs:/hostlogs
 
-
   moomed.monitoringservice:
     image: ${DOCKER_REGISTRY-}moomedmonitoring
     build:
@@ -192,7 +186,7 @@ services:
       timeout: 5s
       retries: 10
     ports:
-    - "4122:80"
+      - "4122:80"
     volumes:
       - ./Logs:/hostlogs
 

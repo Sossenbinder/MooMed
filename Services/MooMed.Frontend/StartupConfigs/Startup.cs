@@ -47,8 +47,6 @@ namespace MooMed.Frontend.StartupConfigs
                         context.Response.StatusCode = 401;
                         return Task.CompletedTask;
                     };
-
-                    options.LoginPath = "/Logon/Login";
                 });
 
             services.AddAntiforgery(x => x.HeaderName = "AntiForgery");

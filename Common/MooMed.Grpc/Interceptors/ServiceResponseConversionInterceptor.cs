@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Hosting;
 using MooMed.Core.DataTypes;
 using MooMed.DotNet.Utils.Environment;
+using System;
+using System.Threading.Tasks;
 
 namespace MooMed.Grpc.Interceptors
 {
@@ -21,8 +21,9 @@ namespace MooMed.Grpc.Interceptors
             {
                 return await interceptedCall(request, context);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 if (EnvHelper.GetDeployment().Equals(Environments.Development))
                 {
                     throw;
@@ -34,8 +35,7 @@ namespace MooMed.Grpc.Interceptors
                     throw;
                 }
 
-                var defaultResponse = Activator.CreateInstance<TResponse>();
-                return defaultResponse;
+                return (Activator.CreateInstance(responseType, true) as TResponse)!;
             }
         }
     }
