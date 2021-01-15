@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: moomed-sessionservice
 spec:
-  replicas: 3
+  replicas: 1
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/sessionservice:testing
-        name: moomed-sessionservice
+        - image: moomed.azurecr.io/sessionservice:testing
+          name: moomed-sessionservice
       imagePullSecrets:
-      - name: acrimgpullsecret
+        - name: acrimgpullsecret

@@ -29,22 +29,22 @@ export const LoginDialog: React.FC = () => {
 	const handleLogin = async () => {
 		await LogonService.login(email.Value, password.Value, rememberMe);
 	}
-	
-	return(
+
+	return (
 		<div>
 			<ErrorAttachedTextInput
 				name="Email"
 				formData={email}
 				setFormData={setEmail}
 				errorMessage="Please provide a valid email address"
-				errorFunc={(currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1}/>
+				errorFunc={(currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1} />
 			<ErrorAttachedTextInput
 				name="Password"
 				inputType="password"
 				formData={password}
 				setFormData={setPassword}
 				errorMessage="Please provide a valid password"
-				errorFunc={(currentVal) => currentVal === ""}/>
+				errorFunc={(currentVal) => currentVal === ""} />
 			<CheckBoxToggle
 				text="Stay logged in?"
 				initialToggle={false}
@@ -58,7 +58,7 @@ export const LoginDialog: React.FC = () => {
 					onClick={handleLogin}
 				/>
 			</Flex>
-			<hr/>
+			<hr />
 			<Flex className="align-middle">
 				<Link to="/forgotPassword">Forgot password?</Link>
 			</Flex>

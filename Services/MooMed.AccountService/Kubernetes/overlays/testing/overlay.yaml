@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: moomed-accountservice
 spec:
-  replicas: 3
+  replicas: 1
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/accountservice:testing
-        name: moomed-accountservice
+        - image: moomed.azurecr.io/accountservice:testing
+          name: moomed-accountservice
       imagePullSecrets:
-      - name: acrimgpullsecret
+        - name: acrimgpullsecret

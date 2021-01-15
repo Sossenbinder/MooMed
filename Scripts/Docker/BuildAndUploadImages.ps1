@@ -52,11 +52,6 @@ $imageInfos += [ImageInfo]@{
 }
 
 $imageInfos += [ImageInfo]@{
-	Path = "Services/MooMed.Monitoring/Dockerfile"
-	Name = "monitoringservice"
-}
-
-$imageInfos += [ImageInfo]@{
 	Path = "Services/MooMed.SavingService/Dockerfile"
 	Name = "savingservice"
 }

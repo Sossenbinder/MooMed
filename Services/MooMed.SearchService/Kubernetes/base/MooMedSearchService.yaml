@@ -5,10 +5,10 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - name: http2
-    port: 10042
-    targetPort: 10042
-    protocol: TCP
+    - name: http2
+      port: 10042
+      targetPort: 10042
+      protocol: TCP
   selector:
     name: moomed-searchservice
 ---
@@ -19,8 +19,8 @@ metadata:
   labels:
     name: moomed-searchservice
 spec:
-  replicas: 3
-  selector:  
+  replicas: 1
+  selector:
     matchLabels:
       name: moomed-searchservice
   template:
@@ -30,21 +30,21 @@ spec:
         serviceType: moomedFunctionalService
     spec:
       containers:
-      - name: moomed-searchservice
-        image: moomed.azurecr.io/searchservice
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 10042
-        env:
-          - name: AZURE_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: akv
-                key: client_secret
-        resources:
-          requests:
-            memory: 64Mi
-          limits:
-            memory: 256Mi
+        - name: moomed-searchservice
+          image: moomed.azurecr.io/searchservice
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 10042
+          env:
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: akv
+                  key: client_secret
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 256Mi
       imagePullSecrets:
         - name: acrimgpullsecret

@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: moomed-profilepictureservice
 spec:
-  replicas: 3
+  replicas: 1
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/profilepictureservice:prod
-        name: moomed-profilepictureservice
+        - image: moomed.azurecr.io/profilepictureservice:prod
+          name: moomed-profilepictureservice
       imagePullSecrets:
-      - name: acrimgpullsecret
+        - name: acrimgpullsecret

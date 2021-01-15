@@ -17,7 +17,7 @@ kind: Deployment
 metadata:
   name: moomed-accountservice
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: moomed-accountservice

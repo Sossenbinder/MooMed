@@ -5,7 +5,6 @@ scrape_configs:
       static_configs:
           - targets: [
             'moomed.frontend',
-            'moomed.monitoringservice',
             'moomed.sessionservice',
             'moomed.searchservice',
             'moomed.profilepictureservice',
@@ -13,6 +12,5 @@ scrape_configs:
             'moomed.accountservice',
             'moomed.financeservice',
             'moomed.chatservice',
-            'moomed.monitoringservice',
             'moomed.savingservice']
       metrics_path: /metrics-text

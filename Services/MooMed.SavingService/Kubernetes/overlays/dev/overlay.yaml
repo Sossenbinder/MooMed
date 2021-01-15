@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: moomed-savingservice
 spec:
-  replicas: 3
+  replicas: 1
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/savingservice:dev
-        name: moomed-savingservice
+        - image: moomed.azurecr.io/savingservice:dev
+          name: moomed-savingservice
       imagePullSecrets:
-      - name: acrimgpullsecret
+        - name: acrimgpullsecret

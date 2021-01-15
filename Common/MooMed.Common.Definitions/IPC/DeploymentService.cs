@@ -11,7 +11,6 @@
 		AccountService,
 		AccountValidationService,
 		SessionService,
-		MonitoringService,
 		SavingService,
 	}
 }

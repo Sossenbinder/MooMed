@@ -19,7 +19,7 @@ metadata:
   labels:
     name: moomed-accountvalidationservice
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: moomed-accountvalidationservice

@@ -173,23 +173,6 @@ services:
     volumes:
       - ./Logs:/hostlogs
 
-  moomed.monitoringservice:
-    image: ${DOCKER_REGISTRY-}moomedmonitoring
-    build:
-      context: .
-      dockerfile: Services/MooMed.Monitoring/Dockerfile
-    labels:
-      - moomedcompose
-    healthcheck:
-      test: curl --fail -s http://localhost/health/ping || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    ports:
-      - "4122:80"
-    volumes:
-      - ./Logs:/hostlogs
-
   moomed.savingservice:
     image: ${DOCKER_REGISTRY-}moomedsavingservice
     build:
