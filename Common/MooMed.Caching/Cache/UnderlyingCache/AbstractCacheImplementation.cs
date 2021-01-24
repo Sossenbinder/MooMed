@@ -5,11 +5,11 @@ using MooMed.Caching.Cache.UnderlyingCache.Locking.Interface;
 
 namespace MooMed.Caching.Cache.UnderlyingCache
 {
-	public abstract class AbstractUnderlyingCache<TKey, TValue> : IUnderlyingCache<TKey, TValue>
+	public abstract class AbstractCacheImplementation<TKey, TValue> : ICacheImplementation<TKey, TValue>
 	{
 		protected readonly ICacheLockManager<TKey> CacheLockManager;
 
-		protected AbstractUnderlyingCache(ICacheLockManager<TKey> cacheLockManager)
+		protected AbstractCacheImplementation(ICacheLockManager<TKey> cacheLockManager)
 		{
 			CacheLockManager = cacheLockManager;
 		}

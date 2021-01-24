@@ -25,90 +25,88 @@ using MooMed.Serialization.Module;
 
 namespace MooMed.AspNetCore.Grpc
 {
-    /// <summary>
-    /// Base template for the common case (single grpc service per microservice)
-    /// All others need to derive from base
-    /// </summary>
-    public abstract class GrpcEndpointStartup<TGrpcService> : GrpcEndpointStartup
-        where TGrpcService : class, IGrpcService
-    {
-        protected override void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
-        {
-            endpointRouteBuilder.MapGrpcService<TGrpcService>();
+	/// <summary>
+	/// Base template for the common case (single grpc service per microservice)
+	/// All others need to derive from base
+	/// </summary>
+	public abstract class GrpcEndpointStartup<TGrpcService> : GrpcEndpointStartup
+		where TGrpcService : class, IGrpcService
+	{
+		protected override void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
+		{
+			endpointRouteBuilder.MapGrpcService<TGrpcService>();
 
-            base.RegisterEndpoints(endpointRouteBuilder);
-        }
+			base.RegisterEndpoints(endpointRouteBuilder);
+		}
 
-        protected override void RegisterModules(ContainerBuilder containerBuilder)
-        {
-            containerBuilder.RegisterGrpcService<TGrpcService>();
+		protected override void RegisterModules(ContainerBuilder containerBuilder)
+		{
+			containerBuilder.RegisterGrpcService<TGrpcService>();
 
-            base.RegisterModules(containerBuilder);
-        }
-    }
+			base.RegisterModules(containerBuilder);
+		}
+	}
 
-    public abstract class GrpcEndpointStartup
-    {
-        #region Pipeline
+	public abstract class GrpcEndpointStartup
+	{
+		#region Pipeline
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseRouting();
-            app.UseEndpoints(RegisterEndpoints);
-        }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			app.UseRouting();
+			app.UseEndpoints(RegisterEndpoints);
+		}
 
-        protected virtual void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
-        {
-            endpointRouteBuilder.MapControllers();
-        }
+		protected virtual void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
+		{
+			endpointRouteBuilder.MapControllers();
+		}
 
-        #endregion Pipeline
+		#endregion Pipeline
 
-        #region Dependency Injection
+		#region Dependency Injection
 
-        // Regular .net core DI entry point
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IMonitoringEventHub, MonitoringEventHub>();
+		// Regular .net core DI entry point
+		public virtual void ConfigureServices(IServiceCollection services)
+		{
+			services.AddSingleton<IMonitoringEventHub, MonitoringEventHub>();
 
-            services.AddCodeFirstGrpc(grpcOptions =>
-            {
-                grpcOptions.EnableDetailedErrors = true;
-                grpcOptions.Interceptors.Add<MetricsCounterInterceptor>();
-                grpcOptions.Interceptors.Add<ServiceResponseConversionInterceptor>();
-            });
+			services.AddCodeFirstGrpc(grpcOptions =>
+			{
+				grpcOptions.EnableDetailedErrors = true;
+				grpcOptions.Interceptors.Add<MetricsCounterInterceptor>();
+				grpcOptions.Interceptors.Add<ServiceResponseConversionInterceptor>();
+			});
 
-            services.AddLocalization();
-            services.AddControllers()
-                .AddApplicationPart(Assembly.GetExecutingAssembly())
-                .AddControllersAsServices();
+			services.AddLocalization();
+			services.AddControllers()
+				.AddApplicationPart(Assembly.GetExecutingAssembly())
+				.AddControllersAsServices();
 
-            services.AddDataProtection();
+			services.AddMassTransit(x =>
+			{
+				x.AddBus(provider => MassTransitBusFactory.CreateBus(provider));
+			});
+		}
 
-            services.AddMassTransit(x =>
-            {
-                x.AddBus(provider => MassTransitBusFactory.CreateBus(provider));
-            });
-        }
+		// Autofac entry point
+		[UsedImplicitly]
+		public void ConfigureContainer(ContainerBuilder containerBuilder) => RegisterModules(containerBuilder);
 
-        // Autofac entry point
-        [UsedImplicitly]
-        public void ConfigureContainer(ContainerBuilder containerBuilder) => RegisterModules(containerBuilder);
+		protected virtual void RegisterModules(ContainerBuilder containerBuilder)
+		{
+			containerBuilder.RegisterModule<MooMedAspNetCoreModule>();
+			containerBuilder.RegisterModule<EventingModule>();
+			containerBuilder.RegisterModule<ConfigurationModule>();
+			containerBuilder.RegisterModule<CoreModule>();
+			containerBuilder.RegisterModule<SerializationModule>();
+			containerBuilder.RegisterModule<EncryptionModule>();
+			containerBuilder.RegisterModule<LoggingModule>();
+			containerBuilder.RegisterModule<ServiceBaseModule>();
+			containerBuilder.RegisterModule<MonitoringModule>();
+		}
 
-        protected virtual void RegisterModules(ContainerBuilder containerBuilder)
-        {
-            containerBuilder.RegisterModule<MooMedAspNetCoreModule>();
-            containerBuilder.RegisterModule<EventingModule>();
-            containerBuilder.RegisterModule<ConfigurationModule>();
-            containerBuilder.RegisterModule<CoreModule>();
-            containerBuilder.RegisterModule<SerializationModule>();
-            containerBuilder.RegisterModule<EncryptionModule>();
-            containerBuilder.RegisterModule<LoggingModule>();
-            containerBuilder.RegisterModule<ServiceBaseModule>();
-            containerBuilder.RegisterModule<MonitoringModule>();
-        }
-
-        #endregion Dependency Injection
-    }
+		#endregion Dependency Injection
+	}
 }

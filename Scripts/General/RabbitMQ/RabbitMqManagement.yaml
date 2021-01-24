@@ -15,7 +15,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: moomed-rabbitmqmanagement
-spec:  
+spec:
   type: NodePort
   selector:
     name: moomed-rabbitmq
@@ -39,11 +39,13 @@ spec:
       name: moomed-rabbitmq
       labels:
         name: moomed-rabbitmq
+      annotations:
+        linkerd.io/inject: enabled
     spec:
       containers:
-      - name: moomed-rabbitmq
-        image: docker.io/library/rabbitmq:3-management
-        imagePullPolicy: Always 
-        ports:
-        - containerPort: 5672
-        - containerPort: 15672
+        - name: moomed-rabbitmq
+          image: docker.io/library/rabbitmq:3-management
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672

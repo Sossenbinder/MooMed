@@ -29,7 +29,7 @@ namespace MooMed.Frontend.Views
 		[NotNull]
 		private static HtmlString AttachToWindowObject([NotNull] string name, [NotNull] object value)
 		{
-			return new HtmlString($"window.{name} = {value}");
+			return new($"window.{name} = {value}");
 		}
 	}
 }

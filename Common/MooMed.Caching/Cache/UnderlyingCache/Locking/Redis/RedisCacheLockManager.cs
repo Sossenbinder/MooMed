@@ -1,7 +1,7 @@
 ﻿using MooMed.DotNet.Utils.Async;
 using StackExchange.Redis;
 
-namespace MooMed.Caching.Cache.UnderlyingCache.Locking
+namespace MooMed.Caching.Cache.UnderlyingCache.Locking.Redis
 {
 	public class RedisCacheLockManager<TKey> : AbstractCacheLockManager<TKey>
 		where TKey : notnull

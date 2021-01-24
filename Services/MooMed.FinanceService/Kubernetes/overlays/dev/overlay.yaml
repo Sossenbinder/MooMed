@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/financeservice:dev
-        name: moomed-financeservice
+        - image: moomed.azurecr.io/financeservice:dev
+          name: moomed-financeservice
       imagePullSecrets:
-      - name: acrimgpullsecret
+        - name: acrimgpullsecret

@@ -3,21 +3,27 @@ using System.Threading.Tasks;
 using MooMed.Caching.Cache.UnderlyingCache;
 using MooMed.Caching.Cache.UnderlyingCache.Interface;
 using MooMed.DotNet.Extensions;
-using MooMed.TestBase;
 using NUnit.Framework;
 
 namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 {
 	[TestFixture]
-	public class UnderlyingCacheTests : MooMedTestBase
+	public class MemoryCacheTests : TestBase.TestBase
 	{
-		private IUnderlyingCache<Guid, string> _underlyingCache;
+		private ICacheImplementation<Guid, string> _cacheImplementation = null!;
+
+		private Func<ICacheImplementation<Guid, string>> _cacheGenerator;
+
+		public MemoryCacheTests()
+		{
+			_cacheGenerator = () => new MemoryCacheImplementation<Guid, string>(5);
+		}
 
 		protected override void Setup()
 		{
 			base.Setup();
 
-			_underlyingCache = new UnderlyingMemoryCache<Guid, string>(5);
+			_cacheImplementation = _cacheGenerator();
 		}
 
 		[Test]
@@ -25,11 +31,11 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 		{
 			var key = Guid.NewGuid();
 
-			Assert.False(await _underlyingCache.HasValue(key));
+			Assert.False(await _cacheImplementation.HasValue(key));
 
-			await _underlyingCache.PutItem(key, "1234");
+			await _cacheImplementation.PutItem(key, "1234");
 
-			Assert.True(await _underlyingCache.HasValue(key));
+			Assert.True(await _cacheImplementation.HasValue(key));
 		}
 
 		[Test]
@@ -37,13 +43,13 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 		{
 			var key = Guid.NewGuid();
 
-			await _underlyingCache.PutItem(key, "1234");
+			await _cacheImplementation.PutItem(key, "1234");
 
-			Assert.True(await _underlyingCache.HasValue(key));
+			Assert.True(await _cacheImplementation.HasValue(key));
 
-			await _underlyingCache.Remove(key);
+			await _cacheImplementation.Remove(key);
 
-			Assert.False(await _underlyingCache.HasValue(key));
+			Assert.False(await _cacheImplementation.HasValue(key));
 		}
 
 		[Test]
@@ -52,9 +58,9 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			await _underlyingCache.PutItem(key, item);
+			await _cacheImplementation.PutItem(key, item);
 
-			var itemFromCache = await _underlyingCache.GetItem(key);
+			var itemFromCache = await _cacheImplementation.GetItem(key);
 
 			Assert.AreEqual(item, itemFromCache);
 		}
@@ -64,7 +70,7 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 		{
 			var key = Guid.NewGuid();
 
-			var itemFromCache = await _underlyingCache.GetItem(key);
+			var itemFromCache = await _cacheImplementation.GetItem(key);
 
 			Assert.AreEqual(null, itemFromCache);
 		}
@@ -75,9 +81,9 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			await _underlyingCache.PutItem(key, item);
+			await _cacheImplementation.PutItem(key, item);
 
-			var lockedItemFromCache = await _underlyingCache.GetItemLocked(key);
+			var lockedItemFromCache = await _cacheImplementation.GetItemLocked(key);
 
 			Assert.AreEqual(item, lockedItemFromCache.Payload);
 		}
@@ -88,15 +94,15 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			await _underlyingCache.PutItem(key, item);
+			await _cacheImplementation.PutItem(key, item);
 
-			await using (await _underlyingCache.GetItemLocked(key))
+			await using (await _cacheImplementation.GetItemLocked(key))
 			{
 				// Doing nothing
 			}
 
 			var proofTimer = Task.Delay(TimeSpan.FromSeconds(1));
-			var lockAquirationTask = _underlyingCache.GetItemLocked(key);
+			var lockAquirationTask = _cacheImplementation.GetItemLocked(key);
 
 			await Task.WhenAny(proofTimer, lockAquirationTask.AsTask());
 
@@ -111,15 +117,15 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			await _underlyingCache.PutItem(key, item);
+			await _cacheImplementation.PutItem(key, item);
 
-			var lockHold = await _underlyingCache.GetItemLocked(key);
+			var lockHold = await _cacheImplementation.GetItemLocked(key);
 
 			// Lock should timeout after
 			await Task.Delay(TimeSpan.FromSeconds(6));
 
 			var proofTimer = Task.Delay(TimeSpan.FromSeconds(1));
-			var lockAquirationTask = _underlyingCache.GetItemLocked(key);
+			var lockAquirationTask = _cacheImplementation.GetItemLocked(key);
 
 			await Task.WhenAny(proofTimer, lockAquirationTask.AsTask());
 
@@ -134,12 +140,12 @@ namespace MooMed.Caching.Tests.Tests.UnderlyingCache
 			var key = Guid.NewGuid();
 			var item = "1234";
 
-			await _underlyingCache.PutItem(key, item);
+			await _cacheImplementation.PutItem(key, item);
 
-			var lockedItem = await _underlyingCache.GetItemLocked(key);
+			var lockedItem = await _cacheImplementation.GetItemLocked(key);
 			await lockedItem.Release();
 
-			Assert.True(await _underlyingCache.GetItemLocked(key).WaitAsync(TimeSpan.FromSeconds(2)));
+			Assert.True(await _cacheImplementation.GetItemLocked(key).WaitAsync(TimeSpan.FromSeconds(2)));
 		}
 	}
 }

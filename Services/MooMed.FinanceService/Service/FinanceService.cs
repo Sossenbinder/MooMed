@@ -13,41 +13,41 @@ using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.FinanceService.Service
 {
-    public class FinanceService : MooMedServiceBaseWithLogger, IFinanceService
-    {
-        [NotNull]
-        private readonly IExchangeTradedsService _exchangeTradedsService;
+	public class FinanceService : ServiceBaseWithLogger, IFinanceService
+	{
+		[NotNull]
+		private readonly IExchangeTradedsService _exchangeTradedsService;
 
-        [NotNull]
-        private readonly IPortfolioService _portfolioService;
+		[NotNull]
+		private readonly IPortfolioService _portfolioService;
 
-        public FinanceService(
-            [NotNull] IMooMedLogger logger,
-            [NotNull] IExchangeTradedsService exchangeTradedsService,
-            [NotNull] IPortfolioService portfolioService)
-            : base(logger)
-        {
-            _exchangeTradedsService = exchangeTradedsService;
-            _portfolioService = portfolioService;
-        }
+		public FinanceService(
+			[NotNull] IMooMedLogger logger,
+			[NotNull] IExchangeTradedsService exchangeTradedsService,
+			[NotNull] IPortfolioService portfolioService)
+			: base(logger)
+		{
+			_exchangeTradedsService = exchangeTradedsService;
+			_portfolioService = portfolioService;
+		}
 
-        public Task<ServiceResponse<IEnumerable<ExchangeTraded>>> GetExchangeTradeds()
-        {
-            return _exchangeTradedsService.GetExchangeTradeds();
-        }
+		public Task<ServiceResponse<IEnumerable<ExchangeTraded>>> GetExchangeTradeds()
+		{
+			return _exchangeTradedsService.GetExchangeTradeds();
+		}
 
-        public async Task<ServiceResponse<Portfolio>> GetPortfolio(ISessionContext sessionContext)
-        {
-            var portfolio = await _portfolioService.GetPortfolio(sessionContext);
+		public async Task<ServiceResponse<Portfolio>> GetPortfolio(ISessionContext sessionContext)
+		{
+			var portfolio = await _portfolioService.GetPortfolio(sessionContext);
 
-            return ServiceResponse<Portfolio>.Success(portfolio);
-        }
+			return ServiceResponse<Portfolio>.Success(portfolio);
+		}
 
-        public async Task<ServiceResponse> AddFondToPortfolio(PortfolioItem portfolioItem)
-        {
-            var success = await _portfolioService.AddFondToPortfolio(portfolioItem);
+		public async Task<ServiceResponse> AddFondToPortfolio(PortfolioItem portfolioItem)
+		{
+			var success = await _portfolioService.AddFondToPortfolio(portfolioItem);
 
-            return new ServiceResponse(success);
-        }
-    }
+			return new ServiceResponse(success);
+		}
+	}
 }

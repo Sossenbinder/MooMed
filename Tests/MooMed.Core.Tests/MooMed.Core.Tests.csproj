@@ -18,4 +18,8 @@
     <ProjectReference Include="..\MooMed.TestBase\MooMed.TestBase.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tests\Events\MassTransit\" />
+  </ItemGroup>
+
 </Project>

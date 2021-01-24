@@ -21,4 +21,4 @@
 		<ProjectReference Include="..\MooMed.Identity\MooMed.Identity.csproj" />
 		<ProjectReference Include="..\MooMed.Serialization\MooMed.Serialization.csproj" />
 	</ItemGroup>
-</Project>
+		</Project>

@@ -7,9 +7,9 @@ namespace MooMed.Caching.Cache.Factory
 {
 	public class MemoryCacheProvider : IUnderlyingCacheProvider
 	{
-		public IUnderlyingCache<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings cacheSettings)
+		public ICacheImplementation<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings cacheSettings)
 		{
-			return new UnderlyingMemoryCache<TKey, TValue>(cacheSettings.TtlInSeconds);
+			return new MemoryCacheImplementation<TKey, TValue>(cacheSettings.TtlInSeconds);
 		}
 	}
 }

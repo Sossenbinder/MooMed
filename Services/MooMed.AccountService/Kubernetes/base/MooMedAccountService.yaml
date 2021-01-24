@@ -26,6 +26,8 @@ spec:
       labels:
         name: moomed-accountservice
         serviceType: moomedFunctionalService
+      annotations:
+        linkerd.io/inject: enabled
     spec:
       containers:
         - image: moomed.azurecr.io/accountservice

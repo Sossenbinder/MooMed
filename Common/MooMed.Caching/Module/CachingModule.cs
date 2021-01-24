@@ -1,9 +1,7 @@
 ﻿using Autofac;
-using Autofac.Features.AttributeFilters;
 using MooMed.Caching.Cache.CacheInformation;
 using MooMed.Caching.Cache.Factory;
 using MooMed.Caching.Cache.Factory.Interface;
-using MooMed.Caching.Cache.UnderlyingCache;
 using MooMed.Common.Definitions.IPC;
 using MooMed.DotNet.Utils.Async;
 using MooMed.Identity.Service.Interface;

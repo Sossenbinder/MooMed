@@ -13,7 +13,7 @@ namespace MooMed.DotNet.Utils.Async
 
 		public TaskAwaiter<T> GetAwaiter()
 		{
-			return this.Value.GetAwaiter();
+			return Value.GetAwaiter();
 		}
 	}
 }

@@ -3,15 +3,14 @@ using MooMed.Caching.Cache.CacheImplementations;
 using MooMed.Caching.Cache.CacheImplementations.Interface;
 using MooMed.Caching.Cache.CacheInformation;
 using MooMed.Caching.Cache.UnderlyingCache;
-using MooMed.TestBase;
 using NUnit.Framework;
 
 namespace MooMed.Caching.Tests.Tests
 {
 	[TestFixture]
-	public class CacheTests : MooMedTestBase
+	public class CacheTests : TestBase.TestBase
 	{
-		private ICache<string> _objectCache;
+		private ICache<string> _cache = null!;
 
 		private string _cacheKey = "key1234";
 
@@ -19,7 +18,7 @@ namespace MooMed.Caching.Tests.Tests
 		{
 			base.TearDown();
 
-			_objectCache = new Cache<string>(new UnderlyingMemoryCache<string, string>(new CacheSettings(60, "UnitTest").TtlInSeconds));
+			_cache = new Cache<string>(new MemoryCacheImplementation<string, string>(new CacheSettings(60, "UnitTest").TtlInSeconds));
 		}
 
 		[Test]
@@ -27,9 +26,9 @@ namespace MooMed.Caching.Tests.Tests
 		{
 			const string value = "blabla";
 
-			await _objectCache.PutItem(_cacheKey, value);
+			await _cache.PutItem(_cacheKey, value);
 
-			Assert.IsTrue(await _objectCache.HasValue(_cacheKey));
+			Assert.IsTrue(await _cache.HasValue(_cacheKey));
 		}
 
 		[Test]
@@ -37,16 +36,16 @@ namespace MooMed.Caching.Tests.Tests
 		{
 			const string value = "blabla";
 
-			await _objectCache.PutItem(_cacheKey, value);
-			await _objectCache.Remove(_cacheKey);
+			await _cache.PutItem(_cacheKey, value);
+			await _cache.Remove(_cacheKey);
 
-			Assert.IsFalse(await _objectCache.HasValue(_cacheKey));
+			Assert.IsFalse(await _cache.HasValue(_cacheKey));
 		}
 
 		[Test]
 		public async Task RemovingItemNotInCacheShouldFailSilently()
 		{
-			await _objectCache.Remove(_cacheKey);
+			await _cache.Remove(_cacheKey);
 		}
 
 		[Test]
@@ -54,9 +53,9 @@ namespace MooMed.Caching.Tests.Tests
 		{
 			const string value = "blabla";
 
-			await _objectCache.PutItem(_cacheKey, value);
+			await _cache.PutItem(_cacheKey, value);
 
-			var item = await _objectCache.GetItem(_cacheKey);
+			var item = await _cache.GetItem(_cacheKey);
 
 			Assert.NotNull(item);
 			Assert.IsTrue(value.Equals(item));
@@ -67,13 +66,13 @@ namespace MooMed.Caching.Tests.Tests
 		{
 			const string value = "blabla";
 
-			await _objectCache.PutItem(_cacheKey, value);
+			await _cache.PutItem(_cacheKey, value);
 
 			var replacementValue = "blablabla2";
 
-			await _objectCache.PutItem(_cacheKey, replacementValue);
+			await _cache.PutItem(_cacheKey, replacementValue);
 
-			var item = await _objectCache.GetItem(_cacheKey);
+			var item = await _cache.GetItem(_cacheKey);
 
 			Assert.IsTrue(item.Equals(replacementValue));
 		}
@@ -83,11 +82,11 @@ namespace MooMed.Caching.Tests.Tests
 		{
 			const string value = "blabla";
 
-			await _objectCache.PutItem(_cacheKey, value, 1);
+			await _cache.PutItem(_cacheKey, value, 1);
 
 			await Task.Delay(5000);
 
-			Assert.IsFalse(await _objectCache.HasValue(_cacheKey));
+			Assert.IsFalse(await _cache.HasValue(_cacheKey));
 		}
 	}
 }

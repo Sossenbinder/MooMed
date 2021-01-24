@@ -7,21 +7,21 @@ using MooMed.Module.Accounts.Events.Interface;
 
 namespace MooMed.Module.Accounts.Events
 {
-    public class AccountEventHub : IAccountEventHub
-    {
-        public IDistributedEvent<AccountLoggedInEvent> AccountLoggedIn { get; }
+	public class AccountEventHub : IAccountEventHub
+	{
+		public IDistributedEvent<AccountLoggedInEvent> AccountLoggedIn { get; }
 
-        public IDistributedEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
+		public IDistributedEvent<AccountLoggedOutEvent> AccountLoggedOut { get; }
 
-        public IDistributedEvent<AccountRegisteredEvent> AccountRegistered { get; }
+		public IDistributedEvent<AccountRegisteredEvent> AccountRegistered { get; }
 
-        public AccountEventHub(
-            IMassTransitEventingService massTransitEventingService,
-            IMooMedLogger logger)
-        {
-            AccountLoggedIn = new MtMooEvent<AccountLoggedInEvent>(nameof(AccountLoggedIn), massTransitEventingService, logger);
-            AccountLoggedOut = new MtMooEvent<AccountLoggedOutEvent>(nameof(AccountLoggedOut), massTransitEventingService, logger);
-            AccountRegistered = new MtMooEvent<AccountRegisteredEvent>(nameof(AccountRegistered), massTransitEventingService, logger);
-        }
-    }
+		public AccountEventHub(
+			IMassTransitEventingService massTransitEventingService,
+			IMooMedLogger logger)
+		{
+			AccountLoggedIn = new MtEvent<AccountLoggedInEvent>(nameof(AccountLoggedIn), massTransitEventingService, logger);
+			AccountLoggedOut = new MtEvent<AccountLoggedOutEvent>(nameof(AccountLoggedOut), massTransitEventingService, logger);
+			AccountRegistered = new MtEvent<AccountRegisteredEvent>(nameof(AccountRegistered), massTransitEventingService, logger);
+		}
+	}
 }

@@ -15,67 +15,67 @@ using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.ChatService.Service
 {
-    public class ChatService : MooMedServiceBaseWithLogger, IChatService
-    {
-        [NotNull]
-        private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
+	public class ChatService : ServiceBaseWithLogger, IChatService
+	{
+		[NotNull]
+		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
 
-        [NotNull]
-        private readonly IMessageService _messageService;
+		[NotNull]
+		private readonly IMessageService _messageService;
 
-        public ChatService(
-            [NotNull] IMooMedLogger logger,
-            [NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
-            [NotNull] IMessageService messageService)
-            : base(logger)
-        {
-            _massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
-            _messageService = messageService;
-        }
+		public ChatService(
+			[NotNull] IMooMedLogger logger,
+			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
+			[NotNull] IMessageService messageService)
+			: base(logger)
+		{
+			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
+			_messageService = messageService;
+		}
 
-        public async Task<ServiceResponse<RetrievedMessages>> GetMessages(GetMessages getMessages)
-        {
-            int? toSkip = null;
+		public async Task<ServiceResponse<RetrievedMessages>> GetMessages(GetMessages getMessages)
+		{
+			int? toSkip = null;
 
-            if (getMessages.ContinuationToken != null)
-            {
-                toSkip = int.Parse(getMessages.ContinuationToken);
-            }
+			if (getMessages.ContinuationToken != null)
+			{
+				toSkip = int.Parse(getMessages.ContinuationToken);
+			}
 
-            var messages = (await _messageService.GetMessages(getMessages.SessionContext, getMessages.ReceiverId, toSkip)).ToList();
+			var messages = (await _messageService.GetMessages(getMessages.SessionContext, getMessages.ReceiverId, toSkip)).ToList();
 
-            var newContinuationToken = toSkip.HasValue ? toSkip.Value + messages.Count : 0;
+			var newContinuationToken = toSkip.HasValue ? toSkip.Value + messages.Count : 0;
 
-            return ServiceResponse<RetrievedMessages>.Success(new RetrievedMessages()
-            {
-                ContinuationToken = newContinuationToken.ToString(),
-                Messages = messages,
-            });
-        }
+			return ServiceResponse<RetrievedMessages>.Success(new RetrievedMessages()
+			{
+				ContinuationToken = newContinuationToken.ToString(),
+				Messages = messages,
+			});
+		}
 
-        public async Task<ServiceResponse> SendMessage(SendMessage sendMessage)
-        {
-            var sessionContext = sendMessage.SessionContext;
+		public async Task<ServiceResponse> SendMessage(SendMessage sendMessage)
+		{
+			var sessionContext = sendMessage.SessionContext;
 
-            await _messageService.StoreMessage(sessionContext, new ChatMessage()
-            {
-                Id = Guid.NewGuid(),
-                Message = sendMessage.Message,
-                ReceiverId = sendMessage.ReceiverId,
-                SenderId = sessionContext.Account.Id,
-                Timestamp = sendMessage.Timestamp,
-            });
+			await _messageService.StoreMessage(sessionContext, new ChatMessage()
+			{
+				Id = Guid.NewGuid(),
+				Message = sendMessage.Message,
+				ReceiverId = sendMessage.ReceiverId,
+				SenderId = sessionContext.Account.Id,
+				Timestamp = sendMessage.Timestamp,
+			});
 
-            var newMessageNotification = FrontendNotificationFactory.Create(new ChatMessageUiModel()
-            {
-                SenderId = sessionContext.Account.Id,
-                Message = sendMessage.Message,
-                Timestamp = sendMessage.Timestamp,
-            }, NotificationType.NewChatMessage);
+			var newMessageNotification = FrontendNotificationFactory.Create(new ChatMessageUiModel()
+			{
+				SenderId = sessionContext.Account.Id,
+				Message = sendMessage.Message,
+				Timestamp = sendMessage.Timestamp,
+			}, NotificationType.NewChatMessage);
 
-            await _massTransitSignalRBackplaneService.RaiseGroupSignalREvent(sendMessage.ReceiverId.ToString(), newMessageNotification);
+			await _massTransitSignalRBackplaneService.RaiseGroupSignalREvent(sendMessage.ReceiverId.ToString(), newMessageNotification);
 
-            return ServiceResponse.Success();
-        }
-    }
+			return ServiceResponse.Success();
+		}
+	}
 }

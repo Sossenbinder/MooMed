@@ -5,13 +5,22 @@ using MooMed.DotNet.Utils.Disposable;
 
 namespace MooMed.Eventing.Events.Interface
 {
-    public interface IDistributedEvent<TEventArgs> : IEvent<TEventArgs>
-        where TEventArgs : class
-    {
-        Task Raise(TEventArgs eventArgs);
+	public interface IDistributedEvent : IEvent
+	{
+		Task Raise();
 
-        void RaiseFireAndForget(TEventArgs eventArgs);
+		void RaiseFireAndForget();
 
-        DisposableAction RegisterForErrors(Func<Fault<TEventArgs>, Task> faultHandler);
-    }
+		DisposableAction RegisterForErrors(Func<Fault, Task> faultHandler);
+	}
+
+	public interface IDistributedEvent<TEventArgs> : IEvent<TEventArgs>
+		where TEventArgs : class
+	{
+		Task Raise(TEventArgs eventArgs);
+
+		void RaiseFireAndForget(TEventArgs eventArgs);
+
+		DisposableAction RegisterForErrors(Func<Fault<TEventArgs>, Task> faultHandler);
+	}
 }

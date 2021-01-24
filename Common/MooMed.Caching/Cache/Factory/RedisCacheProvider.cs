@@ -22,9 +22,9 @@ namespace MooMed.Caching.Cache.Factory
 			_serializationService = serializationService;
 		}
 
-		public IUnderlyingCache<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings cacheSettings)
+		public ICacheImplementation<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings cacheSettings)
 		{
-			return new UnderlyingRedisCache<TKey, TValue>(_connectionMultiPlexer, _serializationService);
+			return new RedisCacheImplementation<TKey, TValue>(_connectionMultiPlexer, _serializationService);
 		}
 	}
 }

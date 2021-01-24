@@ -8,7 +8,7 @@ import ChatRoomPreview from "./ChatRooms/ChatRoomPreview";
 
 // Functionality
 import { Friend } from "modules/Friends/types";
-import { ChatRoom as Room} from "modules/Chat/types";
+import { ChatRoom as Room } from "modules/Chat/types";
 
 import "./Styles/ChatWidgetContent.less";
 
@@ -23,11 +23,11 @@ type Props = {
 export const ChatWidgetContent: React.FC<Props> = ({ activeChatId, friends, setActiveChatPartnerId, chatRooms }) => {
 
 	const chatRoomPreviews = React.useMemo(() => {
-		return friends.map(friend => 
-			<ChatRoomPreview 
+		return friends.map(friend =>
+			<ChatRoomPreview
 				friend={friend}
-				onClick={setActiveChatPartnerId} 
-				key={friend.id}/>)
+				onClick={setActiveChatPartnerId}
+				key={friend.id} />)
 	}, [friends])
 
 	return (
@@ -36,16 +36,16 @@ export const ChatWidgetContent: React.FC<Props> = ({ activeChatId, friends, setA
 			direction={"Column"}
 			space={"Between"}>
 			<If condition={activeChatId !== 0}>
-				<ChatRoom 
+				<ChatRoom
 					friend={friends.find(x => x.id === activeChatId)}
 					setActiveChatPartnerId={setActiveChatPartnerId}
-					chatRoom={chatRooms.find(x => x.roomId == activeChatId)}/>
+					chatRoom={chatRooms.find(x => x.roomId == activeChatId)} />
 			</If>
 			<If condition={activeChatId === 0}>
-				<Flex 
+				<Flex
 					direction={"Column"}
 					className={"ChatRoomPreviewContainer"}>
-					{ chatRoomPreviews }
+					{chatRoomPreviews}
 				</Flex>
 			</If>
 		</Flex>

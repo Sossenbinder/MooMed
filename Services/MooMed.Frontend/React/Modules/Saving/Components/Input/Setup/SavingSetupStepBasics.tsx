@@ -24,6 +24,12 @@ type Props = {
 	onUpdate(basicSavingInfo: BasicSavingInfo): void;
 }
 
+type Basics = {
+	income: number;
+	rent: number;
+	groceries: number;
+}
+
 export const SavingSetupStepBasics: React.FC<Props> = ({ basicSavingInfo, currency, onUpdate }) => {
 
 	let inputTimeout: number;

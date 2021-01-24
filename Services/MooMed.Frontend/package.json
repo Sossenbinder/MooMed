@@ -17,6 +17,7 @@
     "@types/knockout": "^3.4.66",
     "@types/node": "^11.15.4",
     "@types/react": "^16.9.19",
+    "@types/react-bootstrap": "^0.32.25",
     "@types/react-dom": "^16.9.5",
     "@types/react-redux": "^7.1.7",
     "@types/react-router": "^5.1.4",
@@ -38,7 +39,6 @@
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
-    "bootstrap": "^4.4.1",
     "chai": "^4.2.0",
     "classnames": "^2.2.6",
     "css-loader": "^2.1.1",
@@ -86,6 +86,8 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.7",
     "@snowpack/plugin-babel": "^2.1.5",
+    "bootstrap": "^4.5.3",
+    "react-bootstrap": "^1.4.3",
     "typescript": "^3.9.7"
   }
 }

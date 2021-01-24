@@ -4,6 +4,7 @@ import * as React from "react";
 // Components
 import SearchBarPreview from "./SearchBarPreview";
 import Flex from "common/components/Flex";
+import MaterialIcon from "common/components/MaterialIcon";
 
 // Functionality
 import { SearchResult } from "modules/Search/types";
@@ -17,10 +18,10 @@ export const SearchBar: React.FC = () => {
 	const [isPreviewOpen, setIsPreviewOpen] = React.useState(false);
 	const [search, setSearch] = React.useState({
 		correspondingAccounts: []
-    } as SearchResult);
-    
+	} as SearchResult);
+
 	const { SearchService } = useServices();
-	
+
 	let typingTimer: number;
 
 	const handleChange = (event: any) => {
@@ -28,51 +29,53 @@ export const SearchBar: React.FC = () => {
 		setSearchQuery(newSearchQuery);
 
 		clearTimeout(typingTimer);
-		
+
 		typingTimer = window.setTimeout(async () => {
-		
+
 			const searchResult = await SearchService.search(newSearchQuery);
 
-            setSearch(searchResult);
+			setSearch(searchResult);
 			setIsPreviewOpen(true);
-        }, 250);
-    };
+		}, 250);
+	};
 
 	const onSearch = React.useCallback(async () => {
 	}, [searchQuery]);
-    
-    const hasContent = React.useMemo(() => search?.correspondingAccounts?.length > 0, [search]);
+
+	const hasContent = React.useMemo(() => search?.correspondingAccounts?.length > 0, [search]);
 
 	return (
-		<Flex direction={"Column"}>
-            <Flex
-                className={"SearchBar"}
-                direction={"Row"}>
-                <input
-                    className={"Input"}
-                    autoComplete={"off"}
-                    onChange={handleChange}
-                    onClick={() => {
-                        if (hasContent) {
-                            setIsPreviewOpen(true);
-                        }
-                    }}
-                    type={"text"}
-                    placeholder={"Search..."}
-                    value={searchQuery} />
-                <button
-                    className={"Button"}
-                    onClick={onSearch}>
-                    {"Search"}
-                </button>
-            </Flex>
-            <If condition={isPreviewOpen && hasContent}>
-                <SearchBarPreview
-                    visibility={isPreviewOpen && hasContent}
-                    previewAccounts={search?.correspondingAccounts}
-                    onOpenStateChange={newState => setIsPreviewOpen(newState)}
-                />
-            </If>
+		<Flex direction="Column">
+			<Flex
+				className="SearchBar"
+				direction="Row">
+				<input
+					className="Input"
+					autoComplete="off"
+					onChange={handleChange}
+					onClick={() => {
+						if (hasContent) {
+							setIsPreviewOpen(true);
+						}
+					}}
+					type="text"
+					placeholder="Search..."
+					value={searchQuery} />
+
+				<div
+					className="SearchButton"
+					onClick={onSearch}>
+					<MaterialIcon
+						iconName="search" />
+				</div>
+			</Flex>
+			<If condition={isPreviewOpen && hasContent}>
+				<SearchBarPreview
+					visibility={isPreviewOpen && hasContent}
+					previewAccounts={search?.correspondingAccounts}
+					onOpenStateChange={newState => setIsPreviewOpen(newState)}
+				/>
+			</If>
 		</Flex>
 	);
 }

@@ -4,7 +4,7 @@ using MooMed.Caching.Cache.UnderlyingCache.Locking.Interface;
 using MooMed.DotNet.Utils.Async;
 using StackExchange.Redis;
 
-namespace MooMed.Caching.Cache.UnderlyingCache.Locking
+namespace MooMed.Caching.Cache.UnderlyingCache.Locking.Redis
 {
 	public class RedisCacheLock : ICacheLock
 	{

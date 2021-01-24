@@ -10,59 +10,60 @@ using MooMed.TestBase.DependencyInjection.Interface;
 
 namespace MooMed.TestBase.DependencyInjection
 {
-    public class AutoMoqRegistrationSource : IRegistrationSource
-    {
-        private readonly List<string> _internalTypesDescription;
+	public class AutoMoqRegistrationSource : IRegistrationSource
+	{
+		private readonly List<string> _internalTypesDescription;
 
-        private readonly IAutoMoqProvider _autoMoqProvider;
+		private readonly IAutoMoqProvider _autoMoqProvider;
 
-        public AutoMoqRegistrationSource(IAutoMoqProvider autoMoqProvider)
-        {
-            _internalTypesDescription = new List<string>
-            {
-                "Autofac.IStartable",
-                "AutoActivate",
-                "Autofac.Builder.BuildCallbackService"
-            };
+		public AutoMoqRegistrationSource(IAutoMoqProvider autoMoqProvider)
+		{
+			_internalTypesDescription = new List<string>
+			{
+				"Autofac.IStartable",
+				"AutoActivate",
+				"Autofac.Builder.BuildCallbackService"
+			};
 
-            _autoMoqProvider = autoMoqProvider;
-        }
+			_autoMoqProvider = autoMoqProvider;
+		}
 
-        public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<ServiceRegistration>> registrationAccessor)
-        {
-            if (_internalTypesDescription.Contains(service.Description))
-            {
-                return Enumerable.Empty<IComponentRegistration>();
-            }
+		public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<ServiceRegistration>> registrationAccessor)
+		{
+			// Block internal types
+			if (_internalTypesDescription.Contains(service.Description))
+			{
+				return Enumerable.Empty<IComponentRegistration>();
+			}
 
-            var registrations = registrationAccessor(service);
+			var registrations = registrationAccessor(service);
 
-            if (registrations.Any())
-            {
-                return Enumerable.Empty<IComponentRegistration>();
-            }
+			if (registrations.Any())
+			{
+				return Enumerable.Empty<IComponentRegistration>();
+			}
 
-            // We don't have any registration - Let's create a Mock
-            var mock = _autoMoqProvider.CreateMock(service);
+			// We don't have any registration - Let's create a Mock
+			var mock = _autoMoqProvider.CreateMock(service);
 
-            if (mock == null)
-            {
-                return Enumerable.Empty<IComponentRegistration>();
-            }
+			if (mock == null)
+			{
+				return Enumerable.Empty<IComponentRegistration>();
+			}
 
-            return new List<IComponentRegistration>()
-            {
-                new ComponentRegistration(
-                    Guid.NewGuid(),
-                    new ProvidedInstanceActivator(mock!),
-                    new CurrentScopeLifetime(),
-                    InstanceSharing.Shared,
-                    InstanceOwnership.OwnedByLifetimeScope,
-                    new[] {service},
-                    new Dictionary<string, object?>())
-            };
-        }
+			return new List<IComponentRegistration>()
+			{
+				new ComponentRegistration(
+					Guid.NewGuid(),
+					new ProvidedInstanceActivator(mock!),
+					new CurrentScopeLifetime(),
+					InstanceSharing.Shared,
+					InstanceOwnership.OwnedByLifetimeScope,
+					new[] {service},
+					new Dictionary<string, object?>())
+			};
+		}
 
-        public bool IsAdapterForIndividualComponents { get; } = false;
-    }
+		public bool IsAdapterForIndividualComponents { get; } = false;
+	}
 }

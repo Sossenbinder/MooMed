@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MooMed.Caching.Cache.UnderlyingCache.Locking.Interface;
 
-namespace MooMed.Caching.Cache.UnderlyingCache.Locking
+namespace MooMed.Caching.Cache.UnderlyingCache.Locking.Semaphore
 {
 	/// <summary>
 	/// Implementation of a cache lock with SemaphoreSlim

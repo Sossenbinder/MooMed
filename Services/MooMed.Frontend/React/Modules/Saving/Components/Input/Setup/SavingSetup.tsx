@@ -10,7 +10,7 @@ import LoadingBubbles from "common/components/LoadingBubbles";
 
 import SavingSetupStepBasics from "./SavingSetupStepBasics";
 import SavingSetupStepWelcome from "./SavingSetupStepWelcome";
-import SavingSetupStepAssetsfrom from "./SavingSetupStepAssets";
+import SavingSetupStepAssets from "./SavingSetupStepAssets";
 
 // Functionality
 import { useServices } from "hooks/useServices";
@@ -56,7 +56,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 	const history = useHistory();
 
 	const [networkCallInProgress, setNetworkCallInProgess] = React.useState<boolean>(true);
-	
+
 	const plainRoute = pathName.substring(pathName.lastIndexOf("/") + 1);
 	const casedRoute = plainRoute.substring(0, 1).toUpperCase() + plainRoute.substring(1);
 	const currentStep: SetupStep = SetupStep[casedRoute] as SetupStep ?? SetupStep.Welcome;
@@ -65,7 +65,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 		savingInfo.basicSavingInfo = basicSavingInfo;
 		updateSavingInfo(savingInfo);
 	}, [savingInfo.basicSavingInfo]);
-	
+
 	const stepMap: Map<SetupStep, StepInfo> = React.useMemo(() => {
 		return new Map<SetupStep, StepInfo>([
 			[SetupStep.Welcome, {
@@ -77,7 +77,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 			}],
 			[SetupStep.Assets, {
 				nextInfo: {
-					navStep: SetupStep.Basics,					
+					navStep: SetupStep.Basics,
 				},
 				prevInfo: {
 					navStep: SetupStep.Welcome,
@@ -85,9 +85,9 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 			}],
 			[SetupStep.Basics, {
 				nextInfo: {
-					disabled: savingInfo.basicSavingInfo?.groceries === undefined 
-								|| savingInfo.basicSavingInfo?.income === undefined
-								|| savingInfo.basicSavingInfo?.rent === undefined,
+					disabled: savingInfo.basicSavingInfo?.groceries === undefined
+						|| savingInfo.basicSavingInfo?.income === undefined
+						|| savingInfo.basicSavingInfo?.rent === undefined,
 					disabledToolTip: "Not all necessary items filled yet",
 					onClick: async () => {
 						await usingBoolAsync(setNetworkCallInProgess, async () => await SavingService.saveBasicSettings());
@@ -102,7 +102,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 	}, [currentStep, savingInfo.currency, savingInfo.basicSavingInfo]);
 
 	const createNavArrow = (navInfo: NavigationInfo, direction: keyof typeof Direction) => (
-		<Flex 
+		<Flex
 			className="NavigationArrowContainer"
 			direction="Column">
 			<If condition={navInfo !== undefined && !navInfo.unAvailable}>
@@ -110,7 +110,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 					direction={direction}
 					navTarget={navInfo?.navStep !== undefined ? `${routePrefix}${SetupStep[navInfo.navStep]}` : null}
 					disabled={navInfo.disabled ?? false}
-					toolTip={navInfo.disabledToolTip ?? null} 
+					toolTip={navInfo.disabledToolTip ?? null}
 					onClick={navInfo.onClick} />
 			</If>
 		</Flex>
@@ -124,7 +124,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 
 	return (
 		<Flex className="SavingSetup">
-			{ createNavArrow(currentStepInfo.prevInfo, "Left") }
+			{ createNavArrow(currentStepInfo.prevInfo, "Left")}
 			<Flex className="StepComponent">
 				<Choose>
 					<If condition={networkCallInProgress}>
@@ -139,18 +139,19 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 									currency={savingInfo.currency} />
 							</When>
 							<When condition={currentStep === SetupStep.Assets}>
-								<SavingSetupStepAssetsfrom 
-									/>
+								<SavingSetupStepAssets
+									assetInfo={savingInfo.assetInfo}
+									currency={savingInfo.currency} />
 							</When>
-							<Otherwise>								
-								<SavingSetupStepWelcome 
+							<Otherwise>
+								<SavingSetupStepWelcome
 									currency={savingInfo.currency} />
 							</Otherwise>
 						</Choose>
 					</Otherwise>
 				</Choose>
 			</Flex>
-			{ createNavArrow(currentStepInfo.nextInfo, "Right") }
+			{ createNavArrow(currentStepInfo.nextInfo, "Right")}
 		</Flex>
 	);
 }

@@ -3,7 +3,7 @@ import * as React from "react";
 
 // Components
 import Flex from "common/components/Flex";
-import Icon from "common/components/Icon";
+import MaterialIcon from "common/components/MaterialIcon";
 
 // Functionality
 
@@ -22,7 +22,7 @@ export const CurrencyItem: React.FC<Props> = ({ size, text, isSelected = false, 
 	return (
 		<Flex
 			className="CurrencyItem"
-			style={{ height: size, width: size}}
+			style={{ height: size, width: size }}
 			mainAlign="Center"
 			crossAlign="Center"
 			onClick={onClick}>
@@ -30,10 +30,11 @@ export const CurrencyItem: React.FC<Props> = ({ size, text, isSelected = false, 
 				{text}
 			</span>
 			<If condition={isSelected}>
-				<Icon
+
+				<MaterialIcon
+					style={{ fontSize: '24px' }}
 					className="SelectedCheckmark"
-					iconName="greenCheckmark"
-					size={24}/>
+					iconName="done" />
 			</If>
 		</Flex>
 	);

@@ -6,15 +6,15 @@ using MooMed.Module.Monitoring.Eventing.Interface;
 
 namespace MooMed.Module.Monitoring.Eventing
 {
-    public class MonitoringEventHub : IMonitoringEventHub
-    {
-        public MtMooEvent<GrpcCall> GrpcCallPerformed { get; }
+	public class MonitoringEventHub : IMonitoringEventHub
+	{
+		public MtEvent<GrpcCall> GrpcCallPerformed { get; }
 
-        public MonitoringEventHub(
-            IMassTransitEventingService eventingService,
-            IMooMedLogger logger)
-        {
-            GrpcCallPerformed = new MtMooEvent<GrpcCall>(nameof(GrpcCallPerformed), eventingService, logger);
-        }
-    }
+		public MonitoringEventHub(
+			IMassTransitEventingService eventingService,
+			IMooMedLogger logger)
+		{
+			GrpcCallPerformed = new MtEvent<GrpcCall>(nameof(GrpcCallPerformed), eventingService, logger);
+		}
+	}
 }

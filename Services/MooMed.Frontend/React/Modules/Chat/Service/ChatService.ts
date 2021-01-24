@@ -19,7 +19,7 @@ export default class ChatService extends ModuleService implements IChatService {
 	private _signalRConnection: signalR.HubConnection;
 
 	private _openChatHandler: (partnerId: number) => void;
-	
+
 	constructor(signalRConnectionProvider: ISignalRConnectionProvider) {
 		super();
 
@@ -28,7 +28,7 @@ export default class ChatService extends ModuleService implements IChatService {
 		const notificationService = services.NotificationService;
 
 		notificationService.subscribe<ChatMessage>(
-			NotificationType.NewChatMessage, 
+			NotificationType.NewChatMessage,
 			this.onChatMessageReceived);
 	}
 
@@ -39,7 +39,7 @@ export default class ChatService extends ModuleService implements IChatService {
 	public openChat = (partnerId: number) => this._openChatHandler(partnerId);
 
 	public registerForActiveChatChange = (handler: (partnerId: number) => void) => this._openChatHandler = handler;
-	
+
 	public async sendMessage(message: string, receiverId: number): Promise<void> {
 		const timestamp = new Date();
 
@@ -58,7 +58,25 @@ export default class ChatService extends ModuleService implements IChatService {
 		}
 	}
 
-	private initChatRooms = () => {
+	public async initChatRoom(id: number) {
+		const messagesRequest = await chatCommunication.getMessages(id);
+
+		if (messagesRequest.success) {
+			const payload = messagesRequest.payload;
+
+			if (payload.messages != null && payload.messages.length > 0) {
+				payload.messages.forEach(x => x.timestamp = new Date(x.timestamp));
+
+				this.dispatch(chatRoomsReducer.add({
+					messages: payload.messages,
+					messageContinuationToken: payload.continuationToken,
+					roomId: id,
+				}));
+			}
+		}
+	}
+
+	private async initChatRooms() {
 
 		const friends = this.getStore().friendsReducer.data;
 		const chatRooms: Array<ChatRoom> = friends.map(friend => ({ roomId: friend.id }));
@@ -66,12 +84,10 @@ export default class ChatService extends ModuleService implements IChatService {
 		chatRooms.forEach(async room => {
 			const messagesRequest = await chatCommunication.getMessages(room.roomId);
 
-			if (messagesRequest.success)
-			{
+			if (messagesRequest.success) {
 				const payload = messagesRequest.payload;
 
-				if (payload.messages != null && payload.messages.length > 0)
-				{
+				if (payload.messages != null && payload.messages.length > 0) {
 					payload.messages.forEach(x => x.timestamp = new Date(x.timestamp));
 
 					room.messages = payload.messages;
@@ -82,7 +98,7 @@ export default class ChatService extends ModuleService implements IChatService {
 
 		this.dispatch(chatRoomsReducer.add(chatRooms));
 	}
-	
+
 	private onChatMessageReceived = (message: SignalRNotification<ChatMessage>) => {
 		const senderId = message.data.senderId;
 		const newMessage: ChatMessage = {
@@ -90,7 +106,7 @@ export default class ChatService extends ModuleService implements IChatService {
 			senderId,
 			timestamp: new Date(message.data.timestamp),
 		};
-		
+
 		this.addMessage(newMessage, senderId);
 	}
 
@@ -102,12 +118,11 @@ export default class ChatService extends ModuleService implements IChatService {
 
 		const newRoom = { ...chatRoom };
 
-		if (typeof chatRoom.messages !== "undefined")
-		{
-			let messages = [ ...newRoom.messages ];
+		if (typeof chatRoom.messages !== "undefined") {
+			let messages = [...newRoom.messages];
 
 			messageArray.forEach(message => messages.push(message));
-			
+
 			newRoom.messages = messages;
 
 		} else {

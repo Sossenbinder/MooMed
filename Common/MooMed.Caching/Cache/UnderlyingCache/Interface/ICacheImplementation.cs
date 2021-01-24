@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
 using MooMed.Caching.Cache.UnderlyingCache.Locking;
 
 namespace MooMed.Caching.Cache.UnderlyingCache.Interface
 {
-	public interface IUnderlyingCache<in TKey, TValue>
+	public interface ICacheImplementation<in TKey, TValue>
 	{
 		ValueTask PutItem(TKey key, TValue value, int? secondsToLive = null);
 

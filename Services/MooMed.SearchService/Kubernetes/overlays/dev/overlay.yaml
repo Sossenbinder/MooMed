@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/searchservice:dev
-        name: moomed-searchservice
+        - image: moomed.azurecr.io/searchservice:dev
+          name: moomed-searchservice
       imagePullSecrets:
-      - name: acrimgpullsecret
+        - name: acrimgpullsecret

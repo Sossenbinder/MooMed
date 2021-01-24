@@ -36,10 +36,9 @@ namespace MooMed.AspNetCore.Config.ConfigProviders
 			return finalBuilder.Build();
 		}
 
-
-		private IConfigurationBuilder AddKeyVault(IConfigurationBuilder configBuilder, IConfiguration config)
+		private static IConfigurationBuilder AddKeyVault(IConfigurationBuilder configBuilder, IConfiguration config)
 		{
-			var keyVaultEndpoint = "https://moomed.vault.azure.net/";
+			const string? keyVaultEndpoint = "https://moomed.vault.azure.net/";
 
 			var keyVaultClient = config["AZURE_CLIENT_ID"];
 

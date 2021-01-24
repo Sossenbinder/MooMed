@@ -29,100 +29,100 @@ using AccountValidationModule = MooMed.Module.AccountValidation.Module.AccountVa
 
 namespace MooMed.Frontend.StartupConfigs
 {
-    public class Startup
-    {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            ConfigureMassTransit(services);
+	public class Startup
+	{
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			ConfigureMassTransit(services);
 
-            services.AddMvc();
+			services.AddMvc();
 
-            services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Events.OnRedirectToLogin = context =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                });
+			services
+				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					options.Events.OnRedirectToLogin = context =>
+					{
+						context.Response.StatusCode = 401;
+						return Task.CompletedTask;
+					};
+				});
 
-            services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
+			services.AddAntiforgery(x => x.HeaderName = "AntiForgery");
 
-            services.AddResponseCompression();
-        }
+			services.AddResponseCompression();
+		}
 
-        private static void ConfigureMassTransit([NotNull] IServiceCollection services)
-        {
-            services.AddSignalR();
+		private static void ConfigureMassTransit([NotNull] IServiceCollection services)
+		{
+			services.AddSignalR();
 
-            // creating the bus config
-            services.AddMassTransit(x =>
-            {
-                x.AddSignalRHub<SignalRHub>();
+			// creating the bus config
+			services.AddMassTransit(x =>
+			{
+				x.AddSignalRHub<SignalRHub>();
 
-                x.AddBus(registrationContext => MassTransitBusFactory.CreateBus(registrationContext, cfg =>
-                {
-                    cfg.ConfigureEndpoints(registrationContext);
-                }));
-            });
-        }
+				x.AddBus(registrationContext => MassTransitBusFactory.CreateBus(registrationContext, cfg =>
+				{
+					cfg.ConfigureEndpoints(registrationContext);
+				}));
+			});
+		}
 
-        [UsedImplicitly]
-        public void ConfigureContainer([NotNull] ContainerBuilder builder)
-        {
-            builder.RegisterModule<CoreModule>();
-            builder.RegisterModule<EncryptionModule>();
-            builder.RegisterModule<ConfigurationModule>();
-            builder.RegisterModule<LoggingModule>();
-            builder.RegisterModule<CachingModule>();
-            builder.RegisterModule<SerializationModule>();
-            builder.RegisterModule<FrontendMooMedAspNetCoreModule>();
-            builder.RegisterModule<KubernetesModule>();
-            builder.RegisterModule<IdentityModule>();
-            builder.RegisterModule<EventingModule>();
-            builder.RegisterModule<FinanceModule>();
-            builder.RegisterModule<ServiceBaseModule>();
-            builder.RegisterModule<AccountValidationModule>();
-            builder.RegisterModule<MonitoringModule>();
-            builder.RegisterModule<SavingModule>();
-            builder.RegisterModule<AccountModule>();
-        }
+		[UsedImplicitly]
+		public void ConfigureContainer([NotNull] ContainerBuilder builder)
+		{
+			builder.RegisterModule<CoreModule>();
+			builder.RegisterModule<EncryptionModule>();
+			builder.RegisterModule<ConfigurationModule>();
+			builder.RegisterModule<LoggingModule>();
+			builder.RegisterModule<CachingModule>();
+			builder.RegisterModule<SerializationModule>();
+			builder.RegisterModule<FrontendMooMedAspNetCoreModule>();
+			builder.RegisterModule<KubernetesModule>();
+			builder.RegisterModule<IdentityModule>();
+			builder.RegisterModule<EventingModule>();
+			builder.RegisterModule<FinanceModule>();
+			builder.RegisterModule<ServiceBaseModule>();
+			builder.RegisterModule<AccountValidationModule>();
+			builder.RegisterModule<MonitoringModule>();
+			builder.RegisterModule<SavingModule>();
+			builder.RegisterModule<AccountModule>();
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        [UsedImplicitly]
-        public void Configure([NotNull] IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseResponseCompression();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		[UsedImplicitly]
+		public void Configure([NotNull] IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			app.UseResponseCompression();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Home/Error");
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				app.UseHsts();
+			}
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+			app.UseDefaultFiles();
+			app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
+			app.UseHttpsRedirection();
+			app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
-            app.UseEndpoints(endpointRouteBuilder =>
-            {
-                RouteConfig.RegisterRoutes(endpointRouteBuilder);
+			app.UseEndpoints(endpointRouteBuilder =>
+			{
+				RouteConfig.RegisterRoutes(endpointRouteBuilder);
 
-                endpointRouteBuilder.MapHub<SignalRHub>("/signalRHub");
-            });
-        }
-    }
+				endpointRouteBuilder.MapHub<SignalRHub>("/signalRHub");
+			});
+		}
+	}
 }

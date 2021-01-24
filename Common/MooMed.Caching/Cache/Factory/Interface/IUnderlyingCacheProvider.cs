@@ -5,6 +5,6 @@ namespace MooMed.Caching.Cache.Factory.Interface
 {
 	public interface IUnderlyingCacheProvider
 	{
-		IUnderlyingCache<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings cacheSettings);
+		ICacheImplementation<TKey, TValue> CreateCache<TKey, TValue>(CacheSettings cacheSettings);
 	}
 }

@@ -8,24 +8,24 @@ namespace MooMed.Identity.Service
 	{
 		public Endpoint GetDeploymentEndpoint(DeploymentService deploymentService)
 		{
-			var ipAddress = $"moomed.{deploymentService.ToString().ToLower()}";
+			var dnsName = $"moomed.{deploymentService.ToString().ToLower()}";
 
-			return new Endpoint()
+			return new()
 			{
-				DnsName = ipAddress,
+				DnsName = dnsName,
 			};
 		}
 
 		public StatefulEndpointCollection GetStatefulEndpoints(StatefulSetService statefulSetService, int totalReplicas = 1)
 		{
-			var ipAddress = $"MooMed.{statefulSetService.ToString().ToLower()}";
+			var dnsName = $"MooMed.{statefulSetService.ToString().ToLower()}";
 
 			return new StatefulEndpointCollection(new List<StatefulEndpoint>()
 			{
-				new StatefulEndpoint()
+				new()
 				{
 					InstanceNumber = 0,
-					DnsName = ipAddress.ToString(),
+					DnsName = dnsName,
 				}
 			});
 		}

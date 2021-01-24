@@ -28,6 +28,8 @@ spec:
       labels:
         name: moomed-accountvalidationservice
         serviceType: moomedFunctionalService
+      annotations:
+        linkerd.io/inject: enabled
     spec:
       containers:
         - name: moomed-accountvalidationservice

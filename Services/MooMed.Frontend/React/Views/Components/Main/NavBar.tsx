@@ -19,25 +19,27 @@ interface Props {
 }
 
 export const NavBar: React.FC<Props> = () => (
-	<Flex 
-		className={"MainNavBar navbar navbar-expand-md"}
-		direction={"Row"}>
-		<Link 
+	<Flex
+		className="MainNavBar navbar navbar-expand-md"
+		direction="Row"
+		space="Between"
+		mainAlign="Center">
+		<Link
 			to="/"
 			className="Heading">
 			MooMed - Finance done right
 		</Link>
-		<Link 
+		<Link
 			to="/"
 			className="SubItem">
 			Feed
 		</Link>
-		<Link 
+		<Link
 			to="/saving"
 			className="SubItem">
 			Saving &amp; Budgeting
 		</Link>
-		<Link 
+		<Link
 			to="/investing"
 			className="SubItem">
 			Investing
@@ -45,7 +47,9 @@ export const NavBar: React.FC<Props> = () => (
 		<div className="SearchBar nav navbar-nav ml-auto">
 			<SearchBar />
 		</div>
-		<SmallAccountManager />
+		<div className="SmallAccountManager">
+			<SmallAccountManager />
+		</div>
 	</Flex>
 );
 

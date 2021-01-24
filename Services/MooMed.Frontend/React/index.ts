@@ -19,14 +19,14 @@ import PortfolioService from "modules/Portfolio/Service/PortfolioService";
 import SignalRConnectionProvider from "modules/common/Helper/SignalRConnectionProvider";
 
 window.onload = async () => {
-	
+
 	await initServices();
 
 	await dataLoader.init();
 }
 
-const initServices = async () => {	
-	
+const initServices = async () => {
+
 	const signalRConnectionProvider = new SignalRConnectionProvider();
 	await signalRConnectionProvider.start();
 
@@ -54,7 +54,7 @@ const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProv
 	services.NotificationService = new NotificationService(signalRConnectionProvider);
 	modules.push(services.NotificationService);
 
-	services.FriendsService = new FriendsService();	
+	services.FriendsService = new FriendsService();
 	modules.push(services.FriendsService);
 
 	services.ChatService = new ChatService(signalRConnectionProvider);
@@ -64,12 +64,12 @@ const initCoreServices = async (signalRConnectionProvider: SignalRConnectionProv
 }
 
 const initAdditionalServices = async () => {
-	
+
 	const modules: Array<IModuleService> = [];
 
 	services.StocksService = new StocksService();
 	modules.push(services.StocksService);
-	
+
 	services.PortfolioService = new PortfolioService();
 	modules.push(services.PortfolioService);
 

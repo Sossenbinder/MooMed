@@ -1,55 +1,28 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
-  name: moomedgateway
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  name: nginx-ingress
+  namespace: default
 spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - "*"
-      tls:
-        httpsRedirect: true
-    - port:
-        number: 443
-        name: https
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
-        privateKey: /etc/istio/ingressgateway-certs/tls.key
-      hosts:
-        - "*"
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: moomedvservice
-spec:
-  hosts:
-    - "*"
-  gateways:
-    - moomedgateway
-  http:
-    - route:
-        - destination:
-            host: moomed-frontendservice
-            port:
-              number: 80
+  rules:
+    - host: moomedlocal.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: moomed-frontendservice
+              servicePort: 80
   tls:
-    - match:
-        - port: 443
-          sniHosts:
-            - "*"
-      route:
-        - destination:
-            host: moomed-frontendservice
-            port:
-              number: 443
+    - hosts:
+        - moomedlocal.com
+      secretName: nginxtlscert
+  # This section is only required if TLS is to be enabled for the Ingress
+  # tls:
+  #   - hosts:
+  #       - www.example.com
+  #     secretName: example-tls
 ---
 apiVersion: v1
 kind: Service
@@ -82,11 +55,16 @@ spec:
     metadata:
       labels:
         name: moomed-frontendservice
+      annotations:
+        linkerd.io/inject: enabled
     spec:
       containers:
         - name: moomed-frontendservice
           image: moomed.azurecr.io/frontendservice
           imagePullPolicy: Always
+          volumeMounts:
+            - name: moomedfrontendservicecertmount
+              mountPath: "/httpsCert"
           ports:
             - containerPort: 80
               name: http
@@ -107,5 +85,9 @@ spec:
                   key: client_secret
             - name: ASPNETCORE_ENVIRONMENT
               value: Production
+      volumes:
+        - name: moomedfrontendservicecertmount
+          secret:
+            secretName: moomedfrontendservicecert
       imagePullSecrets:
         - name: acrimgpullsecret

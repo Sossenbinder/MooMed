@@ -68,20 +68,20 @@ foreach ($imageInfo in $imageInfos) {
 	Write-Host "Building $($imageInfo.Path)"
 
 	$imgName = "moomed.azurecr.io/" + $imageInfo.Name + ":" + $configuration
-	docker build -t $imgName -f "../../$($imageInfo.Path)" ../..
-		
+	docker build -t $imgName -f "../../$($imageInfo.Path)" ../.. > Out-Null
+
 	if ($LASTEXITCODE -eq 0) {
 		
-		Write-Host "Built $($imageInfo.Path)"
+		Write-Host "Built $($imageInfo.Path)" -ForegroundColor Green
 
-		docker push $imgName
+		docker push $imgName > Out-Null
 
-		Write-Host "Pushed $($imageInfo.Path)"
+		Write-Host "Pushed $($imageInfo.Path)" -ForegroundColor Green
 
-		docker image rm $imgName
+		docker image rm $imgName > Out-Null
 	}
 	else {
 		$ErrorString = $result -join [System.Environment]::NewLine
-		Write-Host "Building $($imageInfo.Path) failed with $($ErrorString)"
+		Write-Host "Building $($imageInfo.Path) failed with $($ErrorString)" -ForegroundColor red
 	}
 }

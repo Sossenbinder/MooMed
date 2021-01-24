@@ -9,9 +9,9 @@ export interface IModuleService {
 }
 
 export interface IAccountService extends IModuleService {
-    getAccount(accountId: number): Promise<Account>;
+	getAccount(accountId: number): Promise<Account>;
 	getOwnAccount(): Promise<Account>;
-	
+
 	updatePersonalData(personalData: PersonalData): Promise<void>;
 	updatePassword(passwordData: PasswordData): Promise<void>;
 }
@@ -26,7 +26,7 @@ export interface ILogonService extends IModuleService {
 }
 
 export interface IFriendsService extends IModuleService {
-    addFriend(friendId: number): Promise<void>;
+	addFriend(friendId: number): Promise<void>;
 }
 
 export interface IStocksService extends IModuleService {
@@ -36,12 +36,13 @@ export interface IStocksService extends IModuleService {
 export interface IChatService extends IModuleService {
 	openChat(partnerId: number): void;
 	registerForActiveChatChange(handler: (partnerId: number) => void): void;
+	initChatRoom(id: number): Promise<void>;
 
 	sendMessage(message: string, receiverId: number): Promise<void>;
 }
 
 export interface ISearchService extends IModuleService {
-    search(query: string): Promise<SearchResult>;
+	search(query: string): Promise<SearchResult>;
 }
 
 export interface INotificationService extends IModuleService {
@@ -64,7 +65,7 @@ export type ServiceContext = {
 	AccountService: IAccountService;
 	AccountValidationService: IAccountValidationService;
 	LogonService: ILogonService;
-    FriendsService: IFriendsService;
+	FriendsService: IFriendsService;
 	SearchService: ISearchService;
 	NotificationService: INotificationService;
 	ChatService: IChatService;

@@ -19,4 +19,8 @@
     <ProjectReference Include="..\MooMed.TestBase\MooMed.TestBase.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tests\Lock\" />
+  </ItemGroup>
+
 </Project>
