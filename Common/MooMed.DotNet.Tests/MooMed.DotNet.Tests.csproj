@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Extensions\TupleAwaiterExtensionsTests.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TupleAwaiterExtensionsTests.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
@@ -14,7 +22,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Tests\MooMed.TestBase\MooMed.TestBase.csproj" />
     <ProjectReference Include="..\MooMed.DotNet\MooMed.DotNet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Extensions\TupleAwaiterExtensionsTests.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TupleAwaiterExtensionsTests.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Extensions\TupleAwaiterExtensionsTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TupleAwaiterExtensionsTests.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

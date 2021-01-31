@@ -1,0 +1,42 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using MooMed.DotNet.Extensions.Tuple;
+using NUnit.Framework;
+
+namespace MooMed.DotNet.Tests.Extensions
+{
+	[TestFixture]
+	public class TupleAwaiterExtensionsTests
+	{
+	<#
+		for (var i = 2; i < 16; ++i)
+		{
+			var genericDeclarationsJoined = string.Join(", ", Enumerable.Range(0, i).Select(x => $"T{x}"));
+			var lowerCaseGenericDeclarations = string.Join(", ", Enumerable.Range(0, i).Select(x => $"t{x}"));
+	#>
+	[Test]
+		public async Task AwaitingTupleWith<#=i#>EntriesShouldWorkForHappyPath()
+		{
+			const int verificationNumber = <#=i#>;
+
+			var tuple = (<#=string.Join(", ", Enumerable.Range(0, i).Select(_ => $"Task.FromResult(verificationNumber)"))#>);
+
+			ITuple results = await tuple;
+
+			for (var i = 0; i < <#=i#>; ++i)
+			{
+				Assert.AreEqual(verificationNumber, results[i]);
+			}
+		}
+
+	<#
+		}
+	#>
+}
+}

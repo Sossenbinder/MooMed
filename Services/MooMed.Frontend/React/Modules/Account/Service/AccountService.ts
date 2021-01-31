@@ -2,6 +2,7 @@
 import { IAccountService } from "Definitions/Service";
 import ModuleService from "modules/common/Service/ModuleService";
 import * as accountCommunication from "modules/Account/Communication/AccountCommunication";
+import { reducer as accountReducer } from "modules/account/Reducer/AccountReducer";
 
 // Types
 import { Account, PersonalData, PasswordData } from "modules/Account/types";
@@ -26,17 +27,30 @@ export default class AccountService extends ModuleService implements IAccountSer
 		return response.payload;
 	}
 
-	public async updatePersonalData(personalData: PersonalData): Promise<void> {
+	public async updateProfilePicture(file: File): Promise<void> {
+
+	}
+
+	public async updatePersonalData(personalData: PersonalData): Promise<boolean> {
 		const response = await accountCommunication.updatePersonalData(personalData);
 
 		if (response.success) {
+			const currentAccount = { ...this.getStore().accountReducer.data };
 
+			Object.keys(personalData).forEach(x => {
+				if (personalData[x]) {
+					currentAccount[x] = personalData[x];
+				}
+			});
+
+			this.dispatch(accountReducer.update(currentAccount));
 		}
+
+		return response.success;
 	}
 
-	public async updatePassword(passwordData: PasswordData): Promise<void> {
+	public async updatePassword(passwordData: PasswordData): Promise<boolean> {
 		const response = await accountCommunication.updatePassword(passwordData);
-
-		debugger;
+		return response.success;
 	}
 }

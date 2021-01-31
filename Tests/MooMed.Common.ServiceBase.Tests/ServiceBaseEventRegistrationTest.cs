@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using MooMed.Common.ServiceBase.ServiceBase;
 using MooMed.DotNet.Utils.Disposable;
 using MooMed.Eventing.Events.Interface;
 using MooMed.TestBase.Utils;
@@ -13,7 +12,7 @@ namespace MooMed.Common.ServiceBase.Tests
 	{
 		private Mock<IEvent<string>> _serviceLocalEvent;
 
-		internal class TestServiceBase : ServiceBase.ServiceBase
+		internal class TestServiceBase : MooMedServiceBase
 		{
 			public TestServiceBase(IEvent<string> @event)
 			{

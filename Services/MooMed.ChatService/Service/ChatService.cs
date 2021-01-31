@@ -1,21 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Chat;
 using MooMed.Common.Definitions.Notifications;
 using MooMed.Common.Definitions.UiModels.Chat;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Eventing.Helper;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Chat.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MooMed.ChatService.Service
 {
-	public class ChatService : ServiceBaseWithLogger, IChatService
+	public class ChatService : MooMedServiceBaseWithoutLogger, IChatService
 	{
 		[NotNull]
 		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;

@@ -1,37 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MooMed.DotNet.Extensions
 {
-    // ReSharper disable once InconsistentNaming
-    public static class IEnumerableExtensions
-    {
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T>? enumerable)
-        {
-            return enumerable == null || !enumerable.Any();
-        }
+	// ReSharper disable once InconsistentNaming
+	public static class IEnumerableExtensions
+	{
+		public static bool IsNullOrEmpty(this IEnumerable? enumerable) => enumerable?.Cast<object>().IsNullOrEmpty() ?? true;
 
-        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> enumerable, int maxSize)
-        {
-            var chunk = new List<T>();
+		public static bool IsNullOrEmpty<T>(this IEnumerable<T>? enumerable) => enumerable == null || !enumerable.Any();
 
-            foreach (var t in enumerable)
-            {
-                chunk.Add(t);
+		public static bool IsEmpty(this IEnumerable enumerable) => enumerable.Cast<object>().IsEmpty();
 
-                if (chunk.Count % maxSize != 0)
-                {
-                    continue;
-                }
+		public static bool IsEmpty<T>(this IEnumerable<T> enumerable) => !enumerable.Any();
 
-                yield return chunk;
-                chunk = new List<T>();
-            }
+		public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> enumerable, int maxSize)
+		{
+			var chunk = new List<T>();
 
-            if (chunk.Count > 0)
-            {
-                yield return chunk;
-            }
-        }
-    }
+			foreach (var t in enumerable)
+			{
+				chunk.Add(t);
+
+				if (chunk.Count % maxSize != 0)
+				{
+					continue;
+				}
+
+				yield return chunk;
+				chunk = new List<T>();
+			}
+
+			if (chunk.Count > 0)
+			{
+				yield return chunk;
+			}
+		}
+	}
 }

@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Search;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System.Threading.Tasks;
 
 namespace MooMed.SearchService.Service
 {
-	public class SearchService : ServiceBaseWithLogger, ISearchService
+	public class SearchService : MooMedServiceBaseWithoutLogger, ISearchService
 	{
 		[NotNull]
 		private readonly IAccountService _accountService;

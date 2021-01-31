@@ -1,34 +1,34 @@
 ﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using MooMed.AspNetCore.Identity.Extension;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
+using MooMed.DotNet.Utils.Tasks;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	internal class PersonalDataService : IPersonalDataService
+	internal class PersonalDataService : MooMedServiceBase, IPersonalDataService
 	{
-		[NotNull]
-		private readonly UserManager<AccountEntity> _userManager;
-
 		private readonly AccountDbConverter _accountDbConverter;
 
+		private readonly UserManager<AccountEntity> _userManager;
+
 		public PersonalDataService(
-			[NotNull] UserManager<AccountEntity> userManager,
-			[NotNull] AccountDbConverter accountDbConverter)
+			AccountDbConverter accountDbConverter,
+			UserManager<AccountEntity> userManager)
 		{
-			_userManager = userManager;
 			_accountDbConverter = accountDbConverter;
+			_userManager = userManager;
 		}
 
 		public async Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData)
 		{
-			var accountEntity = _accountDbConverter.ToEntity(personalData.SessionContext.Account);
+			var accountEntity = await _userManager.FindByEmailAsync(personalData.Email);
 
 			if (personalData.UserName != null)
 			{
@@ -63,6 +63,10 @@ namespace MooMed.Module.Accounts.Service
 
 			if (result.Succeeded)
 			{
+				FireAndForgetTask.Run(async () =>
+				{
+				}, )
+
 				return ServiceResponse.Success(IdentityErrorCode.Success);
 			}
 

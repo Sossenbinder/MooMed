@@ -34,7 +34,6 @@ export const register = async (email: string, userName: string, password: string
 }
 
 export const logOff = async () => {
-
-	const request = new PostRequest(logonRequests.register);
+	const request = new PostRequest(logonRequests.logoff);
 	return await request.post();
 }

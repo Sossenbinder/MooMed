@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Security.Authentication;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.DotNet.Extensions;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System.Collections.Generic;
+using System.Security.Authentication;
+using System.Threading.Tasks;
 
 namespace MooMed.AccountService.Service
 {
-	public class AccountService : ServiceBaseWithLogger, IAccountService
+	public class AccountService : MooMedServiceBaseWithoutLogger, IAccountService
 	{
 		[NotNull]
 		private readonly IAccountEventHub _accountEventHub;

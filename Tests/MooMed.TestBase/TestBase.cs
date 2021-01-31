@@ -51,6 +51,7 @@ namespace MooMed.TestBase
 		public void SetupEntry()
 		{
 			ContainerBuilder = new ContainerBuilder();
+			ContainerBuilder.AddAutoMoqSupport();
 			SetupContainer(ContainerBuilder);
 
 			AddDefaultRegistrations();
@@ -65,7 +66,6 @@ namespace MooMed.TestBase
 
 		protected virtual void SetupContainer(ContainerBuilder builder)
 		{
-			builder.AddAutoMoqSupport();
 		}
 
 		protected virtual void Setup()

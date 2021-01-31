@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.Finance;
 using MooMed.Common.Definitions.Models.Portfolio;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Finance.Service.Interface;
 using MooMed.Module.Portfolio.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MooMed.FinanceService.Service
 {
-	public class FinanceService : ServiceBaseWithLogger, IFinanceService
+	public class FinanceService : MooMedServiceBaseWithoutLogger, IFinanceService
 	{
 		[NotNull]
 		private readonly IExchangeTradedsService _exchangeTradedsService;

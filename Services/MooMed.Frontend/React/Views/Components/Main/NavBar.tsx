@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 // Components
 import Flex from "common/components/Flex";
 import SearchBar from "modules/Search/View/SearchBar"
-import SmallAccountManager from "views/Components/Account/SmallAccountManager";
+import ProfilePreview from "modules/account/components/profile/ProfilePreview";
 
 // Functionality
 import { Account } from "modules/Account/types";
@@ -20,43 +20,49 @@ interface Props {
 
 export const NavBar: React.FC<Props> = () => (
 	<Flex
-		className="MainNavBar navbar navbar-expand-md"
+		className="MainNavBar"
 		direction="Row"
 		space="Between"
 		mainAlign="Center">
-		<Link
-			to="/"
-			className="Heading">
-			MooMed - Finance done right
-		</Link>
-		<Link
-			to="/"
-			className="SubItem">
-			Feed
-		</Link>
-		<Link
-			to="/saving"
-			className="SubItem">
-			Saving &amp; Budgeting
-		</Link>
-		<Link
-			to="/investing"
-			className="SubItem">
-			Investing
-		</Link>
-		<div className="SearchBar nav navbar-nav ml-auto">
-			<SearchBar />
-		</div>
-		<div className="SmallAccountManager">
-			<SmallAccountManager />
-		</div>
+		<Flex>
+			<Link
+				to="/"
+				className="Heading">
+				MooMed - Finance done right
+			</Link>
+			<Link
+				to="/"
+				className="SubItem">
+				Feed
+			</Link>
+			<Link
+				to="/saving"
+				className="SubItem">
+				Saving &amp; Budgeting
+			</Link>
+			<Link
+				to="/investing"
+				className="SubItem">
+				Investing
+			</Link>
+		</Flex>
+		<Flex
+			className="FunctionalPart"
+			space="Between">
+			<div className="SearchBarContainer">
+				<SearchBar />
+			</div>
+			<div className="ProfilePreviewContainer">
+				<ProfilePreview />
+			</div>
+		</Flex>
 	</Flex>
 );
 
 
 const mapStateToProps = (store: ReduxStore) => {
 	return {
-		account: store.accountReducer.data[0],
+		account: store.accountReducer.data,
 	};
 }
 

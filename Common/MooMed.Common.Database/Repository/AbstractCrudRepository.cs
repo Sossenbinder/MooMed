@@ -12,221 +12,215 @@ using MooMed.DotNet.Extensions;
 
 namespace MooMed.Common.Database.Repository
 {
-    public abstract class AbstractCrudRepository<TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType>
-        where TEntity : class, IEntity<TKeyType>
-        where TDbContext : DbContext
-    {
-        private readonly IDbContextFactory<TDbContext> _contextFactory;
+	public abstract class AbstractCrudRepository<TDbContext, TEntity, TKeyType> : ICrudRepository<TEntity, TKeyType>
+		where TEntity : class, IEntity<TKeyType>
+		where TDbContext : DbContext
+	{
+		private readonly IDbContextFactory<TDbContext> _contextFactory;
 
-        protected AbstractCrudRepository(IDbContextFactory<TDbContext> contextFactory)
-        {
-            _contextFactory = contextFactory;
-        }
+		protected AbstractCrudRepository(IDbContextFactory<TDbContext> contextFactory)
+		{
+			_contextFactory = contextFactory;
+		}
 
-        protected TDbContext CreateContext()
-        {
-            return _contextFactory.CreateDbContext();
-        }
+		protected TDbContext CreateContext()
+		{
+			return _contextFactory.CreateDbContext();
+		}
 
-        public async Task<TEntity> Create(TEntity entity)
-        {
-            var creationResult = await RunInContextAndCommitWithResult(async set =>
-            {
-                var entityEntry = await set.AddAsync(entity);
+		public async Task<TEntity> Create(TEntity entity)
+		{
+			var creationResult = await RunInContextAndCommitWithResult(async set =>
+			{
+				var entityEntry = await set.AddAsync(entity);
 
-                return entityEntry.Entity;
-            });
+				return entityEntry.Entity;
+			});
 
-            return creationResult;
-        }
+			return creationResult;
+		}
 
-        public Task<List<TEntity>> Read()
-            => RunInContextWithResult(dbSet => dbSet.AsNoTracking().ToListAsync());
+		public Task<List<TEntity>> Read()
+			=> RunInContextWithResult(dbSet => dbSet.AsNoTracking().ToListAsync());
 
-        public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate)
-            => RunInContextWithResult(dbSet => dbSet.AsNoTracking().Where(predicate).ToListAsync());
+		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate)
+			=> RunInContextWithResult(dbSet => dbSet.AsNoTracking().Where(predicate).ToListAsync());
 
-        public Task<List<TEntity>> Read(params Expression<Func<TEntity, bool>>[] filters)
-            => Read(filters.AsEnumerable());
+		public Task<List<TEntity>> Read(params Expression<Func<TEntity, bool>>[] filters)
+			=> Read(filters.AsEnumerable());
 
-        public async Task<List<TEntity>> Read(IEnumerable<Expression<Func<TEntity, bool>>> filters)
-        {
-            var predicateList = filters.ToList();
+		public async Task<List<TEntity>> Read(IEnumerable<Expression<Func<TEntity, bool>>> filters)
+		{
+			var predicateList = filters.ToList();
 
-            if (predicateList.IsNullOrEmpty())
-            {
-                return await RunInContextWithResult(dbSet => dbSet.ToListAsync());
-            }
+			if (predicateList.IsNullOrEmpty())
+			{
+				return await RunInContextWithResult(dbSet => dbSet.ToListAsync());
+			}
 
-            var predicate = predicateList.Aggregate((current, filter) => current.And(filter));
+			var predicate = predicateList.Aggregate((current, filter) => current.And(filter));
 
-            return await RunInContextWithResult(dbSet => dbSet
-                .AsNoTracking()
-                .Where(predicate)
-                .ToListAsync());
-        }
+			return await RunInContextWithResult(dbSet => dbSet
+				.AsNoTracking()
+				.Where(predicate)
+				.ToListAsync());
+		}
 
-        public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes)
-        {
-            // Assemble all includes. With queryable as seed, add .Include for all the includes passed in here
-            var foreignIncludesAsFunc = new Func<IQueryable<TEntity>, IQueryable<TEntity>>(queryable => foreignIncludes.Aggregate(queryable, (current, include) => current.Include(include)));
+		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] foreignIncludes)
+		{
+			// Assemble all includes. With queryable as seed, add .Include for all the includes passed in here
+			var foreignIncludesAsFunc = new Func<IQueryable<TEntity>, IQueryable<TEntity>>(queryable => foreignIncludes.Aggregate(queryable, (current, include) => current.Include(include)));
 
-            return Read(predicate, foreignIncludesAsFunc);
-        }
+			return Read(predicate, foreignIncludesAsFunc);
+		}
 
-        public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Func<IQueryable<TEntity>, IQueryable<TEntity>>[] foreignIncludes)
-        {
-            return RunInContextWithResult(dbSet =>
-            {
-                var query = dbSet
-                    .AsNoTracking()
-                    .Where(predicate);
+		public Task<List<TEntity>> Read(Expression<Func<TEntity, bool>> predicate, params Func<IQueryable<TEntity>, IQueryable<TEntity>>[] foreignIncludes)
+		{
+			return RunInContextWithResult(dbSet =>
+			{
+				var query = dbSet
+					.AsNoTracking()
+					.Where(predicate);
 
-                query = foreignIncludes.Aggregate(query, (current, include) => include(current));
+				query = foreignIncludes.Aggregate(query, (current, include) => include(current));
 
-                return query.ToListAsync();
-            });
-        }
+				return query.ToListAsync();
+			});
+		}
 
-        public Task Update(TEntity entity, Action<TEntity> updateFunc)
-        {
-            return RunInContextAndCommit(async set =>
-            {
-                var existingEntity = await set.SingleOrDefaultAsync(x => x.Equals(entity));
+		public Task<bool> Update(TEntity entity)
+		{
+			return RunInContextAndCommit(set =>
+			{
+				set.Update(entity);
+				return default;
+			});
+		}
 
-                if (existingEntity == null)
-                {
-                    return;
-                }
+		public Task Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> updateFunc)
+		{
+			return RunInContextAndCommit(async set =>
+			{
+				var existingEntity = await set.Where(selector).SingleOrDefaultAsync();
 
-                updateFunc(existingEntity);
-            });
-        }
+				if (existingEntity == null)
+				{
+					return;
+				}
 
-        public Task Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> updateFunc)
-        {
-            return RunInContextAndCommit(async set =>
-            {
-                var existingEntity = await set.Where(selector).SingleOrDefaultAsync();
+				updateFunc(existingEntity);
+			});
+		}
 
-                if (existingEntity == null)
-                {
-                    return;
-                }
+		public Task Delete(TEntity entity)
+		{
+			return RunInContextAndCommit(async set =>
+			{
+				var existingEntity = await set.SingleOrDefaultAsync(x => x.Equals(entity));
 
-                updateFunc(existingEntity);
-            });
-        }
+				if (existingEntity == null)
+				{
+					return;
+				}
 
-        public Task Delete(TEntity entity)
-        {
-            return RunInContextAndCommit(async set =>
-            {
-                var existingEntity = await set.SingleOrDefaultAsync(x => x.Equals(entity));
+				set.Remove(existingEntity);
+			});
+		}
 
-                if (existingEntity == null)
-                {
-                    return;
-                }
+		public Task Delete(Expression<Func<TEntity, bool>> selector)
+		{
+			return RunInContextAndCommit(async set =>
+			{
+				var existingEntity = await set.Where(selector).SingleOrDefaultAsync();
 
-                set.Remove(existingEntity);
-            });
-        }
+				if (existingEntity == null)
+				{
+					return;
+				}
 
-        public Task Delete(Expression<Func<TEntity, bool>> selector)
-        {
-            return RunInContextAndCommit(async set =>
-            {
-                var existingEntity = await set.Where(selector).SingleOrDefaultAsync();
+				set.Remove(existingEntity);
+			});
+		}
 
-                if (existingEntity == null)
-                {
-                    return;
-                }
+		public async Task CreateOrUpdate(TEntity entity, Action<TEntity> updateFunc)
+		{
+			await using var ctx = CreateContext();
 
-                set.Remove(existingEntity);
-            });
-        }
+			var set = ctx.Set<TEntity>();
 
-        public async Task CreateOrUpdate(TEntity entity, Action<TEntity> updateFunc)
-        {
-            await using var ctx = CreateContext();
+			var existingItem = await set.SingleOrDefaultAsync(x => x.Equals(entity));
 
-            var set = ctx.Set<TEntity>();
+			if (existingItem != null)
+			{
+				updateFunc(existingItem);
+			}
+			else
+			{
+				// ReSharper disable once MethodHasAsyncOverload
+				set.Add(entity);
+			}
 
-            var existingItem = await set.SingleOrDefaultAsync(x => x.Equals(entity));
+			await ctx.SaveChangesAsync();
+		}
 
-            if (existingItem != null)
-            {
-                updateFunc(existingItem);
-            }
-            else
-            {
-                // ReSharper disable once MethodHasAsyncOverload
-                set.Add(entity);
-            }
+		public async Task CreateOrUpdate(List<TEntity> entities, Action<TEntity> updateFunc)
+		{
+			await using var ctx = CreateContext();
 
-            await ctx.SaveChangesAsync();
-        }
+			var set = ctx.Set<TEntity>();
 
-        public async Task CreateOrUpdate(List<TEntity> entities, Action<TEntity> updateFunc)
-        {
-            await using var ctx = CreateContext();
+			var existingEntities = await set
+				.Where(x => entities.Contains(x))
+				.ToListAsync();
 
-            var set = ctx.Set<TEntity>();
+			foreach (var entity in existingEntities.Where(entity => entity != null))
+			{
+				updateFunc(entity);
+			}
 
-            var existingEntities = await set
-                .Where(x => entities.Contains(x))
-                .ToListAsync();
+			foreach (var entity in entities.Except(existingEntities))
+			{
+				// ReSharper disable once MethodHasAsyncOverload
+				set.Add(entity);
+			}
 
-            foreach (var entity in existingEntities.Where(entity => entity != null))
-            {
-                updateFunc(entity);
-            }
+			await ctx.SaveChangesAsync();
+		}
 
-            foreach (var entity in entities.Except(existingEntities))
-            {
-                // ReSharper disable once MethodHasAsyncOverload
-                set.Add(entity);
-            }
+		private async Task<TEntity> RunInContextWithResult([NotNull] Func<DbSet<TEntity>, Task<TEntity>> dbFunc)
+		{
+			await using var ctx = GetContext();
 
-            await ctx.SaveChangesAsync();
-        }
+			return await dbFunc(ctx.Set<TEntity>());
+		}
 
-        private async Task<TEntity> RunInContextWithResult([NotNull] Func<DbSet<TEntity>, Task<TEntity>> dbFunc)
-        {
-            await using var ctx = GetContext();
+		private async Task<List<TEntity>> RunInContextWithResult([NotNull] Func<DbSet<TEntity>, Task<List<TEntity>>> dbFunc)
+		{
+			await using var ctx = GetContext();
 
-            return await dbFunc(ctx.Set<TEntity>());
-        }
+			return await dbFunc(ctx.Set<TEntity>());
+		}
 
-        private async Task<List<TEntity>> RunInContextWithResult([NotNull] Func<DbSet<TEntity>, Task<List<TEntity>>> dbFunc)
-        {
-            await using var ctx = GetContext();
+		private async Task<bool> RunInContextAndCommit([NotNull] Func<DbSet<TEntity>, ValueTask> contextFunc)
+		{
+			await using var ctx = GetContext();
 
-            return await dbFunc(ctx.Set<TEntity>());
-        }
+			await contextFunc(ctx.Set<TEntity>());
+			var affectedRows = await ctx.SaveChangesAsync();
 
-        private async Task<bool> RunInContextAndCommit([NotNull] Func<DbSet<TEntity>, ValueTask> contextFunc)
-        {
-            await using var ctx = GetContext();
+			return affectedRows != 0;
+		}
 
-            await contextFunc(ctx.Set<TEntity>());
-            var affectedRows = await ctx.SaveChangesAsync();
+		private async Task<TEntity> RunInContextAndCommitWithResult([NotNull] Func<DbSet<TEntity>, Task<TEntity>> contextFunc)
+		{
+			await using var ctx = GetContext();
 
-            return affectedRows != 0;
-        }
+			var entity = await contextFunc(ctx.Set<TEntity>());
+			await ctx.SaveChangesAsync();
 
-        private async Task<TEntity> RunInContextAndCommitWithResult([NotNull] Func<DbSet<TEntity>, Task<TEntity>> contextFunc)
-        {
-            await using var ctx = GetContext();
+			return entity;
+		}
 
-            var entity = await contextFunc(ctx.Set<TEntity>());
-            await ctx.SaveChangesAsync();
-
-            return entity;
-        }
-
-        private TDbContext GetContext() => _contextFactory.CreateDbContext();
-    }
+		private TDbContext GetContext() => _contextFactory.CreateDbContext();
+	}
 }

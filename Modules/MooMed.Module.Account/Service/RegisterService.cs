@@ -7,7 +7,7 @@ using MooMed.Common.Database.Converter;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Events.Interface;
@@ -16,7 +16,7 @@ using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	internal class RegisterService : Common.ServiceBase.ServiceBase.ServiceBase, IRegisterService
+	internal class RegisterService : MooMedServiceBase, IRegisterService
 	{
 		[NotNull]
 		private readonly IMooMedLogger _logger;

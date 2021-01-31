@@ -12,8 +12,10 @@ export interface IAccountService extends IModuleService {
 	getAccount(accountId: number): Promise<Account>;
 	getOwnAccount(): Promise<Account>;
 
-	updatePersonalData(personalData: PersonalData): Promise<void>;
-	updatePassword(passwordData: PasswordData): Promise<void>;
+	updateProfilePicture(): Promise<void>;
+
+	updatePersonalData(personalData: PersonalData): Promise<boolean>;
+	updatePassword(passwordData: PasswordData): Promise<boolean>;
 }
 
 export interface IAccountValidationService extends IModuleService {
@@ -23,6 +25,7 @@ export interface IAccountValidationService extends IModuleService {
 export interface ILogonService extends IModuleService {
 	login(email: string, password: string, rememberMe: boolean): Promise<void>;
 	register(email: string, userName: string, password: string, confirmPassword: string): Promise<void>;
+	logOff(): Promise<void>;
 }
 
 export interface IFriendsService extends IModuleService {

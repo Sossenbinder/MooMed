@@ -46,7 +46,7 @@ export default class ChatService extends ModuleService implements IChatService {
 		var sendMessageSuccess = await chatCommunication.sendMessage(message, receiverId, timestamp, this._signalRConnection);
 
 		if (sendMessageSuccess) {
-			const senderId = this.getStore().accountReducer.data[0].id;
+			const senderId = this.getStore().accountReducer.data.id;
 
 			const newMessage: ChatMessage = {
 				message,

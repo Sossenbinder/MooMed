@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MooMed.Common.Definitions.Models.Saving;
+﻿using MooMed.Common.Definitions.Models.Saving;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Saving.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MooMed.SavingService.Service
 {
-	public class SavingService : ServiceBaseWithLogger, ISavingService
+	public class SavingService : MooMedServiceBaseWithoutLogger, ISavingService
 	{
 		private readonly ICurrencyService _currencyService;
 

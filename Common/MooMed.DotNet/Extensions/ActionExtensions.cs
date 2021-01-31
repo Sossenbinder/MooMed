@@ -3,34 +3,34 @@ using System.Threading.Tasks;
 
 namespace MooMed.DotNet.Extensions
 {
-    public static class ActionExtensions
-    {
-        public static Func<Task>? MakeTaskCompatible<T>(this Action? action)
-        {
-            if (action == null)
-            {
-                return null;
-            }
+	public static class ActionExtensions
+	{
+		public static Func<Task>? MakeTaskCompatible(this Action? action)
+		{
+			if (action == null)
+			{
+				return null;
+			}
 
-            return () =>
-            {
-                action();
-                return Task.CompletedTask;
-            };
-        }
+			return () =>
+			{
+				action();
+				return Task.CompletedTask;
+			};
+		}
 
-        public static Func<T, Task>? MakeTaskCompatible<T>(this Action<T>? action)
-        {
-            if (action == null)
-            {
-                return null;
-            }
+		public static Func<T, Task>? MakeTaskCompatible<T>(this Action<T>? action)
+		{
+			if (action == null)
+			{
+				return null;
+			}
 
-            return x =>
-            {
-                action(x);
-                return Task.CompletedTask;
-            };
-        }
-    }
+			return x =>
+			{
+				action(x);
+				return Task.CompletedTask;
+			};
+		}
+	}
 }

@@ -1,3 +1,23 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  name: nginx-ingress
+  namespace: default
+spec:
+  rules:
+    - host: moomed.eastus.cloudapp.azure.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: moomed-frontendservice
+              servicePort: 80
+  tls:
+    - hosts:
+        - moomed.eastus.cloudapp.azure.com
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,5 +27,5 @@ spec:
   template:
     spec:
       containers:
-      - image: moomed.azurecr.io/frontendservice:testing
-        name: moomed-frontendservice
+        - image: moomed.azurecr.io/frontendservice:testing
+          name: moomed-frontendservice

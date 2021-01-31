@@ -1,21 +1,21 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using MooMed.AspNetCore.Identity.Extension;
 using MooMed.Common.Definitions;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.AccountValidation.Service.Interface;
+using System.Threading.Tasks;
 
 namespace MooMed.Module.AccountValidation.Service
 {
-	internal class EmailValidationService : ServiceBaseWithLogger, IEmailValidationService
+	internal class EmailValidationService : MooMedServiceBase, IEmailValidationService
 	{
 		private readonly IAccountValidationEmailHelper _accountValidationEmailHelper;
 

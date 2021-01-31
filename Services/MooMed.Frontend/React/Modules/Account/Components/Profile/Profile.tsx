@@ -42,15 +42,15 @@ export const Profile: React.FC<Props> = ({ accountId, account }) => {
 				<When condition={displayAccount != null}>
 					<Choose>
 						<When condition={isSelf}>
-							<OwnProfileFull 
-								account={displayAccount}/>
+							<OwnProfileFull
+								account={displayAccount} />
 						</When>
 						<Otherwise>
 							<ProfileFull
-								account={displayAccount}/>
+								account={displayAccount} />
 						</Otherwise>
 					</Choose>
-				</When>				
+				</When>
 				<Otherwise>
 					Loading ...
 				</Otherwise>
@@ -61,7 +61,7 @@ export const Profile: React.FC<Props> = ({ accountId, account }) => {
 
 const mapStateToProps = (store: ReduxStore) => {
 	return {
-		account: store.accountReducer.data[0],
+		account: store.accountReducer.data,
 	};
 }
 

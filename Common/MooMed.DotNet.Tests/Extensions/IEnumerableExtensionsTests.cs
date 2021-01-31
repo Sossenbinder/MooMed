@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using MooMed.DotNet.Extensions;
 using NUnit.Framework;
 
@@ -7,6 +9,64 @@ namespace MooMed.DotNet.Tests.Extensions
 	[TestFixture]
 	public class IEnumerableExtensionsTests
 	{
+		[Test]
+		public void IsNullOrEmptyShouldWork()
+		{
+			IEnumerable enumerable = "";
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = null!;
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = Enumerable.Empty<object>();
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = Enumerable.Range(0, 5);
+			Assert.False(enumerable.IsNullOrEmpty());
+		}
+
+		[Test]
+		public void IsNullOrEmptyShouldWorkForGeneric()
+		{
+			IEnumerable<object> enumerable = "".Cast<object>();
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = null!;
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = Enumerable.Empty<object>();
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = Enumerable.Range(0, 5).Cast<object>();
+			Assert.False(enumerable.IsNullOrEmpty());
+		}
+
+		[Test]
+		public void IsEmptyShouldWork()
+		{
+			IEnumerable enumerable = "";
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = null!;
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = Enumerable.Empty<object>();
+			Assert.True(enumerable.IsNullOrEmpty());
+		}
+
+		[Test]
+		public void IsEmptyShouldWorkForGeneric()
+		{
+			IEnumerable<object> enumerable = "".Cast<object>();
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = null!;
+			Assert.True(enumerable.IsNullOrEmpty());
+
+			enumerable = Enumerable.Empty<object>();
+			Assert.True(enumerable.IsNullOrEmpty());
+		}
+
 		[Test]
 		public void SplitShouldWorkForEvenlyFilledCollection()
 		{

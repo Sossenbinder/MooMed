@@ -4,11 +4,9 @@ param (
 	[string] $kvClientSecret
 )
 
-cd Istio
+Invoke-Expression "linkerd install"
 
-Invoke-Expression ".\IstioInstall.ps1"
-
-cd ..
+Invoke-Expression "helm install ingress-nginx ingress-nginx/ingress-nginx --namespace=ingress-nginx --create-namespace"
 
 Invoke-Expression ".\AllowLocalClusterToAccessACR.ps1 $registryPassword"
 

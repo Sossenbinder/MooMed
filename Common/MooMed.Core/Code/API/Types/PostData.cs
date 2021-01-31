@@ -9,7 +9,7 @@ namespace MooMed.Core.Code.API.Types
 
 		public PostData(
 			[NotNull] string path,
-			[NotNull] T data) 
+			[NotNull] T data)
 			: base(path)
 		{
 			Data = data;

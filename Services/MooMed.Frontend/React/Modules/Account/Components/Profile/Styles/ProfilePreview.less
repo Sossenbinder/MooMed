@@ -1,0 +1,55 @@
+.ProfilePreview {
+	height: 100%;
+	background-color: darkgrey;
+
+	.ProfilePicture {
+		height: 100%;
+
+		.PictureLabel {
+			margin: 0px;
+			height: 100%;
+
+			.Picture {
+				height: 100%;
+				cursor: pointer;
+			}
+		}
+
+		.PictureUploadHiddenInput {
+			display: none;
+		}
+	}
+
+	.UserName {
+		height: 100%;
+		width: 75%;
+		white-space: nowrap;
+
+		margin-left: 5px;
+
+		a {
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+	}
+
+	.LogOff {
+		width: 40px;
+		cursor: pointer;
+
+		display: grid;
+		place-items: center;
+
+		border-left: 2px solid black;
+
+		user-select: none;
+
+		i {
+			font-size: 30px;
+		}
+
+		&:active {
+			background-color: rgb(64, 64, 64);
+		}
+	}
+}

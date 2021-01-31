@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MooMed.Azure;
 using MooMed.Common.Definitions.Configuration;
 using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session.Interface;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Logging.Abstractions.Interface;
-using MooMed.ServiceBase.Services.Interface;
 using MooMed.ProfilePictureService.Utils;
+using MooMed.ServiceBase.Services.Interface;
 using ProtoBuf.Grpc;
 using SixLabors.ImageSharp;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MooMed.ProfilePictureService.Service
 {
-	public class ProfilePictureService : ServiceBaseWithLogger, IProfilePictureService
+	public class ProfilePictureService : MooMedServiceBaseWithoutLogger, IProfilePictureService
 	{
 		[NotNull]
 		private readonly List<string> _possibleImageExtensions;
@@ -39,7 +39,7 @@ namespace MooMed.ProfilePictureService.Service
 		{
 			_configProvider = configProvider;
 			_cloudStorageAccessor = new CloudStorageAccessor(configProvider.ReadDecryptedValueOrFail<string>("MooMed_ProfilePictures_ConnectionString", "AccountKey"));
-			_possibleImageExtensions = new List<string> { ".png", ".jpg" };
+			_possibleImageExtensions = new List<string> { "png", "jpg" };
 		}
 
 		public Task<ServiceResponse<string>> GetProfilePictureForAccount(ISessionContext sessionContext)

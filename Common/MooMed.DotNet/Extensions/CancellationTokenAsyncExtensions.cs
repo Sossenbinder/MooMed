@@ -11,7 +11,7 @@ namespace MooMed.DotNet.Extensions
 			return new(ct);
 		}
 
-		public readonly struct CancellationTokenAwaiter : ICriticalNotifyCompletion
+		public readonly struct CancellationTokenAwaiter : INotifyCompletion
 		{
 			private readonly CancellationToken _cancellationToken;
 
@@ -33,8 +33,6 @@ namespace MooMed.DotNet.Extensions
 			public bool IsCompleted => _cancellationToken.IsCancellationRequested;
 
 			public void OnCompleted(Action continuation) => _cancellationToken.Register(continuation);
-
-			public void UnsafeOnCompleted(Action continuation) => _cancellationToken.Register(continuation);
 		}
 	}
 }

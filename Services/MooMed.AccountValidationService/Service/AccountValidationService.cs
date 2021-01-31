@@ -1,16 +1,16 @@
-﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.AccountValidation.Service.Interface;
 using MooMed.ServiceBase.Services.Interface;
+using System.Threading.Tasks;
 
 namespace MooMed.AccountValidationService.Service
 {
-	public class AccountValidationService : ServiceBaseWithLogger, IAccountValidationService
+	public class AccountValidationService : MooMedServiceBaseWithoutLogger, IAccountValidationService
 	{
 		[NotNull]
 		private readonly IEmailValidationService _emailValidationService;

@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using MassTransit;
 using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Notifications;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.DotNet.Extensions;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Eventing.Helper;
@@ -18,7 +17,7 @@ using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	public class AccountOnlineStateService : Common.ServiceBase.ServiceBase.ServiceBase, IAccountOnlineStateService
+	public class AccountOnlineStateService : MooMedServiceBase, IAccountOnlineStateService
 	{
 		[NotNull]
 		private readonly IAccountOnlineStateRepository _accountOnlineStateRepository;

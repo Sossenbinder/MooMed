@@ -11,8 +11,8 @@ namespace MooMed.Core.Code.API.Interface
 		Task<TOut> PostWithJson<TIn, TOut>([System.Diagnostics.CodeAnalysis.NotNull] PostData<TIn> postData);
 
 		Task<IEnumerable<TOut>> PostWithJsonSequential<TIn, TOut>(
-			[NotNull] PostData<TIn> postData, 
-			[NotNull] Func<TOut, bool> retryDeterminerFunc, 
+			[NotNull] PostData<TIn> postData,
+			[NotNull] Func<TOut, bool> retryDeterminerFunc,
 			[NotNull] Action<PostData<TIn>> onSuccessTransformer,
 			[CanBeNull] TimeSpan? waitTimer = null);
 	}

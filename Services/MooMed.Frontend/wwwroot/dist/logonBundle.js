@@ -663,27 +663,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./React/data/reducers/accountReducer.ts":
-/*!***********************************************!*\
-  !*** ./React/data/reducers/accountReducer.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.reducer = void 0;
-const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
-exports.reducer = CrudReducer_1.createReducer({
-    actionIdentifier: "ACCOUNT",
-    key: "id"
-});
-exports.default = exports.reducer;
-
-
-/***/ }),
-
 /***/ "./React/data/reducers/popUpNotificationReducer.ts":
 /*!*********************************************************!*\
   !*** ./React/data/reducers/popUpNotificationReducer.ts ***!
@@ -745,14 +724,14 @@ exports.popUpNotificationReducer = popUpNotificationReducer;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.store = void 0;
 const redux = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-const accountReducer_1 = __webpack_require__(/*! ./reducers/accountReducer */ "./React/data/reducers/accountReducer.ts");
+const AccountReducer_1 = __webpack_require__(/*! modules/Account/Reducer/AccountReducer */ "./React/modules/Account/Reducer/AccountReducer.ts");
 const popUpNotificationReducer_1 = __webpack_require__(/*! ./reducers/popUpNotificationReducer */ "./React/data/reducers/popUpNotificationReducer.ts");
 const FriendsReducer_1 = __webpack_require__(/*! modules/Friends/Reducer/FriendsReducer */ "./React/modules/Friends/Reducer/FriendsReducer.ts");
 const ChatRoomsReducer_1 = __webpack_require__(/*! modules/Chat/Reducer/ChatRoomsReducer */ "./React/modules/Chat/Reducer/ChatRoomsReducer.ts");
 const ExchangeTradedsReducer_1 = __webpack_require__(/*! modules/Stocks/Reducer/ExchangeTradedsReducer */ "./React/modules/Stocks/Reducer/ExchangeTradedsReducer.ts");
 const SavingConfigurationReducer_1 = __webpack_require__(/*! modules/Saving/Reducer/SavingConfigurationReducer */ "./React/modules/Saving/Reducer/SavingConfigurationReducer.ts");
 exports.store = redux.createStore(redux.combineReducers({
-    accountReducer: accountReducer_1.reducer.reducer,
+    accountReducer: AccountReducer_1.reducer.reducer,
     popUpNotificationReducer: popUpNotificationReducer_1.popUpNotificationReducer,
     friendsReducer: FriendsReducer_1.reducer.reducer,
     chatRoomsReducer: ChatRoomsReducer_1.reducer.reducer,
@@ -1293,6 +1272,26 @@ const initServices = () => __awaiter(void 0, void 0, void 0, function* () {
 
 /***/ }),
 
+/***/ "./React/modules/Account/Reducer/AccountReducer.ts":
+/*!*********************************************************!*\
+  !*** ./React/modules/Account/Reducer/AccountReducer.ts ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reducer = void 0;
+const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
+exports.reducer = CrudReducer_1.createSingleReducer({
+    actionIdentifier: "ACCOUNT",
+});
+exports.default = exports.reducer;
+
+
+/***/ }),
+
 /***/ "./React/modules/Chat/Reducer/ChatRoomsReducer.ts":
 /*!********************************************************!*\
   !*** ./React/modules/Chat/Reducer/ChatRoomsReducer.ts ***!
@@ -1409,7 +1408,7 @@ exports.register = (email, userName, password, confirmPassword) => __awaiter(voi
     return yield request.post(registerModel);
 });
 exports.logOff = () => __awaiter(void 0, void 0, void 0, function* () {
-    const request = new PostRequest_1.default(logonRequests.register);
+    const request = new PostRequest_1.default(logonRequests.logoff);
     return yield request.post();
 });
 
@@ -1647,6 +1646,9 @@ class LogonService extends ModuleService_1.default {
     logOff() {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield logonCommunication.logOff();
+            if (response.success) {
+                location.href = "/";
+            }
         });
     }
 }

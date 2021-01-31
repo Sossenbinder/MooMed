@@ -5,7 +5,7 @@ using MooMed.Common.Definitions.IPC;
 using MooMed.Common.Definitions.Models.Session;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Events.Interface;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.SessionService.Service
 {
-	public class SessionService : ServiceBaseWithLogger, ISessionService
+	public class SessionService : MooMedServiceBaseWithoutLogger, ISessionService
 	{
 		[NotNull]
 		private readonly ISessionContextCache _sessionContextCache;

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using MassTransit;
+﻿using MassTransit;
 using MooMed.DotNet.Extensions;
 using MooMed.DotNet.Utils.Disposable;
 using MooMed.Eventing.Events.Interface;
+using System;
+using System.Threading.Tasks;
 
-namespace MooMed.Common.ServiceBase.ServiceBase
+namespace MooMed.Common.ServiceBase
 {
-	public abstract class ServiceBase : Disposable
+	public class MooMedServiceBaseWithoutLogger : Disposable
 	{
 		protected void RegisterEventHandler<T>(
 			IEvent<T> @event,

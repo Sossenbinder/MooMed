@@ -1,1 +1,2 @@
-kubectl create secret tls "nginxtlscert" --key "../../../Certs/Kubernetes/Local/nginxTls.key.pem" --cert "../../../Certs/Kubernetes/Local/nginxTls.cert.pem" --namespace nginx-ingress
+kubectl delete secret nginxtlscert
+kubectl create secret tls nginxtlscert --key "./Certs/Local/nginxTls.key.pem" --cert "./Certs/Local/nginxTls.cert.pem"

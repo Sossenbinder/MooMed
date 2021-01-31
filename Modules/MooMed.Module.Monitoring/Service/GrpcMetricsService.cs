@@ -1,13 +1,13 @@
 ﻿using App.Metrics;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Monitoring.Service.Interface;
 
 namespace MooMed.Module.Monitoring.Service
 {
-	public class GrpcMetricsService : ServiceBaseWithLogger, IGrpcMetricsService
+	public class GrpcMetricsService : MooMedServiceBaseWithoutLogger, IGrpcMetricsService
 	{
 		public MeterOptions GrpcCallMeter { get; }
 

@@ -5,12 +5,13 @@
 	height: 55px;
 	position: fixed;
 
+	padding: 8px 16px;
+
 	background-color: @smoothdark;
 
 	.Heading {
-		font-size: 1.5rem;
+		font-size: 1.5em;
 		margin-right: 20px;
-		margin-bottom: 2px;
 
 		text-decoration: none;
 
@@ -18,18 +19,24 @@
 	}
 
 	.SubItem {
-		padding: .5rem 1rem;
+		padding: 8px 16px;
 
 		text-decoration: none;
 
 		color: lightgrey;
 	}
 
-	.SearchBar {
-		height: 35px;
-	}
+	.FunctionalPart {
+		margin-top: 2px;
+		height: 36px;
+		width: 30%;
 
-	.SmallAccountManager {
-		height: 35px;
+		.SearchBarContainer {
+			width: 51%;
+		}
+
+		.ProfilePreviewContainer {
+			width: 46%;
+		}
 	}
 }

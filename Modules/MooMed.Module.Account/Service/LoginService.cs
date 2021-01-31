@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
-using MooMed.Common.ServiceBase.ServiceBase;
+using MooMed.Common.ServiceBase;
 using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Events.Interface;
@@ -15,7 +15,7 @@ using MooMed.Module.Accounts.Service.Interface;
 
 namespace MooMed.Module.Accounts.Service
 {
-	internal class LoginService : Common.ServiceBase.ServiceBase.ServiceBase, ILoginService
+	internal class LoginService : MooMedServiceBase, ILoginService
 	{
 		[NotNull]
 		private readonly ILogonModelValidator _logonModelValidator;

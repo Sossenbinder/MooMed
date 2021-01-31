@@ -8,8 +8,8 @@ import { store, ReduxStore } from "data/store";
 import { IModuleService } from "definitions/Service";
 
 export default abstract class ModuleService implements IModuleService {
-	
-	public abstract async start()
+
+	public abstract start(): Promise<void>;
 
 	private Store: ReduxStore;
 
@@ -21,7 +21,7 @@ export default abstract class ModuleService implements IModuleService {
 		return this.Store.getState();
 	}
 
-	protected dispatch(dispatchAction: Action){
+	protected dispatch(dispatchAction: Action) {
 		this.Store.dispatch(dispatchAction);
 	}
 }

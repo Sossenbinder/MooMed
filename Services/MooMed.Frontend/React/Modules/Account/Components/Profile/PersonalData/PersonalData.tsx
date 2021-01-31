@@ -16,15 +16,16 @@ type Props = {
 	account: Account;
 }
 
-export const PersonalData: React.FC<Props> = ({ account }) => 
-	<Flex 
+export const PersonalData: React.FC<Props> = ({ account }) => (
+	<Flex
 		className="PersonalData"
 		direction="Column">
-		<UpdateDetails 
-			account={account}/>
+		<UpdateDetails
+			account={account} />
 		<Separator />
 		<UpdatePassword
-			account={account}/>
-	</Flex>;
+			account={account} />
+	</Flex>
+);
 
 export default PersonalData
