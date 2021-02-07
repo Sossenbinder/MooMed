@@ -28,6 +28,7 @@ export enum NotificationType {
 	None = 0,
 	FriendOnlineStateChange = 1,
 	NewChatMessage = 2,
+	AccountChange = 3,
 }
 
 export enum ExchangeTradedType {

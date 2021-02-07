@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MooMed.AspNetCore.Identity.Extension;
@@ -13,6 +12,7 @@ using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Service.Interface;
+using System.Threading.Tasks;
 
 namespace MooMed.Module.Accounts.Service
 {
@@ -43,6 +43,7 @@ namespace MooMed.Module.Accounts.Service
 			[NotNull] IModelToEntityConverter<RegisterModel, AccountEntity, int> registerModelToAccountConverter,
 			[NotNull] UserManager<AccountEntity> userManager,
 			[NotNull] IRegistrationModelValidator registrationModelValidator)
+			: base(logger)
 		{
 			_logger = logger;
 			_accountEventHub = accountEventHub;

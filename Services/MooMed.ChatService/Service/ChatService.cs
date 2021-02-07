@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.ChatService.Service
 {
-	public class ChatService : MooMedServiceBaseWithoutLogger, IChatService
+	public class ChatService : MooMedServiceBase, IChatService
 	{
 		[NotNull]
 		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;

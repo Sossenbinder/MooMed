@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.SearchService.Service
 {
-	public class SearchService : MooMedServiceBaseWithoutLogger, ISearchService
+	public class SearchService : MooMedServiceBase, ISearchService
 	{
 		[NotNull]
 		private readonly IAccountService _accountService;

@@ -806,6 +806,7 @@ var NotificationType;
     NotificationType[NotificationType["None"] = 0] = "None";
     NotificationType[NotificationType["FriendOnlineStateChange"] = 1] = "FriendOnlineStateChange";
     NotificationType[NotificationType["NewChatMessage"] = 2] = "NewChatMessage";
+    NotificationType[NotificationType["AccountChange"] = 3] = "AccountChange";
 })(NotificationType = exports.NotificationType || (exports.NotificationType = {}));
 var ExchangeTradedType;
 (function (ExchangeTradedType) {
@@ -1670,7 +1671,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.reducer = void 0;
 const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
 exports.reducer = CrudReducer_1.createSingleReducer({
-    actionIdentifier: "SAVING"
+    actionIdentifier: "SAVING",
+    additionalActions: []
 });
 exports.default = exports.reducer;
 
@@ -1735,9 +1737,28 @@ exports.default = ModuleService;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSingleReducer = exports.createReducer = void 0;
+exports.createReducer = exports.createSingleReducer = void 0;
 const arrayUtils_1 = __webpack_require__(/*! helper/arrayUtils */ "./React/helper/arrayUtils.ts");
-exports.createReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
+exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { crudActions: {
+        addAction: (_, action) => {
+            return {
+                data: Object.assign({}, action.payload)
+            };
+        },
+        updateAction: (_, action) => {
+            return {
+                data: Object.assign({}, action.payload)
+            };
+        },
+        deleteAction: (_, __) => {
+            return {
+                data: undefined,
+            };
+        },
+    }, initialState: {
+        data: undefined
+    } }));
+exports.createReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { crudActions: {
         addAction: (state, action) => {
             const addPayloadAsArray = arrayUtils_1.ensureArray(action.payload);
             return Object.assign(Object.assign({}, state), { data: [...state.data].concat(addPayloadAsArray) });
@@ -1765,76 +1786,36 @@ exports.createReducer = (params) => createReducerInternal(Object.assign(Object.a
     }, initialState: {
         data: []
     } }));
-exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
-        addAction: (_, action) => {
-            return {
-                data: Object.assign({}, action.payload)
-            };
-        },
-        updateAction: (_, action) => {
-            return {
-                data: Object.assign({}, action.payload)
-            };
-        },
-        deleteAction: (_, __) => {
-            return {
-                data: undefined,
-            };
-        }
-    }, initialState: {
-        data: undefined
-    } }));
 const createReducerInternal = (params) => {
-    const actionIdentifier = params.actionIdentifier;
+    const { actionIdentifier, additionalActions } = params;
     const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
     const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
     const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
     const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
     const initialState = params.initialState;
-    const { addAction, deleteAction, updateAction } = params.actions;
+    const { addAction, deleteAction, updateAction } = params.crudActions;
+    const replaceAction = (state, action) => (Object.assign(Object.assign({}, state), { data: action.payload }));
+    const actionDispatchMap = new Map([
+        [ADD_IDENTIFIER, addAction],
+        [UPDATE_IDENTIFIER, updateAction],
+        [DELETE_IDENTIFIER, deleteAction],
+        [REPLACE_IDENTIFIER, replaceAction]
+    ]);
+    additionalActions.forEach(x => actionDispatchMap.set(x.type, x.action));
     const reducer = (state = initialState, action) => {
-        switch (action.type) {
-            case ADD_IDENTIFIER:
-                return addAction(state, action);
-            case UPDATE_IDENTIFIER:
-                return updateAction(state, action);
-            case DELETE_IDENTIFIER:
-                return deleteAction(state, action);
-            case REPLACE_IDENTIFIER:
-                return Object.assign(Object.assign({}, state), { data: action.payload });
-            default:
-                return state;
-        }
+        var _a;
+        const dispatchAction = actionDispatchMap.get(action.type);
+        return (_a = dispatchAction === null || dispatchAction === void 0 ? void 0 : dispatchAction(state, action)) !== null && _a !== void 0 ? _a : state;
     };
-    const addActionGenerator = (data) => {
-        return {
-            type: ADD_IDENTIFIER,
-            payload: data,
-        };
-    };
-    const updateActionGenerator = (data) => {
-        return {
-            type: UPDATE_IDENTIFIER,
-            payload: data,
-        };
-    };
-    const deleteActionGenerator = (data) => {
-        return {
-            type: DELETE_IDENTIFIER,
-            payload: data,
-        };
-    };
-    const replaceActionGenerator = (data) => {
-        return {
-            type: REPLACE_IDENTIFIER,
-            payload: data,
-        };
-    };
+    const generateAction = (type) => (payload) => ({
+        type,
+        payload
+    });
     return {
-        add: addActionGenerator,
-        update: updateActionGenerator,
-        delete: deleteActionGenerator,
-        replace: replaceActionGenerator,
+        add: generateAction(ADD_IDENTIFIER),
+        update: generateAction(UPDATE_IDENTIFIER),
+        delete: generateAction(DELETE_IDENTIFIER),
+        replace: generateAction(REPLACE_IDENTIFIER),
         reducer: reducer,
     };
 };

@@ -21,16 +21,17 @@ export const SavingConfigurator: React.FC<Props> = ({ savingInfo }) => {
 	return (
 		<Flex className="SavingConfigurator">
 			<Switch>
-				<Route 
-					path={"/saving/setup"}
-					render={info => (<SavingSetup 
-							savingInfo={savingInfo} 
-							pathName={info.location.pathname}/>
+				<Route
+					path={"/saving/setup/:viewName"}
+					render={routeProps => (
+						<SavingSetup
+							savingInfo={savingInfo}
+							{...routeProps} />
 					)}
 				/>
 				<Redirect
 					from="/saving"
-					to="/saving/setup/welcome" 
+					to="/saving/setup/welcome"
 				/>
 			</Switch>
 		</Flex>

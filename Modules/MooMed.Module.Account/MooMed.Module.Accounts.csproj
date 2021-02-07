@@ -26,8 +26,4 @@
 		<ProjectReference Include="..\..\Common\MooMed.Logging.Abstractions\MooMed.Logging.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\MooMed.ServiceBase\MooMed.ServiceBase.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Converters\" />
-	</ItemGroup>
 </Project>

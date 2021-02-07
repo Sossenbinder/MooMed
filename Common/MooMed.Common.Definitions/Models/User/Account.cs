@@ -1,7 +1,7 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using MooMed.Common.Definitions.Interface;
 using ProtoBuf;
+using System;
 
 namespace MooMed.Common.Definitions.Models.User
 {
@@ -26,7 +26,6 @@ namespace MooMed.Common.Definitions.Models.User
 		[ProtoMember(6)]
 		public DateTime LastAccessedAt { get; set; }
 
-		//TODO: private FIx these
 		[ProtoMember(7)]
 		public DateTimeOffset? LockoutEnd { get; set; }
 

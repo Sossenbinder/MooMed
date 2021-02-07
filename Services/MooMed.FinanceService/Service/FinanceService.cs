@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.FinanceService.Service
 {
-	public class FinanceService : MooMedServiceBaseWithoutLogger, IFinanceService
+	public class FinanceService : MooMedServiceBase, IFinanceService
 	{
 		[NotNull]
 		private readonly IExchangeTradedsService _exchangeTradedsService;

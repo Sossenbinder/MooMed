@@ -1,0 +1,237 @@
+apiVersion: skaffold/v2beta11
+kind: Config
+metadata:
+  name: moomed
+build:
+  local:
+    push: true
+  artifacts:
+    - image: kubewatcher
+      context: .
+      docker:
+        dockerfile: Workers/KubeWatcher/Dockerfile
+    - image: localhost:5000/accountservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.AccountService/Dockerfile
+    - image: localhost:5000/accountvalidationservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.AccountValidationService/Dockerfile
+    - image: localhost:5000/chatservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.ChatService/Dockerfile
+    - image: localhost:5000/financeservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.FinanceService/Dockerfile
+    - image: localhost:5000/frontendservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.Frontend/Dockerfile
+    - image: localhost:5000/profilepictureservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.ProfilePictureService/Dockerfile
+    - image: localhost:5000/savingservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.SavingService/Dockerfile
+    - image: localhost:5000/searchservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.SearchService/Dockerfile
+    - image: localhost:5000/sessionservice
+      context: .
+      docker:
+        dockerfile: Services/MooMed.SessionService/Dockerfile
+deploy:
+  kustomize:
+    paths:
+      - Services\MooMed.SessionService\Kubernetes\overlays\dev
+      - Services\MooMed.AccountService\Kubernetes\overlays\dev
+      - Services\MooMed.AccountValidationService\Kubernetes\overlays\dev
+      - Services\MooMed.ChatService\Kubernetes\overlays\dev
+      - Services\MooMed.FinanceService\Kubernetes\overlays\dev
+      - Services\MooMed.Frontend\Kubernetes\overlays\dev
+      - Services\MooMed.ProfilePictureService\Kubernetes\overlays\dev
+      - Services\MooMed.SavingService\Kubernetes\overlays\dev
+      - Services\MooMed.SearchService\Kubernetes\overlays\dev
+      - Services\MooMed.SessionService\Kubernetes\overlays\dev
+profiles:
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountValidationService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountValidationService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountValidationService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.AccountValidationService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ChatService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ChatService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ChatService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ChatService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.FinanceService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.FinanceService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.FinanceService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.FinanceService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.Frontend\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.Frontend\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.Frontend\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.Frontend\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ProfilePictureService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ProfilePictureService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ProfilePictureService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.ProfilePictureService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SavingService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SavingService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SavingService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SavingService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SearchService\Kubernetes\base
+  - name: dev
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SearchService\Kubernetes\overlays\dev
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SearchService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SearchService\Kubernetes\overlays\testing
+  - name: base
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SessionService\Kubernetes\base
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SessionService\Kubernetes\overlays\prod
+  - name: testing
+    deploy:
+      kustomize:
+        paths:
+          - Services\MooMed.SessionService\Kubernetes\overlays\testing

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
@@ -12,6 +11,7 @@ using MooMed.Module.Accounts.Helper.Interface;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
+using System.Threading.Tasks;
 
 namespace MooMed.Module.Accounts.Service
 {
@@ -43,6 +43,7 @@ namespace MooMed.Module.Accounts.Service
 			[NotNull] SignInManager<AccountEntity> signInManager,
 			[NotNull] UserManager<AccountEntity> userManager,
 			[NotNull] AccountDbConverter accountDbConverter)
+			: base(logger)
 		{
 			_logonModelValidator = logonModelValidator;
 			_logger = logger;

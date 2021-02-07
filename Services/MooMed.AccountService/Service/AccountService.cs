@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.AccountService.Service
 {
-	public class AccountService : MooMedServiceBaseWithoutLogger, IAccountService
+	public class AccountService : MooMedServiceBase, IAccountService
 	{
 		[NotNull]
 		private readonly IAccountEventHub _accountEventHub;

@@ -1,5 +1,4 @@
-﻿using MooMed.DotNet.Utils.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace MooMed.DotNet.Tests.Utils.Async
 {
@@ -9,7 +8,7 @@ namespace MooMed.DotNet.Tests.Utils.Async
 		[Test]
 		public void FireAndForgetTaskShouldWorkForHappyPath()
 		{
-			var ffTask = FireAndForgetTask.Run()
+			//var ffTask = FireAndForgetTask.Run()
 		}
 	}
 }

@@ -6,7 +6,16 @@ param (
 
 Invoke-Expression "linkerd install"
 
-Invoke-Expression "helm install ingress-nginx ingress-nginx/ingress-nginx --namespace=ingress-nginx --create-namespace"
+if ($configuration -ne "dev") {
+	Invoke-Expression "helm install ingress-nginx ingress-nginx/ingress-nginx --namespace=ingress-nginx --create-namespace"
+}
+else {
+	Invoke-Expression "kubectl apply -f .\Kind\kindIngress.yaml"
+}
+
+cd nginxIngress
+Invoke-Expression ".\tlsCert.ps1"
+cd ..
 
 Invoke-Expression ".\AllowLocalClusterToAccessACR.ps1 $registryPassword"
 

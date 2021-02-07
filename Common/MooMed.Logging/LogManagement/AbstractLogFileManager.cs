@@ -25,9 +25,9 @@ namespace MooMed.Logging.LogManagement
 
 		public abstract string GetFilePath();
 
-		protected string GetServiceName() => Assembly.GetEntryAssembly()?.GetName().Name ?? Dns.GetHostName();
+		protected static string GetServiceName() => Assembly.GetEntryAssembly()?.GetName().Name ?? Dns.GetHostName();
 
-		protected void PrepareEnv(string serviceLogsPath)
+		protected static void PrepareEnv(string serviceLogsPath)
 		{
 			if (!Directory.Exists(serviceLogsPath))
 			{

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.SessionService.Service
 {
-	public class SessionService : MooMedServiceBaseWithoutLogger, ISessionService
+	public class SessionService : MooMedServiceBase, ISessionService
 	{
 		[NotNull]
 		private readonly ISessionContextCache _sessionContextCache;

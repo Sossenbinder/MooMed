@@ -1,7 +1,7 @@
 // Framework
 import * as React from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex"
@@ -41,25 +41,23 @@ type StepInfo = {
 	prevInfo?: NavigationInfo;
 }
 
-type Props = {
+type RouterProps = {
+	viewName: string;
+}
+
+type Props = RouteComponentProps<RouterProps> & {
 	savingInfo: SavingInfo;
-	pathName: string;
 
 	updateSavingInfo(savingInfo: SavingInfo): void;
 }
 
 const routePrefix = "/saving/setup/";
 
-export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavingInfo }) => {
+export const SavingSetup: React.FC<Props> = ({ savingInfo, updateSavingInfo, history, match: { params: { viewName } } }) => {
 
 	const { SavingService } = useServices();
-	const history = useHistory();
 
 	const [networkCallInProgress, setNetworkCallInProgess] = React.useState<boolean>(true);
-
-	const plainRoute = pathName.substring(pathName.lastIndexOf("/") + 1);
-	const casedRoute = plainRoute.substring(0, 1).toUpperCase() + plainRoute.substring(1);
-	const currentStep: SetupStep = SetupStep[casedRoute] as SetupStep ?? SetupStep.Welcome;
 
 	const onBasicSettingsUpdate = React.useCallback((basicSavingInfo: BasicSavingInfo) => {
 		savingInfo.basicSavingInfo = basicSavingInfo;
@@ -99,7 +97,9 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, pathName, updateSavin
 				},
 			}],
 		]);
-	}, [currentStep, savingInfo.currency, savingInfo.basicSavingInfo]);
+	}, [savingInfo.currency, savingInfo.basicSavingInfo]);
+
+	const currentStep: SetupStep = SetupStep[viewName] as SetupStep ?? SetupStep.Welcome;
 
 	const createNavArrow = (navInfo: NavigationInfo, direction: keyof typeof Direction) => (
 		<Flex
@@ -162,4 +162,4 @@ const mapDispatchToProps = (dispatch: any) => {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(SavingSetup);
+export default withRouter(connect(null, mapDispatchToProps)(SavingSetup));

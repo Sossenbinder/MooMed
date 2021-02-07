@@ -5,5 +5,6 @@
 		None,
 		FriendOnlineStateChange,
 		NewChatMessage,
+		AccountChange,
 	}
 }

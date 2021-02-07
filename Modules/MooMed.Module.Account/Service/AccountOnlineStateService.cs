@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-using MooMed.Common.Definitions.Eventing.User;
+﻿using MooMed.Common.Definitions.Eventing.User;
 using MooMed.Common.Definitions.Models.Session.Interface;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Notifications;
@@ -9,30 +6,33 @@ using MooMed.Common.ServiceBase;
 using MooMed.DotNet.Extensions;
 using MooMed.Eventing.Events.MassTransit.Interface;
 using MooMed.Eventing.Helper;
+using MooMed.Logging.Abstractions.Interface;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Datatypes.SignalR;
 using MooMed.Module.Accounts.Events.Interface;
 using MooMed.Module.Accounts.Repository.Interface;
 using MooMed.Module.Accounts.Service.Interface;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MooMed.Module.Accounts.Service
 {
 	public class AccountOnlineStateService : MooMedServiceBase, IAccountOnlineStateService
 	{
-		[NotNull]
 		private readonly IAccountOnlineStateRepository _accountOnlineStateRepository;
 
-		[NotNull]
 		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
 
-		[NotNull]
 		private readonly IFriendsService _friendsService;
 
 		public AccountOnlineStateService(
-			[NotNull] IAccountEventHub accountEventHub,
-			[NotNull] IAccountOnlineStateRepository accountOnlineStateRepository,
-			[NotNull] IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
-			[NotNull] IFriendsService friendsService)
+			IMooMedLogger logger,
+			IAccountEventHub accountEventHub,
+			IAccountOnlineStateRepository accountOnlineStateRepository,
+			IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService,
+			IFriendsService friendsService)
+			: base(logger)
 		{
 			_accountOnlineStateRepository = accountOnlineStateRepository;
 			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;

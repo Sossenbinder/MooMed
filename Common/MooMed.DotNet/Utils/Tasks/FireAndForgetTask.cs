@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MooMed.Logging.Abstractions.Interface;
+using System;
 using System.Threading.Tasks;
-using MooMed.Logging.Abstractions.Interface;
 
 namespace MooMed.DotNet.Utils.Tasks
 {

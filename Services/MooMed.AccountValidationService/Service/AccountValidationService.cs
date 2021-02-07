@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.AccountValidationService.Service
 {
-	public class AccountValidationService : MooMedServiceBaseWithoutLogger, IAccountValidationService
+	public class AccountValidationService : MooMedServiceBase, IAccountValidationService
 	{
 		[NotNull]
 		private readonly IEmailValidationService _emailValidationService;

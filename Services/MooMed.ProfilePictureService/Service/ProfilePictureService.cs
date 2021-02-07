@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.ProfilePictureService.Service
 {
-	public class ProfilePictureService : MooMedServiceBaseWithoutLogger, IProfilePictureService
+	public class ProfilePictureService : MooMedServiceBase, IProfilePictureService
 	{
 		[NotNull]
 		private readonly List<string> _possibleImageExtensions;

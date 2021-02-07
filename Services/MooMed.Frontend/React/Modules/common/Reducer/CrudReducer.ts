@@ -5,11 +5,13 @@ import { ensureArray, removeAt } from "helper/arrayUtils";
 import { CouldBeArray } from "data/commonTypes";
 import { Reducer, ReducerState, MultiReducerState, ReducerAction } from "./types";
 
-type ReducerParamsWithoutKey = {
+// No keys needed here. We only have one entry
+type SingleReducerParams = {
 	actionIdentifier: string;
 }
 
-type ReducerParams<T> = ReducerParamsWithoutKey & {
+// Keys are necessary here, so identifying updates for specific items are possible
+type MultiReducerParams<T> = SingleReducerParams & {
 	key: keyof T;
 }
 
@@ -19,58 +21,8 @@ type CrudActions<TDataType, TReducerState extends ReducerState<TDataType>> = {
 	deleteAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
 }
 
-export const createReducer = <T>(params: ReducerParams<T>) => createReducerInternal<CouldBeArray<T>, MultiReducerState<T>>(
-	{ 
-		...params,
-		actions: {
-			addAction: (state, action) => {
-				const addPayloadAsArray = ensureArray(action.payload);
-
-				return { 
-					...state, 
-					data: [...state.data].concat(addPayloadAsArray),
-				};
-			},
-			updateAction: (state, action) => {
-				const updatePayloadAsArray = ensureArray(action.payload);
-				const updatedData = [ ...state.data ];
-
-				updatePayloadAsArray.forEach(val => {
-					const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
-					updatedData[existingItemIndex] = val;
-				});
-
-				return {
-					...state,
-					data: updatedData
-				};
-			},
-			deleteAction: (state, action) => {
-				const deletePayloadAsArray = ensureArray(action.payload);
-				const dataToDelete = [ ...state.data ];
-
-				deletePayloadAsArray.forEach(val => {
-					const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
-
-					if (indexToDelete > -1) {
-						removeAt(dataToDelete, indexToDelete);
-					}
-				});
-
-				return {
-					...state,
-					data: dataToDelete
-				};
-			}
-		},
-		initialState: {
-			data: []
-		},
-	}
-);
-
-export const createSingleReducer = <T>(params: ReducerParamsWithoutKey) => createReducerInternal<T, ReducerState<T>>(
-	{ 
+export const createSingleReducer = <T>(params: SingleReducerParams) => createReducerInternal<T, ReducerState<T>>(
+	{
 		...params,
 		actions: {
 			addAction: (_, action) => {
@@ -95,7 +47,57 @@ export const createSingleReducer = <T>(params: ReducerParamsWithoutKey) => creat
 	}
 );
 
-type GenericReducerParams<TDataType, TReducerState extends ReducerState<TDataType>> = ReducerParamsWithoutKey & {
+export const createReducer = <T>(params: MultiReducerParams<T>) => createReducerInternal<CouldBeArray<T>, MultiReducerState<T>>(
+	{
+		...params,
+		actions: {
+			addAction: (state, action) => {
+				const addPayloadAsArray = ensureArray(action.payload);
+
+				return {
+					...state,
+					data: [...state.data].concat(addPayloadAsArray),
+				};
+			},
+			updateAction: (state, action) => {
+				const updatePayloadAsArray = ensureArray(action.payload);
+				const updatedData = [...state.data];
+
+				updatePayloadAsArray.forEach(val => {
+					const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
+					updatedData[existingItemIndex] = val;
+				});
+
+				return {
+					...state,
+					data: updatedData
+				};
+			},
+			deleteAction: (state, action) => {
+				const deletePayloadAsArray = ensureArray(action.payload);
+				const dataToDelete = [...state.data];
+
+				deletePayloadAsArray.forEach(val => {
+					const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
+
+					if (indexToDelete > -1) {
+						removeAt(dataToDelete, indexToDelete);
+					}
+				});
+
+				return {
+					...state,
+					data: dataToDelete
+				};
+			}
+		},
+		initialState: {
+			data: []
+		},
+	}
+);
+
+type GenericReducerParams<TDataType, TReducerState extends ReducerState<TDataType>> = SingleReducerParams & {
 	actions: CrudActions<TDataType, TReducerState>;
 	initialState: TReducerState;
 }
@@ -115,57 +117,35 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 
 	const { addAction, deleteAction, updateAction } = params.actions;
 
+	const replaceAction = (state: TReducerState, action: ReducerAction<TDataType>): TReducerState => ({ ...state, data: action.payload });
+
+	const reducerActionMap = new Map<string, (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState>([
+		[ADD_IDENTIFIER, addAction],
+		[UPDATE_IDENTIFIER, updateAction],
+		[DELETE_IDENTIFIER, deleteAction],
+		[REPLACE_IDENTIFIER, replaceAction]
+	]);
+
 	const reducer = (state = initialState, action: ReducerAction<TDataType>): TReducerState => {
-		switch (action.type) {
-			case ADD_IDENTIFIER:
-				return addAction(state, action);
-			case UPDATE_IDENTIFIER:
-				return updateAction(state, action);
-			case DELETE_IDENTIFIER:
-				return deleteAction(state, action);
-			case REPLACE_IDENTIFIER:
-				return {
-					...state,
-					data: action.payload,
-				};
-			default:
-				return state;
+		const reducerAction = reducerActionMap.get(action.type);
+
+		if (!reducerAction) {
+			return state;
 		}
+
+		return reducerAction(state, action);
 	}
 
-	const addActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
-		return {
-			type: ADD_IDENTIFIER,
-			payload: data,
-		}
-	};
-
-	const updateActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
-		return {
-			type: UPDATE_IDENTIFIER,
-			payload: data,
-		}
-	};
-
-	const deleteActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
-		return {
-			type: DELETE_IDENTIFIER,
-			payload: data,
-		}
-	};
-
-	const replaceActionGenerator = (data: TDataType): ReducerAction<TDataType> => {
-		return {
-			type: REPLACE_IDENTIFIER,
-			payload: data,
-		}
-	};
+	const actionGenerator = (type: string) => (payload: TDataType) => ({
+		type,
+		payload,
+	});
 
 	return {
-		add: addActionGenerator,
-		update: updateActionGenerator,
-		delete: deleteActionGenerator,
-		replace: replaceActionGenerator,
+		add: actionGenerator(ADD_IDENTIFIER),
+		update: actionGenerator(UPDATE_IDENTIFIER),
+		delete: actionGenerator(DELETE_IDENTIFIER),
+		replace: actionGenerator(REPLACE_IDENTIFIER),
 		reducer: reducer,
 	}
 }

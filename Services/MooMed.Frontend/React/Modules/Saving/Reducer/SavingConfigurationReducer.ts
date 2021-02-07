@@ -5,7 +5,10 @@ import { createSingleReducer } from "modules/common/reducer/CrudReducer";
 import { SavingInfo } from "modules/saving/types";
 
 export const reducer = createSingleReducer<SavingInfo>({
-	actionIdentifier: "SAVING"
+	actionIdentifier: "SAVING",
+	additionalActions: [
+
+	]
 });
 
 export default reducer;

@@ -1,2 +1,2 @@
-dotnet "..//..//Tools\FrontendEnumGenerator\bin\x64\Debug\netcoreapp3.1\FrontendEnumGenerator.dll" ..//..//
-"../../Tools\FrontendTranslationGenerator\bin\x64\Debug\FrontendTranslationGenerator.exe" ../../
+dotnet "../../Tools\FrontendEnumGenerator\bin\Debug\net5.0\FrontendEnumGenerator.dll" ..//..//
+dotnet "../../Tools\FrontendTranslationGenerator\bin\Debug\net5.0\FrontendTranslationGenerator.dll" ../../

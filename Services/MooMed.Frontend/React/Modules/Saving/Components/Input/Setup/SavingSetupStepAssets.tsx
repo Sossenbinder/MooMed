@@ -10,6 +10,7 @@ import TextInput from "common/components/general/input/general/TextInput";
 
 // Functionality
 import { currencySymbolMap } from "helper/currencyHelper";
+import { reducer as savingConfigurationReducer } from "modules/saving/reducer/SavingConfigurationReducer";
 
 // Types
 import { AssetInfo } from "modules/saving/types";
@@ -22,20 +23,11 @@ type Props = {
 	currency: Currency;
 }
 
-export const SavingSetupStepAssets: React.FC<Props> = ({ assetInfo, currency }) => {
+export const SavingSetupStepAssets: React.FC<Props> = ({ assetInfo: { cash, commodities, debt, equity, estate }, currency }) => {
 
+	const onChange = React.useCallback(() => {
 
-	const [income, setIncome] = React.useState(assetInfo.cash);
-	const incomeRef = React.useRef(income);
-	incomeRef.current = income;
-
-	const [rent, setRent] = React.useState(assetInfo.commodities);
-	const rentRef = React.useRef(rent);
-	rentRef.current = rent;
-
-	const [groceries, setGroceries] = React.useState(assetInfo.commodities);
-	const groceriesRef = React.useRef(groceries);
-	groceriesRef.current = groceries;
+	}, []);
 
 	return (
 		<Flex
@@ -53,14 +45,30 @@ export const SavingSetupStepAssets: React.FC<Props> = ({ assetInfo, currency }) 
 				}}>
 				<Cell>
 					Your income:
-					</Cell>
+				</Cell>
+				<Cell>
+					<Flex
+						direction="Row">
+						<TextInput
+							name="Income"
+							data={cash}
+							setData={val => setIncome(+val)}
+							inputType="number" />
+						<span className="Currency">
+							{currencySymbolMap.get(currency)}
+						</span>
+					</Flex>
+				</Cell>
+				<Cell>
+					Your income:
+				</Cell>
 				<Cell>
 					<Flex
 						direction="Row">
 						<TextInput
 							name="Income"
 							data={income}
-							setData={val => setIncome}
+							setData={val => setIncome(+val)}
 							inputType="number" />
 						<span className="Currency">
 							{currencySymbolMap.get(currency)}

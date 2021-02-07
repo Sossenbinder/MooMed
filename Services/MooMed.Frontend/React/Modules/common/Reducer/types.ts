@@ -1,11 +1,13 @@
 // Framework
 import * as Redux from "redux";
 
-export type ReducerState<T> = {
+export interface ReducerState<T> {
 	data: T;
 }
 
-export type MultiReducerState<T> = ReducerState<Array<T>>;
+export interface MultiReducerState<T> {
+	data: Array<T>;
+}
 
 export type ReducerAction<T> = Redux.Action & {
 	payload: T;

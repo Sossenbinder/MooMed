@@ -7,5 +7,5 @@ spec:
   template:
     spec:
       containers:
-        - image: moomed.azurecr.io/frontendservice:dev
+        - image: localhost:5000/frontendservice:dev
           name: moomed-frontendservice

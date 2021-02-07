@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MooMed.SavingService.Service
 {
-	public class SavingService : MooMedServiceBaseWithoutLogger, ISavingService
+	public class SavingService : MooMedServiceBase, ISavingService
 	{
 		private readonly ICurrencyService _currencyService;
 

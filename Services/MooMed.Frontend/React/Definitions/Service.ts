@@ -12,7 +12,7 @@ export interface IAccountService extends IModuleService {
 	getAccount(accountId: number): Promise<Account>;
 	getOwnAccount(): Promise<Account>;
 
-	updateProfilePicture(): Promise<void>;
+	updateProfilePicture(file: File): Promise<void>;
 
 	updatePersonalData(personalData: PersonalData): Promise<boolean>;
 	updatePassword(passwordData: PasswordData): Promise<boolean>;

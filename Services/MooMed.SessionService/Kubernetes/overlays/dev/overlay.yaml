@@ -7,7 +7,5 @@ spec:
   template:
     spec:
       containers:
-        - image: moomed.azurecr.io/sessionservice:dev
+        - image: localhost:5000/sessionservice:dev
           name: moomed-sessionservice
-      imagePullSecrets:
-        - name: acrimgpullsecret

@@ -67,7 +67,13 @@ foreach ($imageInfo in $imageInfos) {
 	
 	Write-Host "Building $($imageInfo.Path)"
 
-	$imgName = "moomed.azurecr.io/" + $imageInfo.Name + ":" + $configuration
+	$imgHost = "moomed.azurecr.io";
+
+	if ($configuration -eq "dev") {
+		$imgHost = "localhost:5000";
+	}
+
+	$imgName = $imgHost + "/" + $imageInfo.Name + ":" + $configuration
 	docker build -t $imgName -f "../../$($imageInfo.Path)" ../.. > Out-Null
 
 	if ($LASTEXITCODE -eq 0) {

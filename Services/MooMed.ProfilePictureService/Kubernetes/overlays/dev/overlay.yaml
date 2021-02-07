@@ -7,7 +7,5 @@ spec:
   template:
     spec:
       containers:
-        - image: moomed.azurecr.io/profilepictureservice:dev
+        - image: localhost:5000/profilepictureservice:dev
           name: moomed-profilepictureservice
-      imagePullSecrets:
-        - name: acrimgpullsecret

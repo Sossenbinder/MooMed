@@ -7,7 +7,5 @@ spec:
   template:
     spec:
       containers:
-        - image: moomed.azurecr.io/chatservice:dev
+        - image: localhost:5000/chatservice:dev
           name: moomed-chatservice
-      imagePullSecrets:
-        - name: acrimgpullsecret

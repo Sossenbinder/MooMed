@@ -1,14 +1,21 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using MooMed.AspNetCore.Identity.Extension;
 using MooMed.Common.Definitions.Models.User;
 using MooMed.Common.Definitions.Models.User.ErrorCodes;
 using MooMed.Common.ServiceBase;
 using MooMed.Core.DataTypes;
-using MooMed.DotNet.Utils.Tasks;
+using MooMed.Eventing.Events.MassTransit.Interface;
+using MooMed.Logging.Abstractions.Interface;
+using MooMed.Module.Accounts.Converters;
 using MooMed.Module.Accounts.Datatypes.Entity;
 using MooMed.Module.Accounts.Repository.Converters;
 using MooMed.Module.Accounts.Service.Interface;
+using System.Threading.Tasks;
+using MooMed.Common.Definitions.Notifications;
+using MooMed.DotNet.Extensions;
+using MooMed.DotNet.Utils.Tasks;
+using MooMed.Eventing.Helper;
+using MooMed.Module.Accounts.Datatypes.SignalR;
 
 namespace MooMed.Module.Accounts.Service
 {
@@ -16,34 +23,60 @@ namespace MooMed.Module.Accounts.Service
 	{
 		private readonly AccountDbConverter _accountDbConverter;
 
+		private readonly AccountModelToUiModelConverter _accountModelToUiModelConverter;
+
 		private readonly UserManager<AccountEntity> _userManager;
 
+		private readonly IFriendsService _friendsService;
+
+		private readonly IMassTransitSignalRBackplaneService _signalRBackplaneService;
+
 		public PersonalDataService(
+			IMooMedLogger logger,
 			AccountDbConverter accountDbConverter,
-			UserManager<AccountEntity> userManager)
+			AccountModelToUiModelConverter accountModelToUiModelConverter,
+			UserManager<AccountEntity> userManager,
+			IFriendsService friendsService,
+			IMassTransitSignalRBackplaneService signalRBackplaneService)
+			: base(logger)
 		{
 			_accountDbConverter = accountDbConverter;
+			_accountModelToUiModelConverter = accountModelToUiModelConverter;
 			_userManager = userManager;
+			_friendsService = friendsService;
+			_signalRBackplaneService = signalRBackplaneService;
 		}
 
-		public async Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalData)
+		public async Task<ServiceResponse<IdentityErrorCode>> UpdatePersonalData(PersonalData personalDataModel)
 		{
-			var accountEntity = await _userManager.FindByEmailAsync(personalData.Email);
+			var accountEntity = await _userManager.FindByEmailAsync(personalDataModel.Email);
 
-			if (personalData.UserName != null)
+			if (personalDataModel.UserName != null)
 			{
-				accountEntity.UserName = personalData.UserName;
+				accountEntity.UserName = personalDataModel.UserName;
 			}
 
-			if (personalData.Email != null)
+			if (personalDataModel.Email != null)
 			{
-				accountEntity.Email = personalData.Email;
+				accountEntity.Email = personalDataModel.Email;
 			}
 
 			var identityResult = await _userManager.UpdateAsync(accountEntity);
 
 			if (identityResult.Succeeded)
 			{
+				FireAndForgetTask.Run(async () =>
+				{
+					var friendsTask = _friendsService.GetFriends(personalDataModel.SessionContext);
+
+					var createNotification = FrontendNotificationFactory.Update(new AccountChangeNotification()
+					{
+						Account = _accountModelToUiModelConverter.ToUiModel(personalDataModel.SessionContext.Account)
+					}, NotificationType.AccountChange);
+
+					await (await friendsTask).ParallelAsync(friend => _signalRBackplaneService.RaiseGroupSignalREvent(friend.Id.ToString(), createNotification));
+				}, Logger);
+
 				return ServiceResponse.Success(IdentityErrorCode.Success);
 			}
 
@@ -52,21 +85,17 @@ namespace MooMed.Module.Accounts.Service
 			return ServiceResponse.Failure(errorCode);
 		}
 
-		public async Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePassword)
+		public async Task<ServiceResponse<IdentityErrorCode>> UpdatePassword(UpdatePassword updatePasswordModel)
 		{
-			var accountEntity = _accountDbConverter.ToEntity(updatePassword.SessionContext.Account);
+			var accountEntity = _accountDbConverter.ToEntity(updatePasswordModel.SessionContext.Account);
 
 			var result = await _userManager.ChangePasswordAsync(
 				accountEntity,
-				updatePassword.OldPassword,
-				updatePassword.NewPassword);
+				updatePasswordModel.OldPassword,
+				updatePasswordModel.NewPassword);
 
 			if (result.Succeeded)
 			{
-				FireAndForgetTask.Run(async () =>
-				{
-				}, )
-
 				return ServiceResponse.Success(IdentityErrorCode.Success);
 			}
 

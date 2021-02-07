@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using JetBrains.Annotations;
 
 namespace FrontendTranslationGenerator
 {
 	internal class TranslationGenerator
 	{
-		[NotNull]
 		private string _translationPaths;
 
-		[NotNull]
 		private string _translationOutputPaths;
 
-		[NotNull]
 		private string _wwwRootPath;
 
-		public void GenerateTranslations([NotNull] string solutionDir)
+		public void GenerateTranslations(string solutionDir)
 		{
 			GetTranslationResourcesPath(solutionDir);
 			var relevantTranslations = GetRelevantTranslations();
@@ -30,7 +25,7 @@ namespace FrontendTranslationGenerator
 			CopyTranslationsToWWWRoot();
 		}
 
-		private void GetTranslationResourcesPath([NotNull] string solutionDir)
+		private void GetTranslationResourcesPath(string solutionDir)
 		{
 			_translationPaths = $"{solutionDir}\\Common\\MooMed.Core\\Translations\\Resources";
 			_translationOutputPaths = $"{solutionDir}\\Services\\MooMed.Frontend\\React\\Translations";
