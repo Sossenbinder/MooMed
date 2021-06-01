@@ -1668,11 +1668,29 @@ exports.default = LogonService;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reducer = void 0;
+exports.reducer = exports.updateAssets = exports.UPDATE_ASSETS = void 0;
 const CrudReducer_1 = __webpack_require__(/*! modules/common/reducer/CrudReducer */ "./React/modules/common/reducer/CrudReducer.ts");
+exports.UPDATE_ASSETS = "SAVING_ASSETS_UPDATE";
+exports.updateAssets = (assets) => ({
+    type: exports.UPDATE_ASSETS,
+    payload: {
+        assets,
+    },
+});
 exports.reducer = CrudReducer_1.createSingleReducer({
     actionIdentifier: "SAVING",
-    additionalActions: []
+    additionalActions: [
+        {
+            type: exports.UPDATE_ASSETS,
+            action: (state, action) => {
+                const data = Object.assign({}, state.data);
+                data.assets = action.payload.assets;
+                return {
+                    data,
+                };
+            },
+        }
+    ]
 });
 exports.default = exports.reducer;
 
@@ -1739,7 +1757,7 @@ exports.default = ModuleService;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createReducer = exports.createSingleReducer = void 0;
 const arrayUtils_1 = __webpack_require__(/*! helper/arrayUtils */ "./React/helper/arrayUtils.ts");
-exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { crudActions: {
+exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
         addAction: (_, action) => {
             return {
                 data: Object.assign({}, action.payload)
@@ -1754,11 +1772,11 @@ exports.createSingleReducer = (params) => createReducerInternal(Object.assign(Ob
             return {
                 data: undefined,
             };
-        },
+        }
     }, initialState: {
         data: undefined
     } }));
-exports.createReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { crudActions: {
+exports.createReducer = (params) => createReducerInternal(Object.assign(Object.assign({}, params), { actions: {
         addAction: (state, action) => {
             const addPayloadAsArray = arrayUtils_1.ensureArray(action.payload);
             return Object.assign(Object.assign({}, state), { data: [...state.data].concat(addPayloadAsArray) });
@@ -1787,35 +1805,37 @@ exports.createReducer = (params) => createReducerInternal(Object.assign(Object.a
         data: []
     } }));
 const createReducerInternal = (params) => {
-    const { actionIdentifier, additionalActions } = params;
+    const { actionIdentifier, externalActions } = params;
     const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
     const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
     const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
     const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
     const initialState = params.initialState;
-    const { addAction, deleteAction, updateAction } = params.crudActions;
+    const { addAction, deleteAction, updateAction } = params.actions;
     const replaceAction = (state, action) => (Object.assign(Object.assign({}, state), { data: action.payload }));
-    const actionDispatchMap = new Map([
+    const reducerActionMap = new Map([
         [ADD_IDENTIFIER, addAction],
         [UPDATE_IDENTIFIER, updateAction],
         [DELETE_IDENTIFIER, deleteAction],
         [REPLACE_IDENTIFIER, replaceAction]
     ]);
-    additionalActions.forEach(x => actionDispatchMap.set(x.type, x.action));
+    externalActions === null || externalActions === void 0 ? void 0 : externalActions.forEach(x => reducerActionMap.set(x.type, x.action));
     const reducer = (state = initialState, action) => {
-        var _a;
-        const dispatchAction = actionDispatchMap.get(action.type);
-        return (_a = dispatchAction === null || dispatchAction === void 0 ? void 0 : dispatchAction(state, action)) !== null && _a !== void 0 ? _a : state;
+        const reducerAction = reducerActionMap.get(action.type);
+        if (!reducerAction) {
+            return state;
+        }
+        return reducerAction(state, action);
     };
-    const generateAction = (type) => (payload) => ({
+    const actionGenerator = (type) => (payload) => ({
         type,
-        payload
+        payload,
     });
     return {
-        add: generateAction(ADD_IDENTIFIER),
-        update: generateAction(UPDATE_IDENTIFIER),
-        delete: generateAction(DELETE_IDENTIFIER),
-        replace: generateAction(REPLACE_IDENTIFIER),
+        add: actionGenerator(ADD_IDENTIFIER),
+        update: actionGenerator(UPDATE_IDENTIFIER),
+        delete: actionGenerator(DELETE_IDENTIFIER),
+        replace: actionGenerator(REPLACE_IDENTIFIER),
         reducer: reducer,
     };
 };

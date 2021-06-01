@@ -8,7 +8,6 @@ import { BrowserRouter } from "react-router-dom";
 // Components
 import NavBar from "views/Components/Main/NavBar";
 import PopUpMessageHolder from "views/Components/Main/PopUpMessage/PopUpMessageHolder";
-import GlobalClickCapturer from "views/Components/Helper/GlobalClickCapturer";
 import Flex from "common/components/Flex";
 import MainContent from "./MainContent";
 import ChatWidget from "modules/Chat/Components/ChatWidget";
@@ -30,9 +29,7 @@ export default function renderMainView() {
 	ReactDOM.render(
 		<Provider store={store}>
 			<BrowserRouter>
-				<GlobalClickCapturer>
-					<Main />
-				</GlobalClickCapturer>
+				<Main />
 			</BrowserRouter>
 		</Provider>,
 		document.getElementById("content")

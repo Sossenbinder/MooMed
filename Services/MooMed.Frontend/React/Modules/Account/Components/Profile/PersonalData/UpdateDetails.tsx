@@ -31,7 +31,7 @@ export const UpdateDetails: React.FC<Props> = ({ account }) => {
 	const { AccountService } = useServices();
 
 	const onEdit = React.useCallback((cb: React.Dispatch<FormData<string>>, value: FormData<string>) => {
-		cb(value);		
+		cb(value);
 		if (!changesMade) {
 			setChangesMade(true);
 		}
@@ -60,7 +60,7 @@ export const UpdateDetails: React.FC<Props> = ({ account }) => {
 					formData={email}
 					setFormData={data => onEdit(setEmail, data)}
 					errorMessage="Please provide a valid email address"
-					errorFunc={(currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1}/>
+					errorFunc={(currentVal) => currentVal === "" || currentVal.search(/^\S+@\S+$/) === -1} />
 			</Cell>
 			<Cell>
 				<LabelledErrorAttachedTextInput
@@ -71,7 +71,7 @@ export const UpdateDetails: React.FC<Props> = ({ account }) => {
 					setFormData={data => onEdit(setUserName, data)}
 					errorMessage="Please provide a valid display name."
 					errorFunc={(currentVal) => currentVal === ""} />
-			</Cell>				
+			</Cell>
 			<Cell
 				cellStyles={{ gridColumn: "2 / 3" }}>
 				<Flex
@@ -81,10 +81,12 @@ export const UpdateDetails: React.FC<Props> = ({ account }) => {
 						classname="SaveButton"
 						title="Save"
 						disabled={!changesMade}
-						onClick={() => AccountService.updatePersonalData({
-							email: email.Value,
-							userName: userName.Value,
-						})}/>
+						onClick={async () => {
+							await AccountService.updatePersonalData({
+								email: email.Value,
+								userName: userName.Value,
+							});
+						}} />
 				</Flex>
 			</Cell>
 		</Grid>

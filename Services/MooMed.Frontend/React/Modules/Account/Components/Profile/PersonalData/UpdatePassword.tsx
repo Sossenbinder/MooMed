@@ -27,11 +27,11 @@ export const UpdatePassword: React.FC<Props> = () => {
 	const [oldPassword, setOldPassword] = useFormState<string>("");
 	const [newPassword, setNewPassword] = useFormState<string>("");
 	const [changesMade, setChangesMade] = React.useState<boolean>(false);
-	
+
 	const { AccountService } = useServices();
 
 	const onEdit = React.useCallback((cb: React.Dispatch<FormData<string>>, value: FormData<string>) => {
-		cb(value);		
+		cb(value);
 		if (!changesMade) {
 			setChangesMade(true);
 		}
@@ -58,7 +58,7 @@ export const UpdatePassword: React.FC<Props> = () => {
 					inputType="password"
 					setFormData={data => onEdit(setOldPassword, data)}
 					errorMessage="Please provide a valid password"
-					errorFunc={(currentVal) => currentVal === ""}/>
+					errorFunc={(currentVal) => currentVal === ""} />
 			</Cell>
 			<Cell>
 				<LabelledErrorAttachedTextInput
@@ -70,7 +70,7 @@ export const UpdatePassword: React.FC<Props> = () => {
 					setFormData={data => onEdit(setNewPassword, data)}
 					errorMessage="Please provide a valid password."
 					errorFunc={(currentVal) => currentVal === ""} />
-			</Cell>				
+			</Cell>
 			<Cell
 				cellStyles={{ gridColumn: "2 / 3" }}>
 				<Flex
@@ -80,10 +80,12 @@ export const UpdatePassword: React.FC<Props> = () => {
 						classname="SaveButton"
 						title="Save"
 						disabled={!changesMade}
-						onClick={async () => await AccountService.updatePassword({
-							oldPassword: oldPassword.Value,
-							newPassword: newPassword.Value,
-						})}/>
+						onClick={async () => {
+							await AccountService.updatePassword({
+								oldPassword: oldPassword.Value,
+								newPassword: newPassword.Value,
+							})
+						}} />
 				</Flex>
 			</Cell>
 		</Grid>

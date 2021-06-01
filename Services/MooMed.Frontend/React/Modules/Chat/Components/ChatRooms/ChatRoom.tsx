@@ -7,7 +7,6 @@ import FriendListImage from "modules/Friends/Components/FriendsList/FriendListIm
 import ChatRoomInput from "./ChatRoomInput";
 import ChatMessage from "./ChatMessage";
 import MaterialIcon from "common/components/MaterialIcon";
-import { Button } from 'react-bootstrap';
 import LoadingBubbles from "common/components/LoadingBubbles";
 
 // Functionality

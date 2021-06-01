@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/ingress.allow-http: "false"
   name: nginx-ingress
   namespace: default
 spec:

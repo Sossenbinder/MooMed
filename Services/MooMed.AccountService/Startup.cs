@@ -2,6 +2,7 @@ using Autofac;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MooMed.AspNetCore.Grpc;
 using MooMed.AspNetCore.Identity.Helper;
@@ -21,14 +22,19 @@ namespace MooMed.AccountService
 {
 	public class Startup : GrpcEndpointStartup<Service.AccountService>
 	{
+		private readonly IConfiguration _configuration;
+
+		public Startup(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+
 		public override void ConfigureServices(IServiceCollection services)
 		{
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(options => options.LoginPath = "/Logon/Login");
 
-			services.AddDbContext<AccountDbContext>(options =>
-				options.UseSqlServer(
-					"Server=tcp:moomeddbserver.database.windows.net,1433;Initial Catalog=Main;Persist Security Info=False;User ID=moomedadmin;Password=8fC2XaAB1JPPwTL05SoFbdNRvKAH2bHy;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+			services.AddDbContext<AccountDbContext>(options => options.UseSqlServer(_configuration["IdentityConnectionString"]));
 
 			services.AddIdentity<AccountEntity, IdentityRole<int>>(IdentityOptionsProvider.ApplyDefaultOptions)
 				.AddErrorDescriber<CodeIdentityErrorDescriber>()

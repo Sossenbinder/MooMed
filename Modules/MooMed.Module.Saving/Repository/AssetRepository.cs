@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using MooMed.Common.Database.Repository;
+using MooMed.Module.Saving.Database;
+using MooMed.Module.Saving.Database.Entities;
 using MooMed.Module.Saving.Repository.Interface;
 
 namespace MooMed.Module.Saving.Repository
 {
-    public class AssetRepository : IAssetRepository
-    {
-    }
+	public class AssetRepository : AbstractCrudRepository<SavingDbContext, AssetsEntity, int>, IAssetRepository
+	{
+		public AssetRepository(IDbContextFactory<SavingDbContext> contextFactory)
+			: base(contextFactory)
+		{
+		}
+	}
 }

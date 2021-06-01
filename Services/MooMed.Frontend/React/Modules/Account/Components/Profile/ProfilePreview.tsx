@@ -26,9 +26,9 @@ export const ProfilePreview: React.FC<Props> = ({ account, updateAccount }) => {
 
 	const { LogonService } = useServices();
 
-	const uploadPicture = React.useCallback((event: HTMLInputElement) => {
+	const uploadPicture = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		const formData = new FormData();
-		const files = event.files;
+		const files = event.currentTarget.files;
 		if (files.length > 0) {
 
 			formData.append("UploadedImage", files[0]);

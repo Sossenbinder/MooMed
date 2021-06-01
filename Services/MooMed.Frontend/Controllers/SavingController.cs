@@ -12,66 +12,66 @@ using MooMed.ServiceBase.Services.Interface;
 
 namespace MooMed.Frontend.Controllers
 {
-    public class SavingController : SessionBaseController
-    {
-        private readonly ISavingService _savingService;
+	public class SavingController : SessionBaseController
+	{
+		private readonly ISavingService _savingService;
 
-        private readonly SavingModelToUiModelConverter _savingModelToUiModelConverter;
+		private readonly SavingModelToUiModelConverter _savingModelToUiModelConverter;
 
-        public SavingController(
-            [NotNull] ISessionService sessionService,
-            [NotNull] ISavingService savingService,
-            SavingModelToUiModelConverter savingModelToUiModelConverter)
-            : base(sessionService)
-        {
-            _savingService = savingService;
-            _savingModelToUiModelConverter = savingModelToUiModelConverter;
-        }
+		public SavingController(
+			[NotNull] ISessionService sessionService,
+			[NotNull] ISavingService savingService,
+			SavingModelToUiModelConverter savingModelToUiModelConverter)
+			: base(sessionService)
+		{
+			_savingService = savingService;
+			_savingModelToUiModelConverter = savingModelToUiModelConverter;
+		}
 
-        [ItemNotNull]
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResponse> SetCurrency([FromBody] SetCurrencyUiModel setCurrencyModel)
-        {
-            var response = await _savingService.SetCurrency(new SetCurrencyModel
-            {
-                Currency = setCurrencyModel.Currency,
-                SessionContext = CurrentSessionOrFail
-            });
+		[ItemNotNull]
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public async Task<JsonResponse> SetCurrency([FromServices] ISessionService bla, [FromBody] SetCurrencyUiModel setCurrencyModel)
+		{
+			var response = await _savingService.SetCurrency(new SetCurrencyModel
+			{
+				Currency = setCurrencyModel.Currency,
+				SessionContext = CurrentSessionOrFail
+			});
 
-            return response.ToJsonResponse();
-        }
+			return response.ToJsonResponse();
+		}
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResponse> SetCashFlowItems([FromBody] SetCashFlowItemsUiModel cashFlowItems)
-        {
-            var response = await _savingService.SetCashFlowItems(new SetCashFlowItemsModel()
-            {
-                SessionContext = CurrentSessionOrFail,
-                CashFlowItems = cashFlowItems.CashFlowItems.ConvertAll(x => new CashFlowItem()
-                {
-                    Amount = x.Amount,
-                    CashFlowItemType = x.CashFlowItemType,
-                    FlowType = x.FlowType,
-                    Identifier = x.Identifier ?? Guid.NewGuid(),
-                    Name = x.Name,
-                })
-            });
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public async Task<JsonResponse> SetCashFlowItems([FromBody] SetCashFlowItemsUiModel cashFlowItems)
+		{
+			var response = await _savingService.SetCashFlowItems(new SetCashFlowItemsModel()
+			{
+				SessionContext = CurrentSessionOrFail,
+				CashFlowItems = cashFlowItems.CashFlowItems.ConvertAll(x => new CashFlowItem()
+				{
+					Amount = x.Amount,
+					CashFlowItemType = x.CashFlowItemType,
+					FlowType = x.FlowType,
+					Identifier = x.Identifier ?? Guid.NewGuid(),
+					Name = x.Name,
+				})
+			});
 
-            return response.ToJsonResponse();
-        }
+			return response.ToJsonResponse();
+		}
 
-        [HttpGet]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonDataResponse<SavingInfoUiModel>> GetSavingInfo()
-        {
-            var result = await _savingService.GetSavingInformation(CurrentSessionOrFail);
+		[HttpGet]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public async Task<JsonDataResponse<SavingInfoUiModel>> GetSavingInfo()
+		{
+			var result = await _savingService.GetSavingInformation(CurrentSessionOrFail);
 
-            return result.ToUiModelJsonResponse(_savingModelToUiModelConverter);
-        }
-    }
+			return result.ToUiModelJsonResponse(_savingModelToUiModelConverter);
+		}
+	}
 }

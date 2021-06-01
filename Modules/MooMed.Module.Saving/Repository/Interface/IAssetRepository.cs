@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MooMed.Common.Database.Repository.Interface;
+using MooMed.Module.Saving.Database.Entities;
 
 namespace MooMed.Module.Saving.Repository.Interface
 {
-    public interface IAssetRepository
-    {
-        
-    }
+	public interface IAssetRepository : ICrudRepository<AssetsEntity, int>
+	{
+	}
 }

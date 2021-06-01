@@ -4,8 +4,10 @@ using MooMed.Common.Definitions.Models.Session.Interface;
 
 namespace MooMed.Module.Saving.Service.Interface
 {
-    public interface IAssetService
-    {
-        Task SetAssets(ISessionContext sessionContext, AssetsModel assets);
-    }
+	public interface IAssetService
+	{
+		Task SetAssets(ISessionContext sessionContext, AssetsModel assets);
+
+		Task<AssetsModel?> GetAssets(ISessionContext sessionContext);
+	}
 }

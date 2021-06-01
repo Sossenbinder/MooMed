@@ -1,3 +1,3 @@
-﻿import MooEvent from "helper/Events/MooEvent";
+﻿import AsyncEvent from "helper/Events/AsyncEvent";
 
-export const ClickEvent = new MooEvent<MouseEvent>();
+export const ClickEvent = new AsyncEvent<MouseEvent>();

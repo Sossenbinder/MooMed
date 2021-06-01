@@ -8,7 +8,7 @@ import { reducer as savingConfigurationReducer } from "modules/saving/reducer/Sa
 
 // Types
 import { Currency } from "enums/moomedEnums";
-import { BasicSavingInfo, SavingInfo } from "../types";
+import { SavingInfo } from "../types";
 
 export default class SavingService extends ModuleService implements ISavingService {
 
@@ -24,15 +24,15 @@ export default class SavingService extends ModuleService implements ISavingServi
 		const response = await savingCommunication.getSavingInfo();
 
 		const savingInfo = response.success ? response.payload : {} as SavingInfo;
-		
+
 		this.dispatch(savingConfigurationReducer.replace(savingInfo));
 	}
-	
+
 	public async saveBasicSettings(): Promise<void> {
 
 		const savingInfo = this.getStore().savingConfigurationReducer.data;
 
-		const response = await savingCommunication.setCashFlowItems([ 
+		const response = await savingCommunication.setCashFlowItems([
 			savingInfo.basicSavingInfo.income,
 			savingInfo.basicSavingInfo.rent,
 			savingInfo.basicSavingInfo.groceries

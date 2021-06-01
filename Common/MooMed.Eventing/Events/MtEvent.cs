@@ -32,6 +32,13 @@ namespace MooMed.Eventing.Events
 		private readonly object _registrationLock = new();
 
 		public MtEvent(
+			IMassTransitEventingService massTransitEventingService,
+			IMooMedLogger logger)
+			: this(typeof(TEventArgs).Name, massTransitEventingService, logger)
+		{
+		}
+
+		public MtEvent(
 			string queueName,
 			IMassTransitEventingService massTransitEventingService,
 			IMooMedLogger logger)

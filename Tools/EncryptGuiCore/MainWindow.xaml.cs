@@ -45,7 +45,7 @@ namespace EncryptGuiCore
 			var token = KeyVaultSecretTextBox.Text;
 
 			var config = new ConfigurationBuilder()
-				.AddAzureKeyVault(_keyVaultConfigSection["Uri"], "82259ded-f445-4db4-80d4-1c07f13c50b7", token);
+				.AddAzureKeyVault(_keyVaultConfigSection["Uri"], "f87c57a9-f688-436b-aa7b-34a1de5cf85a", token);
 
 			_settingsCryptoProvider = new SettingsCryptoProvider(new Config(config.Build()));
 

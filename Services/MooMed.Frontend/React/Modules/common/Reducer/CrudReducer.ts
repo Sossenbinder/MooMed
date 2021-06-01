@@ -5,23 +5,35 @@ import { ensureArray, removeAt } from "helper/arrayUtils";
 import { CouldBeArray } from "data/commonTypes";
 import { Reducer, ReducerState, MultiReducerState, ReducerAction } from "./types";
 
-// No keys needed here. We only have one entry
-type SingleReducerParams = {
+type CommonReducerParams = {
 	actionIdentifier: string;
 }
 
+// No keys needed here. We only have one entry
+type SingleReducerParams<TDataType> = CommonReducerParams & {
+	additionalActions?: CouldBeArray<ExternalAction<TDataType, ReducerState<TDataType>>>;
+}
+
 // Keys are necessary here, so identifying updates for specific items are possible
-type MultiReducerParams<T> = SingleReducerParams & {
-	key: keyof T;
+type MultiReducerParams<TDataType> = CommonReducerParams & {
+	additionalActions?: CouldBeArray<ExternalAction<Array<TDataType>, MultiReducerState<TDataType>>>;
+	key: keyof TDataType;
+}
+
+type Action<TDataType, TReducerState extends ReducerState<TDataType>> = (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
+
+type ExternalAction<TDataType, TReducerState extends ReducerState<TDataType>> = {
+	type: string;
+	action: Action<TDataType, TReducerState>;
 }
 
 type CrudActions<TDataType, TReducerState extends ReducerState<TDataType>> = {
-	addAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
-	updateAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
-	deleteAction: (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
+	addAction: Action<TDataType, TReducerState>;
+	updateAction: Action<TDataType, TReducerState>;
+	deleteAction: Action<TDataType, TReducerState>;
 }
 
-export const createSingleReducer = <T>(params: SingleReducerParams) => createReducerInternal<T, ReducerState<T>>(
+export const createSingleReducer = <T>(params: SingleReducerParams<T>) => createReducerInternal<T, ReducerState<T>>(
 	{
 		...params,
 		actions: {
@@ -97,8 +109,9 @@ export const createReducer = <T>(params: MultiReducerParams<T>) => createReducer
 	}
 );
 
-type GenericReducerParams<TDataType, TReducerState extends ReducerState<TDataType>> = SingleReducerParams & {
+type GenericReducerParams<TDataType, TReducerState extends ReducerState<TDataType>> = CommonReducerParams & {
 	actions: CrudActions<TDataType, TReducerState>;
+	externalActions?: Array<ExternalAction<TDataType, TReducerState>>;
 	initialState: TReducerState;
 }
 
@@ -106,7 +119,7 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 	params: GenericReducerParams<TDataType, TReducerState>
 ): Reducer<TDataType> => {
 
-	const actionIdentifier = params.actionIdentifier;
+	const { actionIdentifier, externalActions } = params;
 
 	const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
 	const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
@@ -126,6 +139,8 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 		[REPLACE_IDENTIFIER, replaceAction]
 	]);
 
+	externalActions?.forEach(x => reducerActionMap.set(x.type, x.action));
+
 	const reducer = (state = initialState, action: ReducerAction<TDataType>): TReducerState => {
 		const reducerAction = reducerActionMap.get(action.type);
 
@@ -136,7 +151,7 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 		return reducerAction(state, action);
 	}
 
-	const actionGenerator = (type: string) => (payload: TDataType) => ({
+	const actionGenerator = (type: string) => (payload: TDataType): ReducerAction<TDataType> => ({
 		type,
 		payload,
 	});

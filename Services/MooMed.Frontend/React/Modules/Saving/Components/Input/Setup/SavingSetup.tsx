@@ -15,7 +15,7 @@ import SavingSetupStepAssets from "./SavingSetupStepAssets";
 // Functionality
 import { useServices } from "hooks/useServices";
 import { usingBoolAsync } from "helper/utils/hookUtils";
-import { reducer as savingConfigurationReducer } from "modules/saving/reducer/SavingConfigurationReducer";
+import { reducer as savingConfigurationReducer, updateAssets } from "modules/saving/reducer/SavingConfigurationReducer";
 
 // Types
 import { BasicSavingInfo, SavingInfo } from "modules/saving/types";
@@ -45,10 +45,12 @@ type RouterProps = {
 	viewName: string;
 }
 
-type Props = RouteComponentProps<RouterProps> & {
-	savingInfo: SavingInfo;
-
+type ReduxProps = {
 	updateSavingInfo(savingInfo: SavingInfo): void;
+}
+
+type Props = RouteComponentProps<RouterProps> & ReduxProps & {
+	savingInfo: SavingInfo;
 }
 
 const routePrefix = "/saving/setup/";
@@ -140,7 +142,7 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, updateSavingInfo, his
 							</When>
 							<When condition={currentStep === SetupStep.Assets}>
 								<SavingSetupStepAssets
-									assetInfo={savingInfo.assetInfo}
+									assets={savingInfo.assets}
 									currency={savingInfo.currency} />
 							</When>
 							<Otherwise>
@@ -158,8 +160,8 @@ export const SavingSetup: React.FC<Props> = ({ savingInfo, updateSavingInfo, his
 
 const mapDispatchToProps = (dispatch: any) => {
 	return {
-		updateSavingInfo: (savingInfo: SavingInfo) => dispatch(savingConfigurationReducer.update(savingInfo))
-	}
+		updateSavingInfo: (savingInfo: SavingInfo) => dispatch(savingConfigurationReducer.update(savingInfo)),
+	};
 }
 
 export default withRouter(connect(null, mapDispatchToProps)(SavingSetup));

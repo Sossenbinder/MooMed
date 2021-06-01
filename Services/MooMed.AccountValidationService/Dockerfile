@@ -14,7 +14,7 @@ ENV MooMed_Database_Account="Server=tcp:moomeddbserver.database.windows.net,1433
 ENV MooMed_Email_Name="MooMedFinance@gmail.com"
 ENV MooMed_Email_Password="6liyyX/men7fGx0Vt1rBPA=="
 
-ENV AZURE_CLIENT_ID "82259ded-f445-4db4-80d4-1c07f13c50b7"
+ENV AZURE_CLIENT_ID "f87c57a9-f688-436b-aa7b-34a1de5cf85a"
 ENV AZURE_TENANT_ID "ff009f2c-d651-472e-b73e-e0f894c6011e"
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build

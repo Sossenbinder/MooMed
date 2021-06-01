@@ -1,30 +1,31 @@
 {
-  "compilerOptions": {
-    "baseUrl": "React",
-    "removeComments": true,
-    "sourceMap": true,
-    "target": "es6",
-    "module": "commonjs",
-    "jsx": "react",
-    "moduleResolution": "node",
+	"compilerOptions": {
+		"baseUrl": "React",
+		"removeComments": true,
+		"sourceMap": true,
+		"target": "ESNext",
+		"module": "commonjs",
+		"jsx": "react",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
 		// "noImplicitAny": true,
 		// "noUnusedLocals": true,
 		// "noUnusedParameters": true,
-    "allowJs": false,
-    "paths": {
-	  "common": ["Common/*"],
-      "components": ["Views/Components/*"],
-      "data": ["Data/*"],
-      "definitions": ["Definitions/*"],
-      "helper": ["Helper/*"],
-      "hooks": ["Hooks/*"],
-      "modules": ["Modules/*"],
-      "views": [ "Views/*"],
-	  "enums":  ["Enums/*"]
-    }
-  },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ]
+		"allowJs": false,
+		"paths": {
+			"common": [ "Common/*" ],
+			"components": [ "Views/Components/*" ],
+			"data": [ "Data/*" ],
+			"definitions": [ "Definitions/*" ],
+			"helper": [ "Helper/*" ],
+			"hooks": [ "Hooks/*" ],
+			"modules": [ "Modules/*" ],
+			"views": [ "Views/*" ],
+			"enums": [ "Enums/*" ]
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"wwwroot"
+	]
 }

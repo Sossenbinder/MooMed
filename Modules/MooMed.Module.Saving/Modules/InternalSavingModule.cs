@@ -9,43 +9,51 @@ using MooMed.Module.Saving.Service.Interface;
 
 namespace MooMed.Module.Saving.Modules
 {
-    public class InternalSavingModule : Autofac.Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule<SavingModule>();
+	public class InternalSavingModule : Autofac.Module
+	{
+		protected override void Load(ContainerBuilder builder)
+		{
+			builder.RegisterModule<SavingModule>();
 
-            builder.RegisterType<SavingDbContextFactory>()
-                .As<IDbContextFactory<SavingDbContext>>()
-                .SingleInstance();
+			builder.RegisterType<SavingDbContextFactory>()
+				.As<IDbContextFactory<SavingDbContext>>()
+				.SingleInstance();
 
-            builder.RegisterType<CashFlowItemTypeRepository>()
-                .As<ICashFlowItemRepository>()
-                .SingleInstance();
+			builder.RegisterType<CashFlowItemTypeRepository>()
+				.As<ICashFlowItemRepository>()
+				.SingleInstance();
 
-            builder.RegisterType<CurrencyMappingRepository>()
-                .As<ICurrencyMappingRepository>()
-                .SingleInstance();
+			builder.RegisterType<CurrencyMappingRepository>()
+				.As<ICurrencyMappingRepository>()
+				.SingleInstance();
 
-            builder.RegisterType<CurrencyService>()
-                .As<ICurrencyService>()
-                .SingleInstance();
+			builder.RegisterType<CurrencyService>()
+				.As<ICurrencyService>()
+				.SingleInstance();
 
-            builder.RegisterType<CashFlowItemEntityConverter>()
-                .As<CashFlowItemEntityConverter>()
-                .SingleInstance();
+			builder.RegisterType<CashFlowItemEntityConverter>()
+				.As<CashFlowItemEntityConverter>()
+				.SingleInstance();
 
-            builder.RegisterType<CashFlowItemService>()
-                .As<ICashFlowItemService>()
-                .SingleInstance();
+			builder.RegisterType<AssetEntityConverter>()
+				.As<AssetEntityConverter>()
+				.SingleInstance();
 
-            builder.RegisterType<AssetRepository>()
-                .As<IAssetRepository>()
-                .SingleInstance();
+			builder.RegisterType<CashFlowItemService>()
+				.As<ICashFlowItemService>()
+				.SingleInstance();
 
-            builder.RegisterType<AssetService>()
-                .As<IAssetService>()
-                .SingleInstance();
-        }
-    }
+			builder.RegisterType<AssetRepository>()
+				.As<IAssetRepository>()
+				.SingleInstance();
+
+			builder.RegisterType<AssetService>()
+				.As<IAssetService>()
+				.SingleInstance();
+
+			builder.RegisterType<AssetRepository>()
+				.As<IAssetRepository>()
+				.SingleInstance();
+		}
+	}
 }

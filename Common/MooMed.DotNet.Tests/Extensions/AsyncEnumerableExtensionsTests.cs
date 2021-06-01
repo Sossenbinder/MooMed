@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MooMed.DotNet.Extensions;
 using NUnit.Framework;
@@ -120,6 +121,36 @@ namespace MooMed.DotNet.Tests.Extensions
 				{
 					Assert.True(innerExc is ArgumentNullException);
 				}
+			}
+		}
+
+		[Test]
+		public async Task ParallelAsyncShouldFinishRestEvenWhenOneThrows()
+		{
+			var parallelWorkItems = Enumerable
+				.Range(0, 5)
+				.ToList();
+
+			var finishedTasks = 0;
+
+			try
+			{
+				await parallelWorkItems.ParallelAsync(async x =>
+				{
+					if (x == 2)
+					{
+						throw new Exception();
+					}
+
+					await Task.Delay(200);
+
+					Interlocked.Increment(ref finishedTasks);
+				}, 20);
+			}
+			catch (AggregateException exc)
+			{
+				Assert.True(finishedTasks == 4);
+				Assert.True(exc.InnerExceptions.Count == 1);
 			}
 		}
 

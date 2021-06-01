@@ -1,17 +1,9 @@
 ﻿import * as React from "react";
-import MooEvent from "helper/Events/MooEvent";
+import AsyncEvent from "helper/Events/AsyncEvent";
 
-interface IProps {
+export let ClickEvent = new AsyncEvent<MouseEvent>();
 
-}
-
-interface IState {
-
-}
-
-export let ClickEvent = new MooEvent<MouseEvent>();
-
-export default class GlobalClickCapturer extends React.Component<IProps, IState> {
+export default class GlobalClickCapturer extends React.Component {
 
 	componentDidMount() {
 		document.body.addEventListener('click', this._onClick);
@@ -27,7 +19,7 @@ export default class GlobalClickCapturer extends React.Component<IProps, IState>
 
 	render() {
 		return (
-			<div style={{height: "100%",width: "100%"}}>
+			<div style={{ height: "100%", width: "100%" }}>
 				{this.props.children}
 			</div>
 		);

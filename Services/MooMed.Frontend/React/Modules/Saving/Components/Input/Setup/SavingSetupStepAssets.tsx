@@ -1,5 +1,6 @@
 // Framework
 import * as React from "react";
+import { connect } from "react-redux";
 
 // Components
 import Flex from "common/components/Flex";
@@ -10,24 +11,36 @@ import TextInput from "common/components/general/input/general/TextInput";
 
 // Functionality
 import { currencySymbolMap } from "helper/currencyHelper";
-import { reducer as savingConfigurationReducer } from "modules/saving/reducer/SavingConfigurationReducer";
+import { updateAssets } from "modules/saving/reducer/SavingConfigurationReducer";
 
 // Types
-import { AssetInfo } from "modules/saving/types";
+import { Assets, SavingInfo } from "modules/saving/types";
 import { Currency } from "enums/moomedEnums"
 
 import "./Styles/SavingSetupStepAssets.less";
 
-type Props = {
-	assetInfo: AssetInfo;
+type ReduxProps = {
+	updateAssets(assets: Assets): void;
+}
+
+type Props = ReduxProps & {
+	assets: Assets;
 	currency: Currency;
 }
 
-export const SavingSetupStepAssets: React.FC<Props> = ({ assetInfo: { cash, commodities, debt, equity, estate }, currency }) => {
+export const SavingSetupStepAssets: React.FC<Props> = ({ assets, currency, updateAssets: updateAssets }) => {
+
+	const { cash, commodities, debt, equity, estate } = assets ?? {};
 
 	const onChange = React.useCallback(() => {
+		const currentAssets = { ...assets };
 
-	}, []);
+
+
+		updateAssets(currentAssets);
+	}, [assets]);
+
+	const setIncome = (nr: number) => { };
 
 	return (
 		<Flex
@@ -67,7 +80,7 @@ export const SavingSetupStepAssets: React.FC<Props> = ({ assetInfo: { cash, comm
 						direction="Row">
 						<TextInput
 							name="Income"
-							data={income}
+							data={cash}
 							setData={val => setIncome(+val)}
 							inputType="number" />
 						<span className="Currency">
@@ -80,4 +93,10 @@ export const SavingSetupStepAssets: React.FC<Props> = ({ assetInfo: { cash, comm
 	);
 }
 
-export default SavingSetupStepAssets;
+const mapDispatchToProps = (dispatch: any): ReduxProps => {
+	return {
+		updateAssets: (assets: Assets) => dispatch(updateAssets(assets))
+	}
+}
+
+export default connect(null, mapDispatchToProps)(SavingSetupStepAssets);

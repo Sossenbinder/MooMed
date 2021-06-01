@@ -53,12 +53,14 @@ namespace MooMed.SavingService.Service
 		{
 			var currencyRetrievalTask = _currencyService.GetCurrency(sessionContext);
 			var cashFlowItemsTask = _cashFlowItemService.GetCashFlowItems(sessionContext);
+			var assetsTask = _assetService.GetAssets(sessionContext);
 
-			await Task.WhenAll(currencyRetrievalTask, cashFlowItemsTask);
+			await Task.WhenAll(currencyRetrievalTask, cashFlowItemsTask, assetsTask);
 
 			var savingModel = new SavingInfoModel()
 			{
 				Currency = currencyRetrievalTask.Result,
+				Assets = assetsTask.Result,
 			};
 
 			// First, order all items by type

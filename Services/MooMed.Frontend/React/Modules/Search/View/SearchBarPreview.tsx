@@ -7,62 +7,58 @@ import Flex from "common/components/Flex";
 
 // Functionality
 import { Account } from "modules/Account/types";
-import { ClickEvent } from "views/Components/Helper/GlobalClickCapturer";
 import { IsInRect } from "helper/Coordinate/CoordinateHelper";
+import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 
 import "modules/Search/Styles/SearchBarPreview.less";
 
 type Props = {
-    previewAccounts: Array<Account>;
+	previewAccounts: Array<Account>;
 	visibility: boolean;
-    onOpenStateChange: (openState: boolean) => void;
+	onOpenStateChange: (openState: boolean) => void;
 }
 
-export const SearchBarPreview: React.FC<Props> = ({ previewAccounts, visibility, onOpenStateChange}) => {
+export const SearchBarPreview: React.FC<Props> = ({ previewAccounts, visibility, onOpenStateChange }) => {
 
-    const searchBarPreviewRef = React.useRef<HTMLDivElement>();
-    
-    const userEntries = React.useMemo(() => previewAccounts?.map(account => 
-        <SearchBarPreviewUserEntry
-            account={account}
-            key={account.id}
-            onClick={() => onOpenStateChange(false)}
-        />
-    ), [previewAccounts]);        
+	const searchBarPreviewRef = React.useRef<HTMLDivElement>();
 
-	const handleGlobalClicks = React.useCallback(async (event: MouseEvent) => {
+	const userEntries = React.useMemo(() => previewAccounts?.map(account =>
+		<SearchBarPreviewUserEntry
+			account={account}
+			key={account.id}
+			onClick={() => onOpenStateChange(false)}
+		/>
+	), [previewAccounts]);
+
+	const handleGlobalClick = React.useCallback(async (event: MouseEvent) => {
 		if (visibility && !IsInRect(searchBarPreviewRef.current.getBoundingClientRect(), event.x, event.y)) {
 			onOpenStateChange(false);
-        }
-    }, [visibility]);
-    
-	React.useEffect(() => {
-        const listenerId = ClickEvent.Register(handleGlobalClicks);
-
-        return () => ClickEvent.Unregister(listenerId);
+		}
 	}, [visibility]);
 
-    return (
-        <div ref={searchBarPreviewRef}>
-            <Flex
-                style={{ visibility: visibility ? 'visible' : 'hidden' }} 
-                className={"Container"}>
-                <Flex className={"PreviewContent"}>
-                    <p>
-                        <strong>
-                            Users:
+	useGlobalClickHandler(handleGlobalClick);
+
+	return (
+		<div ref={searchBarPreviewRef}>
+			<Flex
+				style={{ visibility: visibility ? 'visible' : 'hidden' }}
+				className={"Container"}>
+				<Flex className={"PreviewContent"}>
+					<p>
+						<strong>
+							Users:
                         </strong>
-                    </p>
+					</p>
 					<Flex
 						direction="Column"
 						className={"UserEntries"}>
-                        {userEntries}
-                    </Flex>
-                    <Flex className={"CloseButton"} onClick={() => onOpenStateChange(false)}></Flex>
-                </Flex>
-            </Flex>
-        </div>
-    );
+						{userEntries}
+					</Flex>
+					<Flex className={"CloseButton"} onClick={() => onOpenStateChange(false)}></Flex>
+				</Flex>
+			</Flex>
+		</div>
+	);
 }
 
 export default SearchBarPreview;

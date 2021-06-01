@@ -18,12 +18,10 @@ type GridProps = {
 	display?: GridDisplay;
 
 	gridProperties?: GridStyles;
-
-	children?: Array<JSX.Element>;
 }
 
-export const Grid: React.FC<GridProps> = ({ 
-	className, 
+export const Grid: React.FC<GridProps> = ({
+	className,
 	gridProperties,
 	display = GridDisplay.Regular,
 	children
@@ -35,10 +33,10 @@ export const Grid: React.FC<GridProps> = ({
 	});
 
 	return (
-		<div 
+		<div
 			className={`${classes} ${typeof className !== "undefined" ? className : ""}`}
 			style={gridProperties}>
-			{ children }
+			{ children}
 		</div>
 	)
 }

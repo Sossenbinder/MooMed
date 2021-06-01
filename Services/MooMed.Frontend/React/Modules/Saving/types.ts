@@ -8,7 +8,7 @@ export type CashFlowItem = {
 	flowType: CashFlow;
 }
 
-export type AssetInfo = {
+export type Assets = {
 	cash: number;
 	debt: number;
 	equity: number;
@@ -24,7 +24,7 @@ export type BasicSavingInfo = {
 
 export type SavingInfo = {
 	currency: Currency;
-	assetInfo: AssetInfo;
+	assets: Assets;
 	basicSavingInfo: BasicSavingInfo;
 	freeFormSavingInfo: Array<CashFlowItem>;
 }
